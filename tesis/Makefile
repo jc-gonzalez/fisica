@@ -62,11 +62,12 @@ FORMATS=$(FORMATS1) $(FORMATS2)
 COMMON_FILES=$(DOCSRC) $(BIBSRC) $(BIBLIO) $(ENGINES) $(FORMATS)
 
 .PHONY: eng esp ps pdf dvi all prepare banner log notation
+.PHONY: lastday last5days last10days
 .PHONY: clean mrproper redo
 .PHONY: clearlang lang 
 .PHONY: engpdf pdfeng esppdf pdfesp
 .PHONY: engps pseng espps psesp
-.PHONY: virtex 
+.PHONY: draft nodraft color bw virtex 
 .PHONY: common $(COMMON_FILES)
 .PHONY: $(OUTDVI) $(OUTPDF) $(OUTPS)
 
@@ -96,7 +97,28 @@ pdf:: prepare $(OUTPDF) log clearlang
 
 prepare: banner common lang notation
 
+draft:
+	-echo Next version generated will be a DRAFT version . . .
+	cd $(COMMON_PATH);\
+	echo '\newif\ifdraft \drafttrue' > $(COMMON_PATH)/isdraft.tex
+
+nodraft:
+	-echo Next version generated will be a NO DRAFT version . . .
+	cd $(COMMON_PATH);\
+	echo '\newif\ifdraft \draftfalse' > $(COMMON_PATH)/isdraft.tex
+
+color:
+	-echo "Next version generated will use COLOR pictures . . ."
+	cd $(COMMON_PATH);\
+	echo '\COLORversiontrue ' > $(COMMON_PATH)/iscolor.tex
+
+bw:
+	-echo "Next version generated will use Black & White pictures . . ."
+	cd $(COMMON_PATH);\
+	echo '\COLORversionfalse ' > $(COMMON_PATH)/iscolor.tex
+
 virtex: 
+	-echo Preprocessing TeXis code . . .
 	cd $(COMMON_PATH);\
 	cp $(COMMON_PATH)/$(RUN).tex $(COMMON_PATH)/$(RUNPDF).tex;\
 	initex '&latex '$(COMMON_PATH)/$(RUN).tex' \dump' && \
@@ -240,7 +262,7 @@ clearlang:
 
 clean: clearlang
 	@echo "Cleanning..."
-	-rm -f $(SCRATCH_PATH)/* 
+	-rm -f $(SCRATCH_PATH)/* FILES*
 
 mrproper: clean
 	@echo "Mr.Proper in action . . ."
@@ -248,6 +270,24 @@ mrproper: clean
 	-rm -f $(THIS)/tesis-{eng,esp}.{ps,dvi,pdf}
 
 redo: clean all
+
+lastday:
+	-echo Files modified in the last day are: > /dev/stderr
+	-rm -f FILES
+	-find . \( -type f -a -cmin -1440 \) | grep -v scratch | tee /tmp/FILES
+	-mv /tmp/FILES .
+
+last5days:
+	-echo Files modified in the last day are: > /dev/stderr
+	-rm -f /tmp/FILES
+	-find . \( -type f -a -cmin -7200 \) | grep -v scratch | tee /tmp/FILES
+	-mv /tmp/FILES .
+
+last10days:
+	-echo Files modified in the last day are: > /dev/stderr
+	-rm -f /tmp/FILES
+	-find . \( -type f -a -cmin -14400 \) | grep -v scratch | tee /tmp/FILES
+	-mv /tmp/FILES .
 
 help:
 	-cat common/makefile.hlp

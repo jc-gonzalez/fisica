@@ -49,6 +49,10 @@ $\beta$
         Velocity of a particle (natural units)
         Velocidad de una part'icula (unidades naturales)
 
+$c$ 
+        Speed of light in vacuum
+        Velocidad de la luz en el vac'io
+
 $\delta$ 
         ``Off-axis'' angle of an incoming cosmic-ray shower
         'Angulo ``fuera de eje'' de una cascada de un rayo c'osmico
@@ -92,6 +96,10 @@ $\varphi_{\mathrm{trig}}$
 $\gamma$ 
         Gamma ray / Photon
         Rayo gamma / Fot'on
+
+$\Gamma$ 
+        Lorentz factor
+        Factor de Lorenz
 
 $h$ 
         Height abovel sea level
@@ -153,6 +161,10 @@ $m_{\mathrm{simple}}$
         Simple approximation of $m\equiv AM$ using $h_{\mathrm{v,approx}}$
         Aproximaci'on de $m\equiv AM$ usando $h_{\mathrm{v,approx}}$
 
+$M_\odot$
+        Mass of the Sun
+        Masa del Sol
+
 $n$ 
         Number of branchings (\emph{toy model})
         N'umero de bifurcaciones (\emph{modelo de juguete})
@@ -204,6 +216,10 @@ $R$
 $r_{\mathrm{M}}$ 
         \emph{Moli\`ere radius} of multiple scattering 
         \emph{Radio de Moli\`ere} de dispersi'on m'ultiple
+
+$R_\odot$
+        Radius of the Sun
+        Radio del Sol
 
 $R_\oplus$ 
         Earth's radius

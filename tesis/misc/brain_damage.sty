@@ -1,0 +1,122 @@
+%% brain_damage.sty -- Allin Cottrell, 1996/4/29
+
+%% Turn a perfectly good LaTeX document into something that looks
+%% like old-fashioned typewriter output.  Sadly, this is required
+%% by some journals for final submissions.
+
+%% This package should be used in conjunction with LaTeX2e's article
+%% class, using the 12-point option, i.e.
+%%
+%%  \documentclass[12pt]{article}
+%%  \usepackage{brain_damage}
+%%
+%%  Optionally, also use endnotes.sty from CTAN.  This package (b_d) contains
+%%  some parameters that will make the output of endnotes consistent
+%%  with the all-typewriter look.  In that case do
+%%
+%%  \documentclass[12pt]{article}
+%%  \usepackage{endnotes,brain_damage}
+%%
+%%  To stick the endnotes in, use "\noteshere".
+
+\ProvidesPackage{brain_damage}
+
+%% Set most font sizes to 12pt
+
+\renewcommand\normalsize{%
+   \@setfontsize\normalsize\@xiipt{14.5}%
+   \abovedisplayskip 12\p@ \@plus3\p@ \@minus7\p@
+   \abovedisplayshortskip \z@ \@plus3\p@
+   \belowdisplayshortskip 6.5\p@ \@plus3.5\p@ \@minus3\p@
+   \belowdisplayskip \abovedisplayskip
+   \let\@listi\@listI}
+\normalsize
+\renewcommand\small{%
+   \@setfontsize\small\@xiipt{14.5}%
+   \abovedisplayskip 12\p@ \@plus3\p@ \@minus7\p@
+   \abovedisplayshortskip \z@ \@plus3\p@
+   \belowdisplayshortskip 6.5\p@ \@plus3.5\p@ \@minus3\p@
+   \belowdisplayskip \abovedisplayskip
+   \let\@listi\@listI}
+\renewcommand\footnotesize{%
+  \@setfontsize\footnotesize\@xiipt{14.5}%
+   \abovedisplayskip 12\p@ \@plus3\p@ \@minus7\p@
+   \abovedisplayshortskip \z@ \@plus3\p@
+   \belowdisplayshortskip 6.5\p@ \@plus3.5\p@ \@minus3\p@
+   \belowdisplayskip \abovedisplayskip
+   \let\@listi\@listI}
+\renewcommand\scriptsize{\@setfontsize\scriptsize\@viiipt{9.5}}
+\renewcommand\tiny{\@setfontsize\tiny\@vipt\@viipt}
+\renewcommand\large{\@setfontsize\large\@xiipt{14.5}}
+\renewcommand\Large{\@setfontsize\Large\@xiipt{14.5}}
+\renewcommand\LARGE{\@setfontsize\LARGE\@xiipt{14.5}}
+\renewcommand\huge{\@setfontsize\huge\@xiipt{14.5}}
+\setlength\footnotesep{16\p@}
+
+\setlength\textwidth{429\p@}
+\setlength\oddsidemargin   {20\p@}
+\setlength\evensidemargin  {20\p@}
+
+              
+%% More stuff to brain-damage a perfectly good LaTeX file...
+
+\raggedright
+\renewcommand\baselinestretch{1.75}% Adjust if you like
+
+%% Make typewriter font the default 'roman'
+
+\renewcommand{\rmdefault}{cmtt}
+
+%% Make sure smallcaps command doesn't do anything
+
+\DeclareOldFontCommand{\sc}{\normalfont\ttfamily}{\mathtt}
+
+%% Have quotes indented on the left only
+
+\renewenvironment{quote}% No extra indent on first line 
+               {\list{}% 
+                \small\item[]} 
+               {\endlist}
+               
+%% Avoid some warnings about non-existence of typewriter bold 
+               
+\def\section{\@startsection{section}{1}{\z@}{-3.5ex plus -1ex minus  
+ -.2ex}{2.3ex plus .2ex}{\tt}}  
+ 
+\def\subsection{\@startsection{subsection}{2}{\z@}{-3.25ex plus -1ex minus  
+ -.2ex}{1ex plus .2ex}{\tt}}
+ 
+%% Something I use in bibliographies...
+
+\def\bibliorule{{\rule[-.01in]{.5in}{.005in}}}
+
+%% Optional (you may uncomment this): turns footnotes into endnotes.
+%% Requires endnotes.sty
+
+%\renewcommand{\footnote}[1]{\endnote{#1}}
+
+\def\@makeenmark{\hbox{$^{\tt\@theenmark}$}}
+
+\newcommand{\noteshere}{%
+     \newpage
+     \begingroup
+     \parindent 0pt
+     \parskip 2ex
+     \def\enotesize{\normalsize}
+     \def\enoteformat{\rightskip=.75in \leftskip\z@ \parindent=0em
+     \leavevmode\llap{\hbox{$^{\tt \@theenmark}$}}}%tt added, AC
+     \theendnotes
+     \newpage
+     \endgroup}
+
+\def\enoteformat{\rightskip\z@ \leftskip\z@ \parindent=.40in
+     \leavevmode\llap{\hbox{$^{\@theenmark}$}}}
+
+%% Standard large para indents
+ 
+\setlength\parindent{.40in}
+
+\endinput
+
+%% 
+%% End of file `brain_damage.sty'.  Yuk!

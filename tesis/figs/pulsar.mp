@@ -1,5 +1,9 @@
 input boxes
 
+myfontscale := 2;
+
+ahlength := 7;
+
 %vardef cuta(suffix a,b) expr p =
 %  draw p cutbefore bpath.a cutafter bpath.b;
 %%  drawarrow p cutbefore bpath.a cutafter bpath.b;
@@ -28,7 +32,7 @@ beginfig(1);
 verbatimtex \def\stk#1#2{$\displaystyle{\matrix{#1\cr#2\cr}}$} etex
 
 circleit.aa(btex \vbox{\hbox{Neutron}\hbox{~~~Star}} etex);
-fill bpath.aa withcolor 0.3[white,black];
+fill bpath.aa withcolor 0.05[white,black];
 drawboxed(aa);
 
 for i=30pt,40pt,55pt,75pt,110pt,160pt :
@@ -91,27 +95,32 @@ draw z4--z5 dashed evenly;
 z.c = z.a transformed T;
 z.d = z.b transformed T;
 
-dotlabel.urt(btex P etex,z.c);
-dotlabel.llft(btex Q etex,z.d);
+%dotlabel.urt(btex P etex scaled myfontscale,z.c);
+draw z.c withpen pencircle scaled 8bp withcolor .5[white,black];
+label.urt(btex P etex scaled myfontscale,z.c);
+
+%dotlabel.llft(btex Q etex scaled myfontscale,z.d);
+draw z.d withpen pencircle scaled 8bp withcolor 0.5[white,black];
+label.llft(btex Q etex scaled myfontscale,z.d);
 
 z.c = z6 + (0, 200pt) = z7 - (0, 200pt);
 z.d = z8 + (0, 200pt) = z9 - (0, 200pt);
 draw z6--z7 dashed evenly scaled 4;
 draw z8--z9 dashed evenly scaled 4;
 
-label.lft(btex Light Cylinder etex, .5[z.c,z7]);
+label.rt(btex Light Cylinder etex scaled myfontscale rotated -90, .7[z.c,z7]);
 
 z.e = z0 + (0, 150pt);
 z.f = z.e transformed T;
 
 drawdblarrow z.e{right}..z.f dashed evenly;
 
-label.urt(btex $\theta$ etex, .5[z.e,z.f]);
+label.urt(btex $\theta$ etex scaled myfontscale, .5[z.e,z.f]);
 
 drawarrow z0+(-5pt,180pt)..z0+(-10pt,175pt)..
         z0+(0,169pt)..z0+(10pt,175pt)..z0+(5pt,180pt);
 
-label.urt(btex $\Omega$ etex, z0+(5pt,180pt));
+label.urt(btex $\Omega$ etex scaled myfontscale, z0+(5pt,180pt));
 
 endfig;
 
@@ -122,7 +131,7 @@ beginfig(2);
 verbatimtex \def\stk#1#2{$\displaystyle{\matrix{#1\cr#2\cr}}$} etex
 
 circleit.aa(btex \vbox{\hbox{Estrella de}\hbox{neutrones}} etex);
-fill bpath.aa withcolor 0.3[white,black];
+fill bpath.aa withcolor 0.05[white,black];
 drawboxed(aa);
 
 for i=30pt,40pt,55pt,75pt,110pt,160pt :
@@ -185,27 +194,32 @@ draw z4--z5 dashed evenly;
 z.c = z.a transformed T;
 z.d = z.b transformed T;
 
-dotlabel.urt(btex P etex,z.c);
-dotlabel.llft(btex Q etex,z.d);
+%dotlabel.urt(btex P etex scaled myfontscale,z.c);
+draw z.c withpen pencircle scaled 8bp withcolor .5[white,black];
+label.urt(btex P etex scaled myfontscale,z.c);
+
+%dotlabel.llft(btex Q etex scaled myfontscale,z.d);
+draw z.d withpen pencircle scaled 8bp withcolor 0.5[white,black];
+label.llft(btex Q etex scaled myfontscale,z.d);
 
 z.c = z6 + (0, 200pt) = z7 - (0, 200pt);
 z.d = z8 + (0, 200pt) = z9 - (0, 200pt);
 draw z6--z7 dashed evenly scaled 4;
 draw z8--z9 dashed evenly scaled 4;
 
-label.lft(btex Cilindro de Luz etex, .5[z.c,z7]);
+label.rt(btex Cilindro de Luz etex scaled myfontscale rotated -90, .7[z.c,z7]);
 
 z.e = z0 + (0, 150pt);
 z.f = z.e transformed T;
 
 drawdblarrow z.e{right}..z.f dashed evenly;
 
-label.urt(btex $\theta$ etex, .5[z.e,z.f]);
+label.urt(btex $\theta$ etex scaled myfontscale, .5[z.e,z.f]);
 
 drawarrow z0+(-5pt,180pt)..z0+(-10pt,175pt)..
         z0+(0,169pt)..z0+(10pt,175pt)..z0+(5pt,180pt);
 
-label.urt(btex $\Omega$ etex, z0+(5pt,180pt));
+label.urt(btex $\Omega$ etex scaled myfontscale, z0+(5pt,180pt));
 
 endfig;
 

@@ -14,6 +14,8 @@
          Fine structure constant
 \item[ $\beta$  ] 
          Velocity of a particle (natural units)
+\item[ $c$  ] 
+         Speed of light in vacuum
 \item[ $\delta$  ] 
          ``Off-axis'' angle of an incoming cosmic-ray shower
 \item[ $\delta_{\mathrm{max}}$  ] 
@@ -36,6 +38,8 @@
          Radius of the pre-set trigger area in the camera of \MAGIC
 \item[ $\gamma$  ] 
          Gamma ray / Photon
+\item[ $\Gamma$  ] 
+         Lorentz factor
 \item[ $h$  ] 
          Height abovel sea level
 \item[ \ho  ] 
@@ -66,6 +70,8 @@
          Air Mass geometrical factor
 \item[ $m_{\mathrm{simple}}$  ] 
          Simple approximation of $m\equiv AM$ using $h_{\mathrm{v,approx}}$
+\item[ $M_\odot$ ] 
+         Mass of the Sun
 \item[ $n$  ] 
          Number of branchings (\emph{toy model})
 \item[ $n$  ] 
@@ -92,6 +98,8 @@
          Radius
 \item[ $r_{\mathrm{M}}$  ] 
          \emph{Moli\`ere radius} of multiple scattering 
+\item[ $R_\odot$ ] 
+         Radius of the Sun
 \item[ $R_\oplus$  ] 
          Earth's radius
 \item[ $\rho_0$  ] 

@@ -16,6 +16,8 @@
 %\documentclass[11pt,a4paper,twoside]{book}
 \documentclass[11pt,a4paper,twoside]{book}
 
+\include{isdraft}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Compatibility LaTeX - pdfLaTeX
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -56,11 +58,18 @@
 
 \usepackage{a4wide}
 %\usepackage{epsfig}
-\ifpdf 
-  \usepackage[pdftex,draft]{graphicx}
-  \usepackage{thumbpdf}
+\ifdraft
+  \ifpdf 
+    \usepackage[pdftex,draft]{graphicx}
+  \else
+    \usepackage[dvips,draft]{graphicx}
+  \fi
 \else
-  \usepackage[dvips,draft]{graphicx}
+  \ifpdf 
+    \usepackage[pdftex]{graphicx}
+  \else
+    \usepackage[dvips]{graphicx}
+  \fi
 \fi
 \usepackage{fancyheadings}
 \usepackage{rotating}
@@ -275,14 +284,14 @@
 \def\deg{\ensuremath{^\circ}\xspace}        %% degrees
 \def\muon{\ensuremath{\mu}}                 %% muon
 \def\muons{\ensuremath{\mu}'s}              %% muons
-\def\cph{\v C-$\gamma$\xspace}              %% C-photon
-\def\cphs{\v C-$\gamma$'s\xspace}           %% C-photon's
+\def\cph{{\v C}-$\gamma$\xspace}              %% C-photon
+\def\cphs{{\v C}-$\gamma$'s\xspace}           %% C-photon's
 \def\phe{ph.e.\xspace}                      %% photo-electron
 \def\phes{ph.e.s\xspace}                    %% photo-electrons
 \def\mphe{\mathrm{ph.e}}                    %% photo-electron  (math-mode)
 \def\mphes{\mathrm{ph.e.s}}                 %% photo-electrons (math-mode)
 \def\wlrange{{290--600 {\it nm\/}}\xspace}  %% wavelength range used
-%%\def\cerenkov{\v Cerenkov\xspace}           %% Cherenkov
+%%\def\cerenkov{{\v C}erenkov\xspace}           %% Cherenkov
 \def\cerenkov{Cherenkov\xspace}             %% Cherenkov
 \def\Cerenkov{\cerenkov}                    %%    "
 \def\cherenkov{\cerenkov}                   %%    "

@@ -17,6 +17,33 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\dopplerfactoreq{
+\begin{equation}
+  \label{eq:dopplerfactor}
+  \delta = \left[\Gamma \left( 1 - \beta \cos\theta \right)\right]^{-1}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\ratiolumeq{
+\begin{equation}
+  \label{eq:ratiolum}
+  \zeta_{\mathrm{dopp}} 
+  = \frac{\mathcal{L}_{\mathrm{obs}}}{\mathcal{L}_{\mathrm{int}}} 
+  = \delta^{1+\alpha}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\powerlaweq{
+\begin{equation}
+  \label{eq:powerlaw}
+  \Phi(E) \propto E^{-\alpha}
+\end{equation}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% ATMOPHERIC GAMMA AND COSMIC RAY SHOWERS %%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -402,7 +429,7 @@ m \equiv \mathrm{AM} =
 \def\rotateAeq{
 \begin{equation}
   \label{eq:rotateA}
-  S\rightarrow S' \,:\, 
+  S\to S' \,:\, 
   \begin{cases}
     \mathbf{r}' = \Omega(\thetaCT,\phiCT) \cdot \mathbf{r} \\
     \mathbf{x}' = \Omega(\thetaCT,\phiCT) \cdot \mathbf{x} \\
@@ -445,7 +472,7 @@ m \equiv \mathrm{AM} =
 \def\transformBeq{
 \begin{equation}
   \label{eq:transformB}
-  S'\rightarrow S" \,:\, 
+  S'\to S" \,:\, 
   \begin{cases}
     \mathbf{r}" = \Omega(\thetam,\phim) \cdot \mathbf{r}' \\
     \mathbf{x}" = \Omega(\thetam,\phim) \cdot 

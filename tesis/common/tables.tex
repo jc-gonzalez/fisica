@@ -16,6 +16,72 @@
 %% THE COSMIC RADIATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\def\CRfluxindextable{
+\begin{table}[htbp]
+\centering
+\footnotesize
+    \begin{tabular}{|lrcc|}
+\hline
+%
+\ifenglish
+Element & Z & $\Phi_0$ & $\alpha$ \\ 
+ &   & {\footnotesize $[\u{m^2}\u{s}\u{sr}\u{TeV/nucleus}]^{-1}$} & \\
+\else
+Elemento & Z & $\Phi_0$ & $\alpha$ \\ 
+ &   & {\footnotesize $[\u{m^2}\u{s}\u{sr}\u{TeV/\text{n\'ucleo}}]^{-1}$} & \\
+\fi
+%
+\hline\hline
+H  & 1  & $(10.57 \pm 0.30) \cdot 10^{-2}$ & $2.76 \pm 0.02$ \\
+He & 2  & $(6.73 \pm 0.20)  \cdot 10^{-2}$ & $2.63 \pm 0.02$ \\
+Li & 3  & $(2.08 \pm 0.51)  \cdot 10^{-3}$ & $2.54 \pm 0.09$ \\
+Be & 4  & $(4.74 \pm 0.48)  \cdot 10^{-4}$ & $2.75 \pm 0.04$ \\
+B  & 5  & $(8.95 \pm 0.79)  \cdot 10^{-4}$ & $2.95 \pm 0.05$ \\
+C  & 6  & $(1.06 \pm 0.01)  \cdot 10^{-2}$ & $2.66 \pm 0.02$ \\
+N  & 7  & $(2.35 \pm 0.08)  \cdot 10^{-3}$ & $2.72 \pm 0.05$ \\
+0  & 8  & $(1.57 \pm 0.04)  \cdot 10^{-2}$ & $2.68 \pm 0.03$ \\
+F  & 9  & $(3.28 \pm 0.48)  \cdot 10^{-4}$ & $2.69 \pm 0.08$ \\
+Ne & 10 & $(4.60 \pm 0.10)  \cdot 10^{-3}$ & $2.64 \pm 0.03$ \\
+Na & 11 & $(7.54 \pm 0.33)  \cdot 10^{-4}$ & $2.66 \pm 0.04$ \\
+Mg & 12 & $(8.01 \pm 0.26)  \cdot 10^{-3}$ & $2.64 \pm 0.04$ \\
+Al & 13 & $(1.15 \pm 0.15)  \cdot 10^{-3}$ & $2.66 \pm 0.04$ \\
+Si & 14 & $(7.96 \pm 0.15)  \cdot 10^{-3}$ & $2.75 \pm 0.04$ \\
+P  & 15 & $(2.70 \pm 0.20)  \cdot 10^{-4}$ & $2.69 \pm 0.06$ \\
+S  & 16 & $(2.29 \pm 0.24)  \cdot 10^{-3}$ & $2.55 \pm 0.09$ \\
+Cl & 17 & $(2.94 \pm 0.19)  \cdot 10^{-4}$ & $2.68 \pm 0.05$ \\
+Ar & 18 & $(8.36 \pm 0.38)  \cdot 10^{-4}$ & $2.64 \pm 0.06$ \\
+K  & 19 & $(5.36 \pm 0.15)  \cdot 10^{-4}$ & $2.65 \pm 0.04$ \\
+Ca & 20 & $(1.47 \pm 0.12)  \cdot 10^{-3}$ & $2.70 \pm 0.06$ \\
+Sc & 21 & $(3.04 \pm 0.19)  \cdot 10^{-4}$ & $2.64 \pm 0.06$ \\
+Ti & 22 & $(1.13 \pm 0.14)  \cdot 10^{-3}$ & $2.61 \pm 0.06$ \\
+V  & 23 & $(6.31 \pm 0.28)  \cdot 10^{-4}$ & $2.63 \pm 0.05$ \\
+Cr & 24 & $(1.36 \pm 0.12)  \cdot 10^{-3}$ & $2.67 \pm 0.06$ \\
+Mn & 25 & $(1.35 \pm 0.14)  \cdot 10^{-3}$ & $2.46 \pm 0.22$ \\
+Fe & 26 & $(1.78 \pm 0.18)  \cdot 10^{-2}$ & $2.60 \pm 0.09$ \\
+Co & 27 & $(7.51 \pm 0.37)  \cdot 10^{-5}$ & $2.72 \pm 0.09$ \\
+Ni & 28 & $(9.96 \pm 0.43)  \cdot 10^{-4}$ & $2.51 \pm 0.18$ \\
+\hline
+\ifenglish All-particle \else Multi-part'icula \fi %
+          & 1--28 &  $(25.70 \pm 1.63) \cdot 10^{-2}$ & $2.68 \pm 0.03$ \\
+\hline
+e$^-$    & ~ & $(0.95\pm 0.19) \cdot 10^{-4}$ & $3.26\pm 0.06$ \\
+\hline
+\end{tabular}
+\ifenglish
+\caption[Absolute flux normalizations and spectral 
+  indices for cosmic rays]{Absolute flux normalizations $\Phi_0$ and 
+  spectral indices $\alpha$ for the various elements with nuclear charge
+  number $Z$, and electrons (only statistical errors are shown)}
+\else
+\caption[Flujos absolutos e 'indices espectrales para rayos 
+  c'osmicos]{Flujos absolutos  $\Phi_0$ e 'indices espectrales $\alpha$ para 
+  los diferentes elementos, con carga nuclear $Z$, que componen los 
+  rayos c'osmicos (s{\'o}lo se muestran errores estad{\'\i}sticos)}
+\fi
+\label{table:CRfluxindex}
+\end{table}
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% ATMOPHERIC GAMMA AND COSMIC RAY SHOWERS %%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -257,7 +323,7 @@ No. of word&Contents of word\\
 143 &DPMJET interaction flag as real number \\
 144 &DPMJET cross section flag as real number \\
 145 &VENUS cross section flag as real number \\
-146 &muon multiple scattering flag (1.=Moli\`ere, 0.=Gauss) \\
+146 &muon multiple scattering flag (1.=Moli{\`e}re, 0.=Gauss) \\
 147 &EFRCTHN energy fraction of thinning level \\
 148 &NKG radial distribution range in cm \\
 149...273 &not used\\
@@ -396,7 +462,8 @@ $7\times (n-1)+7$ &height of production of photon in cm\\
 \hline
     \end{tabular}
   \end{center}
-  \caption{Structure of Cherenkov photon data sub-block. The value of
+  \caption[Structure of Cherenkov photon data sub-block]{Structure 
+    of Cherenkov photon data sub-block. The value of
     $j$ is defined as $j\equiv$number of the telescope which gave
     trigger (usually 1). We simulate with a bunch size (number of
     photons per sub-block) equal to 1.}
@@ -539,11 +606,13 @@ VIII  &  1805.40 & 124 \\
 \end{tabular}
 \end{center}
 \ifenglish
-\caption{Focal length selected for the 8 zones on the reflector of 
+\caption[Focal length selected for the 8 zones on the reflector of 
+  \MAGIC]{Focal length selected for the 8 zones on the reflector of 
   \MAGIC (see Fig. \ref{fig:zones}).}
 \else 
-\caption{Longitudes focales para las 8 zonas en que se ha dividido el 
-  reflector de \MAGIC (ver fig. \ref{fig:zones}).}  
+\caption[Longitudes focales de las 8 zonas del espejo de 
+  \MAGIC]{Longitudes focales para las 8 zonas en que se ha dividido el 
+  espejo de \MAGIC (ver fig. \ref{fig:zones}).}  
 \fi
 \label{tbl:zonefocals}
 \end{table}
@@ -596,4 +665,9 @@ VIII  &  1805.40 & 124 \\
 
 \endinput
 %
+%% Local Variables:
+%% mode:latex
+%% TeX-master: t
+%% End:
+
 %%EOF

@@ -31,6 +31,11 @@
     espps        esp + ps
     esppdf       esp + pdf
     virtex       generates dumped preprocessors texis and pdftexis
+    draft        next dumped preprocessors will use draft options
+    nodraft      next dumped preprocessors will NOT use draft options
+    lastday      lists files modified in the last 24 hours
+    last5days    lists files modified in the last 5 days
+    last10days   lists files modified in the last 10 days
     clean        cleans up garbage
     mrproper     cleans up everything but the original files
     all          generates everything

@@ -16,10 +16,100 @@
 \chapter{Statistical analysis of correlations}
 \label{appendix:stats}
 
+\section*{Variances in a multi-class data set}
+\label{sec:variances}
+
+Let's assume we have a set of data values splitted in different groups
+or \emph{classes}. This is the case when we realize several
+measurements of a quantity in an experiment, and repeat the experiment
+many times.
+
+We will use $i$ as the class index, and $j$ as the measurement index,
+inside a given class. Then $i=1,2,\ldots,k$, with $k$ the number of
+classes, and $n_i$ the number of measurements in the $i$-th class.  In
+that given class, the set of values will be
+$\{x_{i1},x_{i2},\ldots,x_{ij},\ldots,x_{in_i}\}$. The total number of values is
+$n=1+2+\cdots+n_i+\cdots+n_i$.
+
+We can define the \textbf{mean value of the $i$-th class } as:
+%
+\begin{equation}
+  \label{eq:meani}
+  \mean{x_i} \equiv \bar{x}_i \defas \frac{1}{n_i} \sum_{j=1}^{n_i} x_{ij}
+\end{equation}
+%
+and the \textbf{variance of the $i$-th class} as:
+%
+\begin{equation}
+  \label{eq:vari}
+  s_i^2 \defas \frac{1}{n_i} \sum_{j=1}^{n_i} \left(x_{ij}-\bar{x}_i\right)^2
+\end{equation}
+%
+The \textbf{global mean} of the data sample is, as expected:
+%
+\begin{equation}
+  \label{eq:mean}
+  \mean{x} \equiv \bar{x} \defas \frac{1}{n} \sum_{i=1}^k \sum_{j=1}^{n_i} x_{ij} 
+  = \frac{1}{n} \sum_{i=1}^k n_i \bar{x}_i
+\end{equation}
+%
+which is nothing but the weighted mean of the set of values
+$\{\bar{x}_1, \bar{x}_2, \ldots,\bar{x}_k\}$, i.e., the weighted mean of all
+mean values of the $k$ classes. The \textbf{total variance} of the
+data set is:
+%
+\begin{equation}
+  \label{eq:var}
+  s^2 \defas \frac{1}{n} \sum_{i=1}^k \sum_{j=1}^{n_i} \left(x_{ij}-\bar{x}\right)^2
+\end{equation}
+
+Finally, there are two useful definitions: the so called
+\textbf{internal variance}, defined as the mean variance for all the
+classes:
+%
+\begin{equation}
+  \label{eq:varint}
+  s_I^2 \defas \frac{1}{n} \sum_{i=1}^k n_i s_i^2
+\end{equation}
+%
+and the \textbf{external variance}, defined as the variance of the
+means, or:
+%
+\begin{equation}
+  \label{eq:varext}
+  s_E^2 \defas \frac{1}{n} \sum_{i=1}^k  n_i \left(\bar{x}_i-\bar{x}\right)^2
+\end{equation}
+%
+Let's play a bit with these equations. Substituting $s_i^2$ in
+Eq.\eqref{eq:varint}, expanding the squares in these two last
+equations, and adding them we have:
+%
+\begin{eqnarray}
+  \label{eq:proof1}
+  s_I^2 + s_E^2 &=& \frac{1}{n} \sum_{ij} 
+  \left[\left( x_{ij}^2 - 2 x_{ij} \bar{x}_i + \bar{x}_i^2 \right) +
+    \left( \bar{x}_i^2 - 2 \bar{x}_i\bar{x} + \bar{x}^2 \right) \right] \\
+  &=& \frac{1}{n} \sum_i \left[ \sum_j \left(x_{ij}^2+\bar{x}^2 \right) 
+    - 2 n_i \bar{x} \bar{x}_i \right] +
+  \frac{1}{n} \sum_i 2 x_i \bar{x}_i^2 - \frac{1}{n} \sum_i \sum_j 2 x_{ij} \bar{x}_i
+\end{eqnarray}
+%
+Taking into account Eq.\eqref{eq:meani}, that is, $n_i \bar{x}_i = \sum_j
+x_{ij}$, the two last terms on the last expression result to be equal
+and have opposite sign. Using this relation also in the last term of
+the first sum, we get the following result:
+%
+\begin{equation}
+  \label{eq:variances}
+  s^2 = s_I^2 + s_E^2
+\end{equation}
+
+
 \endinput
 %
 %% Local Variables:
 %% mode:latex
+%% TeX-master: t
 %% End:
 
 %%EOF
