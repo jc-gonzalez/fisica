@@ -7,11 +7,22 @@
     getline; eng=$0;
     getline; esp=$0;
     if (lang=="esp") {
-        print item," &\n",esp," \\\\";
+        print "\\item[",item,"] \n",esp;
     } else {
-        print item," &\n",eng," \\\\";
+        print "\\item[",item,"] \n",eng;
     }
 }
+
+# (NF>0) {
+#     item=$0;
+#     getline; eng=$0;
+#     getline; esp=$0;
+#     if (lang=="esp") {
+#         print item," &\n",esp," \\\\";
+#     } else {
+#         print item," &\n",eng," \\\\";
+#     }
+# }
 
 
         

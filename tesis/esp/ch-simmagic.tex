@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
-%%  ch-magicsim.tex
+%%  ch-simmagic.tex
 %%
 %%  Created: Fri Oct 10 14:24:37 1997
 %%  Author.: Jose Carlos Gonzalez
@@ -11,334 +11,1427 @@
 %% Revision: $Revision$
 %% Date:     $Date$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+\chapter{Simulaci\'on of the detector: \MAGIC}
+\label{chapter:simmagic}
+
+Para conocer de antemano, antes de su construcci'on, la posible
+respuesta de nuestro sistema (el telescopio \Cherenkov) a los datos de
+entrada (la luz producida en las cascadas atmosf'ericas tras la
+llegada de rayos c'osmicos y gamma a la Tierra), necesitamos realizar
+una simulaci'on del detector. En nuestro caso se han escrito varios
+peque~nos c'odigos de simulaci'on. 
+
+El flujo general del proceso de simulaci'on viene esquematizado en la
+fig. \ref{fig:simprocess}. Como ya se dijo, la simulaci'on del
+detector se ha dividido en dos etapas:
+%
+\begin{enumerate}
+\item Paso de la luz \Cherenkov generada en las cascadas por la
+  simulaci'on de la atm'osfera, y su reflexi'on en el sistema
+  multi-espejo de \MAGIC
+  
+\item Proceso de \emph{pixelizado}, simulaci'on de la l'ogica de
+  disparo y el an'alisis de las im'agenes
+\end{enumerate}
+%
+En este cap'itulo se explican con cierto detalle estas dos etapas, y
+se presentar'an sus primeros y m'as directos resultados.
+
+%------------------------------------------------------------
+\section{Reflexi\'on de la luz \Cherenkov y su llegada al plano focal}
+\label{sec:reflcoll}
+
+Si observamos el resultado de \CORSIKA, observamos que tenemos
+ficheros de datos con informaci'on acerca de las particulas y de la
+luz \Cherenkov que alcanzaron el nivel de observaci'on. Nosotros
+utilizamos 'unicamente un nivel de observaci'on, 2\,200\u{m} sobre el
+nivel del mar, y estamos interesados solamente en la luz
+\Cherenkov. Por tanto, los programas de an'alisis se concentran en
+el estudio de esta luz.
+
+Ya vimos en la tabla \fullref{tab:cphstruct} los datos que obten'iamos
+para cada fot'on \Cherenkov. Consist'ian, para cada fot'on, de una
+7-tupla $\{\lambda,x,y,u,v,t,h\}$, donde:
+%
+\begin{center}
+\begin{tabular}{cl}
+$\lambda$ & Longitud de onda del fot'on \Cherenkov emitido \\
+$x,y$     & Posici'on del foto'on \Cherenkov en el plano horizontal \\
+          & del nivel de observaci'on\\
+$u,v$     & Cosenos directores, en los ejes X e Y, de la trayectoria \\
+          & del fot'on\\
+$t$       & Tiempo transcurrido desde la primera interacci'on hasta \\
+          & que el fot'on fue emitido \\
+$h$       & Altura de emisi'on del fot'on\\
+\end{tabular}
+\end{center}
+
+Las valores de $x, y, u$ y $v$ se miden en el sistema de coordenadas
+del nivel de observaci'on (denominaremos este sistema como
+\emph{sistema del observador}). Sin embargo, usamos otros dos sistemas
+en nuestro programa de simulaci'on. En total, utilizamos los
+siguientes sistemas de coordenadas (v'ease fig. \ref{fig:coordsys}):
+%
+\begin{Ventry}{$S" \equiv O"X"Y"Z"$:}
+\item[$S \equiv OXYZ$] Sistema de coordenadas del observador. Todas
+  las variables de salida de CORSIKA son medidas en este sistema
+  
+\item[$S^\prime \equiv O^\prime X^\prime Y^\prime Z^\prime$] Sistema del
+  multi-espejo del telescopio (asumimos que $O\equiv O^\prime$)
+  
+\item[$S" \equiv O"X"Y"Z"$] Sistema local de cada espejo individual,
+  donde cada fot'on incide
+\end{Ventry}
+
+\simprocessfig
+%
+Para la simulaci'on de la reflexi'on, seguimos el siguiente algoritmo:
+%
+\begin{enumerate}[1.]
+
+\item Leer par'ametros de la simulaci'on, reservar memoria, 
+  inicializar variables y abrir ficheros de datos.
+
+\item Seguir los siguientes pasos para cada fot'on \Cherenkov de cada
+  cascada analizada:
+  
+  \begin{enumerate}[\theenumi.1.]
+  \item Calcular, para ese fot'on, la transmisi'on atmosf'erica, y
+    decidir si el fot'on sobrevivi'o a la absorci'on.
+    
+  \item Aplicar la reflectividad de los espejos, posibles zonas
+    muertas, simulando sus imperfecciones.
+
+  \item Si el fot'on sobrevive a estos efectos, trazar su trayectoria
+    reflejada hacia el plano focal, y guardar esta informaci'on en el
+    fichero de salida.
+  \end{enumerate}
+
+\item Volver a 2.1 mientras queden fotones o cascadas.
+
+\end{enumerate}
+
+Expliquemos brevemente los pasos m'as importantes.
+
+%%------------------------------------------------------------
+\subsection{Simulaci\'on de la absorci\'on atmosf\'erica}
+
+Para simular la atenuaci'on atmosf'erica sufrida por la luz
+\Cherenkov, emitida 'esta durante el desarrollo de una cascada,
+necesitamos primero estimas de manera realista las variables
+participantes en el proceso. 'Estas variables son la \emph{altura
+  verdadera en la vertical}, definida, como su nombre indica, como la
+altura en la vertical de cada punto de la atm'osfera, y la \emph{masa
+  de aire}, definida como la densidad de aire atravesada por los
+fotones en su trayectoria. Dado que el \CORSIKA cl'asico, en
+particular la versi'on utilizada para este trabajo, proporcional
+solamente la altura de emisi'on de un fot'on con respecto del plano
+del observador, nos vemos forzados a calcular nuestras variables de
+inter'es en los programas de simulaci'on. 'Estas ser'an de hecho de
+vital importancia en el caso de estudios a alto 'angulo cenital.
+
+%\coordsysfig
+\Systemsfig %% in landscape
+
+%%------------------------------------------------------------
+\subsubsection{C\'alculo de la altura verdadera en la vertical}
+
+Podemos seguir usando nuestra versi'on (modificada) de \CORSIKA, la
+cual utiliza una atm'osfera plano-paralela, simplemente usando las
+siguientes aproximaciones.
+
+Asumiremos que un observador se encuentra en un punto A (v'ease la
+fig. \ref{fig:geomview}), a una altura \ho sobre el nivel del mar.
+Nuestro observador observa una fuente (que emite rayos gamma), y lo
+hace bajo un 'angulo cenital $\theta$. Uno de los rayos gamma de la
+fuente acaba de alcanzar la atm'osfera terrestre, y desarrolla una
+cascada atmosf'erica. (Para mayor claridad, simplificaremos la
+situaci'on y supondremos que la trayectoria del fot'on, y por tanto el
+eje de la cascada, intersecta el nivel de observaci'on en el punto A.)
+
+Usaremos la siguiente notaci'on (de la fig.\ref{fig:geomview}):
+
+\begin{tabular}{ll}
+A & Punto donde se encuentra situado el observador\\
+O & Punto a nivel del mar, en la vertical del observador \\
+P & Punto de emisi'on de un fot'on \\
+\ho & Altura del nivel de observaci'on \\
+\hc & Altura dada por CORSIKA, en la vertical del observador\\
+\hv & Altura en la vertical de un fot'on\\
+$R \equiv R_\oplus$ & Radio de la Tierra\\
+$\theta$ & 'Angulo cenital en el nivel de observaci'on\\
+$\omega$ & 'Angulo cenital a nivel del mar\\
+$\alpha$ & 'Angulo desde el centro de la Tierra, subtendido entre A y P\\
+\end{tabular}
+
+%\geomviewfig
+
+Si $\ho \neq 0$ ni despreciable respecto de \hc, y $\theta \simeq
+\omega$, la expresi'on que nos da el valor de la \emph{altura
+  verdadera en la vertical} en el punto P, \hv, es:
+%
+\hveq
+%
+En el caso de que $\ho \simeq 0$ o despreciable respecto de \hc,
+podemos escribir:
+%
+\hvapproxeq
+
+%------------------------------------------------------------
+\subsubsection{Estimaci\'on puramente geom\'etrica de la masa de aire}
+
+En la aproximaci'on mas simple, el factor de masa de aire (AM, la
+relaci'on entre el camino 'optico recorrido a un determinado 'angulo
+cenital y el camino 'optico recorrido en la vertical) puede ser
+estimado 'unicamente mediante consideraciones geom'etricas. En esta
+aproximaci'on, el factor de masa de aire resulta:
+%
+\mgeomeq
+
+%------------------------------------------------------------
+\subsubsection{C\'alculo de la masa de aire mediante un modelo de
+  densidades exponencial}
+
+La expresi'on dada en \eqref{eq:mgeom} resulta de argumentos
+'unicamente geom'etricos. Resultar'ia mucho m'as satisfactorio ir un
+paso m'as all'a, mediante la introducci'on de un modelo de densidades
+exponencial. En nuestras simulaciones se ha usado un modelo
+atmosf'erico representado por 4 exponenciales y una funci'on lineal en
+la capa superior de la atm'osfera. Por tanto, aunque el uso de una
+'unica exponencial no nos proporcionar'a un resultado del todo
+correcto, resultar'a m'as cercano a la realidad.
+
+Utilizaremos el siguiente modelo:
+%
+\denseq
+%
+donde $h$ es la altura sobre el nivel del mar, y \Hs es la
+\emph{escala de alturas} de la atm'osfera. En la Tierra 'esta resulta
+ser aproximadamente $\Hs =
+7.4\u{km}$. Con este modelo, el camino 'optico (ignorando la refracci'on)
+puede escribirse (con la aproximaci'on $h/R \simeq 0$) como:
+%
+\optpathredeq
+%
+N'otese que hemos escrito expl'icitamente que deseamos calcular este
+camino para un 'angulo cenital $\theta$, y para unas alturas en la
+vertical entre \ho and \hv. Nuestra \emph{masa de aire} $\mathcal{AM}$
+vendr'a dada por\footnote{La \emph{masa de aire} en Astronom'ia
+  'Optica viene definida por la relaci'on $\mathit{Airmass} \equiv
+  {I(\theta;0,\infty)}/{I(0\deg;0,\infty)} $}:
+%
+\AMdefeq
+%
+Por tanto, integrando tenemos:
+%
+\AMfulleq
+%
+donde $\mathrm{erfc}$ es la \emph{funci'on complementaria de error}.
+Una aproximaci'on para bajo 'angulo cenital, o m'as exactamente para
+valores de $X\equiv\sqrt{{R\,\cos^2\theta}/{2\,\Hs}}$ relativamente
+grandes, es:
+%
+\AMapproxeq
+
+\paragraph{Correcci\'on por refracci\'on.} Hemos definido $R \equiv
+R_\oplus$, el radio de la Tierra. Una sencilla forma de corregir por
+refracci'on ser'ia tomar
+%
+\refracapproxeq
+
+%------------------------------------------------------------
+\subsubsection{Comparaci\'on de las diferentes aproximaciones}
+
+Deseamos comparar la expresi'on obtenida para el c'alculo de \hv con
+su la aproximaci'on en el caso de que \ho sea suficientemente
+peque~no, $h_{\mathrm{v,approx}}$.  Para ello evaluamos la expresi'on
+%
+\diffhveq
+%
+para $\ho=2.2\u{km}$ (altura de la futura localizaci'on de \MAGIC),
+para diferentes 'angulos cenitales y alturas originales sobre la
+horizontal, \hc (v'ease la fig. \ref{fig:hvdiffs}). Podemos ver que la
+diferencia aumenta con el 'angulo cenital, tal y como esper'abamos,
+aunque 'esta permanece por debajo del 5\% hasta los 85\deg.
+
+\hvdiffsfig
+%
+Lo siguiente que queremos comparar son las expresiones geom'etricas
+para la masa de aire, $m$ y $m_{\mathrm{simple}}$ (aproximaci'on
+sencilla que usa $h_{\mathrm{approx}}$), con el valor de
+$\mathcal{AM}$, obtenido mediante el uso del model de densidades
+exponencial. Incluiremos en la 'ultima expresi'on la correcci'on por
+refracci'on propuesta previamente en \eqref{eq:refrac}. En la fig.
+\ref{fig:AMcomp} se muestra dicha comparaci'on, para tres valores de
+\ho (0\u{km}, 4\u{km} and 2.2\u{km}).  En cada gr'afica se han
+utilizado dos valores para la altura vertical, $\hv=5\u{km}$ y
+$\hv=100\u{km}$. (La funci'on $\sec(x)$ se muestra por
+completitud.)
+
+\AMcompfig
+
+\afterpage{\clearpage}
+
+%------------------------------------------------------------
+\subsubsection{C\'alculo de la transmisi\'on atmosf\'erica}
+
+Una vez que hemos determinado la \emph{altura vertical verdadera} de
+producci'on de un fot'on, \hv, y su correspondiente \emph{masa de
+  aire} $\mathcal{AM}$, solo nos resta utilizar estas variables en el
+c'alculo de la transmisi\'on atmosf\'erica. Para ello se han tenido en
+cuenta los siguientes tres efectos::
+
+\paragraph{Dispersi\'on Rayleigh.} Las mol'eculas de la atm'osfera
+producen una dispersi'on de los fotones. Su efecto est'a fuertemente
+correlacionado con la longitud de onda $\lambda$ del fot'on, siendo
+m'as importante a longitudes de onda cortas. El coeficiente de
+transmisi'on debido a dispersi'on Rayleigh es:
+%
+\Rayleigheq
+%
+donde $\tau_{i=1,2} = \tau_0 \, \exp(-h_i/H_{\mathrm{S}}) \sec\theta$
+es el \emph{espesor oblicuo} por encima de una altura $h_i$, en el
+caso de un perfil exponencial de densidades (en realidad en la
+pr'actica hemos usado los valores dados para el modelo atmosf'erico de
+CORSIKA), $\tau_{\mathrm{R}}(\lambda\!=\!400\u{nm}) = 2970\u{g/cm^2}$
+es el recorrido libre medio de la dispersi'on Rayleigh en t'erminos
+del espesor, $\tau_0 = 0.00129\u{g/cm^2}$, y $H_{\mathrm{S}}$ es la ya
+mencionada escala de alturas de la atm'osfera. En los programas se
+hayan precalculados estos coeficientes para diferentes longitudes de
+onda.
+  
+\paragraph{Dispersi\'on Mie.} Se debe a particulas aerosoles (polvo)
+suspendidas en el aire, siendo su efecto mayor a menores
+alturas. Depende en general del tama~no de las part'iculas. Para un
+modelo como el nuestro, el coeficiente de transmisi'on es:
+%
+\Mieeq
+%
+donde $l_{\mathrm{M}}(\lambda\!=\!400\u{nm}) \simeq 14\u{km}$ es el
+recorrido libre medio de dispersi'on Mie, y $h_{\mathrm{M}} \simeq
+1.2\u{km}$ es la escala de alturas de la distribuci'on de
+aerosoles. Tambi'en hemos precalculado su valor para diferentes
+longitudes de onda, aunque esta dependencia es peque~na.
+  
+\paragraph{Absorci\'on por Ozono.} Este efecto es muy importante en el
+rango de 280--340\u{nm} y para cascadas de baja energ'ia, para las
+cuales la mayor'ia de la emisi'on \Cherenkov se localiza en capas
+altas, donde la concentraci'on de Ozono es mayor (20--30\u{km}). Para
+su estimaci'on nos valemos de la extinci'on en magnitudes por unidad
+de masa de aire:
+%
+\amagneq
+%
+donde $k(\lambda)$ es el coeficiente de absorci'on en \u{cm^{-1}}, y
+$T(\hv)$ es la concentraci'on total de Ozono para una regi'on t'ipica
+tropical (elegimos este valor ya que se aproximaba bastante bien al
+perfil real de La Palma), sobre la vertical en cada posici'on, en
+\u{atm cm}. El coeficiente $1.11$ se eligi'o por corresponder con el
+espesor 'optico para el Ozono a 320\u{nm}, seg'un \cite{Elterman:book}.
+
+Con este valor, podemos estimar la extinci'on en magnitudes por masa
+de aire entre dos alturas, y usando la ley de Pogson podemos
+determinar el coeficiente de transmisi'on, que resulta ser:
+%
+\Ozoneeq
+
+En consecuencia, el coeficiente total de transmisi'on en la atm'osfera
+ser'a:
+%
+\TotalTransmissioneq
+
+%%------------------------------------------------------------
+\subsection{Reflexi\'on en los espejos}
+
+Para un fot'on que haya sobrevivido a la absorci'on atmosf'erica,
+aplicaremos la reflectividad de los espejos, as'i como otros efectos
+menores, y calcularemos la trayectoria reflejada, y el punto de
+incidencia de 'esta con el plano de la c'amara. En nuestra simulaci'on
+hemos supuesto una reflectividad constante en el intervalo de
+longitudes de onda de intere's, $[290\u{nm},600\u{nm}]$.
+
+En general, la direcci'on de llegada de un fot'on no coincidir'a con
+la direcci'on a la que apunta el telescopio (y si aquella se encuentra
+fuera del campo visual del telescopio, el fot'on, de ser reflejado, no
+caer'a en la c'amara). Asociamos un sistema de coordenadas al
+telescopio (v'ease la fig. \ref{fig:coordsys}), $S'$. El sistema en el
+nivel de observaci'on es $S$, y es en 'este sistema donde tenemos los
+par'ametros de la trayectoria del fot'on, el vector direcci'on,
+$\mathbf{r}$, y el punto de intersecci'on de la trayectoria con el
+nivel de observaci'on, $\mathbf{x}$. Debemos por tanto hacer un cambio
+de sistema de coordenadas:
+%
+\rotateAeq
+%
+donde \thetaCT y \phiCT son los 'angulos que definen la direcci'on a
+la que apunta el telescopio, y $\Omega(\theta,\phi)$ viene definida como:
+%
+\omegaAeq
+%
+Aqu'i $R_x(\alpha)$ es una rotaci'on de 'angulo positivo del espacio
+en torno al eje $X$ de $\alpha$ grados (id. para $Y$ y $Z$). Por
+tanto, la expresi'on de la matriz de cambio de sistema de coordenadas es:
+%
+\transformAeq
+%
+con $\theta=\thetaCT$ y $\phi=\phiCT$. Una vez que nos hayamos en el
+sistema $S'$, buscamos en qu'e espejo individual incidi'o el
+fot'on. En nuestra simulaci'on tenemos 920 espejos individuales de
+$50\times 50\u{cm^2}$, localizados en posiciones realistas, con la
+inclinaci'on adecuada para el enfoque de la luz en la c'amara. Existen
+de hecho peque~nos espacios vacios entre espejos adyacentes, y un
+fot'on podr'ia ``perderse'' por uno de estos agujeros.
+
+\collimationfig
+%
+Si un fot'on en efecto incide en un espejo, calcularemos la
+trayectoria reflejada a partir del punto de incidencia en el espejo, 
+$\mathbf{x}_{\mathrm{cut}}$. Para ello, es conveniente volver a
+cambiar de sistema de coordenadas, desde el del telescopio hasta uno
+local al propio espejo. Esto significa ahora no s'olo una rotaci'on,
+sino tambien una traslaci'on del origen hasta el centro del espejo. La
+transformaci'on resultante es:
+%
+\transformBeq
+%
+donde $\mathbf{x}_{\mathrm{m}}$ y $(\thetam,\phim)$ dan la posici'on
+del centro del espejo en el sistema del telescopio $S'$, y la
+direcci'on del vector normal al espejo en su centro, en el mismo
+sistema.
+
+Con estos nuevos $\mathbf{x}"$ y $\mathbf{r}"$, calculamos la
+trayectoria reflejada, dada por el nuevo vector
+$\hat{\mathbf{r}}"$. Finalmente, utilizamos 'esta para obtener la
+posici'on final del fot'on en el plano de la c'amara.
+
+\subsection{Focalizaci\'on de los espejos}
+
+Todos y cada uno de los espejos de \MAGIC se encuentra apuntando hacia
+el eje 'optico del telescopio, con un 'angulo y una distancia focal
+determinada por dos factores.
+
+\begin{enumerate}[i.]
+\item La posici'on del espejo en el plato del sistema, y
+\item La focal deseada para el sistema global
+\end{enumerate}
+
+Este 'ultimo par'ametro, la \emph{distancia focal global}, se ha
+fijado en $F=1700\u{cm}$.
+
+Asumamos que enfocamos cada espejo \emph{al infinito}.
+El grueso de nuestros datos, sin embargo, son sucesos cuyo m'aximo
+desarrollo de la cascada se alcanza aproximadamente a $12\u{km}$ sobre
+el nivel del mar, es decir, una a altura de $\hv\simeq 10\u{km}$ sobre
+nuestro nivel de observaci'on.  Por tanto, para que nuestro sistema se
+encuentre optimizado a esta altura, deberemos \emph{desenfocarlo}, es
+decir, mover la c'amara ligeramente. Este efecto se ha dado en llamar
+\emph{colimaci'on}. En la fig. \ref{fig:collimation} pod'emos ver un
+esquema que nos ayuda a comprender este comportamiento.  
+
+Por simplicidad, asumamos que el telescopio se encuentra apuntando al
+cenit. Un espejo individual se encuentra a una distancia $r$ del eje
+'optico del telescopio $\overline{\mathrm{OP}}$. Este espejo se
+encuentra fijado a un plato de forma parab'olica, y por tanto a una
+altura respecto del centro del plato (y que definiremos como dentro
+del telescopio) $\mathrm{O}$ de
+%
+\zparabeq
+%
+con $F\equiv\overline{\mathrm{OF}}$ la mencionada \emph{distancia
+  focal global}. La recta $\mathbf{n}\equiv\overline{\mathrm{PQ}}$ es
+la perpendicular al espejo por su centro, siendo $\mathrm{P}$ la
+intersecci'on entre esta recta y el eje 'optico del telescopio. La
+l'inea $\mathbf{r}$ muestra la trayectoria de un fot'on proveniente
+del infinito. El fot'on, una vez reflejado, cortar'a el eje 'optico en
+$\mathrm{F}$, por definici'on. Pero, como ya se dijo, el grueso de los
+fotones provendr'an de alturas en torno a $\hv\simeq 10\u{km}$ sobre
+el telescopio, es decir, la trayectoria de un fot'on que incida en el
+centro del espejo ser'a $\mathbf{s}$. El 'angulo entre 'esta y la
+trayectoria ``original'' es $\widehat{\mathbf{rs}}\equiv\zeta$. El
+fot'on reflejado cruzar'a el eje 'optico esta vez en $\mathrm{C}$.
+
+Por tanto, para optimizar nuestro sistema a 10\u{km} sobre el nivel de
+observaci'on, deberemos desplazar nuestra c'amara desde $\mathrm{F}$ hasta
+$\mathrm{C}$. De la fig. \ref{fig:collimation} obtenemos las relaciones:
+%
+\relationsAeq
+%
+y
+%
+\relationsBeq
+%
+Por tanto, el desplazamiento que debemos aplicar viene dado por:
+%
+\collimationeq
+%
+En nuestro caso, este desplazamiento es del orden de
+2.9--3.3\u{cm}$\approx$3\u{cm} (v'ease fig. \ref{fig:colldelta}),
+dependiendo de la posici'on del espejo. Diremos que esta nueva
+posici'on de la c'amara es la \emph{posici'on de enfoque 'optimo}.
+
+Sin embargo, podr'iamos haber enfocado los espejos desde un principio
+a esta altura de 10\u{km}. Haciendo esto, evitamos cualquier
+desplazamiento de la c'amara desde su posici'on nominal
+$\mathrm{F}$. N'otese que, en cualquier caso, \emph{las estrellas de
+  nuestro campo visual estar'an desenfocadas}, y por tanto ofrecer'an
+im'agenes de un tama~no mayor que en el caso de tener el telescopio
+enfocado al infinito.
+
+\colldeltafig
+
+En las figuras \ref{fig:hlfivekm}.a a \ref{fig:hlinf}.a mostramos la
+imagen de una fuente de luz puntual, situada a varias alturas \hv en
+la vertical del telescopio (el cual apunta al cenit), en el caso en el
+que el telescopio se encuentra enfocado \emph{al infinito}, y para
+diferentes posiciones del plano de la c'amara. Podemos ver que cuando
+la fuente se encuentra en el infinito y el plano de la c'amarea es el
+plano focal, obtenemos la imagen de menor tama~no. En el caso en que
+la fuente se encuentra a $\hv=10\u{km}$, vemos que la posic'on 'optima
+se obtiene ahora para una distancia del plano de la c'amara de
+1703\u{cm}, como hab'iamos calculado. El hex'agono verde representa el
+p'ixel central de la c'amara. La reflectividad utilizada es del 100\%,
+se ha realizado una reflexi'on matematicamente exacta, y se ha
+eliminado cualquier efecto atmosf'erico.
+
+%\hfinfhlfivekmfig
+
+%\hftenkmhlfivekmfig
+
+%\hfinfhltenkmfig
+
+%\hftenkmhltenkmfig
+
+%\hfinfhltwelvekmfig
+
+%\hftenkmhltwelvekmfig
+
+%\hfinfhlhundredkmfig
+
+%\hftenkmhlhundredkmfig
+
+%\hfinfhlinffig
+
+%\hftenkmhlinffig
+
+\hlfivekmfig
+ 
+\hltenkmfig
+ 
+\hltwelvekmfig
+ 
+\hlhundredkmfig
+ 
+\hlinffig
+
+\Mspotsfig
+
+\afterpage{\clearpage}
+
+En las figuras \ref{fig:hlfivekm}.b a \ref{fig:hlinf}.b observamos
+algo similar, pero ahora cno el sistema directamente enfocado a una
+altura de 10\u{km}. Es, por tanto, al colocar la fuente de luz a esta
+altura y el plano de la c'amara en su posici'on nominal de 100\u{cm},
+cuando obtenemos la imagen m'as peque~na posible. En estas figuras la
+escala de colores se ha normalizado la la m'axima concentraci'on de
+luz (fuente de luz en el infinito y plano de la c'amara a 1703\u{cm},
+para los casos a., y fuente de luz a 10\u{km} y plano de la c'amara a
+1700\u{cm}, para los casos b.).
+
+En la fig. \ref{fig:Mspots} observamos la imagen de una \texttt{M},
+rodeada por un cuadrado, hipot'eticamente generada por un proyector
+situado a nuestra posici'on de referencia de 10\u{km}, apuntando hacia
+abajo, y con un tama~no en el suelo comparable al del multi-espejo de
+\MAGIC. De nuevo, la imagen m'as peque~na se obtiene para una
+posici'on del plano de la c'amara de 1700\u{cm}. Observamos como la
+imagen se invierte cuando el plano de proyecci'on se mueve de un lado
+al otro del plano focal.
+
+Otro efecto que se ha de tener en cuenta es el siguiente: la
+\emph{superficie focal} real deja de ser un plano. En general,
+consistir'a en una superficie de revoluci'on, similar a un
+paraboloide. Para un espejo esf'erico de radio de curvatura
+$R_{\mathrm{c}}$, esta superficie se situa a una distancia
+$R_{\mathrm{c}}/2$ del centro del espejo, para un haz de luz incidente
+paralelo al eje 'optico ('angulo de incidencia de 0\deg).  Si el
+'angulo de incidencia es diferente de 0\deg, la mancha de luz de menor
+tama~no se sit'ua a distancias algo menores de $R_{\mathrm{c}}/2$.
+Este efecto es el llamado \emph{acortamiento de la distancia focal}, y
+su magnitud depende del 'angulo de incidendia de la luz.
+
+En el caso de un espejo teselado como el de \MAGIC, y un haz de luz
+incidente paralelo como el descrito a 0\deg respecto del eje 'optico
+del sistema, todos los espejos individuales recibir'an la luz a
+'angulos distintos de 0\deg. En particular, la distancia para la cual
+para cada espejo obtenemos la mancha de luz del menor tama~no posible
+decrecer'a seg'un aumentamos la distancia al eje del sistema. Para
+conseguir que todos los espejos superpongan estas menores manchas
+posibles en un solo punto, el plano focal, debemos ir
+\emph{aumentando} la distancia focal de los elementos individuales. 
+
+Teniendo esto en mente, todos los espejos han sido agrupados en siete
+clases o \emph{zonas}, caracterizada cada una de ellas por una
+distancia focal fija. Estas zonas dividen el plato de \MAGIC en ocho
+pseudo-anillos concentricos (v'ease fig. \ref{fig:zones}). Como ya
+dijimos, las distancias focales de estas zonas $f_i$ deben ser mayores
+que $F$, con el objeto de cumplir con el hecho de poseer una prefijada
+distancia focal del sistema. Los valores obtenidos para estas
+distancias focales se muestran en la tabla \ref{tbl:zonefocals}.
+
+\zonefocalstbl
+
+\thetaspotsfig
+
+\afterpage{\clearpage}
+
+N'otese que hemos usado en las figuras \ref{fig:hlfivekm} a
+\ref{fig:Mspots} un sistema \emph{perfecto}: reflectividad 100\%, sin
+imperfecciones ni absorci'on atmosf'erica. Si aplicamos una
+reflectividad menor, posibles desviaciones de los ejes en el ajuste de
+los espejos, imperfecciones en sus superficies, y el efecto de la
+atm'osfera, obtendremos una variaci'on de los resultados como la
+mostrada en la fig.  \ref{fig:spotsh}.
+
+%%------------------------------------------------------------
+\subsection{Plate-scale in the camera of \MAGIC}
+
+We are now interested on the \emph{plate-scale}, that is, the
+equivalence between linear distance in the camera plane, and angular
+distance in the sky. For this, we change the Zenith Angle of our
+point-like source (initially 0\deg) to several values. In
+Fig.\ref{fig:thetaspots} we can see the results. Just for completion, we
+show the effect of the height of the source, although we are only
+interested in the height $\hv=10\u{km}$ above the detector --- the one
+used for the optimal-focus position.
+
+The value taken for the plate-scale in the camera plane of \MAGIC is:
+%
+\platescaleeq
+
+%%------------------------------------------------------------
+\section{Detection in the camera}
+
+At the end of the first stage in the detector simulation process, we
+will have, for each shower, a bunch of photons in the camera plane.
+The next stage will be the so called \emph{pixelization}.  This
+process, and others, is performed by the program \texttt{camera}. In
+few words, the steps taken in this program are:
+
+\begin{enumerate}
+\item Pixelization. Each photon is assigned to a photomultiplier
+
+\item Inclusion of Light of the Night Sky (LONS)
+  
+\item Simulation of Quantum Efficiency and other effects (light
+  guides, plexiglas --- if any --- and first dynode collection
+  efficiency)
+
+\item Simple simulation of electronic chain
+
+\item Trigger logic simulation
+
+\item Characterization of images in the camera
+\end{enumerate}
+
+\zonesfig
+
+\zonesfocalsfig
+
+%%------------------------------------------------------------
+\subsection{Pixelization}
+
+In Fig.\ref{fig:triaxis} we can see the definition of the tri-axial
+frame used for the numbering of the pixels. The pixels will have an
+hexagonal shape. If the edge-to-edge width of a pixel is $w$ and the
+corner-to-corner width is $\hat{w}=(2/\sqrt{3}) w$, then the unit in
+each of the three axes is $1.5\times (\hat{w}/2)$ (in the
+implementation we take an scaling factor such that $w=1.0$).  With
+this definition the coordinates of the pixels are, for example for the
+first seven pixels\footnote{We are using the so called
+  \emph{spiral-numbering}, where the first pixel is the one in the
+  center, and then for each ring, starting from the innermost one, we
+  give sequential numbers in counterclockwise order.} shown in the
+Fig.\ref{fig:triaxis}:
+%
+\begin{center}
+  \begin{tabular}{rc}
+    1 :& ( 0, 0, 0) \\
+    2 :& ( 1,-1, 0) \\
+    3 :& ( 1, 0,-1) \\
+    4 :& ( 0, 1,-1) \\
+    5 :& (-1, 1, 0) \\
+    6 :& (-1, 0, 1) \\
+    7 :& ( 0,-1, 1) \\
+  \end{tabular}
+\end{center}
+
+The primary question can be expressed in the following terms:
+\emph{What is the pixel number $k$ of the PMT where a photon falls
+  in?}.  Following \cite{Fu:hexgrid}, we get an elegant solution to
+the problem. Indeed, what we think of as an uniform hexagonal grid,
+can be isometric projection\footnote{An isometric projection is an
+  orthographic, i.e., non-perspective, projection onto the $x+y+z=0$
+  plane.} of an infinite grid of unit cubes whose centers satisfy the
+equation
+%
+\planeeq
+%
+In this particular case, the problem of determining which hex contains
+a given point becomes the problem of which cube contains a point.
+Additionaly, only the transformations from the plane to the cube grid
+and vice versa is needed.
+
+With this approach, the the formula that gives the answer to our
+question is:
+%
+\hexgrideq
+%
+where $\mathbf{r}$ is your position, $r_i$ is the $i$-th component of
+the vector $\mathbf{r}$ and $\mathcal{R}$ is a rounding function.
+
+\axesfigs
+
+%\triaxisfig
+
+With this definition of the axes, we pre-calculate the coordinates
+$(x^\prime,y^\prime,z^\prime)$, in order to use them afterwards in the simulation code.
+Of course, only two of these coordinates are independent, since we
+have the constraint \eqref{eq:plane0}\footnote{Note that the algorithm
+  is symmetric in $X^\prime$, $Y^\prime$ and $Z^\prime$, since the axes are symmetric.}
+  
+Now, two of the coordinates (only two are independent), say
+$\{x^\prime,y^\prime\}$, are used to identify each pixel in an array $A$, which
+has in its cells the number of pixel to which those coordinates
+belong.
+
+This algorithm, however, does not have {\itshape a priori} information
+about the position of the center of the pixels, information that is
+indeed needed in the simulation code. So, we have to calculate in
+addition the coordinates of the centers of the pixels. For this
+purpose, yet another different coordinate system is used, the one
+shown in Fig.\ref{fig:biaxis}. The units of the axes X and Y are
+millimeters, and the units of the axes I and J are both two times the
+apotheme of one pixel ($2 \times a$).
+
+%\biaxisfig
+
+With this definition of the axis, we use the intermediate
+$(i,j)$-coordinates, in order to use them to calculate the
+$(x,y)$-coordinates of the centers. To get these $(x,y)$-coordinates,
+we just apply the following change os system:
+%
+\bitoeucleq
+
+%%------------------------------------------------------------
+\subsection{Contribution of the Light of the Night Sky}
+
+The amount of diffuse Light of the Night Sky (LONS) in La Palma, at
+the site where \MAGIC will be locate, has been measured
+\cite{Razmick:nsb}, leading to a flux 
+%
+\LONSeq
+%
+Let's estimate the number of photons that the LONS contribute to each
+pixel in the camera of \MAGIC. For this calculation, the following
+parameters have to be taken into account:
+%
+\begin{center}
+\begin{tabular}{lrl}
+Mirror surface & $S_{\text{mirror}}$ &$= 230 \u{m}^2 $ \\
+Reflectivity & $R$ &$= 85\% $ \\
+Light guides efficiency & $\epsilon_{\text{l.guides}}$ &$= 90\% $ \\
+Transmittance of PMT window & $\epsilon_{\text{window}}$ &$= 95\% $ \\
+First dynode collection efficiency &
+             $\epsilon_{1^{\mathrm{st}}\text{dyn.coll.}}$ &$= 90\%$ \\
+Pixel angular size & $\theta_{\text{1pixel}}$ &$= 0.1^\circ$ \\
+Mean \QE folded with LONS & \QElons &$\sim 13\% $ \\
+\end{tabular}
+\end{center}
+%
+With this, we have that the half angular size of a pixel is
+$\theta_{\frac{1}{2}\text{pixel}} = 0.05^\circ$, and the solid angle
+for each pixel $\Delta\Omega =
+2\pi(1-\cos\theta_{\frac{1}{2}\text{pixel}}) = 2.4\cdot 10^{-6}
+\u{sr}$. Then, the \emph{mean number of photons} arriving at the
+entrance of the pixel in $1\u{ns}$ is:
+%
+\Nineq
+%
+and using the mean \QE for the LONS, \QElons:
+%
+\Ninbiseq
+%
+As an example, if we use then a gate of $\Delta T=5\u{ns}$, we arrive
+at a \emph{mean contribution of LONS per pixel per gate} of:
+%
+\LONStimeeq
+
+%%------------------------------------------------------------
+\subsection{Simulation of the response of a PMT}
+
+The simulation of the response of a PMT, despite of the complexity of the
+process, depends mainly of a well known set of effects, namely:
+
+\begin{enumerate}[a.]
+\item the Quantum Efficiency (\QE) of the PMT, function of the
+  wavelength of the incident photon,
+  
+\item the natural fluctuations of this QE for any given fixed
+  wavelength,
+
+\item the first dynode response, 
+
+\item the possible afterpulsing, 
+
+\item the single photoelectron response of the PMT
+\end{enumerate}
+
+Let's study the process of conversion of normal photons (\Cherenkov
+photons, photons comming from the LONS, and starlight) into number of
+photoelectrons after the photocathode of the PMT.
+
+%------------------------------------------------------------
+\subsubsection{Fluctuations taking place}
+
+Before we try to understand this process of conversion of \Cherenkov
+photons into photoelectrons, let's try to identify the possible
+sources of fluctuations.
+
+In the first place, we have a given number of incoming \Cherenkov
+photons. This number fluctuates from shower to shower, due to the
+statistical nature of the generation of the atmospheric shower: even
+for a fixed energy of the primary particle which generated the shower,
+the probabilistic generation of secondary particles, the fluctuations
+in the height of the first interaction (and hence in the height where
+the maximum particle generation is achieved) and the random generation
+of \Cherenkov photons by charged particles will lead to a fluctuating
+number of Cherenkov photons.
+
+Let's call \Nphot the \emph{input number of photons in the
+  photomultiplier tube}. Now we want to simulate a measurement of
+\Nphot leading to a certain current $I$, or a given amount of
+electrons in the anode, $N_{\mathrm{e}}$. The \Cherenkov photons
+hitting the photocathode will produce a given number of
+photoelectrons. This process is probabilistic, and depends on the
+Quantum Efficiency, \QE, of the photocathode.  But this \QE depends
+not only on the wavelength $\lambda$ of the incident photon, but also
+on the specific place of the photocathode where the photon hits.
+Additionally, the measured \QE (for a given $\lambda$) of a PMT is
+just an average value over many photons (of this $\lambda$). This
+means that the \QE itself must be seen as a fluctuating term, in the
+sense of its probabilistic nature.
+
+After the photoelectrons are emitted from the photocathode, a certain
+number of them will arrive at the first dynode. Of course, this
+depends on the place where the photoelectron comes from, and on the
+design of the PMT itself. This dependency is given by the so called
+\emph{first dynode collection efficiency}. Different measurements lead
+to a value of about 90\%. After hitting the first dynode, each
+photoelectron can liberate a typical number of 6 electrons, but again
+this can fluctuate.
+
+We just started the cascading process. After the first dynode comes
+the second, where we again have a multiplicating term (and hence an
+efficiency term). This multiplicating process continues until we reach
+the anode, where we finally have a big number of electrons. This
+number depends on the gain and the voltage of our PMT.
+
+This cascading process can be simulated by using the so called
+\emph{single photoelectron response} or \emph{single electron
+  spectrum} (SES) of the photomultiplier, which is nothing but the
+distribution of the output that we get from the photomultiplier for a
+single photoelectron release by the photocathode. This depends also on
+the high voltage applied to the PMT. Therefore, by using this
+distribution, we can simulate the output of each single photoelectron,
+superpose all these output signals, and we will get at the end a
+realistic view of the response of our PMT to the incident amount of
+light.
+
+%------------------------------------------------------------
+\subsubsection{Simulation of the Quantum Efficiency}
+
+We have assumed that \emph{a single photon cannot produce, for
+  whatever processes inside the photocathode, more than one
+  photoelectron}. Therefore, for each single photon, the generation of
+a photoelectron is what is called a \emph{Bernoulli process}. For such
+processes, we can have only two outcomes: \emph{success} (with
+probability $p$), or \emph{fail} (with probability $1-p$). For a
+given, fixed number of incoming photons, the generation of
+photoelectrons is a good example of a \emph{binomial} process. Let's
+forget first about the dependency of \QE with the wavelength.  Let's
+assume, therefore, that we have a monochromatic bunch of photons, and
+call call $\QEo=\QE(\lambda_0)$, the Quantum Efficiency (the
+``average'' value, obtained by measurements) of the photocathode at a
+fixed wavelength $\lambda_0$.
+
+\noutphotfig
+
+We can see that each incoming photon have a certain probability \QEo
+of generating a photoelectron. This can be simulated by using a
+\emph{uniformly distributed random variable} $X$ in the interval
+$[0,1]$ for each photon: whenever the value of $X$ is smaller than
+\QEo, we assume the photon did generate a photoelectron; otherwise, it
+didn't:
+%
+\begin{enumerate}
+\item Take photon.
+\item Generate uniform random number $r$ in $(0,1)$.
+\item If $r < \QEo$, take photon, else go to 1.
+\item Are there photons left? If yes, go to 1.; else Stop.
+\end{enumerate}
+%
+Of course, after following this algorithm \Nphot times, we will have,
+\emph{on average}, a number of photoelectrons given by
+%
+\nmeaneq
+%
+The words \emph{on average} mean simply that we will not get, from a
+single realization of our experiment, exactly a number \Nmean of
+photoelectrons (at least, not always). If we repeat this experiment a
+lot of times, we will get instead a distribution of numbers \Ntrial,
+corresponding to the number of photoelectrons produced. This
+distribution, given the \emph{binomial} nature of the process, will
+result in a \emph{binomial distribution}. The mathematical expresion
+for this is:
+%
+\binomeq
+%
+where $\mathcal{P}_{\mathrm{Binom}}(r)$ is the probability of getting
+$r$ successes out of $N$ independent trials, each of them with only
+two possible outcomes: success (with probability $p$) or failure (with
+probability $q=1-p$). It can be shown that the expectated value of the
+number of successes is $\bar{r}=\sum r\mathcal{P}(r) = N p$, which is
+far from surprising. For this distribution we have also that
+$\sigma^{2} \leq \bar{r}$, where the equality holds only for $p=0$. In
+general the variance is smaller than the mean. This is so because the
+upper limit imposed on $r$ (which cannot be larger than $N$) reduces
+the spread of the $r$-distribution.
+
+\noutqesmallfig
+
+\varquotfig
+
+The main use of the binomial distribution is in the limits:
+%
+\begin{itemize}
+\item $p\rightarrow 0$, $N\rightarrow\infty$, but $Np=\mu$ (constant),
+  when Binomial $\longrightarrow$ Poisson, and
+\item $p=const.$, $N\rightarrow\infty$, when Binomial
+  $\longrightarrow$ Gaussian
+\end{itemize}
+%
+In our case, $N=\Nphot$, $p=\QEo$ and $Np=\Nmean$.  This means that,
+\emph{for \Nphot large and in the case of $\QEo\rightarrow 0$} (more
+generally speaking, for \QEo small) the distribution of the number of
+outcoming photoelectrons \Ntrial will be very similar to the
+distribution obtained by using the mean number of photoelectrons
+\Nmean as the mean value of a Poisson distribution. More clearly, the
+requierements of \Nphot large and \QEo small are needed if we want to
+use this procedure, what I will call the \emph{Poisson approach}.
+
+The use of the \emph{Poisson approach} is very attractive because you
+don't need to work with separate photons. Moreover, some times it is
+the most direct approach: you can get your photons at the entrance of
+the PMT in bunches of several tens of photons. In this case it's more
+comfortable to use mean values and the corresponding Poisson
+distribution: we are sure that $N$ is going to be large enough. But we
+still have to be sure that our \QEo is small enough to allow us to use
+this approach. Fortunately, this is normally the case.
+
+In order to show the possible deviations we can get by using the
+\emph{Poisson approach}, a simple simulation was done: a pre-fixed
+number of photons \Nphot was sent to a hypothetic photocathode, where
+we simulated the Bernoulli process of the production of a
+photoelectron by using the simple algorithm shown above.  The \QEo of
+the photocathode was also fixed, and we counted the number of
+photoelectrons emerging from it \Ntrial.  In addition, using the
+number of incoming photons and \QEo, we estimated the average number
+of photoelectrons \Nmean we should get, and then followed the
+\emph{Poisson approach} to get the final number of photoelectrons
+\Nrand.
+
+To show how we can get severe deviations from the right behavior by
+using the \emph{Poisson approach}, I performed the simulation varying
+the number of incoming photons and the value of \QEo. The results are
+shown in Figs. \ref{fig:distrib1}, \ref{fig:varwithqe}
+\ref{fig:varwithp}. In Fig. \ref{fig:distrib1} we see the effect of
+using a \QEo very different from $0$. For small values of \QEo, both
+distributions of photoelectrons \Ntrial (solid line) and \Nrand
+(dashed line) appear reasonably similar. However, as \QEo is diverging
+from our hypothesis of \QEo small, both distributions get more and
+more different. In Fig. \ref{fig:varwithqe} we can see how different
+these distributions are for different \QEo, by using the quantity
+%
+\varquoteq
+%
+Although the mean value remains practically the same for both
+distributions, no matter the value of \QEo, the variance
+$\sigma^2(\Nrand)$ increases much more than the variance
+$\sigma^2(\Ntrial)$ with \QEo increasing. As we said before, this is
+just the result of the upper limit imposed in \Ntrial (it cannot be
+larger than \Nphot).
+
+%------------------------------------------------------------
+\subsubsection{Simulation of Single Electron Spectrum}
+
+This is just an application of the general procedure of getting a
+series of random numbers following a user-defined distribution, called
+the \emph{Acceptance-Rejection Method} (Von Neumann). Let's assume we
+know the \emph{single electron spectrum}, $S(x)$, defined in an
+interval $(a,b)$. This will be in principle a not normalized function
+proportional to the normalized probability density function (p.d.f.)
+of distribution we want to simulate. Then, choose a p.d.f. uniform on
+the interval $(a,b)$. Find a constant $C$ such that $C$ times this
+uniform p.d.f.  is everywhere greater than or equal to $S(x)$. This
+scenario is shown in Fig. \ref{fig:vonneumann}.
+
+\vonneumannfig
+
+First, simulate a random value $x$ uniformly on $(a,b)$. Then generate
+a $y$ on $(0,C/(b-a))$. The point $(x,y)$ will uniformly populate the
+box shown in Fig. \ref{fig:vonneumann}. If $y\le S(x)$, we accept $x$
+as then next value f the random number. If $y\geq S(x)$, reject $x$
+and try again.  This method is very simple and has an efficiency
+(fraction of values $x$ accepted) of
+%
+\vonneumanneffeq
+%
+(Note that if the function $S(x)$ has sharp peaks, the efficiency can
+be very low; one can then use different constants for different
+regions in the interval $(a,b)$.)
+
+\timeresponsefig
+
+For each photoelectron we will get, by using this procedure, the
+amplitude of the registered signal. In order to simulate a realistic
+signal at the output of our PMT, we should use the arrival time of
+each photon. On top of this time, the PMT introduces a delay. This
+delay follows a distribution similar to a gaussian. The time between
+the arrival of a delta-function light pulse and the time where the
+output signal reaches its maximum is called \emph{electron transit
+  time} (ETT). The delay between our input light and the output signal
+comes then governed by the ETT and the \emph{transit time spread}
+(TTS, also called \emph{transit time jitter}, the FWHM of the
+distribution of delays). The output signal is characterized by its
+\emph{rise time} (time where the output signal rises from 10\% to 90\%
+of the maximum amplitude). Sometimes, instead of having the \emph{rise
+  time}, $t_{\mathrm{rise}}$ we have the FWHM of the output
+characteristic, $\approx 2.36\sigma$. The situation is schematized in
+Fig. \ref{fig:timeresponse}. With all this we can reproduce the
+response of our PMT to the bunch of incident photons.
+
+After all this chain of events, we can then introduce either the
+trigger logic of our system, or any electronic device which modifies
+this signal.
+
+%%------------------------------------------------------------
+\subsection{Simulation of the signal processing chain}
+
+In Fig.\ref{fig:pixelreadout} is was shown the basic electronic chain
+for every single pixel in the camera of \MAGIC. For an incident photon
+the realistic signal produced is shown in Fig.\ref{fig:pulse}. After
+the cascading process in the PMT, we will have an electronic current
+$I=I_{\mathrm{A}}$, equal to the area A shown in this figure. Due to
+the \emph{AC coupling}\footnote{The \emph{AC coupling} is the use of a
+  special circuit to remove the static (DC) components from the input
+  signal to the amplifier in an instrument, leaving only the
+  components of the signal that vary with time [??].}
+%%  [http://www.measurementsgroup.com/Guide/indexes/g\_index.htm].} 
+used in the design of our electronic chain, after a single pulse there
+is a charge equal to the one coming from the pulse, which developes in
+an inverse current. The result is a positive pulse (positive voltage)
+after the incoming pulse dies (this is represented in
+Fig.\ref{fig:pixelreadout} by the area B). The fading out of this
+``remmanent pulse'' is characterized by the constant $\tRC=RC$ of the
+circuit. This value is chosen, in the case of \MAGIC, to be around
+$\tRC=5\,\mu\mathrm{s}$.
+
+Since the rate of incoming pulses is typically larger than this \tRC,
+the \emph{zero-voltage level} will become a baseline with a voltage
+\emph{greater that zero}. The baseline will fluctuate randomly around
+a given level: this level depends on the value of \tRC and the rate of
+incoming pulses.
+
+In the simulation programs, we have the option of using or not the
+simulation of this fluctuating baseline, as well as the discretization
+of the pulses in time bins. In case of using this later option, the
+signal is integrated in a defined number of bins that depends on the
+trigger gate. In case of not using this discretization, the whole
+charge developed in the pulse is integrated. I will explain this more
+in detail in section \ref{sec:triggerlogic}.
+
+\pulsefig
+
+%%------------------------------------------------------------
+\subsection{Trigger Logic}
+\label{sec:triggerlogic}
+%
+First, we defined a \emph{trigger area} in the camera: the area where
+we allow the pixels to give trigger is not the whole camera. The
+defined \emph{trigger area} is a disc centered in the center of the
+camera, with a fixed radius. In our investigations we used different
+sizes for this area, and even the whole camera. The estimation of the
+optimal radius is as follows. We are interested mainly in the low
+energy gamma-ray showers, i.e., with primary energies in the range
+$10-100\u{GeV}$. The maximum development of this showers, as we said
+above, is at around $10-12\u{km}$ a.s.l., this means a height of
+$\hv\simeq 8-10\u{km}$, when looking at the Zenith. On the other hand,
+the \Cherenkov pull of light extends up to about $\rhump\simeq
+100-120\u{m}$ from the shower axis: let's take $\rhump=110\u{m}$.
+This distance fixes an upper bound for the area where we have the
+maximum detection efficiency for these showers. Looking from the
+telescope, and in the case of looking at the Zenith, this distance
+corresponds to an angular distance calculated as
+%
+\trigradeq
+%
+The value of $\varphi$ oscillates in the range $\simeq
+0.7\deg-0.8\deg$, for primaries in the energy range indicated. We
+chose the larger, more conservative value of 
+%
+\phitriggereq
+%
+However, we should not make this area too big, since we will not
+notice an improvement in the rate of the gamma showers in our energy
+range of interest, but we \emph{will} get an increment of the
+backaground rate proportional to the square of the increment in radius
+in the trigger area. In Fig.\ref{fig:trigarea} we see how big in the
+whole camera is this area of $0.8\deg$ radius.
+
+\trigareafig
+
+Inside this \emph{trigger area} is where we define the different
+trigger conditions. The most elementary trigger conditions are the so
+called \emph{multiplicity triggers}:
+
+\begin{description}
+\item[\emph{Multiplicity trigger} \trigM{n}{q_0}:] An image is said
+  to give trigger if there are at least $n$ pixels in the
+  \emph{trigger area} with a charge of at least $q_0$ photoelectrons
+  each.
+\end{description}
+
+\noindent
+Another kind of trigger conditions are the \emph{next-neighbour
+  triggers}:
+
+\begin{description}
+\item[\emph{Next-neighbour trigger} \trigNN{n}{q_0}:] An image is said
+  to give trigger if there is a simply connected area of at least
+  $n$ pixels in the \emph{trigger area} with a charge of at least
+  $q_0$ each.
+\end{description}
+
+\noindent 
+We should note that for fixed values of $n$ and $q_0$ we can define a
+subset of \emph{next neighbour trigger} conditions, namely, those
+which require that those pixels in the simply connected area, form
+what is called a \emph{closed packet}. We will denote this sub-class
+of conditions with the symbol \trigNNc{n}{q_0}.
+
+Yet another type of trigger conditions, a superset of the
+\emph{next-neighbour} conditions, are the so called \emph{topological
+  triggers}. For this type of conditions we must define a
+\emph{topology} of pixels $S$, consisting of a set of pixels following
+a given geometrical pattern.
+
+\begin{description}
+\item[\emph{Topological trigger} \trigTop{S}{q_0}:] An image is
+  said to give trigger if there is a pattern of pixels coincident with
+  the pattern given by $S$, with a charge of at least $q_0$ each.
+  (Actually, a different minimum number of photoelectrons can be
+  defined for each pixel in $S$.)
+\end{description}
+
+The studies presented in this work have been done using the following
+trigger conditions (the notation ``$a:b$'' denotes the range of
+integer values from $a$ to $b$):
+%%
+\begin{center}
+  \begin{tabular}[t]{rl}
+    \trigNN{k}{q_0} & Next neighbour trigger with multiplicity \\
+    & $k=3:5$, and charge per pixel $q_0$\\
+    
+    \trigNNc{k}{q_0} & Next neighbour in a closed packet trigger with \\
+    &  multiplicity $k=3:5$, and charge per pixel $q_0$\\
+  \end{tabular}
+\end{center}
+%%
+In the simulation of the trigger logic, even for \trigNN{k}{q_0} and
+\trigNNc{k}{q_0}, a pattern approach has been taken. For a given value
+of $k$, and both for \trigNN{k}{q_0} and \trigNNc{k}{q_0} conditions,
+we define the set of possible geometric arrangements of triggering
+pixels (following the selected trigger condition) in a fictitious
+group of seven pixels (a central pixel plus its seven neighbours),
+where the charges of the pixels are supposed to be either $0$ or $\geq
+q_0$. We give then a name to each of these sets of arrangements.
+Finally, in the simulation process, only those patterns in the sets
+selected by the user will be searched for in the camera. In
+Fig.\ref{fig:trigpatt} we can see a graphical illustration of these
+sets of patterns.
+
+\trigpattfig
+
+\MORE%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%------------------------------------------------------------
+\section{Results}
+
+After analyzing the raw output data, with the programs
+\texttt{reflector} and \texttt{camera}, described above, we obtained
+the following results.
+
+%%------------------------------------------------------------
+\subsection{Trigger Efficiencies}
+
+The trigger efficiencies for gammas and hadrons are estimated from the
+ratio of triggered showers, with a certain trigger criterion, to the
+total of incoming showers, for a given set of primary particle, range
+in Zenith Angle and core distance. 
+
+For gamma-rays we have the following quantities:
+%
+\begin{center}
+  \begin{tabular}{cl}
+    $n_\gamma(r;E,\Theta)$ & number of \emph{incoming} 
+    gamma showers arrived with primary energy $E$ \\
+    & at an impact parameter $r$ from a zenith angle $\Theta$.\\
+    $n_\gamma^T(r;E,\Theta)$ & number of \emph{triggered} 
+    gamma showers arrived with primary energy $E$ \\
+    & at an impact parameter $r$ from a zenith angle $\Theta$.\\
+  \end{tabular}
+\end{center}
+%
+therefore, the \emph{trigger efficiency} (for a given trigger set-up)
+for gamma-rays of energy $E$, a zenith angle $\Theta$ and an impact
+parameter $r$ is:
+%
+\effgammaeq
+
+For the background of cosmic rays the situation is more complex. Since
+this background comes isotropically, we have a new degree of freedom,
+the \emph{angle off-axis}, $\delta$, of the incoming shower with
+respect to the optical axis of the telescope. The quantities involved
+are now:
+%
+\begin{center}
+  \begin{tabular}{cl}
+    $n_{\mathrm{cr}}(r,\delta;E,\Theta)$ & number of \emph{incoming} 
+    cosmic ray showers arrived with primary energy $E$ \\
+    & at an impact parameter $r$ from a zenith angle $\Theta$
+    and an off-axis angle $\delta$\\
+    $n_{\mathrm{cr}}^T(r,\delta;E,\Theta)$ & number of \emph{triggered} 
+    cosmic ray showers arrived with primary energy $E$ \\
+    & at an impact parameter $r$ from a zenith angle $\Theta$
+    and an off-axis angle $\delta$\\
+  \end{tabular}
+\end{center}
+%
+Thus, \emph{trigger efficiency} (for a given trigger set-up) for
+cosmic rays is given by:
+%
+\effcreq
+
+Using different trigger patterns and different values of the Zenith
+Angle $\Theta$, we studied the dependence of the \emph{trigger
+  efficiency} with the angle $\delta$ and the impact parameters $r$.
+The results are shown in Figs. \ref{fig:effg1}--\ref{fig:effh2}
+
+%%------------------------------------------------------------
+\subsection{Effective Collection Areas}
+
+The definition of \emph{effective collection area} is the following:
+%
+\begin{description}
+\item[{\bfseries Effective Collection Area}:] Hypothetic circular area
+  in the plane perpendicular to the optical axis of the telescope, at
+  his level, where an incoming shower falling inside will be detected.
+\end{description}
+%
+The intuitive idea behind this definition is illustrated in Fig.
+\ref{fig:collareaIdea}. In reality, the probability of detection, for
+a given energy of the primary (and hence for a given height of
+development of the shower), is a more or less smooth function of the
+distance to the optical axis of the telescope, and not only a matter
+of a yes/no decision. However, this concept is very useful to compare
+different detectors.
+
+\collareaIdeafig
+
+For gamma-rays, the calculation of the effective collection area is
+very simple. Once we have the trigger efficiency, we calculate, for a
+fixed energy $E$ of the primary, and a fixed Zenith Angle $\Theta$:
+%
+\Sgammaeq
+%
+The first integral comes from the symmetry around the telescope axis,
+and will give just a factor $2\pi$.
+
+For our background of cosmic rays, the situation is now much more
+complicated. We are now forced to include our additional degree of
+freedom in the calculations. We have
+%
+\Screq
+%
+The third integral comes now from symmetry around the telescope axis
+of the arrival directions of the incoming showers (giving again a
+factor $2\pi$). The fourth integral sums up all the contributions for
+diferent off-axis angles $\delta$, up to an angle where the trigger
+efficiency is zero (here expressed as $\delta_{\mathrm{max}}$).
+
+Note that this $\hat{S}_{\mathrm{cr}}(E,\Theta)$ has now dimensions
+[area$\times$solid angle]. This means that for any comparison with the
+effective collection area for gammas we must normalize in solid angle.
+The first thing that comes to our mind is to divide by the solid angle
+calculated up to the maximum value of $\delta$, that is by
+$\Omega_{\mathrm{max}}=2\pi(1-\cos\delta_{\mathrm{max}})$. This is
+wrong, since by using an arbitrarily large $\delta^\prime_{\mathrm{max}} \gg
+\delta_{\mathrm{max}}$, and hence $\Omega^\prime_{\mathrm{max}} \gg
+\Omega_{\mathrm{max}}$, we will barely increase the value of
+$\hat{S}_{\mathrm{cr}}(E,\Theta)$, but make the quantity
+$\hat{S}_{\mathrm{cr}}(E,\Theta)/\Omega^\prime_{\mathrm{max}}$ arbitrarily small.
+
+%One solution is to estimate the derivative of $\hat{S}_{\mathrm{cr}}$ with
+%respect to $\delta_{\mathrm{max}}$, at the point $\delta_0 = 0\deg$,
+%%
+%\begin{equation}
+%  \label{eq:Shadron0}
+%  S_{h,0}(E,\Theta) = 
+%  \left.
+%    \frac{\partial\hat{S}_{\mathrm{cr}}(E,\Theta)}{\partial\delta_{\mathrm{max}}}
+%  \right|_{\delta_{\mathrm{max}}=\delta_0}  
+%\end{equation}
+
+%One solution is to estimate the value of the trigger efficiency for
+%hadrons assuming they all come in the limit $\delta\rightarrow 0\deg$,
+%that is
+%%
+%\begin{equation}
+%  \label{eq:limiteff}
+%  \varepsilon_{h,0}(r;E,\Theta) = 
+%  \lim_{\delta\rightarrow 0\deg} \varepsilon_{\mathrm{cr}}(r,\delta;E,\Theta)
+%\end{equation}
+%%
+%and then use this value to calculate a hypothetic maximum value for
+%$\delta$, $\delta_{\mathrm{calc}}$, the working scenario being that we
+%get all the showers inside this solid angle, and we have in this
+%region a constant trigger efficiency equal to
+%$\varepsilon_{h,0}(r;E,\Theta)$ (and therefore, we would end up with
+%the same value of $\hat{S}_{\mathrm{cr}}(E,\Theta)$).
+
+We will normalize to the solid angle given by the trigger area in the
+camera\footnote{ Note that this does not need to be the same as the
+  field of view. Indeed, usually the trigger area is smaller.}. This
+normalization takes into account, therefore, the different trigger
+efficiency resulting from defining different trigger areas in the
+camera. In our standard scenario, having a trigger area given by
+$\varphi_{\mathrm{trig}} = 0.8\deg$ (see section
+\ref{sec:triggerlogic} above, in particular Eqs.  \ref{eq:trigrad} and
+\ref{eq:phitrigger}, and Fig. \ref{fig:trigarea}) this results:
+%
+\normsolidangleeq
+%
+and 
+%
+\Scrnormeq
+
+In this way we calculated the effective collection areas for gammas
+and cosmic rays (properly normalized, as we indicated). The results
+are shown in Figs. \ref{fig:areagamma}, \ref{fig:areahadr} and
+\ref{fig:areacompare}.
+
+\MORE%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%------------------------------------------------------------
+\subsection{Detection Rates}
+
+One of our goals is the estimation of the detection rates for gamma
+and cosmic rays, mainly at threshold. Let's see how to calculate these
+quantities.
+
+Let's assume we are observing a point like source of gamma rays, with
+a flux similar to that of our standard candle, the Crab Nebula.
+Indeed, we will use as the spectrum for our assumed source of gamma
+rays
+%
+\gFluxeq
+%
+normalized at $10\u{GeV}$, and extrapolated to higher energies.
+This means, a differential flux of
+%
+\gdFluxeq
+
+For cosmic rays, we used the measured flux:
+%
+\crFluxeq
+
+We will call \emph{spectral index}, $\alpha$, to the (positive)
+exponent of the differential flux. Therefore, we have in our
+simulations
+%
+\specindexeq
+
+%%------------------------------------------------------------
+\subsubsection{Differential rates of detection}
+
+With these differential fluxes, we can calculate the differential
+detection rates as follows: for gamma rays
+%
+\gdRateeq
+%
+where we do not write the dependency in $\Theta$; for cosmic rays
+%
+\crdRateeq
+
+
+%%------------------------------------------------------------
+\subsubsection{Integral rates of detection}
+
+From the Eq. \ref{eq:gdRate}, the expression for the integral
+detection rate for gammas is (forgetting once more the dependency with
+$\Theta$; i.e., for a given value of the Zenith Angle)
+%
+\gRateeq
+%
+and similarly for cosmic rays
+%
+\crRateeq
+
+
+%%------------------------------------------------------------
+\subsubsection{Hadronic, electronic and muonic backgrounds}
+
+
+\randpoifig
+
+
+
+\endinput
+%
+%% Local Variables:
+%% mode:latex
+%% TeX-master: t
+%% End:
+
+%%TODO
+%
+% Efficiencias de trigger para gammas y hadrones 
+%
+%
+%%TODO
+
+
+%%EOF
 
 
 \chapter{Simulaci'on del detector: \MAGIC}
 \label{chapter:simmagic}
 
-A program for the simulation of the detector is necessary in order to
-study the response of our system (the \Cerenkov telescope) to the
-input data (\Cerenkov light from the incoming electromagnetic and
-hadronic showers). Several small simulation codes have been written.
-In this chapter we present the philosophy of the main programs used
-for this topic: the simulation codes \reflector and \camera.
-
-The general flow of the simulation process is outlined in Fig.
-\ref{fig:simprocess}. As it was already shown, the simulation of the
-detector is splitted in three steps:
-%
-\begin{enumerate}[i.]
-  
-\item Generation of the simulated atmospheric showers, with the
-  \CORSIKA code
-  
-\item Passage of the generated \Cherenkov light through a simulation
-  of the atmosphere, and reflection of this light in the multi-mirror
-  of \MAGIC
-  
-\item Pixelization process, simulation of trigger logic and image
-  analysis
-
-\end{enumerate}
-%
-The process of the generation of the atmospheric showers was already
-explained in chapter \ref{chapter:simshowers}. Here I will talk about
-the last two steps.
 
 %------------------------------------------------------------
 \section{Reflexi'on y recolecci'on de la luz en el plano focal}
 \label{sec:reflcoll}
-
-If we look at the output of CORSIKA, we will see some data files with
-information about particles and \Cherenkov photons in each of the user
-selected observation levels. We use only one main observation level
-2\,200\u{m} a.s.l. In our investigations we are interested in the
-\Cherenkov light. Therefore, the programs developed for the simulation
-concentrate in the analysis of this light produced in the atmosphere.
-
-The information stored in disk for each \Cherenkov photon was shown in
-Table \fullref{tab:cphstruct}, and consists for each \Cherenkov photon
-of the 7-tuple $\{\lambda,x,y,u,v,t,h\}$, where:
-%
-{\centering
-\begin{tabular}{cl}
-$\lambda$ & Wavelength of the emitted \Cherenkov photon \\
-$x,y$     & Position of the \Cherenkov photon in the horizontal
-            plane of the observation level \\
-$u,v$     & Director cosines in X and Y directions of the incoming
-            photon\\
-$t$       & Time elapsed since the first interaction of the primary until the 
-            photon was emitted\\
-$h$       & Height of production of the photon\\
-\end{tabular}
-}
-
-The quantities $x,y,u$ and $v$ are measured in the coordinate system
-of the observation level (I will call this system the \emph{observer's
-  coordinate system}). However, we use two more systems in our
-simulation. In total we use these three coordinate systems (see
-Fig.\ref{fig:coordsys}):
-%
-\begin{Ventry}{$S" \equiv O"X"Y"Z"$:}
-\item[$S \equiv OXYZ$] The observer's coordinate system, where all
-  the variables from the output of CORSIKA are measured
-  
-\item[$S' \equiv O'X'Y'Z'$] The system of the global frame of the
-  telescope (we have that $O\equiv O'$)
-  
-\item[$S" \equiv O"X"Y"Z"$] The local system of the small mirror
-  where each incoming photon is actually hitting
-\end{Ventry}
-
-\simprocessfig
-%
-In the simulation of the reflexion, we obey the following algorithm:
-%
-\begin{enumerate}[1.]
-\item Read parameters for the simulation, allocate memory and
-  initialize different variables, and open the files.
-
-\item For each \Cherenkov photon in every shower to be analyzed,
-  perform the following steps:
-  
-  \begin{enumerate}[\theenumi.1.]
-  \item Calculate, for this photon, the transmitance of the
-    atmosphere, and test whether it passed the absorption.
-    
-  \item Apply the reflectivity of the mirrors, possible dead zones and
-    simulation of mirror imperfections.
-
-  \item If the photon survives to all these effects, its way to the
-    camera plane is traced and the photon is saved to the output file.
-  \end{enumerate}
-
-\item Go back to 2.1 while there are photons/showers left.
-\end{enumerate}
-
-Let's explain briefly the most important steps.
-
-\subsection{Simulation of the Atmospheric Absorption}
-
-In order to simulate the atmospheric attenuation suffered by the
-Cherenkov light emitted in the development of an atmospheric shower,
-an appropriate estimation of the quantities involved must be done.
-These quantities are the \emph{true vertical height}, defined as the
-vertical height below a point in the atmosphere, and the \emph{air
-  mass}, defined as the density of air traversed by the photons. Since
-the classical CORSIKA simply gives us the height of emission of a
-photon in the vertical of the observer, we are forced to calculate the
-values of these variables in our simulation programs. They are of
-special importance in the case of High Zenith Angle (HZA) studies.
-
-%\coordsysfig
-\Systemsfig %% in landscape
-
-\subsubsection{Calculation of the true vertical height}
-
-For the simple simulation of HZA using our plane-parallel-atmosphere
-version of CORSIKA, as well as for the calculation of the true
-vertical height of a photon (at its emission point) and the airmass
-(AM) it traverses, a very simple estimation can be done.
-
-We will assume that our observer is located at point A (see
-Fig.\ref{fig:geomview}), at a heigh \ho above sea level (a.s.l.).  Our
-observer is looking at a source (which emits gamma rays, hopefully),
-under a Zenith Angle $\theta$. One of these gamma rays just arrived at
-the top of Earth's atmosphere, and developed an gamma ray induced
-atmospheric shower. (For simplicity, we will assume that the
-trajectory of the photon will cross the observation level at point A.)
-
-I will use the following notation (from Fig.\ref{fig:geomview}):
-
-\begin{tabular}{ll}
-A & Point where the observer is located \\
-O & Point at sea level, in observer's vertical \\
-P & Point of emission of the photon \\
-\ho & Height of the observation level \\
-\hc & Height given by CORSIKA, in the vertical of the observer\\
-\hv & Height in the vertical of the photon\\
-$R \equiv R_\oplus$ & Earth's radius\\
-$\theta$ & Zenith Angle in observer's level\\
-$\omega$ & Zenith Angle at sea level, in observer's vertical\\
-$\alpha$ & Angle from Earth's center between A and P\\
-\end{tabular}
-
-%\geomviewfig
-
-If $\ho \neq 0$ nor negligible with respect to \hc, and $\theta \simeq
-\omega$, the expression that gives us the value of the \emph{true
-  vertical height} at P in the vertical, \hv, is:
-%
-\hveq
-%
-In the case of $\ho \simeq 0$ or negligible with respect to \hc, this
-becomes:
-%
-\hvapproxeq
-
-%------------------------------------------------------------
-\subsubsection{Pure geometrical estimation of the air mass}
-
-In the simplest approximation, the air mass factor (AM, the relation
-between the optical travel path at a given zenith angle and the
-optical path at the vertical) can be estimated from geometrical
-consideratins. Using this simple approach, the air mass factor will
-be:
-%
-\mgeomeq
-
-%------------------------------------------------------------
-\subsubsection{Calculation of the air mass using an 
-exponential density model}
-
-The above expression in Eq.\eqref{eq:mgeom} uses just geometrical 
-arguments to estimate the ratio represented by m. We would like to go
-one step beyond, by introducing an exponential density model. In our
-simulations we are using an atmospheric model represented by 4
-exponentials and a linear function in the top of the
-atmosphere. Therefore, although the expression that we want to get is
-not fully correct, will be closer to the reality.
-
-We will use then the following density model:
-%
-\denseq
-%
-where $h$ is the height a.s.l., and \Hs is the \emph{scale height} of
-the atmosphere. In the Earth this results to be approximately $\Hs =
-7.4\u{km}$. With this model, the optical path (ignoring refraction)
-can be written (with the approximation that $h/R \simeq 0$) as:
-%
-\optpathredeq
-%
-Note that we already wrote explicitly that we want to calculate the
-travel path for a Zenith Angle $\theta$ for vertical heights between
-\ho and \hv. Our \emph{air mass} $\mathcal{AM}$ is defined
-as\footnote{The \emph{Airmass} in Optical Astronomy is usually defined
-  as the relation $\mathit{Airmass} \equiv
-  {I(\theta;0,\infty)}/{I(0\deg;0,\infty)} $}:
-%
-\AMdefeq
-%
-Therefore, integrating we have:
-%
-\AMfulleq
-%
-where $\mathrm{erfc}$ is the \emph{complementary error function}. An
-approximation for low zenith angles, or more technically, for
-moderately large $X\equiv\sqrt{{R\,\cos^2\theta}/{2\,\Hs}}$ is
-%
-\AMapproxeq
-
-\paragraph{Correction for refraction.} We have defined $R \equiv
-R_\oplus$, the radius of the Earth. A simple correction for refraction
-can be obtained by taking instead
-%
-\refracapproxeq
-
-%------------------------------------------------------------
-\subsubsection{Comparison between different approximations}
-
-First, we would like to compare the true expression for the
-calculation of the \hv with the one obtained by assuming that \ho is
-small enough. For this purpose we calculate the vertical height for
-$\ho=0\u{km}$ and $\ho=2.2\u{km}$ (height of the future location of
-MAGIC), for different Zenith Angles, and plot the difference in
-percentage (see Fig.\ref{fig:hvdiffs}). We can see that the difference
-increases with the zenith angle, as expected, although still this
-difference remains far below 5\% up to 85\deg.
-
-\hvdiffsfig
-
-The second thing we want to compare is the geometrical expressions for
-the air mass, namely $m$ and $m_{\mathrm{simple}}$ (the simple
-approximation for $ho=0\u{km}$), with the more elaborated calculation
-using the exponential density model, $mathcal{AM}$. We will include in
-the last expression the simple correction for refraction given in
-Eq.\eqref{eq:refrac}. This comparison, for three value of \ho
-(0\u{km}, 4\u{km} and 2.2\u{km}), is shown in Fig.\ref{fig:AMcomp}. We
-have used in this case two values for the vertical height,
-$\hv=5\u{km}$ and $\hv=100\u{km}$.
-
-\AMcompfig
-
-%------------------------------------------------------------
-\subsubsection{Calculation of the atmospheric transmission}
-
-Three effects have been included in the final calculation of the
-transmission of the atmosphere for the Cherenkov photons:
-
-\paragraph{Rayleigh scattering.} The molecules in the atmosphere
-produce scattering of the photons. This effect is strongly correlated
-with the wavelength $\lambda$ of the light, being more important for
-small wavelengths. The transmission coefficient due to Rayleigh
-scattering is:
-%
-\Rayleigheq
-%
-where $\tau_{i=1,2} = \tau_0 \, \exp(-h_i/H_{\mathrm{S}}) \sec\theta$
-is the \emph{slanted thickness} above a height $h_i$, in the case of
-an exponential density profile (actually in our case we calculatec
-these values with the CORSIKA density model),
-$\tau_{\mathrm{R}}(\lambda=400\u{nm}) = 2970\u{g/cm^2}$ is the mean
-free path of the Rayleigh scattering in terms of thickness, $\tau_0 =
-0.00129\u{g/cm^2}$, and $H_{\mathrm{S}}$ is the mentioned scale-height
-of the atmosphere. We pre-calculated the exponents for different
-wavelengths.
-  
-\paragraph{Mie scattering.} This effect is due to the aerosol (dust)
-particles suspended inthe air, being its effect bigger at lower
-heights. It depends also on the size of these particles. For an
-exponential density profile, the transmission coefficient is
-%
-\Mieeq
-%
-where $l_{\mathrm{M}}(400\u{nm}) \simeq 14\u{km}$ is the mean free
-path for the Mie scattering, and $h_{\mathrm{M}} \simeq 1.2\u{km}$ is
-the scale-height for the aerosol distribution. We have pre-calculated
-the exponents for different wavelengths, although this dependence is
-very small.
-  
-\paragraph{Ozone absorption.} This effect is very important in the
-range 280--340\u{nm} and for low energy showers, in which most of the
-Cherenkov light emission is located where the density of ozone is high
-(between 20--30\u{km}). For this we have first estimated the
-extinction in magnitudes per unit of air mass:
-%
-\amagneq
-%
-where $k(\lambda)$ is the absorption coefficient in \u{cm^{-1}}, and
-$T(\hv)$ is the total ozone concentration for a typical Tropical
-region (we coose this because was very similar to the actual profile
-in La Palma), above the vertical in each position, in \u{atm cm}. The
-coefficient 1.11 was chosen to correspond to Elterman's optical
-thickness for ozone at 320\u{nm}\cite{Elterman}.
-
-With this value, we can estimate the extinction in magnitudes per air
-mass between two height, and using the Pogson law we can determine the
-transmission coefficient, which results (for more details, please
-refer to \cite{Aitor:tesina}):
-%
-\Ozoneeq
-
-Of course, the total transmission coefficient will be:
-%
-\TotalTransmissioneq
-
-%------------------------------------------------------------
-\section{Conclusions}
-
-I hope that with this small document, the way we calculate the
-parameters for the simulation of the atmospheric attenuation is a bit
-more clear. Note that the more appropriate procedure to calculate the
-air mass for a given Zenith angle, between two vertical height, is, at
-the time of writing these note, \emph{not} yet implemented in the
-simulation code.
-
-The right equations should be used, when available and when the cost
-in computing time is inexistent with respect to any other more simple
-approach. However, from our studies it becomes clear that, under some
-conditions, simple approximations can give results that are accurate
-enough for most of the studies.
 
 
 
@@ -368,6 +1461,7 @@ enough for most of the studies.
 %
 %% Local Variables:
 %% mode:latex
+%% TeX-master: t
 %% End:
 
 %%EOF

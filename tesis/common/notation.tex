@@ -18,10 +18,10 @@
   \def\notationdesc{Description}
   \def\notationlist{List of Symbols}
 \else
-  \def\notationname{Notaci'on}
-  \def\notationsymb{S'imbolo}
-  \def\notationdesc{Descripci'on}
-  \def\notationlist{Lista de s'imbolos}
+  \def\notationname{Notaci\'on}
+  \def\notationsymb{S\'\i mbolo}
+  \def\notationdesc{Descripci\'on}
+  \def\notationlist{Lista de s\'\i mbolos}
 \fi
 
 \chapter{\notationname}
@@ -31,23 +31,44 @@
 %\renewcommand{\headname}{\notationname}
 %\addcontentsline{toc}{chapter}{\numberline{}\notationname}
 
-\section{\notationlist}
+\setlength{\columnseprule}{0.2pt}
 
-{\footnotesize
+\begin{multicols}{2}[\section{\notationlist}]
+  
+  {\footnotesize
+    
+    \begin{list}{}{%
+        \setlength{\itemsep}{0pt}%
+        \setlength{\labelwidth}{50pt}%
+        \setlength{\leftmargin}{\labelwidth+\labelsep}}
+      
+    %%\item[\bfseries \notationsymb] {\bfseries \notationdesc}
+      
+      \input{notation.tbl}
+      
+    \end{list}
+    
+    }
+  
+\end{multicols}
 
-%\setlongtables
-\begin{longtable}[l]{cl}
-{\bfseries \notationsymb} & {\bfseries \notationdesc} \\ 
-\\
-\endhead
- & \hfill \ldots \\ 
-\endfoot
-\endlastfoot
+%\section{\notationlist}
 
-\input{notation.tbl}
+%{\footnotesize
 
-\end{longtable}
-}
+%%\setlongtables
+%\begin{longtable}[l]{cl}
+%{\bfseries \notationsymb} & {\bfseries \notationdesc} \\ 
+%\\
+%\endhead
+% & \hfill \ldots \\ 
+%\endfoot
+%\endlastfoot
+
+%\input{notation.tbl}
+
+%\end{longtable}
+%}
 
 \endinput
 %

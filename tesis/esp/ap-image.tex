@@ -24,7 +24,7 @@ $i=1,2,\ldots,n$, donde $n$ es el n'mero de p'ixeles en la c'amara,
 $(x_i, y_i)$ las coordenadas del centro del p'ixel $i$-'esimo, y $q_i$
 su carga. Asumiremos que todos los p'ixeles son iguales, o lo que es
 equivalente que dentro de $q_i$ ya se han incorporado todas las
-posibles diferencias. Si definimos\footnote{Se asumir'a que Un
+posibles diferencias. Si definimos\footnote{Se asumir'a que un
   sub'indice como $i$ en una suma recorre todos los valores desde el
   menor hasta el mayor, seg'un haya sido definido previamente, a menos
   que se diga lo contrario.} $Q\equiv\sum_i q_i$, entonces los
@@ -130,8 +130,8 @@ como:
 %\clearpage
 
 %%------------------------------------------------------------
-\section{Deduci\'on}% de los par\'ametros de imagen como autovalores de la
-%  matriz de covarianza}
+\section{Deduci\'on de los par\'ametros de imagen como autovalores de la
+  matriz de covarianza}
 
 Usaremos la \emph{matriz de covarianza} para obtener expresiones que
 nos permitan calcular los par'ametros de imagen {\scshape distance},
@@ -261,11 +261,11 @@ demostraciones en la literatura, por ejemplo en \cite{}):
   distribuciones.
 \end{Theo}
 
-Por tanto, podremos encontrar un sistema de ejes, $S'\equiv\{X',Y'\}$,
+Por tanto, podremos encontrar un sistema de ejes, $S^\prime\equiv\{X^\prime,Y^\prime\}$,
 en el cual la matriz de covarianza sea \emph{diagonal}. Intentemos
 diagonalizar $\Sigma$.  Para ello, tenemos que calcular sus 
 \emph{autovalores}, $\lambda_k$, $k=1,2$, resolviendo la ecuaci'on:
-%
+
 \begin{equation}
   \label{eq:eigen}
   |\Sigma - \lambda \mathbf{I}| = 0
@@ -293,7 +293,7 @@ Las soluciones a dicha ecuaci'on son:
     \sqrt{(\sigma_x^2-\sigma_y^2) + 4\sigma_{xy}^2}}{2}
 \end{equation}
 %
-y por tanto la matriz diagonalizada en el nuevo sistema $S'$ ser'a:
+y por tanto la matriz diagonalizada en el nuevo sistema $S^\prime$ ser'a:
 %
 \begin{equation}
   \begin{split}
@@ -310,22 +310,22 @@ y por tanto la matriz diagonalizada en el nuevo sistema $S'$ ser'a:
     \end{pmatrix}\\
     \equiv &
     \begin{pmatrix}
-      {\sigma'}_x^2 & 0\\0 & {\sigma'}_y^2
+      {\sigma^\prime}_x^2 & 0\\0 & {\sigma^\prime}_y^2
     \end{pmatrix}
-    \equiv \Sigma'
+    \equiv {\Sigma^\prime}
   \end{split}
 \end{equation}
 %
-donde asumimos que ${\sigma'}_x^2 > {\sigma'}_y^2$ y usamos el hecho
-de que en este nuevo sistema debe cumplirse ${\sigma'}_{xy}=0$. Estas
+donde asumimos que ${\sigma^\prime}_x^2 > {\sigma^\prime}_y^2$ y usamos el hecho
+de que en este nuevo sistema debe cumplirse ${\sigma^\prime}_{xy}=0$. Estas
 expresiones representan nuestros dos primeros par'ametros de forma:
 %
 \begin{align}
   \label{eq:lengthwidth}
-  \text{\scshape length}^2 &\equiv {\sigma'}_x^2 = 
+  \text{\scshape length}^2 &\equiv {\sigma^\prime}_x^2 = 
   \frac{1}{2}\left[(\sigma_x^2+\sigma_y^2) +
     \sqrt{(\sigma_x^2-\sigma_y^2) + 4\sigma_{xy}^2}\,\right] \\
-  \text{\scshape width}^2 &\equiv {\sigma'}_y^2 = 
+  \text{\scshape width}^2 &\equiv {\sigma^\prime}_y^2 = 
   \frac{1}{2}\left[(\sigma_x^2+\sigma_y^2) -
     \sqrt{(\sigma_x^2-\sigma_y^2) + 4\sigma_{xy}^2}\,\right]
 \end{align}
@@ -353,14 +353,14 @@ donde los signos menos y m'as corresponden a los 'indices 1 y 2,
 respectivamente. En general estos vectores no est'an normalizados.
 
 Podr'iamos haber obtenido el mismo resultado aplicando el siguiente
-razonamiento. La diferencia entre los sistemas $\hat{S}$ y $S'$ es una
+razonamiento. La diferencia entre los sistemas $\hat{S}$ y $S^\prime$ es una
 rotaci'on de un cierto 'angulo $\theta$ (v'ease
 fig.\ref{fig:imageparaxes}):
 %
 \begin{equation}
   \label{eq:rot}
   \begin{pmatrix}
-    x' \\ y'
+    x^\prime\\ y'\ 
   \end{pmatrix} =
   \begin{pmatrix}
     \cos\theta & \sin\theta \\ -\sin\theta & \cos\theta
@@ -380,9 +380,9 @@ mantenerse. Es decir, tendemos que:
     \hat{\mathbf{x}} \; \Sigma^{-1} \; \hat{\mathbf{x}}^{\mathrm{T}}
   \right]
   =
-  \frac{1}{2\pi|\Sigma'|^{1/2}} 
+  \frac{1}{2\pi|\Sigma^\prime|^{1/2}} 
   \exp\left[ -\frac{1}{2} \;
-    {\mathbf{x}'} \; {\Sigma'}^{-1} \; {\mathbf{x}'}^{\mathrm{T}}
+    {\mathbf{x}^\prime} \; {\Sigma^\prime}^{-1} \; {\mathbf{x}^\prime}^{\mathrm{T}}
   \right]  
 \end{equation}
 %
@@ -391,18 +391,18 @@ Pero sabemos que $|\Sigma|$ permanece invariante. Por tanto:
 \begin{equation}
   \label{eq:equalzvec}
   \hat{\mathbf{x}} \; \Sigma^{-1} \; \hat{\mathbf{x}}^{\mathrm{T}} =
-  {\mathbf{x}'} \; {\Sigma'}^{-1} \; {\mathbf{x}'}^{\mathrm{T}} =
+  {\mathbf{x}^\prime} \; {\Sigma^\prime}^{-1} \; {\mathbf{x}^\prime}^{\mathrm{T}} =
   \hat{\mathbf{x}} \; R^{\mathrm{T}} \; 
-  {\Sigma'}^{-1} \; R \; \hat{\mathbf{x}}^{\mathrm{T}}
+  {\Sigma^\prime}^{-1} \; R \; \hat{\mathbf{x}}^{\mathrm{T}}
 \end{equation}
 %
 es decir:
 %
 \begin{equation}
   \label{eq:equalmat}
-  \Sigma^{-1} = R^{\mathrm{T}} \; {\Sigma'}^{-1} \; R 
-  \qquad \text{or better} \qquad
-  {\Sigma'}^{-1} = R \; \Sigma^{-1} \; R^{\mathrm{T}} 
+  \Sigma^{-1} = R^{\mathrm{T}} \; {\Sigma^\prime}^{-1} \; R 
+  \qquad \text{o lo que es equivalente} \qquad
+  {\Sigma^\prime}^{-1} = R \; \Sigma^{-1} \; R^{\mathrm{T}} 
 \end{equation}
 %
 Expresado expl'icitamente en forma matricial:
@@ -410,7 +410,7 @@ Expresado expl'icitamente en forma matricial:
 \begin{multline}
   \label{eq:rotexplicit}
   \begin{pmatrix}
-    {\sigma'}_y^2 & -{\sigma'}_{xy} \\ -{\sigma'}_{xy} & {\sigma'}_x^2
+    {\sigma^\prime}_y^2 & -{\sigma^\prime}_{xy} \\ -{\sigma^\prime}_{xy} & {\sigma^\prime}_x^2
   \end{pmatrix}
   =
   \begin{pmatrix}
@@ -435,7 +435,7 @@ Expresado expl'icitamente en forma matricial:
   \end{pmatrix}
 \end{multline}
 %
-Sabemos que ${\sigma'}_{xy} = 0$, y por lo tanto se debe cumplir la
+Sabemos que ${\sigma^\prime}_{xy} = 0$, y por lo tanto se debe cumplir la
 siguiente ecuaci'on:
 %
 \begin{equation}
