@@ -1,0 +1,12 @@
+# KDE Config File  
+[KDE Desktop Entry]
+Type=Application
+Exec=k2scanplot -caption "%c" %i %m  
+Icon=k2scanplot.xpm
+MiniIcon=k2scanplot.xpm
+DocPath=k2scanplot/index.html
+Comment=
+Comment[de]=
+Terminal=0
+Name=K2ScanPlot
+Name[de]=K2ScanPlot
