@@ -1,0 +1,506 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%  ch-magic.tex
+%%
+%%  Created: Fri Oct 10 14:24:37 1997
+%%  Author.: Jose Carlos Gonzalez
+%%  Notes..:
+%%          
+%%-------------------------------------------------------------------------
+%% Filename: $RCSfile$
+%% Revision: $Revision$
+%% Date:     $Date$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{El Telescopio \MAGIC}
+\label{chapter:magic}
+
+El telescopio \Cerenkov \I{MAGIC} (\emph{Mayor Advanced Gamma-rays
+Imaging Cherenkov telescope}) es un projecto cuyo objetivo es la
+construcci'on de un telescopio \Cerenkov de 17\u{m} de di'ametro, con
+la tecnolog'ia m'as avanzada disponible en este campo. Muchos de los
+nuevos elementos utilizados han sido especialmente desarrollados para
+este proyecto, como por ejemplo espejos ultraligeros y de alta
+reflectividad de aluminio anodizado, control activo de los espejos
+(\I{active mirror control}), \I{Flash ADC}s, conexiones de \I{fibra
+'optica}, mecanismo de posicionamiento r'apido para la observaci'on de
+\I{GRB}s, sistema de disparo (\I{trigger}) multinivel, monitoraje de
+la atm'osfera, etc.
+
+Hoy en d'ia los experimentos para la detecci'on de rayos $\gamma$ a
+bordo de sat'elites pueden operar hasta energ'ias de 10\u{GeV}. Estos
+dispositivos son sin embargo ineficientes a la hora de detectar
+energ'ia superiores, debido a su peque~na area de colecci'on. Por otro
+lado, los m'as avanzados detectores \Cerenkov operativos actualmente
+en tierra tienen un umbral de detecci'on de unos 200--300\u{GeV}. Por
+debajo de esta energ'ia su sensibilidad cae drasticamente. El
+principal objetivo de \MAGIC es la cobertura del rango energ'etico
+entre 10\u{GeV} y 200\u{GeV}.
+%
+\energygapfig
+
+El detector \I{EGRET} (\emph{Energetic Gamma Ray Experiment
+  Telescope}, instalado a bordo del sat'elite \I{CGRO} (\emph{Compton
+  Gamma-Ray Observatory}, con un umbral superi'or de detecci'on de
+10\u{GeV}, registr'o datos de un gran n'umero de fuentes emisoras de
+rayos $\gamma$. Sin embargo, la mayor'ia de las fuentes
+extragal'acticas detectadas a alto %
+%
+$z$\footnote{La magnitud $z$ es el llamado \emph{redshift}, y
+  especifica la variaci'on en longitud de onda de una onda proveniente
+  de una fuente que se aleja de nosotros. Su calculo se puede realizar
+  utilizando la expresi'on $\Delta\lambda/\lambda=v/c=z$, donde $v$ es
+la velocidad de la fuente y $c$ es la velocidad de la luz en vac'io.}%
+%
+no pueden ser observadas a energ'ias por encima de unos cientos de
+\u{GeV} por otros detectores. Adem'as, a energ'ias de varios \u{TeV}
+hay s'olo tres remanentes de supernova (\emph{\Isee{supernov\ae\ 
+    remnant}{SNR}}, \I{SNR}) observadas: la Nebula del Cangrejo (Crab
+Nebula), Vela y \I{SN\,1006}, incluso cuando se supone que los SNR son
+una de las principales fuentes de rayos c'osmicos. En ambos casos
+(fuentes extra-gal'acticas y supernovas) la detecci'on parece posible
+en el rango 10--200\u{GeV}. Por tanto, es claro que esta ventana de
+energ'ias es de extrema importancia para la astronom'ia de rayos
+$\gamma$.
+
+\CGROenergiesfig
+
+\section{Objetivos f'isicos}
+%
+Podemos decir que existe el principal objetivo del proyecto \MAGIC es
+la \emph{cobertura del rango de energ'ia a'un inexplorado de 10\u{GeV}
+to 100\u{GeV}}. Este objetivo global viene expresado en una gran
+variedad de objetivos espec'ificos, que tratar'e de enumerar:
+
+\subsubsection*{N'ucleos de galaxias activas (Active Galactic 
+Nuclei--AGN)}
+%
+Alrededor del 1\% de las galaxias son activas. \emph{Activa}
+significa, en este contexto, que su n'ucleo tiene asociado una
+emisi'on de car'acter no t'ermico altamente luminosa y variable.  En
+esta clase de objetos nos encontramos con las radio-galaxias, las
+galaxias Seyfert, los \emph{\I{cuasares}} (radio-objetos
+\emph{cuasi-estelares}, con emisi'on radio tanto intensa como d'ebil)
+y los objetos \emph{\I{BL-Lacert\ae}} (\I{BL-Lac}). En la figura
+\ref{fig:AGNclassification} se muestra una clasificaci'on de la
+familia de los AGN (tomado de \cite{Petry:tesis}).
+
+\AGNclassificationfig
+
+Desde la detecci'on por EGRET de varios AGN, la atenci'on se ha
+centrado en la subfamilia \emph{blazar}, a la que pertenecen.  Esta
+subclase esta integrada por los \emph{\I{objetos BL Lac}} y los
+\I{FSRQ}s (\emph{Flat Spectrum Radio Quasars}, radio-cuasares de
+espectro plano). Ambos tipos de objetos vienen caracterizados por un
+espectro plano en radio, fuerte variabilidad y polarizaci'on de su
+emisi'on en el 'optico. Los blazares son los principales candidatos
+para la emisi'on gamma de alta y muy alta energ'ia.
+
+Las principales cuestiones relacionadas con la observaci'on de AGN
+son:
+%
+\begin{itemize}
+\item ?`Como se forman y evolucionan los AGN?
+%
+\item ?`En que consisten las ejecciones de material observadas
+  (\emph{jets}, emisiones de plasma relativista) y como es este plasma
+  acelerado?
+%
+\item ?`Hay un corte brusco (\emph{cut-off}) en el espectro de
+  energ'ias de los fotones? ?`C'omo y donde se producen estos
+  \emph{cut-offs}?
+%
+\item ?`Cu'al es la raz'on para tan fuerte variabilidad?
+\end{itemize}
+
+Si seleccionamos los objetos BL Lac con emisi'on en rayos X, a bajas
+energ'ias (hasta unos 1--100\u{keV}) la emisi'on es con toda
+probabilidad debida a la emisi'on sincrotr'on de un haz de electrones
+altamente relativistas. Por encima de 300\u{GeV}, solo tres AGN han
+sido detectados (unos de ellos solo por el grupo del telescopio
+Whipple, en una corta emisi'on espor'adica intensa). Pero a'un m'as
+importante es el hecho de que s'olo uno de ellos (Mkn 421) ha sido
+detectado por EGRET. Puesto que EGRET ha detectado varias decenas de
+AGN a energ'ias por debajo de 30\u{GeV}, la mayor'ia de estos AGN
+deben tener un \emph{cut-off} en su espectro a energ'ias entre 30 y
+300\u{GeV}. Existen varios escenarios con explicaciones
+diferentes. Sin embargo, si asumimos que el fondo extra-gal'actico de
+radiaci'on $\gamma$ difusa se debe a la suma de las emisiones de
+blazares no resueltos, el espectro de estos AGN deber'ia extenderse
+sin cambio dr'astico en la pendiente al menos hasta los
+50--100\u{GeV}.
+
+Podr'ia tambi'en existir incluso una subclase de AGN con su segundo
+pico de la distribuci'on espectral de energ'ia por encima de los
+10\u{GeV} (el primer pico del espectro aparece entre el UV y los rayos
+X). La detecci'on de estos AGN por sat'elite ser'ia dif'icil. Todo
+esto hace el estudio de los AGN en este rango de energ'ias
+especialmente interesante para la construcci'on de modelos de los
+blazares.
+
+\subsubsection*{Remanentes de supernova (SNRs)}
+% 
+Como ya se mencion'o, solo tres SNRs han sido asociados a emision de
+rayos $\gamma$: la Nebulosa del Cangrejo, Vela y SN1006. Se piensa que
+el mecanismo de producci'on de rayos $\gamma$ es el efecto Compton
+inverso (\emph{Inverse Compton Scattering}, ICS) producido por
+electrones de muy alta energ'ia sobre fotones de su ambiente y fotones
+sincrotr'on, y la desintegraci'on de part'iculas $\pi^0$ en $\gamma$s
+despu'es de la interacci'on de hadrones acelerados con la materia
+externa al SNR. Las principales cuestiones de inter'es para el estudio
+de los SNRs con \MAGIC son:
+%
+\begin{itemize}
+\item ?`Qu'e tipo de part'iculas son las responsables de la
+  producci'on de $\gamma$s de alta y muy alta energ'ia en los SNRs?
+%
+\item ?`Es el mecanismo de producci'on de $\gamma$s dependiente del
+  tipo de SNR?
+%
+\item ?`Son los SNRs realmente los responsables del grueso de rayos
+  c'osmicos observados?
+\end{itemize}
+
+\subsubsection*{P'ulsares} 
+%
+En los SNRs del tipo \emph{pleri'on} la fuente energ'ia son los
+radio-p'ulsares. Adem'as del pulsar del Cangrejo, se han detectado
+otros dos p'ulsares a muy altas energ'ias: el pulsar de Vela
+(pleri'on) y PSR\,1706-44. Todos los p'ulsares detectados por EGRET
+parecen tener propiedades bastante dispares. En la actualidad los
+f'isicos te'oricos sugieren que no es esperable la emisi'on pulsada de
+p'ulsares aislados por encima de 6--20\u{GeV}, en el marco del
+\emph{modelo del casquete polar} (\emph{polar-cap model}), o de los
+100\u{GeV} en el \emph{modelo del hueco externo} (\emph{outer-cap
+model}). 
+
+Respecto de los p'ulsares sin emisi'on en radio, solamente uno ha sido
+detectado a altas energ'ias: el pulsar Geminga. Si asumimos que este
+es el p'ulsar m'as cercano de su clase, podemos estimar el n'umero de
+objetos de este tipo en 1600. \MAGIC buscar'a emisi'on de objetos m'as
+d'ebiles que Geminga. En esta clase de objetos se encuentran tambi'en
+las m'as d'ebiles de las fuentes no identificadas del cat'alogo de
+EGRET.
+
+\subsubsection*{\emph{Gamma Ray Bursts}} 
+%
+Uno de los misterios mejor guardados hasta ahora por la Naturaleza en
+el campo de la astrof'isica de rayos gamma es la naturaleza de los 
+\emph{estallidos de rayos $\gamma$} (\emph{gamma ray bursts},
+GRBs). Con \MAGIC se espera poder medir el espectro de energ'ias de
+los GRBs. \MAGIC ser'a capaz de realizar un posicionamiento rapido
+(cambio de apuntado entre dos puntos cualesquiera del cielo en menos
+de 30 segundos). Esto, junto con la informaci'on sobre posici'on y
+tiempos obtenida de futuros detectores a bordo de sat'elites, nos
+permitir'a obtener datos sobre la mayor parte de la emisi'on
+proveniente de los GRBs (el grueso de la emisi'on dura alrededor de
+100\u{s}, aunque a veces puede durar m'as --- para el GRB\,971208, por
+ejemplo, el estallido observado consist'ia de un solo pico que dur'o
+alrededor de 800\u{s}).
+
+\subsubsection*{Fuentes de EGRET no identificadas} 
+%
+Ya hemos mencionado alguna vez la importancia de observar las fuentes
+no identificadas del cat'alogo EGRET en el rango
+10--200\u{GeV}. Alrededor del 40\% de estas fuentes poseen un espectro 
+duro que parece extenderse mas all'a de los 10\u{GeV}. La observaci'on 
+de estos objetos con \MAGIC aumentar'a la precisi'on de su
+localizaci'on de 0.1\deg a 0.02\deg, y por tanto la posibilidad de su
+final identificaci'on.
+
+\MAGICframefig
+
+\section{Caracter'isticas 'opticas del reflector}
+%
+El telescopio \MAGIC posee un disco reflector de 17\u{m} de
+di'ametro. Su montura es alt-azimutal. El espejo reflector est'a
+soportado por una estructura tubular en tres capas, que a su vez est'a
+fijado a eje azimutal por dos {\bf stub-axes}. Esta estructura tubular
+est'a formada for tubos de fibra de carbono y epoxy ultraligeros de
+alta dureza, ensamblados mediante piezas (nudos) de aluminio. El
+soporte del espejo est'a montado en el interior de un anillo, el
+anillo $\theta$, que soporta la c'amara en su 'apex superior, mientras
+que la secci'on inferior se encuentra equipada por una gu'ia para el
+movimiento el elevaci'on (ver Fig.\ref{fig:MAGICframe}). El telescopio
+ha sido dise~nado para tener una 'optica f/D:1, es decir la distancia
+focal global del sistema es de 17\u{m}. El anillo $\theta$ tiene forma
+el'iptica (\emph{arco g'otico}), con objeto de evitar los 30--32\u{m}
+de di'ametro que deber'ia tener un anillo circular que cumpliese con
+el requisito f/D:1.
+
+La forma global del disco del telescopio es paraboloidal, y su espejo
+teselado: est'a compuesto de 920 peque~nos espejos cuadrados de
+$50\times 50 \u{cm}^2$ cada uno, de superficie esf'erica. Este dise~no
+permite una \emph{aberraci'on esf'erica} peque~na junto con una
+dispersi'on temporal del pulso \Cerenkov m'inima. Dada la gran
+variaci'on de distancia desde el eje del telescopio hasta cada espejo,
+'estos se han agrupado en conjuntos con radio de curvatura com'un,
+variando este radio de curvatura de 34\u{m} a 36\u{m} aproximadamente.
+Los espejos se encuentran dispuestos en filas y columnas, y cada
+conjunto de $2 \times 2$ espejos se encuentra montado sobre un
+elemento individual de $1 \times 1 \u{m^2}$. Cada uno de estos
+elementos individuales de 4 espejos se ajustar'a y enfocar'a de manera
+independientemente (\emph{'optica activa}).
+
+La deformaci'on de la estructura que soporta los espejos ser'a
+monitoreada utilizando haces l'aser que incidan en sensores de silicio
+semi-transparentes, con una resoluci'on global en la medida de las
+deformaciones de unos pocos micr'ometros (\u{\mu m}). Para la
+\emph{'optica activa} se utilizar'a un l'aser localizado en cada uno 
+de los paneles de cuatro espejos, y que apuntar'a al centro de la
+c'amara. Para cada panel se tomar'a una imagen del punto de luz en el
+plano focal con una video c'amara, y dos motores de pasos
+(\emph{stepping motors}), controlados via un multiplexor por un
+circuito controlado por computadora, ajustar'an la posici'on y
+orientaci'on del panel en cuesti'on (ver
+Fig. \ref{fig:MAGICactivemirror}).
+
+\MAGICmirrorcontrol_wfig
+
+Los espejos individuales poseen diferentes distancias focales, y por
+tanto sus superficies han de ser pulidas por una m'aquina controlada
+num'ericamente. \MAGIC usar'a espejos en forma de sandwich
+de aluminio, similares a los ya usados por el telescopio CT1 de HEGRA (ver
+\ccite{MAGIC:Barrio_Kruger}). En la Fig. \ref{fig:mirrorsandwich}
+podemos ver una figura que muestra los elementos internos de uno de
+estos espejos. La reflectividad de la superficie especular, hecha de
+una aleaci'on de aluminio, es del orden de $R(\lambda) >
+80\%$ para el rango de longitudes de onda $320--650\u{nm}$. Adem'as,
+los espejos est'an protegidos con un recubrimiento duro transparente.
+
+\section{La c'amara de \MAGIC}
+%
+\subsection{Generalidades}
+%
+La c'amara es el elemento decisivo en la construcci'on de todo
+telescopio \Cherenkov. Como dispositivo detector, sus caracter'isticas
+tendr'an una influencia decisiva en el comportamiento global del
+telescopio, en t'erminos de eficiencia, sensibilidad y rango din'amico
+(en el sentido de energ'ias umbral y de saturaci'on, por ejemplo). Hoy
+en d'ia, las c'amaras de los telescopios \Cherenkov operativos est'an
+compuestas por peque~nos elementos detectores (\emph{p'ixeles}),
+normalmente \emph{\I{photomultiplicadores}} (PMTs). Por tanto, las
+car'acter'isticas de un telescopio \Cherenkov pueden, al menos en
+parte, ser atribu'idas a:
+%
+\begin{enumerate}[a.]
+\item La distribuci'on de los p'ixeles en la c'amara (geometr'ia)
+\item El tama~no de los p'ixeles individuales
+\item El tama~no angular de la c'amara (campo de visi'on --- c.d.v.)
+\item La densidad variable de p'ixeles en diferentes partes de la
+c'amara (relacionada con el tama~no de los p'ixeles)
+\item La sensibilidad de los p'ixeles
+\end{enumerate}
+
+\paragraph{La \emph{distribuci'on de los p'ixeles en la c'amara}} 
+afecta s'olo ligeramente el comportamiento del telescopio. Mientras
+una distribuci'on en forma de filas y columnas puede resultar m'as
+sencilla de construir, e incluso m'as conveniente desde el punto de
+vista del an'alisis de datos, la distribuci'on universalmente
+utilizada es en forma de \emph{patr'on hexagonal}. Utilizando esa
+disposici'on con p'ixeles hexagonales uno consigue minimizar los
+espaci'on muertos entre p'ixeles.
+
+\paragraph{El \emph{tama~no de los p'ixeles}} se va reduciendo poco a
+poco seg'un avanza el desarrollo tecnol'ogico. Por ejemplo, la primera 
+c'amara de un telescopio \HEGRA ten'ia un tama~no angular de p'ixel de 
+0.4\deg, mientras en la siguiente generaci'on de telescopios
+\Cherenkov el tama~no de los p'ixeles ser'a de 0.10\deg a
+0.15\deg. Consideraciones te'oricas dan un valor 'optimo para el
+tama~no de los p'ixeles de $\leq 0.1\deg$. Para \MAGIC planeamos el
+uso de dos tama~nos diferentes de p'ixeles en la c'amara. En la parte
+central de la c'amara usaremos p'ixeles de 0.1\deg de
+di'ametro. Rodeando a la zona central de la c'amara tendremos anillos
+adicionales de p'ixeles de 0.2\deg. La raz'on para esta distribuci'on
+es la siguiente: los rayos $\gamma$ de baja energ'ia producen cascadas
+cuyas im'agenes, comparadas con las de rayos $\gamma$ de alta
+energ'ia, se encuentran m'as cerca del centro de la c'amara (ya que se
+producen m'as alto en la atm'osfera) y son m'as compactas (la
+distancia desde el telescopio a la cascada es mayor, la cantidad de
+luz es menor y el 'angulo \Cherenkov en el punto del m'aximo de
+desarrollo es menor que para cascadas con primarios m'as
+energ'eticos). Todo ello apunta, por tanto, a la necesidad de usar en
+el centro de la c'amara p'ixeles peque~nos. Como los efectos de
+aberraci'on aumentan conforme nos alejamos del centro de la c'amara, y 
+como las cascadas de alta energ'ia dar'an trigger incluso cuando su
+imagen se encuentra alejada de ese punto (ya que producen mucha m'as
+luz), en la zona exterior de la c'amara no necesitamos una
+pixelizaci'on muy fina. Esto justifica el uso de p'ixeles mayores con
+el fin de minimizar costes.
+
+\mirrorsandwichfig
+
+\paragraph{El \emph{tama~no angular de la c'amara} (campo de visi'on 
+--- c.d.v.)}, por otro lado, va aumentando progresivamente. Los
+beneficios que aporta un gran c.d.v son:
+%
+\begin{enumerate}[i)]
+\item El estudio de \emph{fuentes extensas} resulta practicable.
+%
+\item La reconstrucci'on de cascadas de alta energ'ia es m'as
+eficiente. Ppara una c'amara de tama~no reducido tenemos lo que se
+denomina \emph{efectos de borde}: una imagen suficientemente grande
+quedar'a truncada en el borde, y por tanto el c'alculo de los
+par'ametros de la imagen y la cantidad de luz producida resultar'an
+afectados, dando como resultado una mala estimaci'on de la energ'ia
+del primario, e incluso el rechazo de sucesos genuinos provenientes de
+rayos $\gamma$.
+%
+\item A \emph{alto 'angulo cenital} (AAZ) las cascadas se desarrollan
+a distancias del telescopio mayores que para \emph{bajo 'angulo
+cenital} (BAZ). Por tanto, debido a la dispersi'on y el momento
+transverso de las part'iculas cargadas, el \emph{pool}
+\Cherenkov\footnote{El \emph{pool} \Cherenkov es la regi'on en el
+suelo donde se encuentra la mayor densidad de luz \Cherenkov, desde el
+eje de la cascada hasta la posici'on del \emph{hump}. Dependiendo de
+la energ'ia del primario, en esta regi'on la densidad de luz puede
+aumentar, disminuir o permanecer aproximadamente constante con la
+distancia al eje de la cascada, pero se puede asumir, en las energ'ias
+en las que nos movemos, que su distribuci'on es bastante uniforme. Mas
+all'a del \emph{hump}, la densidad de luz cae exponencialmente.} e
+mucho mayor. La consecuencia de esto es que las cascadas pueden dar
+\emph{trigger} en el sistema hasta mayores par'ametros de
+impacto. Pero esto significa que la imagen de la cascada aparecer'a
+m'as alejada del centro de la c'amara que en el caso de BAZ. Por
+tanto, para las observaciones a AAZ es necesaria una c'amara grande.
+\end{enumerate}
+
+\paragraph{La \emph{sensibilidad de los p'ixeles}} es sin duda uno de
+los factores m'as importantes en el desarrollo de la c'amara. El
+rendimiento de todo el sistema es directamente proporcional a la
+\emph{Eficiencia Cu'antica} de los p'ixeles (\emph{quantum efficiency} 
+en ingl'es, de ahora en adelante \QE). Hablaremos de los diferentes
+tipos de p'ixeles mas adelante.
+
+\MAGICcamerafig
+
+Para \MAGIC utilizaremos una c'amara de unos $\sim$ 4\deg--5\deg, con
+un total de alrededor de 900 p'ixeles. (En las simulaciones, sin
+embargo, s'olo hemos utilizado una c'amara de 3.5\deg, con todos los
+p'ixeles hexagonales del mismo tama~no, 0.1\deg de di'ametro).  En la 
+Fig. \ref{fig:MAGICcamera} podemos observar una de las posibles
+distribuciones de los p'ixeles en la c'amara de \MAGIC (dise~no del
+autor, adaptado de \ccite{MAGIC:DR}).
+
+\QuantumEfffig
+
+\subsection{Sensores de luz}
+%
+En el dise~no de \MAGIC se tuvo en cuenta la posibilidad de una
+c'amara extraible e intercambiable por otra de diferente dise~no. El
+objetivo es aumentar la modularidad del sistema y disminuir la
+complejided de las actualizaciones del sistema. Se han dise~nado,
+estudiado y probado varios dispositivos de detecci'on; esto ha
+resultado en tres diferentes concepciones de la c'amara:
+%
+\begin{enumerate}[a.]
+\item La \emph{c'amara cl'asica}, que utiliza fotomultiplicadores est'andar
+%
+\item La \emph{c'amara estandar}, que utiliza fotodetectores h'ibridos:
+fotoc'elulas intensificadas, de Ga\,As\,P, de alta eficiencia (alta
+\QE), con lectura por diodos de avalancha
+%
+\item La \emph{c'amara avanzada}, una soluci'on futura, que emplear'a
+fotodiodos de avalancha de Silicio
+\end{enumerate}
+%
+Colocaremos conos huecos (\emph{conos de Winston}) encima de cada
+p'ixel con objeto de concentrar la luz al m'aximo en el dispositivo
+detector, y restringir la aceptancia de cada p'ixel. Adem'as, se
+usar'an \emph{recubrimientos de desplazamiento de longitud de onda}
+(WLSs, del ingl'es \emph{wavelength shifters}) para aumentar la
+detecci'on de la luz \Cherenkov en el UV, mediante el desplazamiento
+de parte de esta luz a zonas del espectro con mayor longitud de onda,
+donde la \QE pueda ser mayor (ver Fig. \ref{fig:QE}). Hablaremos un
+poco de estos diferentes dispositivos de detecci'on en los siguientes
+p'arrafos.
+
+\pixelreadoutfig
+
+\subsubsection{Dispositivos cl'asicos: fotomultiplicadores (PMTs)}
+%
+En una primera fase del proyecto se utilizar'a una c'amara compuesta
+de fotomultiplicadores (a los que denominaremos PMTs, del ingl'es
+\emph{photo-multipliers}) est'andar. Esto afectar'a no s'olo al umbral
+de energ'ia del sistema, sino tambi'en a la eficiencia en las
+observaciones a AAZ. Sin embargo, a'un con este tipo de c'amara la
+disminuci'on en energ'ia umbral respecto de los telescopios operativos
+actualmente es considerable: nuestras simulaci'on lo colocan en torno
+a los 30--40\u{GeV}. Para las simulaciones presentadas en este trabajo
+se ha utilizado como PMT el EMI 9083-A (ver Fig. \ref{fig:QE}), que
+posee un pico de \QE de cerca del 26\% y una \emph{\QE efectiva
+media}%
+\footnote{Definimos la \emph{\QE efectiva media}, 
+$\langle\QE\rangle_\mathrm{eff}$ como el valor medio de la \QE en el
+rango de longitudes de onda 290--600\u{nm} (nuestro rango de trabajo),
+convolucionada con el espectro de luz \Cherenkov, es decir:\\
+\centerline{$ \langle\QE\rangle_\mathrm{eff} = 
+\frac{\int_{\lambda_\mathrm{min}}^{\lambda_\mathrm{max}} \QE(\lambda)
+I_\mathrm{Cherenkov} (\lambda) \mathrm{d}\lambda }%
+{\int_{\lambda_\mathrm{min}}^{\lambda_\mathrm{max}}
+I_\mathrm{Cherenkov} (\lambda) \mathrm{d}\lambda} $} } de alrededor del
+17\%. %$
+
+\subsubsection{Fotoc'elulas h'ibridas intensificadas}
+%
+Para cumplir nuestro objetivo de bajar el umbral de detecci'on en
+energ'ia hasta los 10\u{GeV} nos proponemos utilizar en un futuro
+cercano las fotoc'elulas h'ibridas intensificadas (IPCs, de
+\emph{intensified photo-cells}, nombre dado por la compa~nia Intevac,
+uno de los desarrolladores. Estos dispositivos. Los IPCs alcanzan su
+m'aximo de m'as de 40\% \QE en algunos puntos de la nuestra region de
+inter'es 290--600\u{nm}, existiendo a'un posibilidad de mejoras. Este
+hecho junto con el uso de WLSs incrementar'a significativamente la
+$\langle\QE\rangle_\mathrm{eff}$ para este tipo de c'amara.  Mediante
+el uso de fotodiodos de avalancha (en lugar del cl'asico diodo) en el
+'anodo, se puede conseguir respuestas de fotoelectrones
+individuales. Adem'as, el problema de la \emph{realimentaci'on por
+iones} (\emph{ion-feedback}, en ingl'es --- iones liberados en la
+vecindad del 'anodo, y que son acelerados de vuelta hacia el c'atodo)
+puede ser prevenido con el uso de un deflector de iones.
+
+\subsubsection{Fotodiodos de avalancha}
+%
+La version avanzada de una futura camar'a de \MAGIC usar'a la
+tecnolog'ia m'as puntera disponible en el momento, los
+\emph{fotodiodos de avalancha} (APDs, del ingl'es \emph{avalanche
+photo-diodes}). Estos elementos detectores alcanzan valores de \QE de
+$\geq$80\%. Este valor es el doble del mejor valor obtenido nunca con
+un IPC. Los APDs permitir'an ademas la construcci'on de p'ixeles m'as
+peque~nos, del orden de (0.05\deg--0.07\deg), ya que su tama~no es de 
+3--4\u{mm}. Sin embargo, la tecnolog'ia necesaria para su utilizaci'on
+en este campo no est'a a'un lista. El principal problema de los APDs
+es su gran nivel de ruido, a'un inaceptable para nuestros prop'ositos.
+No obstante, el desarrollo contin'ua, y est'a previsto que en pocos
+a~nos sea posible la construcci'on de la c'amara avanzada para \MAGIC.
+
+Todos estos dise~nos de la c'amara comparter una cadena de lectura de
+datos com'un, que se muestra en la Fig. \ref{fig:pixelreadout}. 
+
+\section{Otros componentes del sistema}
+
+\paragraph{Monitor de deformaci'on de la montura}
+
+\paragraph{Monitor de seguimiento}
+
+\paragraph{Monitor del campo visual}
+
+\paragraph{Control de calidad de los espejos}
+
+\paragraph{Control activo de espejos}
+
+\paragraph{Monitor de condiciones ambientales}
+
+\section{Data Acquisition}
+
+\section{Observational Programs}
+
+\section{The Telescope CT1 of the HEGRA Collaboration}
+
+\endinput
+%
+%% Local Variables:
+%% mode:LaTeX
+%% End:
+
+%%EOF

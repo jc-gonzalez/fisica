@@ -1,0 +1,41 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  defs.hlp -- help file
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\I [1]         {#1\index{#1}}           % word
+\Iw [2]        {#1\index{#1@#2}}        % word2
+\II [2]        {#1\index{#2!#1}}        % word
+\III [3]       {#1\index{#2!#3!#1}}     % word
+\Isee [2]      {#1\index{#1|see{#2}}}   % word1, see word2
+\Ifrom [1]     {#1\index{#1|(}}         % word p-
+\Ito [1]       {#1\index{#1|)}}         % word -p
+\Istyle [2]    {#1\index{#1|#2}}        % \style{word}
+
+\HEGRA             \MORE                                
+\MAGIC                                                  
+\XTAL              \ccite    %% cite(s) in captions     
+\GMTQ              \cref     %% reference(s) in captions
+\CORSIKA           \fullcref %% id., complete           
+\trigger           \fullref  %% id., normal             
+
+\deg        %% degrees
+\muon       %% muon
+\muons      %% muons
+\cph        %% C-photon
+\cphs       %% C-photon's
+\phe        %% photo-electron
+\phes       %% photo-electrons
+\mphe       %% photo-electron  (math-mode)
+\mphes      %% photo-electrons (math-mode)
+\wlrange    %% wavelength range used
+\Cherenkov  %%    "
+\MonteCarlo %% Monte Carlo
+\MC         %%    "
+\etal       %% et al. (slanted)
+
+\pow [1]    %% a\pow{x} = a^x
+\E   [1]    %% a\E{x}   = a.10^x
+\u
+
+%
+%%EOF

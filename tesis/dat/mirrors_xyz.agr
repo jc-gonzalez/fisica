@@ -1,0 +1,3481 @@
+# Grace project file
+#
+@version 50100
+@page size 842, 595
+@page scroll 5%
+@page inout 5%
+@link page off
+@map font 0 to "Times-Roman", "Times-Roman"
+@map font 1 to "Times-Italic", "Times-Italic"
+@map font 2 to "Times-Bold", "Times-Bold"
+@map font 3 to "Times-BoldItalic", "Times-BoldItalic"
+@map font 4 to "Helvetica", "Helvetica"
+@map font 5 to "Helvetica-Oblique", "Helvetica-Oblique"
+@map font 6 to "Helvetica-Bold", "Helvetica-Bold"
+@map font 7 to "Helvetica-BoldOblique", "Helvetica-BoldOblique"
+@map font 8 to "Courier", "Courier"
+@map font 9 to "Courier-Oblique", "Courier-Oblique"
+@map font 10 to "Courier-Bold", "Courier-Bold"
+@map font 11 to "Courier-BoldOblique", "Courier-BoldOblique"
+@map font 12 to "Symbol", "Symbol"
+@map font 13 to "ZapfDingbats", "ZapfDingbats"
+@map color 0 to (255, 255, 255), "white"
+@map color 1 to (0, 0, 0), "black"
+@map color 2 to (255, 0, 0), "red"
+@map color 3 to (0, 255, 0), "green"
+@map color 4 to (0, 0, 255), "blue"
+@map color 5 to (255, 255, 0), "yellow"
+@map color 6 to (188, 143, 143), "brown"
+@map color 7 to (220, 220, 220), "grey"
+@map color 8 to (148, 0, 211), "violet"
+@map color 9 to (0, 255, 255), "cyan"
+@map color 10 to (255, 0, 255), "magenta"
+@map color 11 to (255, 165, 0), "orange"
+@map color 12 to (114, 33, 188), "indigo"
+@map color 13 to (103, 7, 72), "maroon"
+@map color 14 to (64, 224, 208), "turquoise"
+@map color 15 to (0, 139, 0), "green4"
+@reference date 0
+@date wrap off
+@date wrap year 1950
+@default linewidth 1.0
+@default linestyle 1
+@default color 1
+@default pattern 1
+@default font 0
+@default char size 1.000000
+@default symbol size 1.000000
+@default sformat "%16.8g"
+@background color 0
+@page background fill on
+@timestamp off
+@timestamp 0.03, 0.03
+@timestamp color 1
+@timestamp rot 0
+@timestamp font 0
+@timestamp char size 1.000000
+@timestamp def "Mon Aug 28 17:48:47 2000"
+@r0 type above
+@r0 linestyle 1
+@r0 linewidth 1.0
+@r0 color 1
+@r0 line 0, 0, 0, 0
+@r1 type above
+@r1 linestyle 1
+@r1 linewidth 1.0
+@r1 color 1
+@r1 line 0, 0, 0, 0
+@r2 type above
+@r2 linestyle 1
+@r2 linewidth 1.0
+@r2 color 1
+@r2 line 0, 0, 0, 0
+@r3 type above
+@r3 linestyle 1
+@r3 linewidth 1.0
+@r3 color 1
+@r3 line 0, 0, 0, 0
+@r4 type above
+@r4 linestyle 1
+@r4 linewidth 1.0
+@r4 color 1
+@r4 line 0, 0, 0, 0
+@g0 on
+@g0 hidden false
+@g0 type XY
+@g0 stacked false
+@g0 bar hgap 0.000000
+@g0 fixedpoint off
+@g0 fixedpoint type 0
+@g0 fixedpoint xy 0.000000, 0.000000
+@g0 fixedpoint format general general
+@g0 fixedpoint prec 6, 6
+@with g0
+@    world xmin -900
+@    world xmax 900
+@    world ymin -400
+@    world ymax 1400
+@    stack world 0, 0, 0, 0
+@    znorm 1
+@    view xmin 0.300000
+@    view xmax 0.650000
+@    view ymin 0.100000
+@    view ymax 0.450000
+@    title ""
+@    title font 0
+@    title size 1.500000
+@    title color 1
+@    subtitle ""
+@    subtitle font 0
+@    subtitle size 1.000000
+@    subtitle color 1
+@    xaxes scale Normal
+@    yaxes scale Normal
+@    xaxes invert off
+@    yaxes invert off
+@    xaxis  on
+@    xaxis  type zero false
+@    xaxis  offset 0.000000 , 0.000000
+@    xaxis  bar on
+@    xaxis  bar color 1
+@    xaxis  bar linestyle 1
+@    xaxis  bar linewidth 1.0
+@    xaxis  label ""
+@    xaxis  label layout para
+@    xaxis  label place auto
+@    xaxis  label char size 1.000000
+@    xaxis  label font 0
+@    xaxis  label color 1
+@    xaxis  label place normal
+@    xaxis  tick on
+@    xaxis  tick major 500
+@    xaxis  tick minor ticks 1
+@    xaxis  tick default 6
+@    xaxis  tick place rounded true
+@    xaxis  tick in
+@    xaxis  tick major size 1.000000
+@    xaxis  tick major color 1
+@    xaxis  tick major linewidth 1.0
+@    xaxis  tick major linestyle 1
+@    xaxis  tick major grid off
+@    xaxis  tick minor color 1
+@    xaxis  tick minor linewidth 1.0
+@    xaxis  tick minor linestyle 1
+@    xaxis  tick minor grid off
+@    xaxis  tick minor size 0.500000
+@    xaxis  ticklabel on
+@    xaxis  ticklabel format general
+@    xaxis  ticklabel prec 5
+@    xaxis  ticklabel formula ""
+@    xaxis  ticklabel append ""
+@    xaxis  ticklabel prepend ""
+@    xaxis  ticklabel angle 0
+@    xaxis  ticklabel skip 0
+@    xaxis  ticklabel stagger 0
+@    xaxis  ticklabel place normal
+@    xaxis  ticklabel offset auto
+@    xaxis  ticklabel offset 0.000000 , 0.010000
+@    xaxis  ticklabel start type auto
+@    xaxis  ticklabel start 0.000000
+@    xaxis  ticklabel stop type auto
+@    xaxis  ticklabel stop 0.000000
+@    xaxis  ticklabel char size 1.000000
+@    xaxis  ticklabel font 0
+@    xaxis  ticklabel color 1
+@    xaxis  tick place both
+@    xaxis  tick spec type none
+@    yaxis  on
+@    yaxis  type zero false
+@    yaxis  offset 0.000000 , 0.000000
+@    yaxis  bar on
+@    yaxis  bar color 1
+@    yaxis  bar linestyle 1
+@    yaxis  bar linewidth 1.0
+@    yaxis  label ""
+@    yaxis  label layout para
+@    yaxis  label place auto
+@    yaxis  label char size 1.000000
+@    yaxis  label font 0
+@    yaxis  label color 1
+@    yaxis  label place normal
+@    yaxis  tick on
+@    yaxis  tick major 500
+@    yaxis  tick minor ticks 1
+@    yaxis  tick default 6
+@    yaxis  tick place rounded true
+@    yaxis  tick in
+@    yaxis  tick major size 1.000000
+@    yaxis  tick major color 1
+@    yaxis  tick major linewidth 1.0
+@    yaxis  tick major linestyle 1
+@    yaxis  tick major grid off
+@    yaxis  tick minor color 1
+@    yaxis  tick minor linewidth 1.0
+@    yaxis  tick minor linestyle 1
+@    yaxis  tick minor grid off
+@    yaxis  tick minor size 0.500000
+@    yaxis  ticklabel on
+@    yaxis  ticklabel format general
+@    yaxis  ticklabel prec 5
+@    yaxis  ticklabel formula ""
+@    yaxis  ticklabel append ""
+@    yaxis  ticklabel prepend ""
+@    yaxis  ticklabel angle 0
+@    yaxis  ticklabel skip 0
+@    yaxis  ticklabel stagger 0
+@    yaxis  ticklabel place normal
+@    yaxis  ticklabel offset auto
+@    yaxis  ticklabel offset 0.000000 , 0.010000
+@    yaxis  ticklabel start type auto
+@    yaxis  ticklabel start 0.000000
+@    yaxis  ticklabel stop type auto
+@    yaxis  ticklabel stop 0.000000
+@    yaxis  ticklabel char size 1.000000
+@    yaxis  ticklabel font 0
+@    yaxis  ticklabel color 1
+@    yaxis  tick place both
+@    yaxis  tick spec type none
+@    altxaxis  off
+@    altyaxis  off
+@    legend on
+@    legend loctype view
+@    legend x1 0.85
+@    legend y1 0.8
+@    legend box color 1
+@    legend box pattern 1
+@    legend box linewidth 1.0
+@    legend box linestyle 1
+@    legend box fill color 0
+@    legend box fill pattern 1
+@    legend font 0
+@    legend char size 1.000000
+@    legend color 1
+@    legend length 4
+@    legend vgap 1
+@    legend hgap 1
+@    legend invert false
+@    frame type 0
+@    frame linestyle 1
+@    frame linewidth 1.0
+@    frame color 1
+@    frame pattern 1
+@    frame background color 0
+@    frame background pattern 0
+@    s0 hidden false
+@    s0 type xy
+@    s0 symbol 1
+@    s0 symbol size 0.000000
+@    s0 symbol color 1
+@    s0 symbol pattern 1
+@    s0 symbol fill color 1
+@    s0 symbol fill pattern 0
+@    s0 symbol linewidth 1.0
+@    s0 symbol linestyle 1
+@    s0 symbol char 65
+@    s0 symbol char font 0
+@    s0 symbol skip 0
+@    s0 line type 0
+@    s0 line linestyle 1
+@    s0 line linewidth 1.0
+@    s0 line color 1
+@    s0 line pattern 1
+@    s0 baseline type 0
+@    s0 baseline off
+@    s0 dropline off
+@    s0 fill type 0
+@    s0 fill rule 0
+@    s0 fill color 1
+@    s0 fill pattern 1
+@    s0 avalue off
+@    s0 avalue type 2
+@    s0 avalue char size 1.000000
+@    s0 avalue font 0
+@    s0 avalue color 1
+@    s0 avalue rot 0
+@    s0 avalue format general
+@    s0 avalue prec 3
+@    s0 avalue prepend ""
+@    s0 avalue append ""
+@    s0 avalue offset 0.000000 , 0.000000
+@    s0 errorbar on
+@    s0 errorbar place both
+@    s0 errorbar color 1
+@    s0 errorbar pattern 1
+@    s0 errorbar size 1.000000
+@    s0 errorbar linewidth 1.0
+@    s0 errorbar linestyle 1
+@    s0 errorbar riser linewidth 1.0
+@    s0 errorbar riser linestyle 1
+@    s0 errorbar riser clip off
+@    s0 errorbar riser clip length 0.100000
+@    s0 comment "Cols 1:3"
+@    s0 legend  ""
+@g1 on
+@g1 hidden false
+@g1 type XY
+@g1 stacked false
+@g1 bar hgap 0.000000
+@g1 fixedpoint off
+@g1 fixedpoint type 0
+@g1 fixedpoint xy 0.000000, 0.000000
+@g1 fixedpoint format general general
+@g1 fixedpoint prec 6, 6
+@with g1
+@    world xmin -900
+@    world xmax 900
+@    world ymin -900
+@    world ymax 900
+@    stack world 0, 0, 0, 0
+@    znorm 1
+@    view xmin 0.300000
+@    view xmax 0.650000
+@    view ymin 0.550000
+@    view ymax 0.900000
+@    title ""
+@    title font 0
+@    title size 1.500000
+@    title color 1
+@    subtitle ""
+@    subtitle font 0
+@    subtitle size 1.000000
+@    subtitle color 1
+@    xaxes scale Normal
+@    yaxes scale Normal
+@    xaxes invert off
+@    yaxes invert off
+@    xaxis  on
+@    xaxis  type zero false
+@    xaxis  offset 0.000000 , 0.000000
+@    xaxis  bar on
+@    xaxis  bar color 1
+@    xaxis  bar linestyle 1
+@    xaxis  bar linewidth 1.0
+@    xaxis  label ""
+@    xaxis  label layout para
+@    xaxis  label place auto
+@    xaxis  label char size 1.000000
+@    xaxis  label font 0
+@    xaxis  label color 1
+@    xaxis  label place normal
+@    xaxis  tick on
+@    xaxis  tick major 500
+@    xaxis  tick minor ticks 1
+@    xaxis  tick default 6
+@    xaxis  tick place rounded true
+@    xaxis  tick in
+@    xaxis  tick major size 1.000000
+@    xaxis  tick major color 1
+@    xaxis  tick major linewidth 1.0
+@    xaxis  tick major linestyle 1
+@    xaxis  tick major grid off
+@    xaxis  tick minor color 1
+@    xaxis  tick minor linewidth 1.0
+@    xaxis  tick minor linestyle 1
+@    xaxis  tick minor grid off
+@    xaxis  tick minor size 0.500000
+@    xaxis  ticklabel on
+@    xaxis  ticklabel format general
+@    xaxis  ticklabel prec 5
+@    xaxis  ticklabel formula ""
+@    xaxis  ticklabel append ""
+@    xaxis  ticklabel prepend ""
+@    xaxis  ticklabel angle 0
+@    xaxis  ticklabel skip 0
+@    xaxis  ticklabel stagger 0
+@    xaxis  ticklabel place normal
+@    xaxis  ticklabel offset auto
+@    xaxis  ticklabel offset 0.000000 , 0.010000
+@    xaxis  ticklabel start type auto
+@    xaxis  ticklabel start 0.000000
+@    xaxis  ticklabel stop type auto
+@    xaxis  ticklabel stop 0.000000
+@    xaxis  ticklabel char size 1.000000
+@    xaxis  ticklabel font 0
+@    xaxis  ticklabel color 1
+@    xaxis  tick place both
+@    xaxis  tick spec type none
+@    yaxis  on
+@    yaxis  type zero false
+@    yaxis  offset 0.000000 , 0.000000
+@    yaxis  bar on
+@    yaxis  bar color 1
+@    yaxis  bar linestyle 1
+@    yaxis  bar linewidth 1.0
+@    yaxis  label ""
+@    yaxis  label layout para
+@    yaxis  label place auto
+@    yaxis  label char size 1.000000
+@    yaxis  label font 0
+@    yaxis  label color 1
+@    yaxis  label place normal
+@    yaxis  tick on
+@    yaxis  tick major 500
+@    yaxis  tick minor ticks 1
+@    yaxis  tick default 6
+@    yaxis  tick place rounded true
+@    yaxis  tick in
+@    yaxis  tick major size 1.000000
+@    yaxis  tick major color 1
+@    yaxis  tick major linewidth 1.0
+@    yaxis  tick major linestyle 1
+@    yaxis  tick major grid off
+@    yaxis  tick minor color 1
+@    yaxis  tick minor linewidth 1.0
+@    yaxis  tick minor linestyle 1
+@    yaxis  tick minor grid off
+@    yaxis  tick minor size 0.500000
+@    yaxis  ticklabel on
+@    yaxis  ticklabel format general
+@    yaxis  ticklabel prec 5
+@    yaxis  ticklabel formula ""
+@    yaxis  ticklabel append ""
+@    yaxis  ticklabel prepend ""
+@    yaxis  ticklabel angle 0
+@    yaxis  ticklabel skip 0
+@    yaxis  ticklabel stagger 0
+@    yaxis  ticklabel place normal
+@    yaxis  ticklabel offset auto
+@    yaxis  ticklabel offset 0.000000 , 0.010000
+@    yaxis  ticklabel start type auto
+@    yaxis  ticklabel start 0.000000
+@    yaxis  ticklabel stop type auto
+@    yaxis  ticklabel stop 0.000000
+@    yaxis  ticklabel char size 1.000000
+@    yaxis  ticklabel font 0
+@    yaxis  ticklabel color 1
+@    yaxis  tick place both
+@    yaxis  tick spec type none
+@    altxaxis  off
+@    altyaxis  off
+@    legend on
+@    legend loctype view
+@    legend x1 0.5
+@    legend y1 0.8
+@    legend box color 1
+@    legend box pattern 1
+@    legend box linewidth 1.0
+@    legend box linestyle 1
+@    legend box fill color 0
+@    legend box fill pattern 1
+@    legend font 0
+@    legend char size 1.000000
+@    legend color 1
+@    legend length 4
+@    legend vgap 1
+@    legend hgap 1
+@    legend invert false
+@    frame type 0
+@    frame linestyle 1
+@    frame linewidth 1.0
+@    frame color 1
+@    frame pattern 1
+@    frame background color 0
+@    frame background pattern 0
+@    s0 hidden false
+@    s0 type xy
+@    s0 symbol 1
+@    s0 symbol size 0.000000
+@    s0 symbol color 1
+@    s0 symbol pattern 1
+@    s0 symbol fill color 1
+@    s0 symbol fill pattern 0
+@    s0 symbol linewidth 1.0
+@    s0 symbol linestyle 1
+@    s0 symbol char 65
+@    s0 symbol char font 0
+@    s0 symbol skip 0
+@    s0 line type 0
+@    s0 line linestyle 1
+@    s0 line linewidth 1.0
+@    s0 line color 1
+@    s0 line pattern 1
+@    s0 baseline type 0
+@    s0 baseline off
+@    s0 dropline off
+@    s0 fill type 0
+@    s0 fill rule 0
+@    s0 fill color 1
+@    s0 fill pattern 1
+@    s0 avalue off
+@    s0 avalue type 2
+@    s0 avalue char size 1.000000
+@    s0 avalue font 0
+@    s0 avalue color 1
+@    s0 avalue rot 0
+@    s0 avalue format general
+@    s0 avalue prec 3
+@    s0 avalue prepend ""
+@    s0 avalue append ""
+@    s0 avalue offset 0.000000 , 0.000000
+@    s0 errorbar on
+@    s0 errorbar place both
+@    s0 errorbar color 1
+@    s0 errorbar pattern 1
+@    s0 errorbar size 1.000000
+@    s0 errorbar linewidth 1.0
+@    s0 errorbar linestyle 1
+@    s0 errorbar riser linewidth 1.0
+@    s0 errorbar riser linestyle 1
+@    s0 errorbar riser clip off
+@    s0 errorbar riser clip length 0.100000
+@    s0 comment "Cols 1:2"
+@    s0 legend  ""
+@g2 on
+@g2 hidden false
+@g2 type XY
+@g2 stacked false
+@g2 bar hgap 0.000000
+@g2 fixedpoint off
+@g2 fixedpoint type 0
+@g2 fixedpoint xy 0.000000, 0.000000
+@g2 fixedpoint format general general
+@g2 fixedpoint prec 6, 6
+@with g2
+@    world xmin -400
+@    world xmax 1400
+@    world ymin -900
+@    world ymax 900
+@    stack world 0, 0, 0, 0
+@    znorm 1
+@    view xmin 0.750000
+@    view xmax 1.100000
+@    view ymin 0.550000
+@    view ymax 0.900000
+@    title ""
+@    title font 0
+@    title size 1.500000
+@    title color 1
+@    subtitle ""
+@    subtitle font 0
+@    subtitle size 1.000000
+@    subtitle color 1
+@    xaxes scale Normal
+@    yaxes scale Normal
+@    xaxes invert off
+@    yaxes invert off
+@    xaxis  on
+@    xaxis  type zero false
+@    xaxis  offset 0.000000 , 0.000000
+@    xaxis  bar on
+@    xaxis  bar color 1
+@    xaxis  bar linestyle 1
+@    xaxis  bar linewidth 1.0
+@    xaxis  label ""
+@    xaxis  label layout para
+@    xaxis  label place auto
+@    xaxis  label char size 1.000000
+@    xaxis  label font 0
+@    xaxis  label color 1
+@    xaxis  label place normal
+@    xaxis  tick on
+@    xaxis  tick major 500
+@    xaxis  tick minor ticks 1
+@    xaxis  tick default 6
+@    xaxis  tick place rounded true
+@    xaxis  tick in
+@    xaxis  tick major size 1.000000
+@    xaxis  tick major color 1
+@    xaxis  tick major linewidth 1.0
+@    xaxis  tick major linestyle 1
+@    xaxis  tick major grid off
+@    xaxis  tick minor color 1
+@    xaxis  tick minor linewidth 1.0
+@    xaxis  tick minor linestyle 1
+@    xaxis  tick minor grid off
+@    xaxis  tick minor size 0.500000
+@    xaxis  ticklabel on
+@    xaxis  ticklabel format general
+@    xaxis  ticklabel prec 5
+@    xaxis  ticklabel formula ""
+@    xaxis  ticklabel append ""
+@    xaxis  ticklabel prepend ""
+@    xaxis  ticklabel angle 0
+@    xaxis  ticklabel skip 0
+@    xaxis  ticklabel stagger 0
+@    xaxis  ticklabel place normal
+@    xaxis  ticklabel offset auto
+@    xaxis  ticklabel offset 0.000000 , 0.010000
+@    xaxis  ticklabel start type auto
+@    xaxis  ticklabel start 0.000000
+@    xaxis  ticklabel stop type auto
+@    xaxis  ticklabel stop 0.000000
+@    xaxis  ticklabel char size 1.000000
+@    xaxis  ticklabel font 0
+@    xaxis  ticklabel color 1
+@    xaxis  tick place both
+@    xaxis  tick spec type none
+@    yaxis  on
+@    yaxis  type zero false
+@    yaxis  offset 0.000000 , 0.000000
+@    yaxis  bar on
+@    yaxis  bar color 1
+@    yaxis  bar linestyle 1
+@    yaxis  bar linewidth 1.0
+@    yaxis  label ""
+@    yaxis  label layout para
+@    yaxis  label place auto
+@    yaxis  label char size 1.000000
+@    yaxis  label font 0
+@    yaxis  label color 1
+@    yaxis  label place normal
+@    yaxis  tick on
+@    yaxis  tick major 500
+@    yaxis  tick minor ticks 1
+@    yaxis  tick default 6
+@    yaxis  tick place rounded true
+@    yaxis  tick in
+@    yaxis  tick major size 1.000000
+@    yaxis  tick major color 1
+@    yaxis  tick major linewidth 1.0
+@    yaxis  tick major linestyle 1
+@    yaxis  tick major grid off
+@    yaxis  tick minor color 1
+@    yaxis  tick minor linewidth 1.0
+@    yaxis  tick minor linestyle 1
+@    yaxis  tick minor grid off
+@    yaxis  tick minor size 0.500000
+@    yaxis  ticklabel on
+@    yaxis  ticklabel format general
+@    yaxis  ticklabel prec 5
+@    yaxis  ticklabel formula ""
+@    yaxis  ticklabel append ""
+@    yaxis  ticklabel prepend ""
+@    yaxis  ticklabel angle 0
+@    yaxis  ticklabel skip 0
+@    yaxis  ticklabel stagger 0
+@    yaxis  ticklabel place normal
+@    yaxis  ticklabel offset auto
+@    yaxis  ticklabel offset 0.000000 , 0.010000
+@    yaxis  ticklabel start type auto
+@    yaxis  ticklabel start 0.000000
+@    yaxis  ticklabel stop type auto
+@    yaxis  ticklabel stop 0.000000
+@    yaxis  ticklabel char size 1.000000
+@    yaxis  ticklabel font 0
+@    yaxis  ticklabel color 1
+@    yaxis  tick place both
+@    yaxis  tick spec type none
+@    altxaxis  off
+@    altyaxis  off
+@    legend on
+@    legend loctype view
+@    legend x1 0.5
+@    legend y1 0.8
+@    legend box color 1
+@    legend box pattern 1
+@    legend box linewidth 1.0
+@    legend box linestyle 1
+@    legend box fill color 0
+@    legend box fill pattern 1
+@    legend font 0
+@    legend char size 1.000000
+@    legend color 1
+@    legend length 4
+@    legend vgap 1
+@    legend hgap 1
+@    legend invert false
+@    frame type 0
+@    frame linestyle 1
+@    frame linewidth 1.0
+@    frame color 1
+@    frame pattern 1
+@    frame background color 0
+@    frame background pattern 0
+@    s0 hidden false
+@    s0 type xy
+@    s0 symbol 1
+@    s0 symbol size 0.000000
+@    s0 symbol color 1
+@    s0 symbol pattern 1
+@    s0 symbol fill color 1
+@    s0 symbol fill pattern 0
+@    s0 symbol linewidth 1.0
+@    s0 symbol linestyle 1
+@    s0 symbol char 65
+@    s0 symbol char font 0
+@    s0 symbol skip 0
+@    s0 line type 0
+@    s0 line linestyle 1
+@    s0 line linewidth 1.0
+@    s0 line color 1
+@    s0 line pattern 1
+@    s0 baseline type 0
+@    s0 baseline off
+@    s0 dropline off
+@    s0 fill type 0
+@    s0 fill rule 0
+@    s0 fill color 1
+@    s0 fill pattern 1
+@    s0 avalue off
+@    s0 avalue type 2
+@    s0 avalue char size 1.000000
+@    s0 avalue font 0
+@    s0 avalue color 1
+@    s0 avalue rot 0
+@    s0 avalue format general
+@    s0 avalue prec 3
+@    s0 avalue prepend ""
+@    s0 avalue append ""
+@    s0 avalue offset 0.000000 , 0.000000
+@    s0 errorbar on
+@    s0 errorbar place both
+@    s0 errorbar color 1
+@    s0 errorbar pattern 1
+@    s0 errorbar size 1.000000
+@    s0 errorbar linewidth 1.0
+@    s0 errorbar linestyle 1
+@    s0 errorbar riser linewidth 1.0
+@    s0 errorbar riser linestyle 1
+@    s0 errorbar riser clip off
+@    s0 errorbar riser clip length 0.100000
+@    s0 comment "Cols 3:2"
+@    s0 legend  ""
+@target G0.S0
+@type xy
+       -817.1337         113.6783
+       -817.1337         109.2895
+       -817.1337         105.6263
+       -817.1337          102.692
+       -817.1337          100.489
+       -817.1337          99.0194
+       -817.1337          98.2842
+       -817.1337          98.2842
+       -817.1337          99.0194
+       -817.1337          100.489
+       -817.1337          102.692
+       -817.1337         105.6263
+       -817.1337         109.2895
+       -817.1337         113.6783
+       -768.4574         107.4391
+       -768.4574         102.3282
+       -768.4574          97.9393
+       -768.4574          94.2762
+       -768.4574          91.3419
+       -768.4574          89.1389
+       -768.4574          87.6692
+       -768.4574          86.9341
+       -768.4574          86.9341
+       -768.4574          87.6692
+       -768.4574          89.1389
+       -768.4574          91.3419
+       -768.4574          94.2762
+       -768.4574          97.9393
+       -768.4574         102.3282
+       -768.4574         107.4391
+       -719.6271         102.5817
+       -719.6271          96.7532
+       -719.6271          91.6424
+       -719.6271          87.2535
+       -719.6271          83.5904
+       -719.6271           80.656
+       -719.6271          78.4531
+       -719.6271          76.9834
+       -719.6271          76.2482
+       -719.6271          76.2482
+       -719.6271          76.9834
+       -719.6271          78.4531
+       -719.6271           80.656
+       -719.6271          83.5904
+       -719.6271          87.2535
+       -719.6271          91.6424
+       -719.6271          96.7532
+       -719.6271         102.5817
+       -670.6511          99.1098
+       -670.6511          92.5685
+       -670.6511            86.74
+       -670.6511          81.6291
+       -670.6511          77.2402
+       -670.6511          73.5771
+       -670.6511          70.6428
+       -670.6511          68.4398
+       -670.6511          66.9702
+       -670.6511           66.235
+       -670.6511           66.235
+       -670.6511          66.9702
+       -670.6511          68.4398
+       -670.6511          70.6428
+       -670.6511          73.5771
+       -670.6511          77.2402
+       -670.6511          81.6291
+       -670.6511            86.74
+       -670.6511          92.5685
+       -670.6511          99.1098
+       -621.5383          97.0256
+       -621.5383           89.777
+       -621.5383          83.2357
+       -621.5383          77.4072
+       -621.5383          72.2963
+       -621.5383          67.9074
+       -621.5383          64.2443
+       -621.5383            61.31
+       -621.5383           59.107
+       -621.5383          57.6373
+       -621.5383          56.9022
+       -621.5383          56.9022
+       -621.5383          57.6373
+       -621.5383           59.107
+       -621.5383            61.31
+       -621.5383          64.2443
+       -621.5383          67.9074
+       -621.5383          72.2963
+       -621.5383          77.4072
+       -621.5383          83.2357
+       -621.5383           89.777
+       -621.5383          97.0256
+       -572.2976          96.3307
+       -572.2976          88.3807
+       -572.2976          81.1321
+       -572.2976          74.5908
+       -572.2976          68.7622
+       -572.2976          63.6514
+       -572.2976          59.2625
+       -572.2976          55.5994
+       -572.2976          52.6651
+       -572.2976          50.4621
+       -572.2976          48.9924
+       -572.2976          48.2573
+       -572.2976          48.2573
+       -572.2976          48.9924
+       -572.2976          50.4621
+       -572.2976          52.6651
+       -572.2976          55.5994
+       -572.2976          59.2625
+       -572.2976          63.6514
+       -572.2976          68.7622
+       -572.2976          74.5908
+       -572.2976          81.1321
+       -572.2976          88.3807
+       -572.2976          96.3307
+       -522.9382          97.0256
+       -522.9382          88.3807
+       -522.9382          80.4307
+       -522.9382          73.1821
+       -522.9382          66.6407
+       -522.9382          60.8122
+       -522.9382          55.7014
+       -522.9382          51.3125
+       -522.9382          47.6494
+       -522.9382          44.7151
+       -522.9382          42.5121
+       -522.9382          41.0424
+       -522.9382          40.3073
+       -522.9382          40.3073
+       -522.9382          41.0424
+       -522.9382          42.5121
+       -522.9382          44.7151
+       -522.9382          47.6494
+       -522.9382          51.3125
+       -522.9382          55.7014
+       -522.9382          60.8122
+       -522.9382          66.6407
+       -522.9382          73.1821
+       -522.9382          80.4307
+       -522.9382          88.3807
+       -522.9382          97.0256
+       -473.4697          99.1098
+       -473.4697           89.777
+       -473.4697          81.1321
+       -473.4697          73.1821
+       -473.4697          65.9334
+       -473.4697          59.3921
+       -473.4697          53.5636
+       -473.4697          48.4527
+       -473.4697          44.0639
+       -473.4697          40.4007
+       -473.4697          37.4664
+       -473.4697          35.2635
+       -473.4697          33.7938
+       -473.4697          33.0586
+       -473.4697          33.0586
+       -473.4697          33.7938
+       -473.4697          35.2635
+       -473.4697          37.4664
+       -473.4697          40.4007
+       -473.4697          44.0639
+       -473.4697          48.4527
+       -473.4697          53.5636
+       -473.4697          59.3921
+       -473.4697          65.9334
+       -473.4697          73.1821
+       -473.4697          81.1321
+       -473.4697           89.777
+       -473.4697          99.1098
+       -423.9018         102.5817
+       -423.9018          92.5685
+       -423.9018          83.2357
+       -423.9018          74.5908
+       -423.9018          66.6407
+       -423.9018          59.3921
+       -423.9018          52.8508
+       -423.9018          47.0223
+       -423.9018          41.9114
+       -423.9018          37.5226
+       -423.9018          33.8594
+       -423.9018          30.9251
+       -423.9018          28.7222
+       -423.9018          27.2525
+       -423.9018          26.5173
+       -423.9018          26.5173
+       -423.9018          27.2525
+       -423.9018          28.7222
+       -423.9018          30.9251
+       -423.9018          33.8594
+       -423.9018          37.5226
+       -423.9018          41.9114
+       -423.9018          47.0223
+       -423.9018          52.8508
+       -423.9018          59.3921
+       -423.9018          66.6407
+       -423.9018          74.5908
+       -423.9018          83.2357
+       -423.9018          92.5685
+       -423.9018         102.5817
+       -374.2443         107.4391
+       -374.2443          96.7532
+       -374.2443            86.74
+       -374.2443          77.4072
+       -374.2443          68.7622
+       -374.2443          60.8122
+       -374.2443          53.5636
+       -374.2443          47.0223
+       -374.2443          41.1938
+       -374.2443          36.0829
+       -374.2443          31.6941
+       -374.2443          28.0309
+       -374.2443          25.0966
+       -374.2443          22.8936
+       -374.2443           21.424
+       -374.2443          20.6888
+       -374.2443          20.6888
+       -374.2443           21.424
+       -374.2443          22.8936
+       -374.2443          25.0966
+       -374.2443          28.0309
+       -374.2443          31.6941
+       -374.2443          36.0829
+       -374.2443          41.1938
+       -374.2443          47.0223
+       -374.2443          53.5636
+       -374.2443          60.8122
+       -374.2443          68.7622
+       -374.2443          77.4072
+       -374.2443            86.74
+       -374.2443          96.7532
+       -374.2443         107.4391
+       -324.5073         113.6783
+       -324.5073         102.3282
+       -324.5073          91.6424
+       -324.5073          81.6291
+       -324.5073          72.2963
+       -324.5073          63.6514
+       -324.5073          55.7014
+       -324.5073          48.4527
+       -324.5073          41.9114
+       -324.5073          36.0829
+       -324.5073          30.9721
+       -324.5073          26.5832
+       -324.5073            22.92
+       -324.5073          19.9857
+       -324.5073          17.7828
+       -324.5073          16.3131
+       -324.5073          15.5779
+       -324.5073          15.5779
+       -324.5073          16.3131
+       -324.5073          17.7828
+       -324.5073          19.9857
+       -324.5073            22.92
+       -324.5073          26.5832
+       -324.5073          30.9721
+       -324.5073          36.0829
+       -324.5073          41.9114
+       -324.5073          48.4527
+       -324.5073          55.7014
+       -324.5073          63.6514
+       -324.5073          72.2963
+       -324.5073          81.6291
+       -324.5073          91.6424
+       -324.5073         102.3282
+       -324.5073         113.6783
+       -274.7011         109.2895
+       -274.7011          97.9393
+       -274.7011          87.2535
+       -274.7011          77.2402
+       -274.7011          67.9074
+       -274.7011          59.2625
+       -274.7011          51.3125
+       -274.7011          44.0639
+       -274.7011          37.5226
+       -274.7011          31.6941
+       -274.7011          26.5832
+       -274.7011          22.1943
+       -274.7011          18.5312
+       -274.7011          15.5969
+       -274.7011          13.3939
+       -274.7011          11.9242
+       -274.7011          11.1891
+       -274.7011          11.1891
+       -274.7011          11.9242
+       -274.7011          13.3939
+       -274.7011          15.5969
+       -274.7011          18.5312
+       -274.7011          22.1943
+       -274.7011          26.5832
+       -274.7011          31.6941
+       -274.7011          37.5226
+       -274.7011          44.0639
+       -274.7011          51.3125
+       -274.7011          59.2625
+       -274.7011          67.9074
+       -274.7011          77.2402
+       -274.7011          87.2535
+       -274.7011          97.9393
+       -274.7011         109.2895
+       -224.8361         105.6263
+       -224.8361          94.2762
+       -224.8361          83.5904
+       -224.8361          73.5771
+       -224.8361          64.2443
+       -224.8361          55.5994
+       -224.8361          47.6494
+       -224.8361          40.4007
+       -224.8361          33.8594
+       -224.8361          28.0309
+       -224.8361            22.92
+       -224.8361          18.5312
+       -224.8361           14.868
+       -224.8361          11.9337
+       -224.8361           9.7308
+       -224.8361           8.2611
+       -224.8361           7.5259
+       -224.8361           7.5259
+       -224.8361           8.2611
+       -224.8361           9.7308
+       -224.8361          11.9337
+       -224.8361           14.868
+       -224.8361          18.5312
+       -224.8361            22.92
+       -224.8361          28.0309
+       -224.8361          33.8594
+       -224.8361          40.4007
+       -224.8361          47.6494
+       -224.8361          55.5994
+       -224.8361          64.2443
+       -224.8361          73.5771
+       -224.8361          83.5904
+       -224.8361          94.2762
+       -224.8361         105.6263
+       -174.9228          102.692
+       -174.9228          91.3419
+       -174.9228           80.656
+       -174.9228          70.6428
+       -174.9228            61.31
+       -174.9228          52.6651
+       -174.9228          44.7151
+       -174.9228          37.4664
+       -174.9228          30.9251
+       -174.9228          25.0966
+       -174.9228          19.9857
+       -174.9228          15.5969
+       -174.9228          11.9337
+       -174.9228           8.9994
+       -174.9228           6.7965
+       -174.9228           5.3268
+       -174.9228           4.5916
+       -174.9228           4.5916
+       -174.9228           5.3268
+       -174.9228           6.7965
+       -174.9228           8.9994
+       -174.9228          11.9337
+       -174.9228          15.5969
+       -174.9228          19.9857
+       -174.9228          25.0966
+       -174.9228          30.9251
+       -174.9228          37.4664
+       -174.9228          44.7151
+       -174.9228          52.6651
+       -174.9228            61.31
+       -174.9228          70.6428
+       -174.9228           80.656
+       -174.9228          91.3419
+       -174.9228          102.692
+       -124.9719          100.489
+       -124.9719          89.1389
+       -124.9719          78.4531
+       -124.9719          68.4398
+       -124.9719           59.107
+       -124.9719          50.4621
+       -124.9719          42.5121
+       -124.9719          35.2635
+       -124.9719          28.7222
+       -124.9719          22.8936
+       -124.9719          17.7828
+       -124.9719          13.3939
+       -124.9719           9.7308
+       -124.9719           6.7965
+       -124.9719           4.5935
+       -124.9719           3.1238
+       -124.9719           2.3887
+       -124.9719           2.3887
+       -124.9719           3.1238
+       -124.9719           4.5935
+       -124.9719           6.7965
+       -124.9719           9.7308
+       -124.9719          13.3939
+       -124.9719          17.7828
+       -124.9719          22.8936
+       -124.9719          28.7222
+       -124.9719          35.2635
+       -124.9719          42.5121
+       -124.9719          50.4621
+       -124.9719           59.107
+       -124.9719          68.4398
+       -124.9719          78.4531
+       -124.9719          89.1389
+       -124.9719          100.489
+        -74.9939          99.0194
+        -74.9939          87.6692
+        -74.9939          76.9834
+        -74.9939          66.9702
+        -74.9939          57.6373
+        -74.9939          48.9924
+        -74.9939          41.0424
+        -74.9939          33.7938
+        -74.9939          27.2525
+        -74.9939           21.424
+        -74.9939          16.3131
+        -74.9939          11.9242
+        -74.9939           8.2611
+        -74.9939           5.3268
+        -74.9939           3.1238
+        -74.9939           3.1238
+        -74.9939           5.3268
+        -74.9939           8.2611
+        -74.9939          11.9242
+        -74.9939          16.3131
+        -74.9939           21.424
+        -74.9939          27.2525
+        -74.9939          33.7938
+        -74.9939          41.0424
+        -74.9939          48.9924
+        -74.9939          57.6373
+        -74.9939          66.9702
+        -74.9939          76.9834
+        -74.9939          87.6692
+        -74.9939          99.0194
+        -24.9998          98.2842
+        -24.9998          86.9341
+        -24.9998          76.2482
+        -24.9998           66.235
+        -24.9998          56.9022
+        -24.9998          48.2573
+        -24.9998          40.3073
+        -24.9998          33.0586
+        -24.9998          26.5173
+        -24.9998          20.6888
+        -24.9998          15.5779
+        -24.9998          11.1891
+        -24.9998           7.5259
+        -24.9998           4.5916
+        -24.9998           2.3887
+        -24.9998           2.3887
+        -24.9998           4.5916
+        -24.9998           7.5259
+        -24.9998          11.1891
+        -24.9998          15.5779
+        -24.9998          20.6888
+        -24.9998          26.5173
+        -24.9998          33.0586
+        -24.9998          40.3073
+        -24.9998          48.2573
+        -24.9998          56.9022
+        -24.9998           66.235
+        -24.9998          76.2482
+        -24.9998          86.9341
+        -24.9998          98.2842
+         24.9998          98.2842
+         24.9998          86.9341
+         24.9998          76.2482
+         24.9998           66.235
+         24.9998          56.9022
+         24.9998          48.2573
+         24.9998          40.3073
+         24.9998          33.0586
+         24.9998          26.5173
+         24.9998          20.6888
+         24.9998          15.5779
+         24.9998          11.1891
+         24.9998           7.5259
+         24.9998           4.5916
+         24.9998           2.3887
+         24.9998           2.3887
+         24.9998           4.5916
+         24.9998           7.5259
+         24.9998          11.1891
+         24.9998          15.5779
+         24.9998          20.6888
+         24.9998          26.5173
+         24.9998          33.0586
+         24.9998          40.3073
+         24.9998          48.2573
+         24.9998          56.9022
+         24.9998           66.235
+         24.9998          76.2482
+         24.9998          86.9341
+         24.9998          98.2842
+         74.9939          99.0194
+         74.9939          87.6692
+         74.9939          76.9834
+         74.9939          66.9702
+         74.9939          57.6373
+         74.9939          48.9924
+         74.9939          41.0424
+         74.9939          33.7938
+         74.9939          27.2525
+         74.9939           21.424
+         74.9939          16.3131
+         74.9939          11.9242
+         74.9939           8.2611
+         74.9939           5.3268
+         74.9939           3.1238
+         74.9939           3.1238
+         74.9939           5.3268
+         74.9939           8.2611
+         74.9939          11.9242
+         74.9939          16.3131
+         74.9939           21.424
+         74.9939          27.2525
+         74.9939          33.7938
+         74.9939          41.0424
+         74.9939          48.9924
+         74.9939          57.6373
+         74.9939          66.9702
+         74.9939          76.9834
+         74.9939          87.6692
+         74.9939          99.0194
+        124.9719          100.489
+        124.9719          89.1389
+        124.9719          78.4531
+        124.9719          68.4398
+        124.9719           59.107
+        124.9719          50.4621
+        124.9719          42.5121
+        124.9719          35.2635
+        124.9719          28.7222
+        124.9719          22.8936
+        124.9719          17.7828
+        124.9719          13.3939
+        124.9719           9.7308
+        124.9719           6.7965
+        124.9719           4.5935
+        124.9719           3.1238
+        124.9719           2.3887
+        124.9719           2.3887
+        124.9719           3.1238
+        124.9719           4.5935
+        124.9719           6.7965
+        124.9719           9.7308
+        124.9719          13.3939
+        124.9719          17.7828
+        124.9719          22.8936
+        124.9719          28.7222
+        124.9719          35.2635
+        124.9719          42.5121
+        124.9719          50.4621
+        124.9719           59.107
+        124.9719          68.4398
+        124.9719          78.4531
+        124.9719          89.1389
+        124.9719          100.489
+        174.9228          102.692
+        174.9228          91.3419
+        174.9228           80.656
+        174.9228          70.6428
+        174.9228            61.31
+        174.9228          52.6651
+        174.9228          44.7151
+        174.9228          37.4664
+        174.9228          30.9251
+        174.9228          25.0966
+        174.9228          19.9857
+        174.9228          15.5969
+        174.9228          11.9337
+        174.9228           8.9994
+        174.9228           6.7965
+        174.9228           5.3268
+        174.9228           4.5916
+        174.9228           4.5916
+        174.9228           5.3268
+        174.9228           6.7965
+        174.9228           8.9994
+        174.9228          11.9337
+        174.9228          15.5969
+        174.9228          19.9857
+        174.9228          25.0966
+        174.9228          30.9251
+        174.9228          37.4664
+        174.9228          44.7151
+        174.9228          52.6651
+        174.9228            61.31
+        174.9228          70.6428
+        174.9228           80.656
+        174.9228          91.3419
+        174.9228          102.692
+        224.8361         105.6263
+        224.8361          94.2762
+        224.8361          83.5904
+        224.8361          73.5771
+        224.8361          64.2443
+        224.8361          55.5994
+        224.8361          47.6494
+        224.8361          40.4007
+        224.8361          33.8594
+        224.8361          28.0309
+        224.8361            22.92
+        224.8361          18.5312
+        224.8361           14.868
+        224.8361          11.9337
+        224.8361           9.7308
+        224.8361           8.2611
+        224.8361           7.5259
+        224.8361           7.5259
+        224.8361           8.2611
+        224.8361           9.7308
+        224.8361          11.9337
+        224.8361           14.868
+        224.8361          18.5312
+        224.8361            22.92
+        224.8361          28.0309
+        224.8361          33.8594
+        224.8361          40.4007
+        224.8361          47.6494
+        224.8361          55.5994
+        224.8361          64.2443
+        224.8361          73.5771
+        224.8361          83.5904
+        224.8361          94.2762
+        224.8361         105.6263
+        274.7011         109.2895
+        274.7011          97.9393
+        274.7011          87.2535
+        274.7011          77.2402
+        274.7011          67.9074
+        274.7011          59.2625
+        274.7011          51.3125
+        274.7011          44.0639
+        274.7011          37.5226
+        274.7011          31.6941
+        274.7011          26.5832
+        274.7011          22.1943
+        274.7011          18.5312
+        274.7011          15.5969
+        274.7011          13.3939
+        274.7011          11.9242
+        274.7011          11.1891
+        274.7011          11.1891
+        274.7011          11.9242
+        274.7011          13.3939
+        274.7011          15.5969
+        274.7011          18.5312
+        274.7011          22.1943
+        274.7011          26.5832
+        274.7011          31.6941
+        274.7011          37.5226
+        274.7011          44.0639
+        274.7011          51.3125
+        274.7011          59.2625
+        274.7011          67.9074
+        274.7011          77.2402
+        274.7011          87.2535
+        274.7011          97.9393
+        274.7011         109.2895
+        324.5073         113.6783
+        324.5073         102.3282
+        324.5073          91.6424
+        324.5073          81.6291
+        324.5073          72.2963
+        324.5073          63.6514
+        324.5073          55.7014
+        324.5073          48.4527
+        324.5073          41.9114
+        324.5073          36.0829
+        324.5073          30.9721
+        324.5073          26.5832
+        324.5073            22.92
+        324.5073          19.9857
+        324.5073          17.7828
+        324.5073          16.3131
+        324.5073          15.5779
+        324.5073          15.5779
+        324.5073          16.3131
+        324.5073          17.7828
+        324.5073          19.9857
+        324.5073            22.92
+        324.5073          26.5832
+        324.5073          30.9721
+        324.5073          36.0829
+        324.5073          41.9114
+        324.5073          48.4527
+        324.5073          55.7014
+        324.5073          63.6514
+        324.5073          72.2963
+        324.5073          81.6291
+        324.5073          91.6424
+        324.5073         102.3282
+        324.5073         113.6783
+        374.2443         107.4391
+        374.2443          96.7532
+        374.2443            86.74
+        374.2443          77.4072
+        374.2443          68.7622
+        374.2443          60.8122
+        374.2443          53.5636
+        374.2443          47.0223
+        374.2443          41.1938
+        374.2443          36.0829
+        374.2443          31.6941
+        374.2443          28.0309
+        374.2443          25.0966
+        374.2443          22.8936
+        374.2443           21.424
+        374.2443          20.6888
+        374.2443          20.6888
+        374.2443           21.424
+        374.2443          22.8936
+        374.2443          25.0966
+        374.2443          28.0309
+        374.2443          31.6941
+        374.2443          36.0829
+        374.2443          41.1938
+        374.2443          47.0223
+        374.2443          53.5636
+        374.2443          60.8122
+        374.2443          68.7622
+        374.2443          77.4072
+        374.2443            86.74
+        374.2443          96.7532
+        374.2443         107.4391
+        423.9018         102.5817
+        423.9018          92.5685
+        423.9018          83.2357
+        423.9018          74.5908
+        423.9018          66.6407
+        423.9018          59.3921
+        423.9018          52.8508
+        423.9018          47.0223
+        423.9018          41.9114
+        423.9018          37.5226
+        423.9018          33.8594
+        423.9018          30.9251
+        423.9018          28.7222
+        423.9018          27.2525
+        423.9018          26.5173
+        423.9018          26.5173
+        423.9018          27.2525
+        423.9018          28.7222
+        423.9018          30.9251
+        423.9018          33.8594
+        423.9018          37.5226
+        423.9018          41.9114
+        423.9018          47.0223
+        423.9018          52.8508
+        423.9018          59.3921
+        423.9018          66.6407
+        423.9018          74.5908
+        423.9018          83.2357
+        423.9018          92.5685
+        423.9018         102.5817
+        473.4697          99.1098
+        473.4697           89.777
+        473.4697          81.1321
+        473.4697          73.1821
+        473.4697          65.9334
+        473.4697          59.3921
+        473.4697          53.5636
+        473.4697          48.4527
+        473.4697          44.0639
+        473.4697          40.4007
+        473.4697          37.4664
+        473.4697          35.2635
+        473.4697          33.7938
+        473.4697          33.0586
+        473.4697          33.0586
+        473.4697          33.7938
+        473.4697          35.2635
+        473.4697          37.4664
+        473.4697          40.4007
+        473.4697          44.0639
+        473.4697          48.4527
+        473.4697          53.5636
+        473.4697          59.3921
+        473.4697          65.9334
+        473.4697          73.1821
+        473.4697          81.1321
+        473.4697           89.777
+        473.4697          99.1098
+        522.9382          97.0256
+        522.9382          88.3807
+        522.9382          80.4307
+        522.9382          73.1821
+        522.9382          66.6407
+        522.9382          60.8122
+        522.9382          55.7014
+        522.9382          51.3125
+        522.9382          47.6494
+        522.9382          44.7151
+        522.9382          42.5121
+        522.9382          41.0424
+        522.9382          40.3073
+        522.9382          40.3073
+        522.9382          41.0424
+        522.9382          42.5121
+        522.9382          44.7151
+        522.9382          47.6494
+        522.9382          51.3125
+        522.9382          55.7014
+        522.9382          60.8122
+        522.9382          66.6407
+        522.9382          73.1821
+        522.9382          80.4307
+        522.9382          88.3807
+        522.9382          97.0256
+        572.2976          96.3307
+        572.2976          88.3807
+        572.2976          81.1321
+        572.2976          74.5908
+        572.2976          68.7622
+        572.2976          63.6514
+        572.2976          59.2625
+        572.2976          55.5994
+        572.2976          52.6651
+        572.2976          50.4621
+        572.2976          48.9924
+        572.2976          48.2573
+        572.2976          48.2573
+        572.2976          48.9924
+        572.2976          50.4621
+        572.2976          52.6651
+        572.2976          55.5994
+        572.2976          59.2625
+        572.2976          63.6514
+        572.2976          68.7622
+        572.2976          74.5908
+        572.2976          81.1321
+        572.2976          88.3807
+        572.2976          96.3307
+        621.5383          97.0256
+        621.5383           89.777
+        621.5383          83.2357
+        621.5383          77.4072
+        621.5383          72.2963
+        621.5383          67.9074
+        621.5383          64.2443
+        621.5383            61.31
+        621.5383           59.107
+        621.5383          57.6373
+        621.5383          56.9022
+        621.5383          56.9022
+        621.5383          57.6373
+        621.5383           59.107
+        621.5383            61.31
+        621.5383          64.2443
+        621.5383          67.9074
+        621.5383          72.2963
+        621.5383          77.4072
+        621.5383          83.2357
+        621.5383           89.777
+        621.5383          97.0256
+        670.6511          99.1098
+        670.6511          92.5685
+        670.6511            86.74
+        670.6511          81.6291
+        670.6511          77.2402
+        670.6511          73.5771
+        670.6511          70.6428
+        670.6511          68.4398
+        670.6511          66.9702
+        670.6511           66.235
+        670.6511           66.235
+        670.6511          66.9702
+        670.6511          68.4398
+        670.6511          70.6428
+        670.6511          73.5771
+        670.6511          77.2402
+        670.6511          81.6291
+        670.6511            86.74
+        670.6511          92.5685
+        670.6511          99.1098
+        719.6271         102.5817
+        719.6271          96.7532
+        719.6271          91.6424
+        719.6271          87.2535
+        719.6271          83.5904
+        719.6271           80.656
+        719.6271          78.4531
+        719.6271          76.9834
+        719.6271          76.2482
+        719.6271          76.2482
+        719.6271          76.9834
+        719.6271          78.4531
+        719.6271           80.656
+        719.6271          83.5904
+        719.6271          87.2535
+        719.6271          91.6424
+        719.6271          96.7532
+        719.6271         102.5817
+        768.4574         107.4391
+        768.4574         102.3282
+        768.4574          97.9393
+        768.4574          94.2762
+        768.4574          91.3419
+        768.4574          89.1389
+        768.4574          87.6692
+        768.4574          86.9341
+        768.4574          86.9341
+        768.4574          87.6692
+        768.4574          89.1389
+        768.4574          91.3419
+        768.4574          94.2762
+        768.4574          97.9393
+        768.4574         102.3282
+        768.4574         107.4391
+        817.1337         113.6783
+        817.1337         109.2895
+        817.1337         105.6263
+        817.1337          102.692
+        817.1337          100.489
+        817.1337          99.0194
+        817.1337          98.2842
+        817.1337          98.2842
+        817.1337          99.0194
+        817.1337          100.489
+        817.1337          102.692
+        817.1337         105.6263
+        817.1337         109.2895
+        817.1337         113.6783
+&
+@target G1.S0
+@type xy
+       -817.1337        -324.5073
+       -817.1337        -274.7011
+       -817.1337        -224.8361
+       -817.1337        -174.9228
+       -817.1337        -124.9719
+       -817.1337         -74.9939
+       -817.1337         -24.9998
+       -817.1337          24.9998
+       -817.1337          74.9939
+       -817.1337         124.9719
+       -817.1337         174.9228
+       -817.1337         224.8361
+       -817.1337         274.7011
+       -817.1337         324.5073
+       -768.4574        -374.2443
+       -768.4574        -324.5073
+       -768.4574        -274.7011
+       -768.4574        -224.8361
+       -768.4574        -174.9228
+       -768.4574        -124.9719
+       -768.4574         -74.9939
+       -768.4574         -24.9998
+       -768.4574          24.9998
+       -768.4574          74.9939
+       -768.4574         124.9719
+       -768.4574         174.9228
+       -768.4574         224.8361
+       -768.4574         274.7011
+       -768.4574         324.5073
+       -768.4574         374.2443
+       -719.6271        -423.9018
+       -719.6271        -374.2443
+       -719.6271        -324.5073
+       -719.6271        -274.7011
+       -719.6271        -224.8361
+       -719.6271        -174.9228
+       -719.6271        -124.9719
+       -719.6271         -74.9939
+       -719.6271         -24.9998
+       -719.6271          24.9998
+       -719.6271          74.9939
+       -719.6271         124.9719
+       -719.6271         174.9228
+       -719.6271         224.8361
+       -719.6271         274.7011
+       -719.6271         324.5073
+       -719.6271         374.2443
+       -719.6271         423.9018
+       -670.6511        -473.4697
+       -670.6511        -423.9018
+       -670.6511        -374.2443
+       -670.6511        -324.5073
+       -670.6511        -274.7011
+       -670.6511        -224.8361
+       -670.6511        -174.9228
+       -670.6511        -124.9719
+       -670.6511         -74.9939
+       -670.6511         -24.9998
+       -670.6511          24.9998
+       -670.6511          74.9939
+       -670.6511         124.9719
+       -670.6511         174.9228
+       -670.6511         224.8361
+       -670.6511         274.7011
+       -670.6511         324.5073
+       -670.6511         374.2443
+       -670.6511         423.9018
+       -670.6511         473.4697
+       -621.5383        -522.9382
+       -621.5383        -473.4697
+       -621.5383        -423.9018
+       -621.5383        -374.2443
+       -621.5383        -324.5073
+       -621.5383        -274.7011
+       -621.5383        -224.8361
+       -621.5383        -174.9228
+       -621.5383        -124.9719
+       -621.5383         -74.9939
+       -621.5383         -24.9998
+       -621.5383          24.9998
+       -621.5383          74.9939
+       -621.5383         124.9719
+       -621.5383         174.9228
+       -621.5383         224.8361
+       -621.5383         274.7011
+       -621.5383         324.5073
+       -621.5383         374.2443
+       -621.5383         423.9018
+       -621.5383         473.4697
+       -621.5383         522.9382
+       -572.2976        -572.2976
+       -572.2976        -522.9382
+       -572.2976        -473.4697
+       -572.2976        -423.9018
+       -572.2976        -374.2443
+       -572.2976        -324.5073
+       -572.2976        -274.7011
+       -572.2976        -224.8361
+       -572.2976        -174.9228
+       -572.2976        -124.9719
+       -572.2976         -74.9939
+       -572.2976         -24.9998
+       -572.2976          24.9998
+       -572.2976          74.9939
+       -572.2976         124.9719
+       -572.2976         174.9228
+       -572.2976         224.8361
+       -572.2976         274.7011
+       -572.2976         324.5073
+       -572.2976         374.2443
+       -572.2976         423.9018
+       -572.2976         473.4697
+       -572.2976         522.9382
+       -572.2976         572.2976
+       -522.9382        -621.5383
+       -522.9382        -572.2976
+       -522.9382        -522.9382
+       -522.9382        -473.4697
+       -522.9382        -423.9018
+       -522.9382        -374.2443
+       -522.9382        -324.5073
+       -522.9382        -274.7011
+       -522.9382        -224.8361
+       -522.9382        -174.9228
+       -522.9382        -124.9719
+       -522.9382         -74.9939
+       -522.9382         -24.9998
+       -522.9382          24.9998
+       -522.9382          74.9939
+       -522.9382         124.9719
+       -522.9382         174.9228
+       -522.9382         224.8361
+       -522.9382         274.7011
+       -522.9382         324.5073
+       -522.9382         374.2443
+       -522.9382         423.9018
+       -522.9382         473.4697
+       -522.9382         522.9382
+       -522.9382         572.2976
+       -522.9382         621.5383
+       -473.4697        -670.6511
+       -473.4697        -621.5383
+       -473.4697        -572.2976
+       -473.4697        -522.9382
+       -473.4697        -473.4697
+       -473.4697        -423.9018
+       -473.4697        -374.2443
+       -473.4697        -324.5073
+       -473.4697        -274.7011
+       -473.4697        -224.8361
+       -473.4697        -174.9228
+       -473.4697        -124.9719
+       -473.4697         -74.9939
+       -473.4697         -24.9998
+       -473.4697          24.9998
+       -473.4697          74.9939
+       -473.4697         124.9719
+       -473.4697         174.9228
+       -473.4697         224.8361
+       -473.4697         274.7011
+       -473.4697         324.5073
+       -473.4697         374.2443
+       -473.4697         423.9018
+       -473.4697         473.4697
+       -473.4697         522.9382
+       -473.4697         572.2976
+       -473.4697         621.5383
+       -473.4697         670.6511
+       -423.9018        -719.6271
+       -423.9018        -670.6511
+       -423.9018        -621.5383
+       -423.9018        -572.2976
+       -423.9018        -522.9382
+       -423.9018        -473.4697
+       -423.9018        -423.9018
+       -423.9018        -374.2443
+       -423.9018        -324.5073
+       -423.9018        -274.7011
+       -423.9018        -224.8361
+       -423.9018        -174.9228
+       -423.9018        -124.9719
+       -423.9018         -74.9939
+       -423.9018         -24.9998
+       -423.9018          24.9998
+       -423.9018          74.9939
+       -423.9018         124.9719
+       -423.9018         174.9228
+       -423.9018         224.8361
+       -423.9018         274.7011
+       -423.9018         324.5073
+       -423.9018         374.2443
+       -423.9018         423.9018
+       -423.9018         473.4697
+       -423.9018         522.9382
+       -423.9018         572.2976
+       -423.9018         621.5383
+       -423.9018         670.6511
+       -423.9018         719.6271
+       -374.2443        -768.4574
+       -374.2443        -719.6271
+       -374.2443        -670.6511
+       -374.2443        -621.5383
+       -374.2443        -572.2976
+       -374.2443        -522.9382
+       -374.2443        -473.4697
+       -374.2443        -423.9018
+       -374.2443        -374.2443
+       -374.2443        -324.5073
+       -374.2443        -274.7011
+       -374.2443        -224.8361
+       -374.2443        -174.9228
+       -374.2443        -124.9719
+       -374.2443         -74.9939
+       -374.2443         -24.9998
+       -374.2443          24.9998
+       -374.2443          74.9939
+       -374.2443         124.9719
+       -374.2443         174.9228
+       -374.2443         224.8361
+       -374.2443         274.7011
+       -374.2443         324.5073
+       -374.2443         374.2443
+       -374.2443         423.9018
+       -374.2443         473.4697
+       -374.2443         522.9382
+       -374.2443         572.2976
+       -374.2443         621.5383
+       -374.2443         670.6511
+       -374.2443         719.6271
+       -374.2443         768.4574
+       -324.5073        -817.1337
+       -324.5073        -768.4574
+       -324.5073        -719.6271
+       -324.5073        -670.6511
+       -324.5073        -621.5383
+       -324.5073        -572.2976
+       -324.5073        -522.9382
+       -324.5073        -473.4697
+       -324.5073        -423.9018
+       -324.5073        -374.2443
+       -324.5073        -324.5073
+       -324.5073        -274.7011
+       -324.5073        -224.8361
+       -324.5073        -174.9228
+       -324.5073        -124.9719
+       -324.5073         -74.9939
+       -324.5073         -24.9998
+       -324.5073          24.9998
+       -324.5073          74.9939
+       -324.5073         124.9719
+       -324.5073         174.9228
+       -324.5073         224.8361
+       -324.5073         274.7011
+       -324.5073         324.5073
+       -324.5073         374.2443
+       -324.5073         423.9018
+       -324.5073         473.4697
+       -324.5073         522.9382
+       -324.5073         572.2976
+       -324.5073         621.5383
+       -324.5073         670.6511
+       -324.5073         719.6271
+       -324.5073         768.4574
+       -324.5073         817.1337
+       -274.7011        -817.1337
+       -274.7011        -768.4574
+       -274.7011        -719.6271
+       -274.7011        -670.6511
+       -274.7011        -621.5383
+       -274.7011        -572.2976
+       -274.7011        -522.9382
+       -274.7011        -473.4697
+       -274.7011        -423.9018
+       -274.7011        -374.2443
+       -274.7011        -324.5073
+       -274.7011        -274.7011
+       -274.7011        -224.8361
+       -274.7011        -174.9228
+       -274.7011        -124.9719
+       -274.7011         -74.9939
+       -274.7011         -24.9998
+       -274.7011          24.9998
+       -274.7011          74.9939
+       -274.7011         124.9719
+       -274.7011         174.9228
+       -274.7011         224.8361
+       -274.7011         274.7011
+       -274.7011         324.5073
+       -274.7011         374.2443
+       -274.7011         423.9018
+       -274.7011         473.4697
+       -274.7011         522.9382
+       -274.7011         572.2976
+       -274.7011         621.5383
+       -274.7011         670.6511
+       -274.7011         719.6271
+       -274.7011         768.4574
+       -274.7011         817.1337
+       -224.8361        -817.1337
+       -224.8361        -768.4574
+       -224.8361        -719.6271
+       -224.8361        -670.6511
+       -224.8361        -621.5383
+       -224.8361        -572.2976
+       -224.8361        -522.9382
+       -224.8361        -473.4697
+       -224.8361        -423.9018
+       -224.8361        -374.2443
+       -224.8361        -324.5073
+       -224.8361        -274.7011
+       -224.8361        -224.8361
+       -224.8361        -174.9228
+       -224.8361        -124.9719
+       -224.8361         -74.9939
+       -224.8361         -24.9998
+       -224.8361          24.9998
+       -224.8361          74.9939
+       -224.8361         124.9719
+       -224.8361         174.9228
+       -224.8361         224.8361
+       -224.8361         274.7011
+       -224.8361         324.5073
+       -224.8361         374.2443
+       -224.8361         423.9018
+       -224.8361         473.4697
+       -224.8361         522.9382
+       -224.8361         572.2976
+       -224.8361         621.5383
+       -224.8361         670.6511
+       -224.8361         719.6271
+       -224.8361         768.4574
+       -224.8361         817.1337
+       -174.9228        -817.1337
+       -174.9228        -768.4574
+       -174.9228        -719.6271
+       -174.9228        -670.6511
+       -174.9228        -621.5383
+       -174.9228        -572.2976
+       -174.9228        -522.9382
+       -174.9228        -473.4697
+       -174.9228        -423.9018
+       -174.9228        -374.2443
+       -174.9228        -324.5073
+       -174.9228        -274.7011
+       -174.9228        -224.8361
+       -174.9228        -174.9228
+       -174.9228        -124.9719
+       -174.9228         -74.9939
+       -174.9228         -24.9998
+       -174.9228          24.9998
+       -174.9228          74.9939
+       -174.9228         124.9719
+       -174.9228         174.9228
+       -174.9228         224.8361
+       -174.9228         274.7011
+       -174.9228         324.5073
+       -174.9228         374.2443
+       -174.9228         423.9018
+       -174.9228         473.4697
+       -174.9228         522.9382
+       -174.9228         572.2976
+       -174.9228         621.5383
+       -174.9228         670.6511
+       -174.9228         719.6271
+       -174.9228         768.4574
+       -174.9228         817.1337
+       -124.9719        -817.1337
+       -124.9719        -768.4574
+       -124.9719        -719.6271
+       -124.9719        -670.6511
+       -124.9719        -621.5383
+       -124.9719        -572.2976
+       -124.9719        -522.9382
+       -124.9719        -473.4697
+       -124.9719        -423.9018
+       -124.9719        -374.2443
+       -124.9719        -324.5073
+       -124.9719        -274.7011
+       -124.9719        -224.8361
+       -124.9719        -174.9228
+       -124.9719        -124.9719
+       -124.9719         -74.9939
+       -124.9719         -24.9998
+       -124.9719          24.9998
+       -124.9719          74.9939
+       -124.9719         124.9719
+       -124.9719         174.9228
+       -124.9719         224.8361
+       -124.9719         274.7011
+       -124.9719         324.5073
+       -124.9719         374.2443
+       -124.9719         423.9018
+       -124.9719         473.4697
+       -124.9719         522.9382
+       -124.9719         572.2976
+       -124.9719         621.5383
+       -124.9719         670.6511
+       -124.9719         719.6271
+       -124.9719         768.4574
+       -124.9719         817.1337
+        -74.9939        -817.1337
+        -74.9939        -768.4574
+        -74.9939        -719.6271
+        -74.9939        -670.6511
+        -74.9939        -621.5383
+        -74.9939        -572.2976
+        -74.9939        -522.9382
+        -74.9939        -473.4697
+        -74.9939        -423.9018
+        -74.9939        -374.2443
+        -74.9939        -324.5073
+        -74.9939        -274.7011
+        -74.9939        -224.8361
+        -74.9939        -174.9228
+        -74.9939        -124.9719
+        -74.9939         124.9719
+        -74.9939         174.9228
+        -74.9939         224.8361
+        -74.9939         274.7011
+        -74.9939         324.5073
+        -74.9939         374.2443
+        -74.9939         423.9018
+        -74.9939         473.4697
+        -74.9939         522.9382
+        -74.9939         572.2976
+        -74.9939         621.5383
+        -74.9939         670.6511
+        -74.9939         719.6271
+        -74.9939         768.4574
+        -74.9939         817.1337
+        -24.9998        -817.1337
+        -24.9998        -768.4574
+        -24.9998        -719.6271
+        -24.9998        -670.6511
+        -24.9998        -621.5383
+        -24.9998        -572.2976
+        -24.9998        -522.9382
+        -24.9998        -473.4697
+        -24.9998        -423.9018
+        -24.9998        -374.2443
+        -24.9998        -324.5073
+        -24.9998        -274.7011
+        -24.9998        -224.8361
+        -24.9998        -174.9228
+        -24.9998        -124.9719
+        -24.9998         124.9719
+        -24.9998         174.9228
+        -24.9998         224.8361
+        -24.9998         274.7011
+        -24.9998         324.5073
+        -24.9998         374.2443
+        -24.9998         423.9018
+        -24.9998         473.4697
+        -24.9998         522.9382
+        -24.9998         572.2976
+        -24.9998         621.5383
+        -24.9998         670.6511
+        -24.9998         719.6271
+        -24.9998         768.4574
+        -24.9998         817.1337
+         24.9998        -817.1337
+         24.9998        -768.4574
+         24.9998        -719.6271
+         24.9998        -670.6511
+         24.9998        -621.5383
+         24.9998        -572.2976
+         24.9998        -522.9382
+         24.9998        -473.4697
+         24.9998        -423.9018
+         24.9998        -374.2443
+         24.9998        -324.5073
+         24.9998        -274.7011
+         24.9998        -224.8361
+         24.9998        -174.9228
+         24.9998        -124.9719
+         24.9998         124.9719
+         24.9998         174.9228
+         24.9998         224.8361
+         24.9998         274.7011
+         24.9998         324.5073
+         24.9998         374.2443
+         24.9998         423.9018
+         24.9998         473.4697
+         24.9998         522.9382
+         24.9998         572.2976
+         24.9998         621.5383
+         24.9998         670.6511
+         24.9998         719.6271
+         24.9998         768.4574
+         24.9998         817.1337
+         74.9939        -817.1337
+         74.9939        -768.4574
+         74.9939        -719.6271
+         74.9939        -670.6511
+         74.9939        -621.5383
+         74.9939        -572.2976
+         74.9939        -522.9382
+         74.9939        -473.4697
+         74.9939        -423.9018
+         74.9939        -374.2443
+         74.9939        -324.5073
+         74.9939        -274.7011
+         74.9939        -224.8361
+         74.9939        -174.9228
+         74.9939        -124.9719
+         74.9939         124.9719
+         74.9939         174.9228
+         74.9939         224.8361
+         74.9939         274.7011
+         74.9939         324.5073
+         74.9939         374.2443
+         74.9939         423.9018
+         74.9939         473.4697
+         74.9939         522.9382
+         74.9939         572.2976
+         74.9939         621.5383
+         74.9939         670.6511
+         74.9939         719.6271
+         74.9939         768.4574
+         74.9939         817.1337
+        124.9719        -817.1337
+        124.9719        -768.4574
+        124.9719        -719.6271
+        124.9719        -670.6511
+        124.9719        -621.5383
+        124.9719        -572.2976
+        124.9719        -522.9382
+        124.9719        -473.4697
+        124.9719        -423.9018
+        124.9719        -374.2443
+        124.9719        -324.5073
+        124.9719        -274.7011
+        124.9719        -224.8361
+        124.9719        -174.9228
+        124.9719        -124.9719
+        124.9719         -74.9939
+        124.9719         -24.9998
+        124.9719          24.9998
+        124.9719          74.9939
+        124.9719         124.9719
+        124.9719         174.9228
+        124.9719         224.8361
+        124.9719         274.7011
+        124.9719         324.5073
+        124.9719         374.2443
+        124.9719         423.9018
+        124.9719         473.4697
+        124.9719         522.9382
+        124.9719         572.2976
+        124.9719         621.5383
+        124.9719         670.6511
+        124.9719         719.6271
+        124.9719         768.4574
+        124.9719         817.1337
+        174.9228        -817.1337
+        174.9228        -768.4574
+        174.9228        -719.6271
+        174.9228        -670.6511
+        174.9228        -621.5383
+        174.9228        -572.2976
+        174.9228        -522.9382
+        174.9228        -473.4697
+        174.9228        -423.9018
+        174.9228        -374.2443
+        174.9228        -324.5073
+        174.9228        -274.7011
+        174.9228        -224.8361
+        174.9228        -174.9228
+        174.9228        -124.9719
+        174.9228         -74.9939
+        174.9228         -24.9998
+        174.9228          24.9998
+        174.9228          74.9939
+        174.9228         124.9719
+        174.9228         174.9228
+        174.9228         224.8361
+        174.9228         274.7011
+        174.9228         324.5073
+        174.9228         374.2443
+        174.9228         423.9018
+        174.9228         473.4697
+        174.9228         522.9382
+        174.9228         572.2976
+        174.9228         621.5383
+        174.9228         670.6511
+        174.9228         719.6271
+        174.9228         768.4574
+        174.9228         817.1337
+        224.8361        -817.1337
+        224.8361        -768.4574
+        224.8361        -719.6271
+        224.8361        -670.6511
+        224.8361        -621.5383
+        224.8361        -572.2976
+        224.8361        -522.9382
+        224.8361        -473.4697
+        224.8361        -423.9018
+        224.8361        -374.2443
+        224.8361        -324.5073
+        224.8361        -274.7011
+        224.8361        -224.8361
+        224.8361        -174.9228
+        224.8361        -124.9719
+        224.8361         -74.9939
+        224.8361         -24.9998
+        224.8361          24.9998
+        224.8361          74.9939
+        224.8361         124.9719
+        224.8361         174.9228
+        224.8361         224.8361
+        224.8361         274.7011
+        224.8361         324.5073
+        224.8361         374.2443
+        224.8361         423.9018
+        224.8361         473.4697
+        224.8361         522.9382
+        224.8361         572.2976
+        224.8361         621.5383
+        224.8361         670.6511
+        224.8361         719.6271
+        224.8361         768.4574
+        224.8361         817.1337
+        274.7011        -817.1337
+        274.7011        -768.4574
+        274.7011        -719.6271
+        274.7011        -670.6511
+        274.7011        -621.5383
+        274.7011        -572.2976
+        274.7011        -522.9382
+        274.7011        -473.4697
+        274.7011        -423.9018
+        274.7011        -374.2443
+        274.7011        -324.5073
+        274.7011        -274.7011
+        274.7011        -224.8361
+        274.7011        -174.9228
+        274.7011        -124.9719
+        274.7011         -74.9939
+        274.7011         -24.9998
+        274.7011          24.9998
+        274.7011          74.9939
+        274.7011         124.9719
+        274.7011         174.9228
+        274.7011         224.8361
+        274.7011         274.7011
+        274.7011         324.5073
+        274.7011         374.2443
+        274.7011         423.9018
+        274.7011         473.4697
+        274.7011         522.9382
+        274.7011         572.2976
+        274.7011         621.5383
+        274.7011         670.6511
+        274.7011         719.6271
+        274.7011         768.4574
+        274.7011         817.1337
+        324.5073        -817.1337
+        324.5073        -768.4574
+        324.5073        -719.6271
+        324.5073        -670.6511
+        324.5073        -621.5383
+        324.5073        -572.2976
+        324.5073        -522.9382
+        324.5073        -473.4697
+        324.5073        -423.9018
+        324.5073        -374.2443
+        324.5073        -324.5073
+        324.5073        -274.7011
+        324.5073        -224.8361
+        324.5073        -174.9228
+        324.5073        -124.9719
+        324.5073         -74.9939
+        324.5073         -24.9998
+        324.5073          24.9998
+        324.5073          74.9939
+        324.5073         124.9719
+        324.5073         174.9228
+        324.5073         224.8361
+        324.5073         274.7011
+        324.5073         324.5073
+        324.5073         374.2443
+        324.5073         423.9018
+        324.5073         473.4697
+        324.5073         522.9382
+        324.5073         572.2976
+        324.5073         621.5383
+        324.5073         670.6511
+        324.5073         719.6271
+        324.5073         768.4574
+        324.5073         817.1337
+        374.2443        -768.4574
+        374.2443        -719.6271
+        374.2443        -670.6511
+        374.2443        -621.5383
+        374.2443        -572.2976
+        374.2443        -522.9382
+        374.2443        -473.4697
+        374.2443        -423.9018
+        374.2443        -374.2443
+        374.2443        -324.5073
+        374.2443        -274.7011
+        374.2443        -224.8361
+        374.2443        -174.9228
+        374.2443        -124.9719
+        374.2443         -74.9939
+        374.2443         -24.9998
+        374.2443          24.9998
+        374.2443          74.9939
+        374.2443         124.9719
+        374.2443         174.9228
+        374.2443         224.8361
+        374.2443         274.7011
+        374.2443         324.5073
+        374.2443         374.2443
+        374.2443         423.9018
+        374.2443         473.4697
+        374.2443         522.9382
+        374.2443         572.2976
+        374.2443         621.5383
+        374.2443         670.6511
+        374.2443         719.6271
+        374.2443         768.4574
+        423.9018        -719.6271
+        423.9018        -670.6511
+        423.9018        -621.5383
+        423.9018        -572.2976
+        423.9018        -522.9382
+        423.9018        -473.4697
+        423.9018        -423.9018
+        423.9018        -374.2443
+        423.9018        -324.5073
+        423.9018        -274.7011
+        423.9018        -224.8361
+        423.9018        -174.9228
+        423.9018        -124.9719
+        423.9018         -74.9939
+        423.9018         -24.9998
+        423.9018          24.9998
+        423.9018          74.9939
+        423.9018         124.9719
+        423.9018         174.9228
+        423.9018         224.8361
+        423.9018         274.7011
+        423.9018         324.5073
+        423.9018         374.2443
+        423.9018         423.9018
+        423.9018         473.4697
+        423.9018         522.9382
+        423.9018         572.2976
+        423.9018         621.5383
+        423.9018         670.6511
+        423.9018         719.6271
+        473.4697        -670.6511
+        473.4697        -621.5383
+        473.4697        -572.2976
+        473.4697        -522.9382
+        473.4697        -473.4697
+        473.4697        -423.9018
+        473.4697        -374.2443
+        473.4697        -324.5073
+        473.4697        -274.7011
+        473.4697        -224.8361
+        473.4697        -174.9228
+        473.4697        -124.9719
+        473.4697         -74.9939
+        473.4697         -24.9998
+        473.4697          24.9998
+        473.4697          74.9939
+        473.4697         124.9719
+        473.4697         174.9228
+        473.4697         224.8361
+        473.4697         274.7011
+        473.4697         324.5073
+        473.4697         374.2443
+        473.4697         423.9018
+        473.4697         473.4697
+        473.4697         522.9382
+        473.4697         572.2976
+        473.4697         621.5383
+        473.4697         670.6511
+        522.9382        -621.5383
+        522.9382        -572.2976
+        522.9382        -522.9382
+        522.9382        -473.4697
+        522.9382        -423.9018
+        522.9382        -374.2443
+        522.9382        -324.5073
+        522.9382        -274.7011
+        522.9382        -224.8361
+        522.9382        -174.9228
+        522.9382        -124.9719
+        522.9382         -74.9939
+        522.9382         -24.9998
+        522.9382          24.9998
+        522.9382          74.9939
+        522.9382         124.9719
+        522.9382         174.9228
+        522.9382         224.8361
+        522.9382         274.7011
+        522.9382         324.5073
+        522.9382         374.2443
+        522.9382         423.9018
+        522.9382         473.4697
+        522.9382         522.9382
+        522.9382         572.2976
+        522.9382         621.5383
+        572.2976        -572.2976
+        572.2976        -522.9382
+        572.2976        -473.4697
+        572.2976        -423.9018
+        572.2976        -374.2443
+        572.2976        -324.5073
+        572.2976        -274.7011
+        572.2976        -224.8361
+        572.2976        -174.9228
+        572.2976        -124.9719
+        572.2976         -74.9939
+        572.2976         -24.9998
+        572.2976          24.9998
+        572.2976          74.9939
+        572.2976         124.9719
+        572.2976         174.9228
+        572.2976         224.8361
+        572.2976         274.7011
+        572.2976         324.5073
+        572.2976         374.2443
+        572.2976         423.9018
+        572.2976         473.4697
+        572.2976         522.9382
+        572.2976         572.2976
+        621.5383        -522.9382
+        621.5383        -473.4697
+        621.5383        -423.9018
+        621.5383        -374.2443
+        621.5383        -324.5073
+        621.5383        -274.7011
+        621.5383        -224.8361
+        621.5383        -174.9228
+        621.5383        -124.9719
+        621.5383         -74.9939
+        621.5383         -24.9998
+        621.5383          24.9998
+        621.5383          74.9939
+        621.5383         124.9719
+        621.5383         174.9228
+        621.5383         224.8361
+        621.5383         274.7011
+        621.5383         324.5073
+        621.5383         374.2443
+        621.5383         423.9018
+        621.5383         473.4697
+        621.5383         522.9382
+        670.6511        -473.4697
+        670.6511        -423.9018
+        670.6511        -374.2443
+        670.6511        -324.5073
+        670.6511        -274.7011
+        670.6511        -224.8361
+        670.6511        -174.9228
+        670.6511        -124.9719
+        670.6511         -74.9939
+        670.6511         -24.9998
+        670.6511          24.9998
+        670.6511          74.9939
+        670.6511         124.9719
+        670.6511         174.9228
+        670.6511         224.8361
+        670.6511         274.7011
+        670.6511         324.5073
+        670.6511         374.2443
+        670.6511         423.9018
+        670.6511         473.4697
+        719.6271        -423.9018
+        719.6271        -374.2443
+        719.6271        -324.5073
+        719.6271        -274.7011
+        719.6271        -224.8361
+        719.6271        -174.9228
+        719.6271        -124.9719
+        719.6271         -74.9939
+        719.6271         -24.9998
+        719.6271          24.9998
+        719.6271          74.9939
+        719.6271         124.9719
+        719.6271         174.9228
+        719.6271         224.8361
+        719.6271         274.7011
+        719.6271         324.5073
+        719.6271         374.2443
+        719.6271         423.9018
+        768.4574        -374.2443
+        768.4574        -324.5073
+        768.4574        -274.7011
+        768.4574        -224.8361
+        768.4574        -174.9228
+        768.4574        -124.9719
+        768.4574         -74.9939
+        768.4574         -24.9998
+        768.4574          24.9998
+        768.4574          74.9939
+        768.4574         124.9719
+        768.4574         174.9228
+        768.4574         224.8361
+        768.4574         274.7011
+        768.4574         324.5073
+        768.4574         374.2443
+        817.1337        -324.5073
+        817.1337        -274.7011
+        817.1337        -224.8361
+        817.1337        -174.9228
+        817.1337        -124.9719
+        817.1337         -74.9939
+        817.1337         -24.9998
+        817.1337          24.9998
+        817.1337          74.9939
+        817.1337         124.9719
+        817.1337         174.9228
+        817.1337         224.8361
+        817.1337         274.7011
+        817.1337         324.5073
+&
+@target G2.S0
+@type xy
+        113.6783        -324.5073
+        109.2895        -274.7011
+        105.6263        -224.8361
+         102.692        -174.9228
+         100.489        -124.9719
+         99.0194         -74.9939
+         98.2842         -24.9998
+         98.2842          24.9998
+         99.0194          74.9939
+         100.489         124.9719
+         102.692         174.9228
+        105.6263         224.8361
+        109.2895         274.7011
+        113.6783         324.5073
+        107.4391        -374.2443
+        102.3282        -324.5073
+         97.9393        -274.7011
+         94.2762        -224.8361
+         91.3419        -174.9228
+         89.1389        -124.9719
+         87.6692         -74.9939
+         86.9341         -24.9998
+         86.9341          24.9998
+         87.6692          74.9939
+         89.1389         124.9719
+         91.3419         174.9228
+         94.2762         224.8361
+         97.9393         274.7011
+        102.3282         324.5073
+        107.4391         374.2443
+        102.5817        -423.9018
+         96.7532        -374.2443
+         91.6424        -324.5073
+         87.2535        -274.7011
+         83.5904        -224.8361
+          80.656        -174.9228
+         78.4531        -124.9719
+         76.9834         -74.9939
+         76.2482         -24.9998
+         76.2482          24.9998
+         76.9834          74.9939
+         78.4531         124.9719
+          80.656         174.9228
+         83.5904         224.8361
+         87.2535         274.7011
+         91.6424         324.5073
+         96.7532         374.2443
+        102.5817         423.9018
+         99.1098        -473.4697
+         92.5685        -423.9018
+           86.74        -374.2443
+         81.6291        -324.5073
+         77.2402        -274.7011
+         73.5771        -224.8361
+         70.6428        -174.9228
+         68.4398        -124.9719
+         66.9702         -74.9939
+          66.235         -24.9998
+          66.235          24.9998
+         66.9702          74.9939
+         68.4398         124.9719
+         70.6428         174.9228
+         73.5771         224.8361
+         77.2402         274.7011
+         81.6291         324.5073
+           86.74         374.2443
+         92.5685         423.9018
+         99.1098         473.4697
+         97.0256        -522.9382
+          89.777        -473.4697
+         83.2357        -423.9018
+         77.4072        -374.2443
+         72.2963        -324.5073
+         67.9074        -274.7011
+         64.2443        -224.8361
+           61.31        -174.9228
+          59.107        -124.9719
+         57.6373         -74.9939
+         56.9022         -24.9998
+         56.9022          24.9998
+         57.6373          74.9939
+          59.107         124.9719
+           61.31         174.9228
+         64.2443         224.8361
+         67.9074         274.7011
+         72.2963         324.5073
+         77.4072         374.2443
+         83.2357         423.9018
+          89.777         473.4697
+         97.0256         522.9382
+         96.3307        -572.2976
+         88.3807        -522.9382
+         81.1321        -473.4697
+         74.5908        -423.9018
+         68.7622        -374.2443
+         63.6514        -324.5073
+         59.2625        -274.7011
+         55.5994        -224.8361
+         52.6651        -174.9228
+         50.4621        -124.9719
+         48.9924         -74.9939
+         48.2573         -24.9998
+         48.2573          24.9998
+         48.9924          74.9939
+         50.4621         124.9719
+         52.6651         174.9228
+         55.5994         224.8361
+         59.2625         274.7011
+         63.6514         324.5073
+         68.7622         374.2443
+         74.5908         423.9018
+         81.1321         473.4697
+         88.3807         522.9382
+         96.3307         572.2976
+         97.0256        -621.5383
+         88.3807        -572.2976
+         80.4307        -522.9382
+         73.1821        -473.4697
+         66.6407        -423.9018
+         60.8122        -374.2443
+         55.7014        -324.5073
+         51.3125        -274.7011
+         47.6494        -224.8361
+         44.7151        -174.9228
+         42.5121        -124.9719
+         41.0424         -74.9939
+         40.3073         -24.9998
+         40.3073          24.9998
+         41.0424          74.9939
+         42.5121         124.9719
+         44.7151         174.9228
+         47.6494         224.8361
+         51.3125         274.7011
+         55.7014         324.5073
+         60.8122         374.2443
+         66.6407         423.9018
+         73.1821         473.4697
+         80.4307         522.9382
+         88.3807         572.2976
+         97.0256         621.5383
+         99.1098        -670.6511
+          89.777        -621.5383
+         81.1321        -572.2976
+         73.1821        -522.9382
+         65.9334        -473.4697
+         59.3921        -423.9018
+         53.5636        -374.2443
+         48.4527        -324.5073
+         44.0639        -274.7011
+         40.4007        -224.8361
+         37.4664        -174.9228
+         35.2635        -124.9719
+         33.7938         -74.9939
+         33.0586         -24.9998
+         33.0586          24.9998
+         33.7938          74.9939
+         35.2635         124.9719
+         37.4664         174.9228
+         40.4007         224.8361
+         44.0639         274.7011
+         48.4527         324.5073
+         53.5636         374.2443
+         59.3921         423.9018
+         65.9334         473.4697
+         73.1821         522.9382
+         81.1321         572.2976
+          89.777         621.5383
+         99.1098         670.6511
+        102.5817        -719.6271
+         92.5685        -670.6511
+         83.2357        -621.5383
+         74.5908        -572.2976
+         66.6407        -522.9382
+         59.3921        -473.4697
+         52.8508        -423.9018
+         47.0223        -374.2443
+         41.9114        -324.5073
+         37.5226        -274.7011
+         33.8594        -224.8361
+         30.9251        -174.9228
+         28.7222        -124.9719
+         27.2525         -74.9939
+         26.5173         -24.9998
+         26.5173          24.9998
+         27.2525          74.9939
+         28.7222         124.9719
+         30.9251         174.9228
+         33.8594         224.8361
+         37.5226         274.7011
+         41.9114         324.5073
+         47.0223         374.2443
+         52.8508         423.9018
+         59.3921         473.4697
+         66.6407         522.9382
+         74.5908         572.2976
+         83.2357         621.5383
+         92.5685         670.6511
+        102.5817         719.6271
+        107.4391        -768.4574
+         96.7532        -719.6271
+           86.74        -670.6511
+         77.4072        -621.5383
+         68.7622        -572.2976
+         60.8122        -522.9382
+         53.5636        -473.4697
+         47.0223        -423.9018
+         41.1938        -374.2443
+         36.0829        -324.5073
+         31.6941        -274.7011
+         28.0309        -224.8361
+         25.0966        -174.9228
+         22.8936        -124.9719
+          21.424         -74.9939
+         20.6888         -24.9998
+         20.6888          24.9998
+          21.424          74.9939
+         22.8936         124.9719
+         25.0966         174.9228
+         28.0309         224.8361
+         31.6941         274.7011
+         36.0829         324.5073
+         41.1938         374.2443
+         47.0223         423.9018
+         53.5636         473.4697
+         60.8122         522.9382
+         68.7622         572.2976
+         77.4072         621.5383
+           86.74         670.6511
+         96.7532         719.6271
+        107.4391         768.4574
+        113.6783        -817.1337
+        102.3282        -768.4574
+         91.6424        -719.6271
+         81.6291        -670.6511
+         72.2963        -621.5383
+         63.6514        -572.2976
+         55.7014        -522.9382
+         48.4527        -473.4697
+         41.9114        -423.9018
+         36.0829        -374.2443
+         30.9721        -324.5073
+         26.5832        -274.7011
+           22.92        -224.8361
+         19.9857        -174.9228
+         17.7828        -124.9719
+         16.3131         -74.9939
+         15.5779         -24.9998
+         15.5779          24.9998
+         16.3131          74.9939
+         17.7828         124.9719
+         19.9857         174.9228
+           22.92         224.8361
+         26.5832         274.7011
+         30.9721         324.5073
+         36.0829         374.2443
+         41.9114         423.9018
+         48.4527         473.4697
+         55.7014         522.9382
+         63.6514         572.2976
+         72.2963         621.5383
+         81.6291         670.6511
+         91.6424         719.6271
+        102.3282         768.4574
+        113.6783         817.1337
+        109.2895        -817.1337
+         97.9393        -768.4574
+         87.2535        -719.6271
+         77.2402        -670.6511
+         67.9074        -621.5383
+         59.2625        -572.2976
+         51.3125        -522.9382
+         44.0639        -473.4697
+         37.5226        -423.9018
+         31.6941        -374.2443
+         26.5832        -324.5073
+         22.1943        -274.7011
+         18.5312        -224.8361
+         15.5969        -174.9228
+         13.3939        -124.9719
+         11.9242         -74.9939
+         11.1891         -24.9998
+         11.1891          24.9998
+         11.9242          74.9939
+         13.3939         124.9719
+         15.5969         174.9228
+         18.5312         224.8361
+         22.1943         274.7011
+         26.5832         324.5073
+         31.6941         374.2443
+         37.5226         423.9018
+         44.0639         473.4697
+         51.3125         522.9382
+         59.2625         572.2976
+         67.9074         621.5383
+         77.2402         670.6511
+         87.2535         719.6271
+         97.9393         768.4574
+        109.2895         817.1337
+        105.6263        -817.1337
+         94.2762        -768.4574
+         83.5904        -719.6271
+         73.5771        -670.6511
+         64.2443        -621.5383
+         55.5994        -572.2976
+         47.6494        -522.9382
+         40.4007        -473.4697
+         33.8594        -423.9018
+         28.0309        -374.2443
+           22.92        -324.5073
+         18.5312        -274.7011
+          14.868        -224.8361
+         11.9337        -174.9228
+          9.7308        -124.9719
+          8.2611         -74.9939
+          7.5259         -24.9998
+          7.5259          24.9998
+          8.2611          74.9939
+          9.7308         124.9719
+         11.9337         174.9228
+          14.868         224.8361
+         18.5312         274.7011
+           22.92         324.5073
+         28.0309         374.2443
+         33.8594         423.9018
+         40.4007         473.4697
+         47.6494         522.9382
+         55.5994         572.2976
+         64.2443         621.5383
+         73.5771         670.6511
+         83.5904         719.6271
+         94.2762         768.4574
+        105.6263         817.1337
+         102.692        -817.1337
+         91.3419        -768.4574
+          80.656        -719.6271
+         70.6428        -670.6511
+           61.31        -621.5383
+         52.6651        -572.2976
+         44.7151        -522.9382
+         37.4664        -473.4697
+         30.9251        -423.9018
+         25.0966        -374.2443
+         19.9857        -324.5073
+         15.5969        -274.7011
+         11.9337        -224.8361
+          8.9994        -174.9228
+          6.7965        -124.9719
+          5.3268         -74.9939
+          4.5916         -24.9998
+          4.5916          24.9998
+          5.3268          74.9939
+          6.7965         124.9719
+          8.9994         174.9228
+         11.9337         224.8361
+         15.5969         274.7011
+         19.9857         324.5073
+         25.0966         374.2443
+         30.9251         423.9018
+         37.4664         473.4697
+         44.7151         522.9382
+         52.6651         572.2976
+           61.31         621.5383
+         70.6428         670.6511
+          80.656         719.6271
+         91.3419         768.4574
+         102.692         817.1337
+         100.489        -817.1337
+         89.1389        -768.4574
+         78.4531        -719.6271
+         68.4398        -670.6511
+          59.107        -621.5383
+         50.4621        -572.2976
+         42.5121        -522.9382
+         35.2635        -473.4697
+         28.7222        -423.9018
+         22.8936        -374.2443
+         17.7828        -324.5073
+         13.3939        -274.7011
+          9.7308        -224.8361
+          6.7965        -174.9228
+          4.5935        -124.9719
+          3.1238         -74.9939
+          2.3887         -24.9998
+          2.3887          24.9998
+          3.1238          74.9939
+          4.5935         124.9719
+          6.7965         174.9228
+          9.7308         224.8361
+         13.3939         274.7011
+         17.7828         324.5073
+         22.8936         374.2443
+         28.7222         423.9018
+         35.2635         473.4697
+         42.5121         522.9382
+         50.4621         572.2976
+          59.107         621.5383
+         68.4398         670.6511
+         78.4531         719.6271
+         89.1389         768.4574
+         100.489         817.1337
+         99.0194        -817.1337
+         87.6692        -768.4574
+         76.9834        -719.6271
+         66.9702        -670.6511
+         57.6373        -621.5383
+         48.9924        -572.2976
+         41.0424        -522.9382
+         33.7938        -473.4697
+         27.2525        -423.9018
+          21.424        -374.2443
+         16.3131        -324.5073
+         11.9242        -274.7011
+          8.2611        -224.8361
+          5.3268        -174.9228
+          3.1238        -124.9719
+          3.1238         124.9719
+          5.3268         174.9228
+          8.2611         224.8361
+         11.9242         274.7011
+         16.3131         324.5073
+          21.424         374.2443
+         27.2525         423.9018
+         33.7938         473.4697
+         41.0424         522.9382
+         48.9924         572.2976
+         57.6373         621.5383
+         66.9702         670.6511
+         76.9834         719.6271
+         87.6692         768.4574
+         99.0194         817.1337
+         98.2842        -817.1337
+         86.9341        -768.4574
+         76.2482        -719.6271
+          66.235        -670.6511
+         56.9022        -621.5383
+         48.2573        -572.2976
+         40.3073        -522.9382
+         33.0586        -473.4697
+         26.5173        -423.9018
+         20.6888        -374.2443
+         15.5779        -324.5073
+         11.1891        -274.7011
+          7.5259        -224.8361
+          4.5916        -174.9228
+          2.3887        -124.9719
+          2.3887         124.9719
+          4.5916         174.9228
+          7.5259         224.8361
+         11.1891         274.7011
+         15.5779         324.5073
+         20.6888         374.2443
+         26.5173         423.9018
+         33.0586         473.4697
+         40.3073         522.9382
+         48.2573         572.2976
+         56.9022         621.5383
+          66.235         670.6511
+         76.2482         719.6271
+         86.9341         768.4574
+         98.2842         817.1337
+         98.2842        -817.1337
+         86.9341        -768.4574
+         76.2482        -719.6271
+          66.235        -670.6511
+         56.9022        -621.5383
+         48.2573        -572.2976
+         40.3073        -522.9382
+         33.0586        -473.4697
+         26.5173        -423.9018
+         20.6888        -374.2443
+         15.5779        -324.5073
+         11.1891        -274.7011
+          7.5259        -224.8361
+          4.5916        -174.9228
+          2.3887        -124.9719
+          2.3887         124.9719
+          4.5916         174.9228
+          7.5259         224.8361
+         11.1891         274.7011
+         15.5779         324.5073
+         20.6888         374.2443
+         26.5173         423.9018
+         33.0586         473.4697
+         40.3073         522.9382
+         48.2573         572.2976
+         56.9022         621.5383
+          66.235         670.6511
+         76.2482         719.6271
+         86.9341         768.4574
+         98.2842         817.1337
+         99.0194        -817.1337
+         87.6692        -768.4574
+         76.9834        -719.6271
+         66.9702        -670.6511
+         57.6373        -621.5383
+         48.9924        -572.2976
+         41.0424        -522.9382
+         33.7938        -473.4697
+         27.2525        -423.9018
+          21.424        -374.2443
+         16.3131        -324.5073
+         11.9242        -274.7011
+          8.2611        -224.8361
+          5.3268        -174.9228
+          3.1238        -124.9719
+          3.1238         124.9719
+          5.3268         174.9228
+          8.2611         224.8361
+         11.9242         274.7011
+         16.3131         324.5073
+          21.424         374.2443
+         27.2525         423.9018
+         33.7938         473.4697
+         41.0424         522.9382
+         48.9924         572.2976
+         57.6373         621.5383
+         66.9702         670.6511
+         76.9834         719.6271
+         87.6692         768.4574
+         99.0194         817.1337
+         100.489        -817.1337
+         89.1389        -768.4574
+         78.4531        -719.6271
+         68.4398        -670.6511
+          59.107        -621.5383
+         50.4621        -572.2976
+         42.5121        -522.9382
+         35.2635        -473.4697
+         28.7222        -423.9018
+         22.8936        -374.2443
+         17.7828        -324.5073
+         13.3939        -274.7011
+          9.7308        -224.8361
+          6.7965        -174.9228
+          4.5935        -124.9719
+          3.1238         -74.9939
+          2.3887         -24.9998
+          2.3887          24.9998
+          3.1238          74.9939
+          4.5935         124.9719
+          6.7965         174.9228
+          9.7308         224.8361
+         13.3939         274.7011
+         17.7828         324.5073
+         22.8936         374.2443
+         28.7222         423.9018
+         35.2635         473.4697
+         42.5121         522.9382
+         50.4621         572.2976
+          59.107         621.5383
+         68.4398         670.6511
+         78.4531         719.6271
+         89.1389         768.4574
+         100.489         817.1337
+         102.692        -817.1337
+         91.3419        -768.4574
+          80.656        -719.6271
+         70.6428        -670.6511
+           61.31        -621.5383
+         52.6651        -572.2976
+         44.7151        -522.9382
+         37.4664        -473.4697
+         30.9251        -423.9018
+         25.0966        -374.2443
+         19.9857        -324.5073
+         15.5969        -274.7011
+         11.9337        -224.8361
+          8.9994        -174.9228
+          6.7965        -124.9719
+          5.3268         -74.9939
+          4.5916         -24.9998
+          4.5916          24.9998
+          5.3268          74.9939
+          6.7965         124.9719
+          8.9994         174.9228
+         11.9337         224.8361
+         15.5969         274.7011
+         19.9857         324.5073
+         25.0966         374.2443
+         30.9251         423.9018
+         37.4664         473.4697
+         44.7151         522.9382
+         52.6651         572.2976
+           61.31         621.5383
+         70.6428         670.6511
+          80.656         719.6271
+         91.3419         768.4574
+         102.692         817.1337
+        105.6263        -817.1337
+         94.2762        -768.4574
+         83.5904        -719.6271
+         73.5771        -670.6511
+         64.2443        -621.5383
+         55.5994        -572.2976
+         47.6494        -522.9382
+         40.4007        -473.4697
+         33.8594        -423.9018
+         28.0309        -374.2443
+           22.92        -324.5073
+         18.5312        -274.7011
+          14.868        -224.8361
+         11.9337        -174.9228
+          9.7308        -124.9719
+          8.2611         -74.9939
+          7.5259         -24.9998
+          7.5259          24.9998
+          8.2611          74.9939
+          9.7308         124.9719
+         11.9337         174.9228
+          14.868         224.8361
+         18.5312         274.7011
+           22.92         324.5073
+         28.0309         374.2443
+         33.8594         423.9018
+         40.4007         473.4697
+         47.6494         522.9382
+         55.5994         572.2976
+         64.2443         621.5383
+         73.5771         670.6511
+         83.5904         719.6271
+         94.2762         768.4574
+        105.6263         817.1337
+        109.2895        -817.1337
+         97.9393        -768.4574
+         87.2535        -719.6271
+         77.2402        -670.6511
+         67.9074        -621.5383
+         59.2625        -572.2976
+         51.3125        -522.9382
+         44.0639        -473.4697
+         37.5226        -423.9018
+         31.6941        -374.2443
+         26.5832        -324.5073
+         22.1943        -274.7011
+         18.5312        -224.8361
+         15.5969        -174.9228
+         13.3939        -124.9719
+         11.9242         -74.9939
+         11.1891         -24.9998
+         11.1891          24.9998
+         11.9242          74.9939
+         13.3939         124.9719
+         15.5969         174.9228
+         18.5312         224.8361
+         22.1943         274.7011
+         26.5832         324.5073
+         31.6941         374.2443
+         37.5226         423.9018
+         44.0639         473.4697
+         51.3125         522.9382
+         59.2625         572.2976
+         67.9074         621.5383
+         77.2402         670.6511
+         87.2535         719.6271
+         97.9393         768.4574
+        109.2895         817.1337
+        113.6783        -817.1337
+        102.3282        -768.4574
+         91.6424        -719.6271
+         81.6291        -670.6511
+         72.2963        -621.5383
+         63.6514        -572.2976
+         55.7014        -522.9382
+         48.4527        -473.4697
+         41.9114        -423.9018
+         36.0829        -374.2443
+         30.9721        -324.5073
+         26.5832        -274.7011
+           22.92        -224.8361
+         19.9857        -174.9228
+         17.7828        -124.9719
+         16.3131         -74.9939
+         15.5779         -24.9998
+         15.5779          24.9998
+         16.3131          74.9939
+         17.7828         124.9719
+         19.9857         174.9228
+           22.92         224.8361
+         26.5832         274.7011
+         30.9721         324.5073
+         36.0829         374.2443
+         41.9114         423.9018
+         48.4527         473.4697
+         55.7014         522.9382
+         63.6514         572.2976
+         72.2963         621.5383
+         81.6291         670.6511
+         91.6424         719.6271
+        102.3282         768.4574
+        113.6783         817.1337
+        107.4391        -768.4574
+         96.7532        -719.6271
+           86.74        -670.6511
+         77.4072        -621.5383
+         68.7622        -572.2976
+         60.8122        -522.9382
+         53.5636        -473.4697
+         47.0223        -423.9018
+         41.1938        -374.2443
+         36.0829        -324.5073
+         31.6941        -274.7011
+         28.0309        -224.8361
+         25.0966        -174.9228
+         22.8936        -124.9719
+          21.424         -74.9939
+         20.6888         -24.9998
+         20.6888          24.9998
+          21.424          74.9939
+         22.8936         124.9719
+         25.0966         174.9228
+         28.0309         224.8361
+         31.6941         274.7011
+         36.0829         324.5073
+         41.1938         374.2443
+         47.0223         423.9018
+         53.5636         473.4697
+         60.8122         522.9382
+         68.7622         572.2976
+         77.4072         621.5383
+           86.74         670.6511
+         96.7532         719.6271
+        107.4391         768.4574
+        102.5817        -719.6271
+         92.5685        -670.6511
+         83.2357        -621.5383
+         74.5908        -572.2976
+         66.6407        -522.9382
+         59.3921        -473.4697
+         52.8508        -423.9018
+         47.0223        -374.2443
+         41.9114        -324.5073
+         37.5226        -274.7011
+         33.8594        -224.8361
+         30.9251        -174.9228
+         28.7222        -124.9719
+         27.2525         -74.9939
+         26.5173         -24.9998
+         26.5173          24.9998
+         27.2525          74.9939
+         28.7222         124.9719
+         30.9251         174.9228
+         33.8594         224.8361
+         37.5226         274.7011
+         41.9114         324.5073
+         47.0223         374.2443
+         52.8508         423.9018
+         59.3921         473.4697
+         66.6407         522.9382
+         74.5908         572.2976
+         83.2357         621.5383
+         92.5685         670.6511
+        102.5817         719.6271
+         99.1098        -670.6511
+          89.777        -621.5383
+         81.1321        -572.2976
+         73.1821        -522.9382
+         65.9334        -473.4697
+         59.3921        -423.9018
+         53.5636        -374.2443
+         48.4527        -324.5073
+         44.0639        -274.7011
+         40.4007        -224.8361
+         37.4664        -174.9228
+         35.2635        -124.9719
+         33.7938         -74.9939
+         33.0586         -24.9998
+         33.0586          24.9998
+         33.7938          74.9939
+         35.2635         124.9719
+         37.4664         174.9228
+         40.4007         224.8361
+         44.0639         274.7011
+         48.4527         324.5073
+         53.5636         374.2443
+         59.3921         423.9018
+         65.9334         473.4697
+         73.1821         522.9382
+         81.1321         572.2976
+          89.777         621.5383
+         99.1098         670.6511
+         97.0256        -621.5383
+         88.3807        -572.2976
+         80.4307        -522.9382
+         73.1821        -473.4697
+         66.6407        -423.9018
+         60.8122        -374.2443
+         55.7014        -324.5073
+         51.3125        -274.7011
+         47.6494        -224.8361
+         44.7151        -174.9228
+         42.5121        -124.9719
+         41.0424         -74.9939
+         40.3073         -24.9998
+         40.3073          24.9998
+         41.0424          74.9939
+         42.5121         124.9719
+         44.7151         174.9228
+         47.6494         224.8361
+         51.3125         274.7011
+         55.7014         324.5073
+         60.8122         374.2443
+         66.6407         423.9018
+         73.1821         473.4697
+         80.4307         522.9382
+         88.3807         572.2976
+         97.0256         621.5383
+         96.3307        -572.2976
+         88.3807        -522.9382
+         81.1321        -473.4697
+         74.5908        -423.9018
+         68.7622        -374.2443
+         63.6514        -324.5073
+         59.2625        -274.7011
+         55.5994        -224.8361
+         52.6651        -174.9228
+         50.4621        -124.9719
+         48.9924         -74.9939
+         48.2573         -24.9998
+         48.2573          24.9998
+         48.9924          74.9939
+         50.4621         124.9719
+         52.6651         174.9228
+         55.5994         224.8361
+         59.2625         274.7011
+         63.6514         324.5073
+         68.7622         374.2443
+         74.5908         423.9018
+         81.1321         473.4697
+         88.3807         522.9382
+         96.3307         572.2976
+         97.0256        -522.9382
+          89.777        -473.4697
+         83.2357        -423.9018
+         77.4072        -374.2443
+         72.2963        -324.5073
+         67.9074        -274.7011
+         64.2443        -224.8361
+           61.31        -174.9228
+          59.107        -124.9719
+         57.6373         -74.9939
+         56.9022         -24.9998
+         56.9022          24.9998
+         57.6373          74.9939
+          59.107         124.9719
+           61.31         174.9228
+         64.2443         224.8361
+         67.9074         274.7011
+         72.2963         324.5073
+         77.4072         374.2443
+         83.2357         423.9018
+          89.777         473.4697
+         97.0256         522.9382
+         99.1098        -473.4697
+         92.5685        -423.9018
+           86.74        -374.2443
+         81.6291        -324.5073
+         77.2402        -274.7011
+         73.5771        -224.8361
+         70.6428        -174.9228
+         68.4398        -124.9719
+         66.9702         -74.9939
+          66.235         -24.9998
+          66.235          24.9998
+         66.9702          74.9939
+         68.4398         124.9719
+         70.6428         174.9228
+         73.5771         224.8361
+         77.2402         274.7011
+         81.6291         324.5073
+           86.74         374.2443
+         92.5685         423.9018
+         99.1098         473.4697
+        102.5817        -423.9018
+         96.7532        -374.2443
+         91.6424        -324.5073
+         87.2535        -274.7011
+         83.5904        -224.8361
+          80.656        -174.9228
+         78.4531        -124.9719
+         76.9834         -74.9939
+         76.2482         -24.9998
+         76.2482          24.9998
+         76.9834          74.9939
+         78.4531         124.9719
+          80.656         174.9228
+         83.5904         224.8361
+         87.2535         274.7011
+         91.6424         324.5073
+         96.7532         374.2443
+        102.5817         423.9018
+        107.4391        -374.2443
+        102.3282        -324.5073
+         97.9393        -274.7011
+         94.2762        -224.8361
+         91.3419        -174.9228
+         89.1389        -124.9719
+         87.6692         -74.9939
+         86.9341         -24.9998
+         86.9341          24.9998
+         87.6692          74.9939
+         89.1389         124.9719
+         91.3419         174.9228
+         94.2762         224.8361
+         97.9393         274.7011
+        102.3282         324.5073
+        107.4391         374.2443
+        113.6783        -324.5073
+        109.2895        -274.7011
+        105.6263        -224.8361
+         102.692        -174.9228
+         100.489        -124.9719
+         99.0194         -74.9939
+         98.2842         -24.9998
+         98.2842          24.9998
+         99.0194          74.9939
+         100.489         124.9719
+         102.692         174.9228
+        105.6263         224.8361
+        109.2895         274.7011
+        113.6783         324.5073
+&

@@ -1,0 +1,379 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%  defs.tex
+%%
+%%  Created: Fri Oct 10 14:24:37 1997
+%%  Author.: Jose Carlos Gonzalez
+%%  Notes..:
+%%          
+%%-------------------------------------------------------------------------
+%% Filename: $RCSfile$
+%% Revision: $Revision$
+%% Date:     $Date$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% definitions for handling the version, depending on the language
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\LanguagEesp{esp}        %% spanish
+\def\LanguagEeng{eng}        %% english
+
+\IfFileExists{eng.tex}%
+{\typeout{^^J^^J*** ENG ***^^J^^J}\def\LanguagE{eng}}%  %% english
+{\typeout{^^J^^J*** ESP ***^^J^^J}\def\LanguagE{esp}}   %% spanish
+
+\input{\LanguagE.tex}
+
+\newcommand{\DependingOnLanguagE}[2]{%
+\ifx\LanguagE\eng%
+{#1}%
+\else%
+{#2}%
+\fi}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% language settings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\typeout{----> Setting language . . .}
+
+%%\DependingOnLanguagE{
+%%\usepackage[english]{babel}
+%%}{
+%%\usepackage[spanish,activeacute]{babel}
+%%}
+
+%\usepackage[spanish,activeacute]{babel}
+\usepackage[english]{babel}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\typeout{----> Reading packages . . .}
+
+\usepackage{a4wide}
+\usepackage{epsfig}
+\usepackage{fancyheadings}
+\usepackage{rotating}
+\usepackage{amsmath}
+\usepackage{xspace}
+\usepackage{enumerate}
+\usepackage{makeidx}
+\usepackage{charter}
+\usepackage{floatflt}
+\usepackage{wrapfig}
+%\usepackage{showkeys} 
+%\usepackage{oldgerm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% prepares the index and defines some macros for it
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\makeindex
+
+\newcommand{\I}[1]{#1\index{#1}}             % word
+\newcommand{\Iw}[2]{#1\index{#1@#2}}         % word2
+\newcommand{\II}[2]{#1\index{#2!#1}}         % word
+\newcommand{\III}[3]{#1\index{#2!#3!#1}}     % word
+\newcommand{\Isee}[2]{#1\index{#1|see{#2}}}  % word1, see word2
+\newcommand{\Ifrom}[1]{#1\index{#1|(}}       % word p-
+\newcommand{\Ito}[1]{#1\index{#1|)}}         % word -p
+\newcommand{\Istyle}[2]{#1\index{#1|#2}}     % \style{word}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% definition of macros
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\typeout{----> Processing definitions . . .}
+
+%-------------------- Captions
+
+\makeatletter
+
+%\long\def\@makecaption#1#2{\vskip \abovecaptionskip 
+%\begin{list}{}
+%\item{\bf #1.} #2
+%\end{list}\vskip\belowcaptionskip}
+
+\long\def\@makecaption#1#2{%
+\centering%
+\parbox[t]{0.8\linewidth}{\small{\bf #1}.\quad #2}%
+}
+
+% \def\aafigurecaption{figure}
+
+% \long\def\@makecaption#1#2{%
+% \makeatletter
+% \ifx\@captype\aafigurecaption\vskip10pt\else\vskip10pt\fi
+% \makeatother
+% \small
+% % Make sure that `Table <N>.' or `Fig. <N>.' is typeset in boldface:
+%  \setbox\@tempboxa\hbox{{\bf #1}.\quad #2}
+%  \ifdim \wd\@tempboxa >\hsize \unhbox\@tempboxa\par \else \hbox
+% to\hsize{\box\@tempboxa\hfil}
+%  \fi
+% \makeatletter
+% \ifx\@captype\aafigurecaption\else\vskip6pt\fi
+% \makeatother}
+
+\makeatother
+
+% \newcounter{figure}
+% \def\thefigure{\@arabic\c@figure}
+% \def\fps@figure{htbp}
+% \def\ftype@figure{1}
+% \def\ext@figure{lof}
+% \def\fnum@figure{Fig.\ \thefigure.}
+% \def\figure{\small\rm\@float{figure}}
+% \let\endfigure\end@float
+% \@namedef{figure*}{\small\rm\@dblfloat{figure}}
+% \@namedef{endfigure*}{\end@dblfloat}
+
+% \newcounter{table}
+% \def\thetable{\@arabic\c@table}
+% \def\fps@table{htbp}
+% \def\ftype@table{2}
+% \def\ext@table{lot}
+% \def\fnum@table{Table \thetable.}
+% \def\table{\small\rm\@float{table}}
+% \let\endtable\end@float
+% \@namedef{table*}{\small\rm\@dblfloat{table}}
+% \@namedef{endtable*}{\end@dblfloat}
+
+%-------------------- Abreviations
+
+\def\HEGRA{{HEGRA\xspace}}
+\def\MAGIC{{MAGIC}\xspace}
+\def\XTAL{{\mdseries\scshape xtal}\xspace}
+\def\GMTQ{{\mdseries\scshape gmtq}\xspace}
+\def\CORSIKA{{CORSIKA}\xspace}
+\def\trigger{{\slshape trigger}\xspace}
+
+%-------------------- Paragraphs and lines
+
+\newcommand{\headname}[1]{#1}
+\def\blankline{\vspace{0.4 cm}}
+\def\indentfirstpar{\hspace{\parindent}}
+\def\paragraph{\vspace{2pt}\par}
+
+%-------------------- Math. symbols an so on...
+
+\def\deg{\ensuremath{^\circ}}               %% degrees
+\def\muon{\ensuremath{\mu}}                 %% muon
+\def\muons{\ensuremath{\mu}'s}              %% muons
+\def\cph{\v C-$\gamma$\xspace}              %% C-photon
+\def\cphs{\v C-$\gamma$'s\xspace}           %% C-photon's
+\def\phe{ph.e.\xspace}                      %% photo-electron
+\def\phes{ph.e.s\xspace}                    %% photo-electrons
+\def\mphe{\mathrm{ph.e}}                    %% photo-electron  (math-mode)
+\def\mphes{\mathrm{ph.e.s}}                 %% photo-electrons (math-mode)
+\def\wlrange{{290--600 {\it nm\/}}\xspace}  %% wavelength range used
+%%\def\cerenkov{\v Cerenkov\xspace}           %% Cherenkov
+\def\cerenkov{Cherenkov\xspace}             %% Cherenkov
+\def\Cerenkov{\cerenkov}                    %%    "
+\def\cherenkov{\cerenkov}                   %%    "
+\def\Cherenkov{\cerenkov}                   %%    "
+\def\MonteCarlo{Monte Carlo\xspace}         %% Monte Carlo
+\def\MC{\MonteCarlo}                        %%    "
+\def\etal{{\sl et al.}\xspace}              %% et al. (slanted)
+\def\QE{\ensuremath{QE}\xspace}                    %% Quantum Efficiency
+
+\newcommand{\eqcomm}[2][2cm]{\mbox{\hspace{#1} #2}} 
+\def\d{\mathrm{d}}
+
+\newcommand{\pow}[1]{\ensuremath{^{#1}}}        %% a\pow{x} = a^x
+\newcommand{\E}[1]{\ensuremath{\cdot 10^{#1}}}  %% a\E{x}   = a.10^x
+
+\def\MORE{\centerline{\Huge{\par MORE HERE NEEDED \par}}}  %% signal for me
+
+%-------------------- getting a chapter into the main TeX file
+
+\newcommand{\echapter} {\newpage{\pagestyle{empty}\cleardoublepage}}
+\newcommand{\get}[1]{\input{ #1 }\echapter}
+
+\newcommand{\ccite}[1]{\protect\cite{#1}\xspace}     %% cite(s) in captions
+\newcommand{\cref}[1]{\protect\ref{#1}\xspace}       %% references in captions
+\newcommand{\fullcref}[1]{\protect\ref{#1} in page \protect\pageref{#1}\xspace} %% id.
+
+\newcommand{\fullref}[1]{\ref{#1} in page \pageref{#1}\xspace} %% id., normal
+
+\renewcommand{\u}[1]{\ensuremath{\mathrm{\,#1}}}    %% units
+
+%%\renewcommand{\footnotemark}{\alpha{\thefootnote}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% definitions of style
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\typeout{----> Defining style . . .}
+
+% The commented blocks in this section define different "styles" or
+% page/heading layouts
+
+% We use the package 'fancyheadings'
+
+%%------------------------------------------------------------
+\makeatletter
+
+\pagestyle{fancy}
+
+\addtolength{\headwidth}{40pt}    % this for a4wide 
+%\addtolength{\headwidth}{60pt}   % this for normal a4
+
+%\addtolength{\hoffset}{30pt}
+
+\renewcommand{\chaptermark}[1]%
+{\typeout{CHAPTER: #1}\markboth{\thechapter. #1}{}\def\izquierda{#1}}
+\renewcommand{\sectionmark}[1]%
+{\typeout{SECTION: #1}\markright{\thesection. #1}\def\derecha{\thesection\ #1}}
+
+\rhead{}
+\lhead{}
+%\chead[%
+%    \if@mainmatter \fancyplain{}{\small\scshape\leftmark} 
+%    \else \fancyplain{}{\sl\headname}
+%    \fi]{%
+%    \if@mainmatter \fancyplain{}{\small\slshape\rightmark} 
+%    \else \fancyplain{}{\sl\headname}
+%    \fi}
+\chead[%
+    \if@mainmatter \fancyplain{}{\small\scshape\izquierda} 
+    \else \fancyplain{}{\sl\headname}
+    \fi]{%
+    \if@mainmatter \fancyplain{}{\small\slshape\derecha} 
+    \else \fancyplain{}{\sl\headname}
+    \fi}
+\rfoot{}
+\lfoot{}
+\cfoot{%
+    \if@mainmatter \sl\arabic{page} \ \else \sl\roman{page} \ \fi}
+
+\makeatother
+
+%%------------------------------------------------------------
+
+%%------------------------------------------------------------
+%\pagestyle{fancyplain}
+%%
+%\addtolength{\headwidth}{\marginparsep}
+%\addtolength{\headwidth}{\marginparwidth}
+%%
+%\renewcommand{\chaptermark}[1]%
+%   {\markboth{#1}{}}
+%\renewcommand{\sectionmark}[1]%
+%   {\markright{\thesection\ #1}}
+%%
+%\rhead[]{}
+%\lhead[]{}
+%\chead[\fancyplain{}{\sl\thechapter.~\leftmark}]
+%       {\fancyplain{}{\sl\rightmark}}
+%\cfoot{\sl\thepage}
+%%------------------------------------------------------------
+
+%%------------------------------------------------------------
+%\pagestyle{fancyplain}
+%\addtolength{\headwidth}{\marginparsep}
+%\addtolength{\headwidth}{\marginparwidth}
+%\renewcommand{\chaptermark}[1]%
+%   {\markboth{#1}{}}
+%\renewcommand{\sectionmark}[1]%
+%   {\markright{\thesection\ #1}}
+%\lhead[\fancyplain{}{\rm\thepage}]%
+%   {\fancyplain{}{\sl\rightmark}}
+%\rhead[\fancyplain{}{\sl\leftmark}]%
+%   {\fancyplain{}{\rm\thepage}}
+%\cfoot{}
+%%------------------------------------------------------------
+
+%%------------------------------------------------------------
+%\pagestyle{fancyplain}
+%%\addtolength{\headwidth}{\marginparsep}
+%%\addtolength{\headwidth}{\marginparwidth}
+%\addtolength{\headwidth}{2cm}
+%\renewcommand{\chaptermark}[1]%
+%   {\markboth{#1}{}}
+%\renewcommand{\sectionmark}[1]%
+%   {\markright{\thesection\ #1}}
+%\lhead[\fancyplain{}{\bfseries\upshape \thepage}]%
+%   {\fancyplain{}{\bfseries\itshape  \rightmark}}
+%\rhead[\fancyplain{}{\bfseries \leftmark}]%
+%   {\fancyplain{}{\bfseries\upshape \thepage}}
+%\cfoot{}
+%%------------------------------------------------------------
+
+%%------------------------------------------------------------
+%\pagestyle{plain}
+%
+%\makeatletter
+%
+%\let\@mkboth\markboth
+%
+%%% No foot
+%\def\@oddfoot{\hfil{\rm \thepage}\hfil}
+%\def\@evenfoot{\hfil{\rm \thepage}\hfil}
+%
+%%% Left heading
+%\def\@evenhead{%
+%  ~ \hfil {\sc \leftmark}  \hfil ~\\
+%  \rule{\linewidth}{1pt}}
+%
+%%% Right heading
+%\def\@oddhead{%
+%  ~ \hfil {\sc \rightmark} \hfil ~\\
+%  \rule{\linewidth}{1pt}}
+%
+%%% Chapter mark
+%\def\chaptermark#1{\markboth {\it{\ifnum \c@secnumdepth >\m@ne
+%      \@chapapp\ \thechapter. \ \fi #1}}{}}
+%
+%%% Section mark
+%\def\sectionmark#1{\markright {\it{\ifnum \c@secnumdepth >\z@
+%   \thesection. \ \fi #1}}}
+%
+%\makeatother
+%%------------------------------------------------------------
+
+%\input{chapterdef.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% hyphenation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\typeout{----> Defining hyphenation for several words . . .}
+
+\hyphenation{
+prima-rio 
+secun-da-rio 
+some-ti-dos 
+pre-sen-ta-mos
+obte-ni-das
+MAGIC
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% bibliography
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\typeout{----> Defining bibliographic style . . .}
+
+% Next line is unnecessary in teTeX distribution, because another
+% command, \bibname, is already defined.
+% \renewcommand\refname{Bibliograf'ia}       %change as needed
+
+\providecommand{\href}[2]{#2}   %generates the href macro if needed
+
+\def\bhline{\noalign{\hrule height 1pt}}
+\newcommand{\ms}{\noalign{\vspace{3pt}}}
+\newcommand{\br}{\ms\bhline\ms}
+\newcommand{\mr}{\ms\hline\ms}
+
+\endinput
+%
+%%EOF

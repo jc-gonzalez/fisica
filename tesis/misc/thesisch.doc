@@ -1,0 +1,435 @@
+Content-Type: text/enriched
+Text-Width: 60
+
+#--------------------------------------------------------------------
+# thesisch.doc
+#
+# Thesis (scheme)
+# J C Gonzalez
+#
+# Notes:
+#  291298 Format "outline+enriched-mode" (EMACS)
+#--------------------------------------------------------------------
+# 
+
+@enumerate
+
+
+@item Introduction
+
+
+@item Cosmic Rays
+
+
+@enumerate 
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  Origin of the Cosmic Rays</x-color>
+
+
+@enumerate 
+
+
+<x-color><param>Bisque</param>**</x-color><x-color><param>Cyan</param>@item   Point Sources</x-color>
+
+
+@itemize
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    Supernovaes</x-color>
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    Pulsars</x-color>
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    Active Galactic Nucleii (AGNs)</x-color>
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    Quasars</x-color>
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    Gamma Ray Bursts</x-color>
+
+
+@end itemize
+
+
+<x-color><param>Bisque</param>**</x-color><x-color><param>Cyan</param>@item   Extended Sources</x-color>
+
+
+@itemize
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    Halos</x-color>
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    WIMPs</x-color>
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    Cosmic Strings</x-color>
+
+
+@end itemize
+
+
+@end enumerate 
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  The Physics of the Cosmic Rays</x-color>
+
+
+@enumerate 
+
+
+<x-color><param>Bisque</param>**</x-color><x-color><param>Cyan</param>@item   Formation of the Cosmic Rays</x-color>
+
+
+@itemize
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    Charged Cosmic Rays</x-color>
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    Gamma Rays</x-color>
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    Neutrinos</x-color>
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    Cosmic Ray's Spectrum</x-color>
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    Chemical Composition of the Cosmic Radiation</x-color>
+
+
+@end itemize
+
+
+<x-color><param>Bisque</param>**</x-color><x-color><param>Cyan</param>@item   Propagation through the interestelar and intergalactic media</x-color>
+
+
+@itemize
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    Diffusion in the formation regions</x-color>
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    Absorption in the intergalactic medium</x-color>
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    Absorption in the interestelar medium</x-color>
+
+
+@end itemize
+
+
+<x-color><param>Bisque</param>**</x-color><x-color><param>Cyan</param>@item   The Cosmic Radiation and its entrance in the Earth atmosphere</x-color>
+
+
+@itemize
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    Production of atmospheric showers</x-color>
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    Front of Particles</x-color>
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    Front of Cherenkov light</x-color>
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    Observables in atmospheric showers</x-color>
+
+
+@end itemize
+
+
+@end enumerate 
+
+
+@end enumerate 
+
+
+@item Simulation of atmospheric showers
+
+
+@enumerate
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  Monte Carlo methods</x-color>
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  The CORSIKA code</x-color>
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  Production of Cherenkov light</x-color>
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  Simulation of showers at High Zenith Angle</x-color>
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  Information available from the showers</x-color>
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  Time Structure in the Cherenkov pulse</x-color>
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  Other simulation methods</x-color>
+
+
+@end enumerate
+
+
+@item The MAGIC Telescope
+
+
+@enumerate
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  Phisical goals</x-color>
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  Characteristics of the reflector</x-color>
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  The camera of MAGIC</x-color>
+
+
+@enumerate
+
+
+<x-color><param>Bisque</param>**</x-color><x-color><param>Cyan</param>@item   General overview</x-color>
+
+
+<x-color><param>Bisque</param>**</x-color><x-color><param>Cyan</param>@item   Detection devices</x-color>
+
+
+@itemize
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    Clasical devices: photomultipliers (PMTs)</x-color>
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    Advanced devices: IPCs</x-color>
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    Hybrid devices and Avalanche Photo-Diodes (APDs)</x-color>
+
+
+@end itemize
+
+
+@end enumerate
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  Data Acquisition</x-color>
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  Observational Programs</x-color>
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  The Telescope CT1 of the HEGRA Collaboration</x-color>
+
+
+@end enumerate
+
+
+@item Simulation of the detector: MAGIC
+
+
+@enumerate
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  Detection efficiencies</x-color>
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  Collection of light in the focal plane</x-color>
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  Detection in the camera</x-color>
+
+
+@enumerate
+
+
+<x-color><param>Bisque</param>**</x-color><x-color><param>Cyan</param>@item   Electronics Simulation</x-color>
+
+
+<x-color><param>Bisque</param>**</x-color><x-color><param>Cyan</param>@item   Trigger Logic</x-color>
+
+
+<x-color><param>Bisque</param>**</x-color><x-color><param>Cyan</param>@item   Trigger Efficiencies</x-color>
+
+
+<x-color><param>Bisque</param>**</x-color><x-color><param>Cyan</param>@item   Effective Collection Areas</x-color>
+
+
+<x-color><param>Bisque</param>**</x-color><x-color><param>Cyan</param>@item   Detection Rates</x-color>
+
+
+@itemize
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    Differential rates of detection</x-color>
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    Integral rates of detection</x-color>
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    Hadronic, electronic and muonic backgrounds</x-color>
+
+
+@end itemize
+
+
+@end enumerate
+
+
+@end enumerate
+
+
+@item Simulation of the detector: CT1
+
+
+@enumerate
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  Detection efficiencies</x-color>
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  Collection of light in the focal plane</x-color>
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  Detection in the camera</x-color>
+
+
+@enumerate
+
+
+<x-color><param>Bisque</param>**</x-color><x-color><param>Cyan</param>@item   Electronics Simulation</x-color>
+
+
+<x-color><param>Bisque</param>**</x-color><x-color><param>Cyan</param>@item   Trigger Logic</x-color>
+
+
+<x-color><param>Bisque</param>**</x-color><x-color><param>Cyan</param>@item   Trigger Efficiencies</x-color>
+
+
+<x-color><param>Bisque</param>**</x-color><x-color><param>Cyan</param>@item   Effective Collection Areas</x-color>
+
+
+<x-color><param>Bisque</param>**</x-color><x-color><param>Cyan</param>@item   Detection Rates</x-color>
+
+
+@itemize
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    Differential rates of detection</x-color>
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    Integral rates of detection</x-color>
+
+
+<x-color><param>Bisque</param>***</x-color><x-color><param>OrangeRed</param>@item    Hadronic, electronic and muonic backgrounds</x-color>
+
+
+@end itemize
+
+
+@end enumerate
+
+
+@end enumerate
+
+
+@item Image Analysis
+
+
+@enumerate
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  Cleanning of the Images</x-color>
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  Image Parameters</x-color>
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  Statistical Analysis of the Images</x-color>
+
+
+@end enumerate
+
+
+@item Angular and Energetic Resolutions in MAGIC
+
+
+@enumerate
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  Estimation of the angular resolution</x-color>
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  Calculation of the energetic resolution</x-color>
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  Other methods</x-color>
+
+
+@end enumerate
+
+
+@item Gamma-Hadron separation in MAGIC
+
+
+@enumerate
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  Moments Analysis</x-color>
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  Quality Factors</x-color>
+
+
+@enumerate
+
+
+<x-color><param>Bisque</param>**</x-color><x-color><param>Cyan</param>@item   Optimal Cuts</x-color>
+
+
+<x-color><param>Bisque</param>**</x-color><x-color><param>Cyan</param>@item   Method of the Cumulative Distributions</x-color>
+
+
+<x-color><param>Bisque</param>**</x-color><x-color><param>Cyan</param>@item   Method of the Entropy</x-color>
+
+
+@end enumerate
+
+
+<x-color><param>Bisque</param>*</x-color><x-color><param>LightSkyBlue</param>@item  Other methods</x-color>
+
+
+@end enumerate
+
+
+@item Conclusions
+
+
+@enumerate
+
+
+@item Description of the CORSIKA code
+
+
+@item Calculation of the image parameters
+
+
+@item Statistical analysis of correlations
+
+
+@item Technical description of the analysis programs
+
+
+@end enumerate
+
+
+

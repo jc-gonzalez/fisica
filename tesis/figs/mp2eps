@@ -1,0 +1,59 @@
+#! /bin/sh 
+##################################################################### 
+# Shell script mp2eps 
+# Call as: mp2eps [-p] basename 
+# List each file basename.* in the directory and processes it through
+# TeX and dvips to get individual, standard EPS files, and
+# optionally PDF files through epstopdf
+# 
+# Copyright 2000, J C Gonzalez
+##################################################################### 
+
+if [ "$1" = "-p" ]; then
+  dopdf="y"
+  shift
+else
+  dopdf="n"
+fi
+
+bname=${1:?"A file bname is required."} 
+extname=N.eps 
+errfile=err.$$
+
+echo Files $bname.N, where N is a number, will become $bname$extname
+
+trap "rm $bname.{dvi,log,tex} $errfile" 0
+
+for file in `ls $bname.[0-9]*`
+do
+    ext=`echo $file | cut -d "." -f 2`
+    texname=$bname.tex
+    dviname=$bname.dvi
+    epsname=$bname$ext.eps
+
+    cat <<EOF>$texname
+\\nonstopmode
+\\nopagenumbers
+\\input epsf
+\$\$\\epsfbox{$file}\$\$
+\\end
+EOF
+
+    (tex $texname > $errfile 2>&1 && \
+     dvips -E -o $epsname $dviname >> $errfile 2>&1) || \
+    (cat $errfile; \
+     echo Error TeXing $texname for $file ; \
+     exit 0)
+
+    if [ "$dopdf" = "y" ]; then
+        epstopdf $epsname > $errfile 2>&1 || \
+        (cat $errfile; \
+         echo Error making epstopdf $texname for $file ; \
+         exit 0)
+        echo "$file -> $epsname -> $bname$ext.pdf"
+    else
+        echo "$file -> $epsname"
+    fi
+    
+done 
+####################### end shell script ###########################

@@ -1,0 +1,52 @@
+v/read w,c,a0,a70,b0,b70 highza-old.dat
+
+size 20 20
+opt utit
+
+title 'Spectral Distribution of Cherenkov Photons'
+title '1 TeV Gamma Showers - 0[\260] vs 70[\260] ZA' U
+
+null 300 600 0 12
+
+set lwid 5
+
+set ltyp 1
+graph 11 w c    cs
+
+set ltyp 2
+set dash
+graph 11 w a0   cs
+
+set ltyp 4
+graph 11 w a70  cs
+
+set ltyp 12
+set dash 0.3
+graph 11 w b0   cs
+set dash
+
+set ltyp 13
+graph 11 w b70  cs 
+
+KEY 460 11.1 1 'Cherenkov Spectrum' ! 'L'
+
+set dash
+KEY 460 10.6 2 'Spec.Absorption at 0[\260] ZA' ! 'L'
+
+KEY 460 10.1 4 'Spec.Absorption at 70[\260] ZA' ! 'L'
+
+set dash 0.3
+KEY 460  9.6 12 'Spec. after PMT at 0[\260] ZA' ! 'L'
+set dash
+
+KEY 460  9.1 13 'Spec. after PMT at 70[\260] ZA' ! 'L'
+
+set ylab 0.6
+set xlab 1.1
+atitle 'Wavelength (nm)' 'Number of Photons (arb.units)' 
+
+itx 307.575 8.21619 '100.0"Y#'
+itx 323.226 4.61018 '85.6"Y#'
+itx 406.490 2.30634 '52.5"Y#'
+itx 321.348 0.57846 '9.8"Y#'
+itx 375.188 0.22788 '5.4"Y#'

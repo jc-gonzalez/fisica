@@ -1,0 +1,262 @@
+\documentstyle[11pt,epsf,calc,a4,amssymb,latexsym]{article}
+% \pagestyle{empty}
+\begin{document}
+\title{Optical Design of the \\
+17m $\o$ MAGIC Telescope}
+\author{J.Fern\'{a}ndez$^{1,2}$, R.Mirzoyan$^{2}$, J.C.Gonz\'{a}lez$^{1}$, \\ V.Fonseca$^{1}$, E.Lorenz$^{2}$}
+\date{}
+\maketitle
+
+
+\centerline{{\bf Abstract}}
+
+{\footnotesize 
+An optical ray tracing program (RTP) has been developed for simulation of optical properties of multimirror atmospheric Cherenkov gamma ray imaging telescopes. It has been applied for the 17m $\o$, $f$/1 MAGIC Telescope Project, dedicated for sub-100 GeV gamma ray astronomy. The results show that MAGIC will provide an angular resolution of $0.06^{\circ}$, $0.11^{\circ}$ and $0.15^{\circ}$ at incident angle of light of $0.5^{\circ},1.0^{\circ}$ and $1.5^{\circ}$ respectively. Pixel sizes as small as $0.1^{\circ}$ could be applied in the central part of the imaging camera (till the radius of $1.0^{\circ}$).
+}
+\section{Introduction}
+
+{\footnotesize 
+The atmospheric imaging Cherenkov technique has been succesfully used for very high energy (VHE) $\gamma$-ray astronomy during recent few years. Currently at least 4 sources of VHE $\gamma$-rays have been found on a statistical significance level $ > $ 10 standard deviations []. Several groups or/and collaborations are using imaging telescopes for $ \gamma $-ray astronomy and more projects are planned [].
+
+All the existing telescopes measure above the lower energy threshold of 300 GeV. $\gamma$-ray detectors on board on satellites measure up to 10-20 GeV. The energy range between 20 and 300 GeV, highly interesting from the astrophysical point of view, is not yet investigated. The 17 m $\o$ MAGIC Telescope Project is dedicated to measure above the lower energy threshold of 20 GeV and to close the existing energy gap between satellites and ground based Cherenkov telescopes.
+
+In this report we investigated the properties and optimised the optical design for the MAGIC Telescope. In the following the motivation for a telescope with a large reflector will be discussed. Then, the RTP will be shortly described, which will be followed by the results of its application for the MAGIC Telescope.
+
+}
+
+\section{Motivation}
+
+{\footnotesize 
+For an imaging telescope the lower energy threshold $E_{th}$ is inversely proportional to the total mirror surface area $A_{reflector}$ of the reflector []:
+
+\vspace{0.2cm}
+
+\centerline {$E_{th} \varpropto \frac{1}{A_{reflector}}$}
+
+\vspace{0.2cm}
+
+Presently the 10m $\o $ Wipple imaging telescope measures with a lower energy threshold $ > 250 \div 300 $ GeV. It is anticipated that in the near future they will be able to lower the threshold of their telescope till $ \sim 100 $ GeV by applying an imaging camera with finer pixel size. A simple extrapolation shows that a 17m $\o $ telescope should provide $ \sim 3$ times lower energy threshold than a 10m $\o$ telescope. In addition light sensors of very high quantum efficiency are planed to be used for the MAGIC Telescope. Monte Carlo simulations show that the very high resolution ($\o_{pixel}   \leqslant 0.1^{\circ} $) imaging camera will provide a lower energy threshold of $\sim  20 $GeV [].
+
+\vspace{1cm}
+
+ Currently, it is believed that the "best" pixel size for an imaging telescope is:
+
+ $(\frac{1}{8})^{\circ} \lesssim \o_{pixel} \lesssim (\frac{1}{4})^{\circ}$ \\ 
+ for the energy range above several hundred GeV.
+
+ For lower energies ($ \lesssim 100 $ GeV) the pixel size should be even smaller, because the sub-100 GeV showers reach the maximum of their development higher in the atmosphere [Kifune, R.M]. To use fully the advantage of small pixel sizes, a given reflector should provide an angular resolution which should be better than both the size of $\gamma$-images and the pixel size.
+
+A spherical or parabolic tesselated reflector are shown  [Lewis] to provide a good angular resolution within a field of view of $ \sim 1^{\circ} $ in radius. MAGIC Telescope will have a parabolic general shape of the reflector, in order to provide very high resolution in the central part of the field of view, because the sub-100 GeV showers tend to  concentrate towards the camera centre.
+
+Also, unlike the spherical reflector, for the parabolic one there is no time difference for collected rays in the focal plane from a plane front of an incident parallel beam of light which hit the reflector at the centre and at the edge. 
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Optical design of the MAGIC Telescope}
+
+{\footnotesize 
+MAGIC is a 17m diameter Cherenkov Telescope.
+It consists of a paraboloidal dish with a tessellated reflector of focal lenght 17 m and octogonal shape.
+Over the dish, more than 900 spherical mirrors (square shape (49 x 49 cm)) are located (in this study we accepted 920 mirrors).  
+
+Due to the shortening effect explained below
+the radius of curvature (Rc) of the spherical mirrors varies with the distance to the telescope optical axis at which they are located.
+The reflector is divided into eight zones (See Fig.1.), each one containing mirrors with identical Rc. 
+
+% Fig.1. --------------- OPTICAL DESIGN -----------------------
+ \renewcommand{\textfraction}{0.1}
+ \renewcommand{\bottomfraction}{0.9}
+ \renewcommand{\topfraction}{0.9}
+ \renewcommand{\floatpagefraction}{0.9}
+
+\begin{figure}[h]\centering
+\leavevmode
+\epsfxsize=12cm
+\epsffile{/disco7/ana/juanfer/EPS-PS/main-reflector2.eps}                                      
+\caption{\tiny{MAGIC Telescope reflector. It consists of 920 spherical mirrors (49 x 49 cm) on a parabolic dish of 17m $\o$ and 
+17m of focal length. The dish is divided into 8 zones. Each zone contains mirrors with identical value of radius of curvature.}}
+
+
+\end{figure}  
+Rc varies from  34.067 m for mirrors in zone 1 (inner mirrors) to 36.108 m for mirrors in zone 8 (outer mirrors). 
+
+Due to the intend to use an active optics for the telescope each neighbouring 4-mirrors will be set onto one platform and prior to its installation onto the reflector they will be adjusted to act as a single mirror element for the given incident angle of light. The platforms will be fixed to the reflector by means of 3 adjustable axes, two of which will be driven by small stepping motors.
+
+
+
+\vspace{1.0cm}
+
+{\bf Collimation}
+
+When an air Cherenkov telescope measures light from air showers, due to the finite average distance to showers (which is comparable th the shower size itself), the best image plane is different from the focal plane, being at slightly larger distances from the reflector.
+
+This is usually taken into account by shifting the position of the focal plane imaging camera. (See Fig.2).
+
+% Fig.2. ------------ OPTICAL DESIGN : COLLIMATION -----------------------------------------
+   \begin{figure}[h]\centering
+   \leavevmode
+   \epsfxsize=6cm
+   \epsffile{/disco7/ana/juanfer/EPS-PS/focused.eps}
+   \caption{\tiny{Telescope collimation. Mirrors are focused to infinity, but Extensive Air Showers (EAS) develop at a certain heigh
+   in the atmosphere. Telescope will be focused to EAS if camera window is moved back some centimeters.}}
+   \end{figure}
+
+
+ The correct mathematical formula which gives the required camera displacement (See Fig. 3) depends on the distance to the telescope optical axis at 
+which mirrors are located, on the distance where we want to focus the telescope and on the light incident angle. 
+% Fig.3. ---------------------------------
+   \begin{figure}[h]\centering
+   \leavevmode
+   \epsfxsize=10cm
+   \epsffile{/disco7/ana/juanfer/EPS-PS/newoc-op.eps}
+
+   \caption{\tiny{Telescope collimation formula. Mirrors are adjusted in a way that a parallel beam of light from infinity will be
+focused at the point F. Extensive Air Showers (EAS) develop at certain heigh in the atmosphere. Light coming from EAS will
+be focused at the point C. Therefore, telescope will be well collimated if camera window is located at the point C. Simple
+trigonometry formulas give the distance F--C, which is of the order of some centimeters. Distance F--C depends on the height
+above the telescope where light source is located and on the distance to the telescope optical axis at which mirrors are located.}}
+
+   \end{figure}
+% end Fig.3----------------------------------
+
+
+The representation of this mathematical formula for an incident angle of $0^{\circ}$ is shown in Fig.4.
+
+% Fig.4----------------------------------
+   \begin{figure}[h]\centering
+   \leavevmode
+   \epsfxsize=6cm
+   \epsffile{/disco7/ana/juanfer/EPS-PS/2_4_6_8.eps}
+   \caption{\tiny{TELESCOPE COLLIMATION FORMULA REPRESENTATION. This figure represents the distance (given by the mathematical formula written in Fig.3) in between the focal lenght point (at 17 m from the centre of the mirror dish) and the camera window plane. It shows how much camera should be moved back.}}
+   \end{figure}
+
+
+In this document, 10 Km above the telescope is the distance we choose at which the light point source for optical quality tests is located.
+ Therefore, the telescope is focused to that distance. In this case the camera should be located at 17 m $+ \approx$3.0 cm from the centre of the dish for a light incident angle of $0^{\circ}$. In this paper we have placed the camera at 17 m + 2.6 cm because we want to minimize image distorsions for a light incident angle of $\approx 1^{\circ}$. Nevertheless there are no significant changes in the size of images if we move back the camera one or two centimeters more.
+
+\vspace{0.5cm}
+
+{\bf Shortening effect}
+
+The focal plane of a spherical mirror of radius of curvature $R_c$ lies at a distance $\frac{R_c}{2}$ from the centre of the mirror for an incident parallel beam of light coming parallel to the optical mirror axis (incident angle $= 0^{\circ}$). When a mirrror works at different from $0^{\circ}$ incident angle of light it gives the smallest blur size at somewhat shorter distances than $\frac{R_c}{2}$. This effect of "shortening of the focal length" depends on the incident angle of light, becoming quite large for large incident angles [Mirzoyan, Foming, Stephaninan,...].
+
+As on the tessellated reflector nearly all mirrors work under different from $0^{\circ}$ incident angles of light, even in the case of a parallel to the telescope optical axis beam of light, the effect should be taken into account in designing the telescope.
+
+For each mirror, depending of its $R_c$ and working angle on the reflector, the shortening effect should be calculated and, when necessary, one should choose another longer $R_c$ in order to compensate for the shortening.
+
+The smallest spot size must be the spot with minimum $rms$ value. The RTP allows us to calculate precisely the spot size of each mirror. Fig. 6 shows $R_c$ versus the distance from the optical telescope axis to the mirror centre.
+
+Once all optical components are fixed one may proceed to study the optical quality of images by testing the reconstructed image at the imaging camera window of a point source of light located at 10 Km (point where the telescope is focused) from the telescope.
+
+
+
+
+%  Fig.6 ------------------------------
+   \begin{figure}[h]\centering
+   \leavevmode
+   \epsfxsize=6cm
+   \epsffile{/disco7/ana/juanfer/EPS-PS/shortening.eps}
+   \caption{\tiny{Radius of curvature of MAGIC TELESCOPE spherical mirrors as a function of the distance from the telescope axis at which they are located is shown in this figure.}}
+   \end{figure}
+\vspace{0.2cm}
+
+
+Light detectors (PM's, etc.) have a round outline, then, the "smalles spot size" must be the "spot" with minimum width and lenght. The RTM allow us to know precisely the width and lenght of the "spot" of each mirror. Then the optimum Rc value of all mirrors can be found out.
+Fig.6 shows Rc versus the distance from the telescope axis to the mirror center.
+
+
+Then, all optical components of the telescope are fixed and one may proceed to study the optical quality of images by testing 
+the reconstructed image (at the camera window) of a light point source located at 10 Km (point where the telescope is focused) above the telescope and at all heights where the maximum development of EAS are expected to be. 
+
+\vspace{0.5cm}
+
+{\bf Ray tracing method}
+
+Due to the tessellated mirror design and to the square shape of each mirror the clasical formulas of optical aberrations are not usefull for detailed optical studies of the MAGIC TELESCOPE. 
+A specific method must be used. We use the Ray Tracing Method (RTM) which consists of a pure geometrical study. Light is simulated
+as a group of photons travelling in straight lines towards the mirrors, and beeing reflected afterwards towards the camera window. It's a matter of points, stright lines, vectors and surfaces. Therefore, if all optical parameters (focal lenght, radius of curvature, etc.), all optical components (mirror position and orientation, position of the camera) and the position of the light point source are fixed, the image at the camera window plane can be predicted with Geometry and Algebra.
+
+\vspace{0.2cm}
+
+Three vectors and two points must be taken into account to follow a photon from the light point source to the camera window (See Fig.7):\\
+\\
+Incident vector (I) = direction of the incident photon (travelling towards the mirror).\\
+Point on the mirror surface (Q) = point where the incident photon intersects the mirror surface. \\
+Normal vector (N) = normal vector to the mirror surface at the point Q.\\
+Reflected vector (R) = direction of the reflected photon (travelling from the point Q to the camera window).\\
+Point on the camera window (S) = point where the reflected photon intersects the camera window plane. This point belongs to the final image.\\
+
+% Fig.5------------------ RAY TRACING METHOD -----------------------------------------
+   \begin{figure}[h]\centering
+   \leavevmode
+   \epsfxsize=9cm
+   \epsffile{/disco7/ana/juanfer/EPS-PS/raytracing.eps}
+   \caption{\tiny{Ray Tracing Method. We choose the position of the point light source. Then, a beam of light (as an homogeneous group of light rays)
+is sent towards the reflector. Equations of surfaces and mirror parameters are known. We obtain, by simple geometry calculations, each point at the imaging camera where each light ray has been reflected. In this way we obtain the shape and the light density of the spot at the imaging camera window.}}
+   \end{figure}
+It is well known (reflection laws) that vectors I, N and R must form a unique plane and that the angles IN and NR must be equal.\\
+
+We choose the position of a given light point source and we send photons homogeneusly towards the telescope. After applying the RTM we get the image of the light point source at the camera window. We get the shape and the photon density distribution of the image. Then, optical aberrations and image distorsions associated with the MAGIC TELESCOPE optical design are known.
+
+
+
+
+}
+
+\section{Discussion}
+
+{\footnotesize 
+
+
+
+
+}
+\section{Summary}
+
+{\footnotesize 
+
+
+
+
+}
+
+\section*{Acknowledgements}
+
+{\footnotesize 
+
+
+
+
+}
+
+\section*{References}
+
+{\footnotesize 
+
+
+
+
+}
+
+
+
+
+
+
+\end{document}

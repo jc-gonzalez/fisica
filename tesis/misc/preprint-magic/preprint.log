@@ -1,0 +1,232 @@
+This is TeX, Version 3.1415 (C version 6.1) (format=latex 94.8.12)  22 JAN 1997 09:39
+**preprint.tex
+(preprint.tex
+LaTeX2e <1994/06/01> patch level 3
+Hyphenation patterns for english, loaded.
+(/usr/local/lib/texmf/tex/latex2e/latex209.def
+File: latex209.def 1994/06/01 Standard LaTeX file
+
+Entering LaTeX 2.09 compatibility mode.
+\footheight=\dimen102
+\@maxsep=\dimen103
+\@dblmaxsep=\dimen104
+(/usr/local/lib/texmf/tex/latex2e/tracefnt.sty
+Package: tracefnt 1994/05/29 v2.3k Standard LaTeX package (font tracing)
+\tracingfonts=\count82
+LaTeX Info: Redefining \selectfont on input line 113.
+)
+\symbold=\mathgroup4
+\symsans=\mathgroup5
+\symtypewriter=\mathgroup6
+\symitalic=\mathgroup7
+\symsmallcaps=\mathgroup8
+\symslanted=\mathgroup9
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 179.
+LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 180.
+LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 181.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 187.
+LaTeX Info: Redefining \em on input line 197.
+
+(/usr/local/lib/texmf/tex/latex2e/latexsym.sty
+Package: latexsym 1994/05/27 v2.1e Standard LaTeX package (lasy symbols)
+\symlasy=\mathgroup10
+LaTeX Font Info:    Overwriting symbol font `lasy' in version `bold'
+(Font)                  U/lasy/m/n --> U/lasy/b/n on input line 47.
+)
+LaTeX Font Info:    Redeclaring math delimiter \lgroup on input line 262.
+LaTeX Font Info:    Redeclaring math delimiter \rgroup on input line 264.
+LaTeX Font Info:    Redeclaring math delimiter \bracevert on input line 266.
+)
+(/usr/local/lib/texmf/tex/latex2e/article.cls
+Document Class: article 1994/06/02 v1.2s Standard LaTeX document class
+(/usr/local/lib/texmf/tex/latex2e/size11.clo
+File: size11.clo 1994/06/02 v1.2s Standard LaTeX file (size option)
+)
+\c@part=\count83
+\c@section=\count84
+\c@subsection=\count85
+\c@subsubsection=\count86
+\c@paragraph=\count87
+\c@subparagraph=\count88
+\c@figure=\count89
+\c@table=\count90
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+Compatibility mode: definition of \rm ignored.
+Compatibility mode: definition of \sf ignored.
+Compatibility mode: definition of \tt ignored.
+Compatibility mode: definition of \bf ignored.
+Compatibility mode: definition of \it ignored.
+Compatibility mode: definition of \sl ignored.
+Compatibility mode: definition of \sc ignored.
+\bibindent=\dimen105
+)
+(/usr/local/lib/texmf/tex/dvips/epsf.sty
+\epsffilein=\read1
+\epsfxsize=\dimen106
+\epsfysize=\dimen107
+\epsftsize=\dimen108
+\epsfrsize=\dimen109
+\epsftmp=\dimen110
+\pspoints=\dimen111
+)
+(/usr/local/lib/texmf/tex/misc/calc.sty
+Style Option: `calc' 3.7 <1993/09/26 19:56:43> (KKT and FJ)
+\global@count=\count91
+\local@count=\count92
+\global@dimen=\dimen112
+\local@dimen=\dimen113
+\global@skip=\skip43
+\local@skip=\skip44
+\global@muskip=\muskip10
+\local@muskip=\muskip11
+\ratio@count=\count93
+) (/usr/local/lib/texmf/tex/a4/a4.sty
+Package: a4 1994/03/15 1.2c A4 based page layout
+)
+(/usr/local/lib/texmf/tex/amslatex/amssymb.sty
+AMS-LaTeX option `amssymb.sty' (1.1x, 10-Mar-1994)
+(/usr/local/lib/texmf/tex/amslatex/amsfonts.sty
+AMS-LaTeX option `amsfonts.sty' (2.0x, 10-Mar-1994)
+\symAMSa=\mathgroup11
+\symAMSb=\mathgroup12
+LaTeX Font Info:    Overwriting math alphabet `\frak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 126.
+\Mathstrutbox@=\box25
+\strutbox@=\box26
+\big@size=\dimen114
+\ex@=\dimen115
+\minaw@=\dimen116
+LaTeX Font Info:    Redeclaring font encoding OML on input line 158.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 159.
+)
+LaTeX Font Info:    Redeclaring math symbol \square on input line 20.
+LaTeX Font Info:    Redeclaring math symbol \lozenge on input line 23.
+) (preprint.aux)
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 3.
+LaTeX Font Info:    ... okay on input line 3.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 3.
+LaTeX Font Info:    ... okay on input line 3.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 3.
+LaTeX Font Info:    ... okay on input line 3.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 3.
+LaTeX Font Info:    ... okay on input line 3.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 3.
+LaTeX Font Info:    ... okay on input line 3.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 3.
+LaTeX Font Info:    ... okay on input line 3.
+LaTeX Font Info:    No math setup on input line 3.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <10.95> on input line 3.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 3.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 3.
+LaTeX Font Info:    Try loading font information for U+lasy on input line 3.
+ (/usr/local/lib/texmf/tex/latex2e/Ulasy.fd
+File: Ulasy.fd 1994/05/27 v2.1eLaTeX symbol font definitions
+)
+LaTeX Font Info:    Try loading font information for U+msa on input line 3.
+
+(/usr/local/lib/texmf/tex/mfnfss/Umsa.fd
+File: Umsa.fd 1994/05/12 v2.2b Standard AMS font definitions
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 3.
+
+(/usr/local/lib/texmf/tex/mfnfss/Umsb.fd
+File: Umsb.fd 1994/05/12 v2.2b Standard AMS font definitions
+)
+LaTeX Info: Redefining \" on input line 3.
+LaTeX Info: Redefining \" on input line 3.
+LaTeX Font Info:    No math setup on input line 8.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <17.28> on input line 8.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 8.
+LaTeX Font Info:    No math setup on input line 8.
+LaTeX Font Info:    No math setup on input line 13.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <9> on input line 13.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 13.
+LaTeX Font Info:    No math setup on input line 16.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <14.4> on input line 16.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 16.
+LaTeX Font Info:    No math setup on input line 18.
+LaTeX Font Info:    No math setup on input line 27.
+LaTeX Font Info:    No math setup on input line 29.
+LaTeX Font Info:    No math setup on input line 44.
+ [1
+
+]
+LaTeX Font Info:    No math setup on input line 44.
+LaTeX Font Info:    No math setup on input line 71.
+LaTeX Font Info:    No math setup on input line 73.
+LaTeX Font Info:    No math setup on input line 93.
+LaTeX Font Info:    No math setup on input line 93.
+LaTeX Font Info:    No math setup on input line 100.
+ [2]
+LaTeX Font Info:    No math setup on input line 117.
+LaTeX Font Info:    No math setup on input line 133.
+LaTeX Font Info:    No math setup on input line 133.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+LaTeX Font Info:    No math setup on input line 139.
+LaTeX Font Info:    No math setup on input line 146.
+LaTeX Font Info:    No math setup on input line 146.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+LaTeX Font Info:    No math setup on input line 151.
+LaTeX Font Info:    No math setup on input line 160.
+[3]
+LaTeX Font Info:    No math setup on input line 161.
+LaTeX Font Info:    No math setup on input line 166.
+ [4]
+LaTeX Font Info:    No math setup on input line 175.
+
+Underfull \hbox (badness 10000) in paragraph at lines 197--204
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 197--204
+
+ []
+
+LaTeX Font Info:    No math setup on input line 211.
+LaTeX Font Info:    No math setup on input line 211.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 213--214
+
+ []
+
+LaTeX Font Info:    No math setup on input line 215.
+[5]
+LaTeX Font Info:    No math setup on input line 222.
+LaTeX Font Info:    No math setup on input line 224.
+LaTeX Font Info:    No math setup on input line 230.
+LaTeX Font Info:    No math setup on input line 232.
+LaTeX Font Info:    No math setup on input line 239.
+LaTeX Font Info:    No math setup on input line 241.
+LaTeX Font Info:    No math setup on input line 248.
+LaTeX Font Info:    No math setup on input line 250.
+LaTeX Font Info:    No math setup on input line 262.
+ [6] (preprint.aux) ) 
+Here is how much of TeX's memory you used:
+ 907 strings out of 11025
+ 9356 string characters out of 75125
+ 51163 words of memory out of 262141
+ 3645 multiletter control sequences out of 9500
+ 33033 words of font info for 125 fonts, out of 100000 for 255
+ 14 hyphenation exceptions out of 607
+ 24i,8n,24p,801b,355s stack positions out of 300i,40n,60p,3000b,4000s
+
+Output written on preprint.dvi (6 pages, 18848 bytes).

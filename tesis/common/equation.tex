@@ -1,0 +1,603 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%  equations.tex
+%%
+%%  Created: Mon Oct 20 14:58:56 1997
+%%  Author.: Jose Carlos Gonzalez
+%%  Notes..:
+%%          
+%%-------------------------------------------------------------------------
+%% Filename: $RCSfile$
+%% Revision: $Revision$
+%% Date:     $Date$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% THE COSMIC RADIATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% ATMOPHERIC GAMMA AND COSMIC RAY SHOWERS %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\toyAeq{
+\begin{equation} 
+  N(X)=2^n=2^{X/\lambda} 
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\toyBeq{
+\begin{equation} 
+  E(X)=E_0/N(X) 
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\toyCeq{
+\begin{equation} 
+  E(X) = E_{\mathrm{c}}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\toyDeq{
+\begin{equation} 
+  E(X) = E_{\mathrm{c}}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\NXsimpleeq{
+\begin{eqnarray}
+  \label{eq:xmax}
+  N_{\mathrm{max}} &\propto& E_0  \eqcomm{and}  \\
+  X_{\mathrm{max}} &\propto& \ln(E_0)
+\end{eqnarray}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\NXsimpleHadeq{
+\begin{equation}
+  X_{\mathrm{max}} \propto \lambda\ln[E_0/(A E_{\mathrm{c}})]
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\Neeq{
+\begin{equation}
+  \label{eq:nelectrons}
+  N_{\mathrm{e}} = \frac{0.31}{\sqrt{x}}\exp\left[\tau(1-1.5\ln s)\right]
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\ageeq{
+\begin{equation}
+  \label{eq:age}
+  s = \frac{3}{1+\frac{2x}{\tau}}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\NKGeq{
+\begin{equation}
+  \label{eq:nks}
+  \rho(r) = \frac{N_{\mathrm{e}}}{r_{\mathrm{M}}^2}\;
+    f\left(s,\frac{r}{r_{\mathrm{M}}}\right) 
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\fsreq{
+\begin{eqnarray}
+f\left(s,\frac{r}{r_{\mathrm{M}}}\right) &=& 
+  \left(\frac{r}{r_{\mathrm{M}}}\right)^{s-2} 
+  \left(1 + \frac{r}{r_{\mathrm{M}}}\right)^{s-4.5} C(s) \eqcomm{with} \\
+  C(s) &=& \frac{\Gamma(4.5-s)}{2\pi\Gamma(s)\Gamma(4.5-2s)}
+\end{eqnarray}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\Cherenkovcondeq{
+\begin{equation}
+  \beta n > 1
+  \label{eq:cherenkovcond}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\lightcoherenceeq{
+\begin{equation}
+  \cos\theta_{\mathrm{c}} = \frac{c/n}{v} = \frac{1}{\beta n}
+  \label{eq:lightcoherence}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\exprhoeq{
+\begin{equation}
+  \rho = \rho_0 \exp(-h/H_{\mathrm{S}})
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\pathinteq{
+\begin{equation}
+  \tau = \int \rho(h) \d h = \tau_0 \exp(-h/H_{\mathrm{S}})
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\refractionidxeq{
+\begin{eqnarray}
+     n &=& 1 + \eta \\
+  \eta &=& 0.0002926\frac{\tau}{\tau_0}\frac{273.2\u{K}}{T}
+\end{eqnarray}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\etaeq{
+\begin{equation}
+\eta=\eta_0\frac{\tau}{\tau_0}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\Cherenkovangleeq{
+\begin{equation}
+  \theta_{\mathrm{c}} \simeq \sqrt{2\eta} \u{(rad)}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\Emineq{
+\begin{equation}
+  E_{\mathrm{min}} = \frac{0.511}{\sqrt{2\eta}} \u{(MeV)}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\dEdheq{
+\begin{equation}
+  \frac{\d E}{\d h} = 
+  4 \pi^2 e^2 \int\left(1-\frac{1}{\beta^2 n^2}\right)
+  \frac{\d \lambda}{\lambda^2}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\dNdheq{
+\begin{equation}
+  \frac{\d N}{\d h} = 
+  2 \pi \alpha \int\left(1-\frac{1}{\beta^2 n^2}\right)
+  \frac{\d \lambda}{\lambda^2}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\specdistreq{
+\begin{equation}
+\left(\frac{\d^2 E}{\d h \d\lambda}\right) \propto \lambda^{-3} 
+\qquad \mathrm{or} \qquad
+\left(\frac{\d^2 N}{\d h \d\lambda}\right) \propto \lambda^{-2}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\phemiteq{
+\begin{equation}
+  \label{eq:cherenkovlight}
+  N = 2 \pi \alpha l 
+  \left( \frac{1}{\lambda_1} - \frac{1}{\lambda_2} \right)
+  \sin^2\theta
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\Rayleigheq{
+%  \begin{equation}
+%    \label{eq:rayleigh}
+%    T_\mathrm{Rayl} = \exp
+%    \left[
+%      -\frac{\tau_1-\tau_2}{\tau_{\mathrm{R}}}
+%      \left(\frac{400\u{nm}}{\lambda}\right)^4
+%    \right]
+%  \end{equation}
+%}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\Mieeq{
+%  \begin{equation}
+%    \label{eq:mie}
+%    T_\mathrm{Mie} = \exp
+%    \left[
+%      \frac{h_{\mathrm{M}}}{l_{\mathrm{M}}\cos\theta}
+%      \left( 
+%        e^{\frac{h_1}{h_{\mathrm{M}}}} - e^{\frac{h_2}{h_{\mathrm{M}}}}
+%      \right)
+%    \right]
+%  \end{equation}
+%}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% THE MAGIC TELESCOPE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\meanQEdefeq{
+\begin{equation}
+\QEeff = \frac%
+{\displaystyle \ \int_{\lambda_\mathrm{min}}^{\lambda_\mathrm{max}} 
+  \QE(\lambda) \, I_\mathrm{Ch}(\lambda) \, \mathrm{d}\lambda \ }%
+{\displaystyle \ \int_{\lambda_\mathrm{min}}^{\lambda_\mathrm{max}}
+  I_\mathrm{Ch}(\lambda) \, \mathrm{d}\lambda \ } 
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SIMULATION OF THE DETECTOR: MAGIC %%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\hveq{
+\begin{equation}
+\hv = -R + \sqrt{
+(R+\ho)^2 + \left(\frac{\hc-\ho}{\cos\theta}\right)^2 + 2(R+\ho)(\hc-\ho)}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\hvapproxeq{
+\begin{equation}
+h_{\mathrm{v,approx}} \simeq 
+-R + \sqrt{R^2 + \left(\frac{\hc}{\cos\theta}\right)^2 + 2 R \hc}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\mgeomeq{
+\begin{equation}
+\label{eq:mgeom}
+m \equiv \mathrm{AM} = 
+\frac{\left[\sqrt{\displaystyle (R+\hv)^2-[(R+\ho)\sin\theta]^2} 
+- (R+\ho)\cos\theta\right]}{(\hv - \ho)}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\denseq{
+\begin{equation}
+  \label{eq:dens}
+  \rho(h)=\rho_0 \, e^{-h/\Hs}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\optpathredeq{
+\begin{equation}
+  \label{eq:optpathred}
+  I(\theta;\ho,\hv) = \rho_o\sqrt{\frac{R}{2}} \int_{h_0}^{h_{\mathrm{v}}} 
+  \frac{\displaystyle e^{-h/\Hs} \mathrm{d}h }{ 
+     \sqrt{h + \frac{1}{2} R \cos^2\theta}}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\AMdefeq{
+\begin{equation}
+  \label{eq:AMdef}
+  \mathcal{AM} \equiv \frac{I(\theta;\ho,\hv)}{I(0\deg;\ho,\hv)} 
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\AMfulleq{
+\begin{equation}
+  \label{eq:AMfull}
+  \mathcal{AM} =
+  \exp\left(\frac{-R\sin^2\theta}{2\,\Hs}\right)
+  \frac{\displaystyle \left[ 
+    \mathrm{erfc} \left(\sqrt{\frac{2\ho+R\cos^2\theta}{2\,\Hs}}\right) - 
+    \mathrm{erfc} \left(\sqrt{\frac{2\hv+R\cos^2\theta}{2\,\Hs}}\right)
+  \right]}{\displaystyle \left[ 
+    \mathrm{erfc} \left(\sqrt{\frac{2\ho+R}{2\,\Hs}}\right) - 
+    \mathrm{erfc} \left(\sqrt{\frac{2\hv+R}{2\,\Hs}}\right)
+  \right]}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\AMapproxeq{
+\begin{equation}
+  \label{eq:AMapprox}
+  \mathcal{AM}_{\mathrm{approx}} = \mathrm{sec}\,\theta 
+  \left( 1 - \frac{\Hs}{R} \mathrm{sec}^2\theta \right)
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\refracapproxeq{
+\begin{equation}
+  \label{eq:refrac}
+  R = \frac{7}{6}\,R_\oplus
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\Rayleigheq{
+\begin{equation}
+  \label{eq:ray}
+  T_{\mathrm{Rayl}} = \exp \left[
+    -\frac{\tau_1-\tau_2}{\tau_{\mathrm{R}}}
+    \left( \frac{400\u{nm}}{\lambda} \right)^4 \right]
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\Mieeq{
+\begin{equation}
+  \label{eq:mie}
+  T_{\mathrm{Mie}} = \exp \left[
+      \frac{h_{\mathrm{M}}}{l_{\mathrm{M}}\cos\theta}
+      \left( 
+%        e^{\frac{h_1}{h_{\mathrm{M}}}} - e^{\frac{h_2}{h_{\mathrm{M}}}}
+        e^{{h_1}/{h_{\mathrm{M}}}} - e^{{h_2}/{h_{\mathrm{M}}}}
+      \right) \right]
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\amagneq{
+\begin{equation}
+  \label{eq:amagn}
+  A_{\mathrm{Ozo}}(\hv,\lambda) = 1.11 \cdot T(\hv) k(\lambda)
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\Ozoneeq{
+\begin{equation}
+  \label{eq:ozo}
+  T_{\mathrm{Ozo}} = 10^{\displaystyle-[0.4 \Delta
+    A_{\mathrm{Ozo}}(\hv,\lambda) m(\hv,\theta)]}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\TotalTransmissioneq{
+\begin{equation}
+  \label{eq:transmission}
+  \mathcal{T} = T_{\mathrm{Rayl}}\cdot T_{\mathrm{Mie}} \cdot T_{\mathrm{Ozo}}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\rotateAeq{
+\begin{equation}
+  \label{eq:rotateA}
+  S\rightarrow S' \,:\, 
+  \begin{cases}
+    \mathbf{r}' = \Omega(\thetaCT,\phiCT) \cdot \mathbf{r} \\
+    \mathbf{x}' = \Omega(\thetaCT,\phiCT) \cdot \mathbf{x} \\
+  \end{cases}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\omegaAeq{
+\begin{equation}
+  \label{eq:omegaA}
+  \begin{split}
+    \Omega(\theta,\phi)      &= R_X(-\theta) R_Z(-\phi) \\
+    \Omega^{-1}(\theta,\phi) &= R_Z(\phi) R_Y(\theta) 
+  \end{split}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\transformAeq{
+\begin{eqnarray}
+  \label{eq:transformA}
+  \Omega(\theta,\phi) = 
+  \begin{bmatrix}                                
+    \cos\phi \cos\theta&\sin\phi \cos\theta&-\sin\theta \\
+    -\sin\phi       &     \cos\phi      &     0      \\
+    \cos\phi \sin\theta&\sin\phi \sin\theta& \cos\theta \\      
+  \end{bmatrix}                                
+  \\
+  \Omega^{-1}(\theta,\phi) = 
+  \begin{bmatrix}                                
+    \cos\phi \cos\theta&-\sin\phi&\cos\phi \sin\theta\\
+    \sin\phi \cos\theta& \cos\phi&\sin\phi \sin\theta\\  
+    -\sin\theta     &    0    &     \cos\theta    \\       
+  \end{bmatrix}                                
+\end{eqnarray}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\transformBeq{
+\begin{equation}
+  \label{eq:transformB}
+  S'\rightarrow S" \,:\, 
+  \begin{cases}
+    \mathbf{r}" = \Omega(\thetam,\phim) \cdot \mathbf{r}' \\
+    \mathbf{x}" = \Omega(\thetam,\phim) \cdot 
+                (T_{\mathrm{m}} \mathbf{x}_{\mathrm{cut}}) 
+                = \Omega(\thetam,\phim) \cdot 
+                (\mathbf{x}_{\mathrm{cut}} - \mathbf{x}_{\mathrm{m}}) \\
+  \end{cases}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\zparabeq{
+\begin{equation}
+  \label{eq:zparab}
+  z_r = \frac{r^2}{4F}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\relationsAeq{
+\begin{equation}
+  \label{eq:relationsA}
+  \tan\xi = \frac{r}{F-z_r}, \qquad
+  \tan\zeta = \frac{r}{\hv-z_r}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\relationsBeq{
+\begin{equation}
+  \label{eq:relationsB}
+  \begin{split}
+    \overline{\mathrm{OP}} &= \frac{r}{\tan(\xi/2)} + z_r\\
+    \overline{\mathrm{OC}} &=
+    \frac{r\,[1+\tan\xi\,\tan\zeta]}{\tan\xi-\tan\zeta} + z_r\\
+  \end{split}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\collimationeq{
+\begin{equation}
+  \label{eq:collimation}
+  \delta\equiv \overline{\mathrm{FC}} = 
+  \overline{\mathrm{OC}} - \overline{\mathrm{OF}} =
+  \frac{(F + z_r)^2}{\hv - F}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\platescaleeq{
+\begin{equation}
+  \label{eq:platescale}
+  \begin{split}
+    \Delta &= 31 (\u{cm/\deg}) \\
+    \Delta^{-1} &= 0.032 (\u{\deg/cm})
+  \end{split}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\planeeq{
+\begin{equation}
+  \label{eq:plane0}
+  x'+y'+z'=0
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\hexgrideq{
+\begin{equation}
+  \label{eq:hexgrid}
+%  \vec{\mathcal{R}} \left\{ \vec{\mathcal{R}}(\vec r) -
+%    \left[ 0.5 - \underset{i}{\max} |\mathcal{R}(r_i) - r_i | \right]
+%    \underset{i}{\sum} \mathcal{R}(r_i) \right\}
+  k \equiv \mathcal{R} \left[ \mathcal{R}(\mathbf{r}) -
+    \left( 0.5 - \underset{i}{\max} |\mathcal{R}(r_i) - r_i | \right)
+    \underset{i}{\sum} \mathcal{R}(r_i) \right]
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\bitoeucleq{
+\begin{equation}
+  \begin{bmatrix}x\\y\\\end{bmatrix}                                
+  =
+  \begin{bmatrix}
+    1 & \cos 60\deg \\
+    0 & \sin 60\deg \\
+  \end{bmatrix}                                
+  \begin{bmatrix}i\\j\\\end{bmatrix}                                
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\LONSeq{
+\begin{equation}
+  \label{eq:LONS}
+  \langle\mathrm{LONS}\rangle = 
+  2\cdot 10^{12} \u{ph}\u{m}^{-2}\u{s}^{-1}\u{sr}^{-1}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\Nineq{
+\begin{equation}
+  \label{eq:Nin}
+  N_{\mathrm{in}} = 
+  \langle\mathrm{LONS}\rangle \cdot t \cdot R \cdot S_{\text{mirror}}
+  \cdot \epsilon_{\text{l.guides}} \cdot \epsilon_{\text{window}}
+  \cdot \Delta\Omega \simeq 0.8\u{ph}/\u{ns}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\Ninbiseq{
+\begin{equation}
+  \label{eq:Nin2}
+  N_{\mathrm{in}}' = N_{\mathrm{in}}
+  \cdot \QElons
+  \cdot \epsilon_{1^{\mathrm{st}}\text{dyn.coll.}}
+  \simeq 0.09 \u{ph.e.}/\u{ns}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\LONStimeeq{
+\begin{equation}
+  \label{eq:LONStime}
+  \langle\text{LONS}\rangle_{\text{1 pixel}} =
+  N_{\mathrm{in}}' \cdot \Delta T = 0.47 \u{ph.e.}/\u{gate}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\nmeaneq{
+\begin{equation}
+  \label{eq:nmean}
+  \Nmean = \Nphot \times \QEo
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\binomeq{
+\begin{eqnarray}
+  \label{eq:binom}
+  \mathcal{P}_{\mathrm{Binom}}(r)
+  &=& \binom{N}{r} p^{r} q^{N-r} \\ 
+  &=& \frac{N!}{r!(N-r)!} p^{r} (1-p)^{N-r} \nonumber
+\end{eqnarray}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\varquoteq{
+\begin{equation}
+  \label{eq:varquot}
+  z=\frac{\sigma(\Nrand)}{\sigma(\Ntrial)}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\vonneumanneffeq{
+\begin{equation}
+  \label{eq:vonneumanneff}
+  \epsilon = \frac{\text{area under }S(x)}{\text{area under bounds}}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\eq{
+%\begin{equation}
+%  \label{eq:}
+%\end{equation}
+%}
+
+
+
+\endinput
+%
+%%EOF

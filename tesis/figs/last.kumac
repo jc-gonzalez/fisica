@@ -1,0 +1,52 @@
+*** Begin of history file: Mon Sep 13 13:46:20 1999
+size 15 12
+sigma x=array(.3#.7,20)
+sigma x=array(20,.3#.7)
+sigma y=diff(sin(x))
+sigma y=diff(sin(y))
+v/plot y%x
+sigma y=diff(sin(x))
+v/plot y%x
+sigma y=diff(cos(x)*x)
+v/plot y%x
+sigma y=cos(x)*x
+v/plot y%x
+sigma y=cos(6*x)*x
+v/plot y%x
+sigma y=cos(6*x**2)*x
+v/plot y%x
+set *fon -40
+v/plot y%x
+set *fon -60
+v/plot y%x
+set *fon -40
+set mtyp 21
+v/plot y%x
+set mtyp 25
+v/plot y%x
+set mtyp 20
+v/plot y%x
+set mtyp 26
+v/plot y%x
+set mtyp 24;v/plot y%x
+set ndat;set nbox;set nstat
+opt ndat;opt nbox;opt nstat
+set mtyp 24;v/plot y%x
+opt utit
+set mtyp 24;v/plot y%x
+opt grid
+set mtyp 24;v/plot y%x
+atitle 'X axis (units)' 'Y axis (units)'
+v/write
+v/write x,y data
+help fo/open
+help f/file
+help f/file
+help post
+help postscript
+p/cre pic1
+set mtyp 24;v/plot y%x
+atitle 'X axis (units)' 'Y axis (units)'
+pic/print dummy-plot2.eps
+q
+*** End   of history file: Mon Sep 13 13:53:11 1999

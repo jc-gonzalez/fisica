@@ -1,0 +1,92 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%  tesis.tex
+%%
+%%  Created: Fri Oct 10 14:24:37 1997
+%%  Author.: Jose Carlos Gonzalez
+%%  Notes..:
+%%          
+%%-------------------------------------------------------------------------
+%% Filename: $RCSfile$
+%% Revision: $Revision$
+%% Date:     $Date$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%\documentclass[11pt,a4paper,twoside,draft]{book}
+%\documentclass[11pt,a4paper,twoside]{book}
+
+%\usepackage[50-64]{pagesel}
+\usepackage{prelim2e}
+
+\typeout{----> TESIS compilation (\jobname.tex) . . .}
+
+\listfiles
+
+\pdfcatalog{/AcroForm<</Fields[]/NeedAppearances true>>}
+
+\input{language.tex}
+
+%======================================== Paquetes y definiciones
+
+%\makeindex
+
+%======================================== BEGIN DOCUMENT
+
+\begin{document}
+
+%======================================== Figuras, tablas y ecuaciones
+
+\ifpdf
+  \typeout{### Precompiled for pdfLaTeX . . .}
+  \DeclareGraphicsExtensions{.jpg,.pdf,.mps,.png}
+\else
+  \typeout{### Precompiled for LaTeX . . .}
+  \DeclareGraphicsExtensions{.eps,.jpg,.mps,.png}
+\fi
+
+\input{figures.tex}
+\input{tables.tex}
+\input{equation.tex}
+
+%======================================== Zona inicial
+
+\frontmatter
+
+\input{title.tex}             % pagina del titulo
+\input{contents.tex}          % indices de contenidos,
+
+\get{intro.tex}               % introduction
+
+%======================================== Cuerpo 
+
+\mainmatter
+
+\input{allch.tex}
+
+%======================================== Apendices
+
+\appendix
+
+\input{allap.tex}
+
+%======================================== Parte final
+
+\backmatter
+
+%\input{thanks.tex}
+
+\input{biblio.tex}
+
+%\printindex
+
+\input{post-scriptum.tex}
+
+%======================================== END DOCUMENT
+
+
+\end{document}
+
+
+%
+%%EOF

@@ -1,0 +1,37 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%  biblio.tex
+%%
+%%  Created: Mon Oct 20 16:12:49 1997
+%%  Author.: Jose Carlos Gonzalez
+%%  Notes..:
+%%          
+%%-------------------------------------------------------------------------
+%% Filename: $RCSfile$
+%% Revision: $Revision$
+%% Date:     $Date$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\typeout{----> Reading bibliography . . .}
+
+%\begin{thebibliography}\end{thebibliography} 
+%\begin{theindex}\end{theindex}
+%\bibliographystyle{unsrt}
+%\addcontentsline{toc}{chapter}{\numberline{}Bibliograf'ia}
+%\bibliography{tesina}
+
+\renewcommand{\headname}{\bibname}
+\nocite{*}           
+\addcontentsline{toc}{chapter}{\numberline{}\bibname}
+%\bibliographystyle{utphys}
+\footnotesize %\small
+\bibliographystyle{jc}
+\bibliography{tesis,magic}  
+%\bibliography{magic}  
+
+\echapter
+
+\endinput
+%
+%%EOF

@@ -1,0 +1,365 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%  ch-atmshowers.tex
+%%
+%%  Created: Fri Oct 10 14:24:37 1997
+%%  Author.: Jose Carlos Gonzalez
+%%  Notes..:
+%%          
+%%-------------------------------------------------------------------------
+%% Filename: $RCSfile$
+%% Revision: $Revision$
+%% Date:     $Date$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\chapter{Cascadas atmosf'ericas de rayos gamma y rayos c'osmicos}
+\label{chapter:atmshowers}
+
+Las part'iculas de conforman la RADC, a su entrada en la atm'osfera
+terrestre interact'uan con las mol'eculas y 'atomos ionizados del
+aire, produciendo part'iculas secundarias.  Estas part'iculas
+secundarias interact'uan a su vez entre ellas y con otras mol'eculas e
+iones de su entorno.  Este proceso, repetido a lo largo de varias
+generaciones, da lugar a lo que se denomina una \emph{\I{cascada
+atmosf'erica}} (see Fig. \ref{fig:atmshower}).
+
+Obviamente, part'iculas c'osmicas diferentes generar'an diferentes
+tipos de cascadas atmosf'ericas. En particular, si la part'icula que
+entra en la atm'osfera (\emph{\I{part'icula primaria}}, o
+abreviadamente \emph{\Isee{primario}{part'icula primaria}}) es un rayo
+gamma ($\gamma$), la composici'on de la cascada ser'a
+predominantemente electromagn'etica (fotones, electrones, positrones,
+muones, \ldots). Llamaremos a este tipo de cascada \emph{\I{cascada
+electromagn'etica}}, o \emph{\I{CEM}}.  Por el contrario, si el
+primario es un nucleo at'omico (hadr'on), la componente predominante
+de la cascada ser'a hadr'onica, y la denominaremos \emph{\I{cascada
+hadr'onica}}, o \emph{\I{CH}}. Aparte del hecho de poseer diferente
+primario, ambos tipos de cascadas no se muestran claramente
+diferenciadas: por ejemplo, una part'icula $\pi^{0}$ generada en una
+interacci'on n'ucleo--n'ucleo se desintegrar'a en un par
+$\gamma$-$\gamma$, dando como resultado una sub-cascada de tipo
+electromagn'etico.
+
+\atmshowerfig  % artistic view of a Cherenkov experiment (HEGRA?)
+
+\processesfig  % processes involved in generation of gamma rays
+
+Todo lo dicho hasta ahora apnuta, en el caso de observatorios en
+tierra, a una medida indirecta de la RADC. Los detectores a nivel del
+mar, e incluso a lo alto de monta~nas, no pueden observar las
+particulas primarias tal y como llegan a la Tierra. En su lugar, s'olo
+pueden detectar las particulas secundarias generadas en el desarrollo
+de la cascada en la atm'osfera. Es en este sentido que se dice que la
+atm'osfera act'ua como un gran ``calor'imetro''. La consecuencia m'as
+importante de esto es que la energ'ia del primario ha de ser inferida
+a partir de medidas indirectas, a trav'es de magnitudes relacionadas,
+tales como el n'umero total de part'iculas de una determinada especie
+(electrones, muones, fotones, \ldots), o su particular distribuci'on
+en el suelo. Esto, por supuesto, es un problema, ya que nuestra medida
+siempre ser'a menos precisa que mediante la medici'on directa, y
+cuanto menos precisa sea este resultado en peor situaci'on estaremos a
+la hora de discriminar entre diferentes modelos o escenarios para la
+produci'on y el transporte de las part'iculas hasta la Tierra. Por
+tanto, es claro que el principal objetivo de nuestros estudios debe
+ser la b'usqueda de criterios para la estimaci'on de la energ'ia de
+las part'iculas primarias de una manera precisa y fiable. En el camino
+hacia el cumplimiento de nuestro objetivo, la simulaci'on de cascadas
+atmosf'ericas es de crucial importancia.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Desarrollo de cascadas atmosf'ericas} 
+
+Antes de entrar en los detalles de la simulaci'on, recordaremos
+brevemente la f'isica envuelta en el desarrollo de una cascada
+atmosf'erica.  shower.
+
+%%==========================================================
+\subsection{Cascadas atmosf'ericas electromagn'eticas}
+
+\toymodelfig
+%
+Los procesos f'isicos implicados en el desarrollo de cascadas
+atmosf'ericas se muestran brevemente en la
+Fig. \ref{fig:processes}. Un rayo gamma o un electr'on o positr'on,
+puede producir una CEM por \emph{radiaci'on de frenado}
+(\emph{bremsstrahlung}) y \emph{producci'on de pares}. Mediante estos
+mecanismos, una CEM puede evolucionar desde un primario hasta un
+inmenso n'umero de part'iculas. Entre ellas, cada part'icula cargada
+puede tambi'en generar fotones \Cerenkov.
+
+Normalmente, uno comienza el estudio de la f'isica de las CEMs
+mediante el llamado \emph{modelo de juguete}(\emph{toy-model}). Este
+modelo se utiliza para explicar el desarrollo de una CEM, pero su
+estructura b'asica puede aplicarse tamb'ien a una CH. El modelo asume
+que un rayo $\gamma$ de energ'ia $E_0$, a su entrada en la atmosf'era,
+viaja una distancia $\lambda$ antes de crear un par e$^+$e$^-$. Cada
+una de estas part'iculas toma la mitad de la energ'ia de la part'icula
+original, es decir $E_0/2$. Tras esta primera interacci'on tenemos
+pues 2 part'iculas, cada una con la mitad de la energ'ia de la
+part'icula original. Estas dos part'iculas viajan de nuevo una
+distancia $\lambda$ hasta que sufren \emph{bremsstrahlung} y producen
+dos fotones (uno por part'icula) que se quedan con la mitad de la
+energ'ia de la part'icula que lo ha producido. Despu'es de este
+segundo proceso tenemos 4 part'iculas cada una con una energ'ia
+$E_0/4$. Continuando con el desarrollo de la cascada, despu'es $n$
+generaciones la cascada ha viajado a lo largo de nua distancia
+$X=n\lambda$ (donde $X$ es el espesor atmosf'erico a lo largo a lo
+largo del eje de la cascada), y tendremos
+%
+\toyAeq
+%
+part'iculas con una energ'ia media por part'icula de
+%
+\toyBeq
+
+El proceso puede verse de manera esquematizada en la figura  Fig.
+\ref{fig:toymodel}.  Ambos mecanismos, \emph{bremsstrahlung} y
+\emph{produccion de pares} (o cualquier proceso de desdoblamiento que
+tengamos en cuenta en el caso de CHs) contin'ua hasta que
+%
+\toyCeq
+%
+siendo $E_{\mathrm{c}}$ la energ'ia cr'itica a la cual estos procesos
+son dominados por la \emph{ionizaci'on} y el \emph{scattering Compton}
+($E_{\mathrm{c}} \sim 102\u{MeV}$ en la atm'osfera). El n'umero de
+part'iculas en el m'aximo de la cascada en este modelo (alcanzado
+cuando la energ'ia media de las part'iculas en la cascada es $E\simeq
+E_{\mathrm{c}}$) es
+%
+\toyDeq
+
+\hadronicfig
+
+Las propiedades b'asicas de estas ecuaciones son v'alidas tanto para
+CEMs como para CHs. En particular
+%
+\NXsimpleeq
+
+%%==========================================================
+\subsection{Cascadas hadr'onicas}
+
+El comportamiento b'asico de una CH puede ser esbozado utilizando el
+mismo modelo usado para CEMs. Un esquema del desarrollo de una CH
+puede verse en la Fig. \ref{fig:hadronic}.
+
+Sin embargo, para una primario nucle'onico necesitamos saber la
+diferencia entre cascadas generadas por n'ucleos pesados y las
+generadas por protones o n'ucleos ligeros. Para simular la presencia
+de n'ucleos como part'iculas primarias el modelo m'as simple es el
+\emph{modelo de superposici'on} (\emph{superposition model}). En este
+modelo se asume que un n'ucleo de masa at'omica $A$ y energ'ia total
+$E_0$ es equivalente a $A$ nucleones independentes, cada uno con una
+energ'ia $E_0/A$. En este modelo a'un se cumple que
+$N(X_{\mathrm{max}}) = E_0 / E_{\mathrm{c}}$, pero la ecuaci'on
+\ref{eq:xmax} se transforma en
+%
+\NXsimpleHadeq
+%
+En la realidad lo que sucede es que el n'ucleo interact'ua con los
+'atomos y mol'eculas de la atm'osfera, y s'olo unos pocos nucleones
+son liberados en esta interacci'on y producen piones y otras
+part'iculas; el resto del n'ucleo se fragmenta en trozos m'as
+peque~nos, quedando por lo general uno de ellos mucho mayor que los
+dem'as.
+
+\lognefig
+
+%%==========================================================
+\subsection{Part'iculas en la cascada atmosf'erica}
+
+En realidad es preciso realizar un estudio mucho m'as detallado del
+desarrollo de una cascada. Utilizando m'etodos de Monte Carlo se
+obtiene que el perfil longitudinal medio de una CEM puede describirse
+mediante
+%
+\Neeq
+%
+donde $N_{\mathrm{e}}$ es el n'umero de electrones en la cascada
+(``tama~no de la cascada''), $\tau$ es la profundidad atmosf'erica en
+longitudes de radiaci'on, $x=\ln(E_0/E_{\mathrm{c}})$ y $s$ es el
+\emph{par'ametro de edad} de la cascada:
+%
+\ageeq
+%
+El \emph{par'ametro de edad} $s$ cambia su valor de 0 en el comienzo
+de la cascada a 1 en el m'aximo de su desarrollo, y luego hasta 2 en
+el punto en el que el n'umero de part'iculas cae por debajo de la
+unidad. El la Fig. \ref{fig:logne} se han dibujado varias
+distribuciones del desarrollo longitudinal de una CEM.
+
+\samplelonglatdistfig
+
+Para la distribuci'on lateral media de una CEM podemos utilizar la
+llamada \emph{f'ormula NKG}
+%
+\NKGeq
+%
+donde $\rho(r)$ es la densidad de electrones en funci'on de la
+distancia al eje de la cascada $r$, $r_{\mathrm{M}}$ es el \emph{radio
+de Moli\`ere} de scattering multiple ($\sim 79\u{m}$ a nivel del mar,
+$\sim 106\u{m}$ a 2200\u{m} sobre el nivel del mar), y
+%
+\fsreq
+%
+La forma general de la f'ormula NKG ha demostrado ser de gran utilidad
+a la hora de ajustar las distribuciones laterales obtenidas en
+simulaciones por ordenador. En la Fig. \ref{fig:samplelonglatdist}
+podemos ver un ejemplo de distribuciones longitudinales y laterales
+medias para CEMs generadas por simulaciones de Monte Carlo, para
+energ'ias del primario de 100\u{GeV} y 1\u{TeV}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Producci'on de luz \Cerenkov}
+
+La luz \Cerenkov es emitida cuando una part'icula cargada viaja a
+trav'es de un medio diel'ectrico con una velocidad mayor que la
+velocidad de fase de la luz en ese medio. La condici'on es
+%
+\Cherenkovcondeq
+%
+donde $\beta=v/c$, la velocidad de la part'icula respecto de la de la
+luz en el vac'io, y $n$ es el 'indice de refracci'on del medio
+diel'ectrico (proporcional a la densidad del medio). Esta condici'on
+puede ser expresada tambi'en en t'erminos energ'eticos: una part'icula
+cargada con una energ'ia superior a una minima energ'ia umbral
+$E_{\mathrm{min}}$ producir'a a su paso una polarizaci'on del
+medio. El medio entonces emitir'a pulsos que interfieren entre s'i,
+resultando en un frente de luz (ver Figs. \ref{fig:cherenkov1} y
+\ref{fig:cherenkov2}). La energ'ia minima umbral $E_{\mathrm{min}}$
+var'ia con la altura: la raz'on es la variaci'on con la altura del
+'indice de refracci'on $n$. La luz producida es emitida con un 'angulo
+$\theta$ respecto de la trajectoria de la part'icula cargada. La
+distribuci'on de 'angulos resulta estar enormemente picada a un
+'angulo $\theta_{\mathrm{c}}$, dado por la condici'on de coherencia de
+la luz radiada
+%
+\lightcoherenceeq%
+A nivel del mar, $n \simeq 1.00029$ y $\theta_{\mathrm{c}} \simeq
+1.3\deg$. Con la Eq. \ref{eq:cherenkovcond} podemos calcular los
+valores de $E_{\mathrm{min}}$ para la emisi'on de luz \Cerenkov en el
+aire, para varias part'iculas: para electrones es $21\u{MeV}$, para
+muones $4.6\u{GeV}$ y para protones $39\u{GeV}$.
+
+Para entender un poco mejor como evoluciona el frente de luz
+\Cerenkov, utilicemos un modelo simplificado de la atm'osfera, el
+llamado \emph{atm'osfera estandar} (\emph{standard atmosphere}). En
+este modelo la densidad var'ia exponencialmente con la altura
+%
+\exprhoeq
+%
+donde $H_{\mathrm{S}} \simeq 7.5\u{km}$ es la llamada \emph{escala de
+alturas} (\emph{scale-height}) de la atm'osfera. El \emph{espesor
+atmosf'erico} (\emph{atmospheric thickness}) $\tau$ es una medida de
+la masa total de aire entre dos puntos (normalmente desde el comienzo
+de la atm'osfera hasta una cierta altura). Se calcula integrando la
+densidad a lo largo de un determinado camino. Por tanto, en nuestro
+modelo
+%
+\pathinteq
+
+\cherenkov1fig
+%
+El 'indice de refracci'on del medio viene dado por 
+%
+\refractionidxeq
+%
+donde $\tau_0=1030\u{g/cm^2}$ es el espesor atmosf'erico a nivel del
+mar y $T=204 + 0.091\tau$ es la temperatura a un determinado espesor
+(medido desde el comienzo de la atm'osfera). Por tanto tenemos que
+aproximadamente
+%
+\etaeq
+%
+con $\eta_0 \simeq 0.00029$. En este modelo, el 'angulo de emisi'on de 
+luz \Cerenkov resulta
+%
+\Cherenkovangleeq
+%
+y la energ'ia umbral $E_{\mathrm{min}}$
+%
+\Emineq
+
+Ahora estamos interesados en la cantidad total de luz producida. Si
+despreciamos, en aproximaci'on de primer orden, los efectos de
+dispersi'on de Coulomb, podemos escribir la p'erdida de energ'ia $E$
+por unidad de camino recorrido por una part'icula de carga $e$ y
+velocidad $\beta$, en radiaci'on \Cerenkov de longitud de onda entre
+$\lambda$ y $\lambda+\d \lambda$ como
+%
+\dEdheq
+%
+o, en t'erminos de n'umero de fotones,
+%
+\dNdheq
+%
+donde $\alpha = e^2/\hbar c \simeq 1/137$ es la \emph{constante de
+estructura fina}, y $n$ se asume constante en el intervalo de
+integraci'on. De esta expresi'on podemos deducir el comportamiento
+espectral general de las distribuciones:
+%
+\specdistreq
+%
+El n'umero de fotones emitidos por un electr'on en un rango espectral
+$(\lambda_1,\lambda_2)$ a lo largo de un camino de longitud $l$ es
+entonces
+%
+\phemiteq
+%
+donde hemos usado la condici'on de coherencia de la luz \Cerenkov
+\ref{eq:lightcoherence}. La dependencia $\lambda^{-1}$ implica que la
+mayor'ia de los fotones tendr'an longitudes de onda en el
+ultravioleta.
+
+La relaci'on obtenida en \ref{eq:cherenkovlight} no significa que
+podamos obtener un n'umero virtualmente infinito de fotones
+\Cherenkov: en realidad la luz \Cerenkov, generada en el rango del UV, 
+es fuertemente absorbida a longitudes de onda por debajo de los
+300\u{nm}. Los principales mecanismos responsables de esta absorci'on
+son:
+
+\begin{description}
+
+\item[\textbf{Dispersi'on Rayleigh}] (Scattering Rayleigh) Las
+  mol'eculas de la atm'osfera producen una dispersi'on de los
+  fotones. Este efecto est'a fuertemente correlacionado con la
+  longitud de onda de la luz, $\lambda$, siendo m'as importante para
+  peque~nos valores de $\lambda$. El coeficiente de transmisi'on
+  debido a dispersi'on Rayleigh es
+%
+  \Rayleigheq
+%
+  donde $\tau_i = \tau_0 \exp(-h_i/H_{\mathrm{S}}) \sec\theta$ es el
+  \emph{espesor atmosf'erico inclinado} (\emph{slant thickness}) por
+  encima de una altura $h_i$, $\tau_{\mathrm{R}}(\lambda=400\u{nm}) =
+  2970\u{g/cm^2}$ es el \emph{recorrido libre medio} para la
+  dispersi'on Rayleigh en t'erminos de espesor, $\tau_0 =
+  0.00129\u{g/cm^2}$, y $H_{\mathrm{S}} \simeq 7.5\u{km}$ es la
+  \emph{escala de alturas} ya mencionada.
+  
+\item[\textbf{Dispersi'on Mie}] Este efecto resulta en una dispersi'on 
+  casi constante para todas las longitudes de onda. Es debido a
+  mol'eculas de aerosoles y polvo suspendidos en el aire. Su efecto es
+  m'as pronunciado a bajas altitudes. Tambi'en depende del tama~no de
+  las part'iculas. El coeficiente de transmisi'on correspondiente es
+%
+  \Mieeq
+%
+  donde $l_{\mathrm{M}}(400\u{nm}) \simeq 14\u{km}$ es el
+  \emph{recorrido libre medio} para la dispersi'on Mie, y
+  $h_{\mathrm{M}} \simeq 1.2\u{km}$ es la escala de alturas de la
+  distribuci'on de aerosoles.
+  
+\item[\textbf{Absorci'on por Ozono}] Este efecto resulta muy
+  importante en el rango de longitudes de onda 280--340\u{nm} y para
+  cascadas de baja energ'ia, en las cuales la mayor'ia de la luz
+  \Cerenkov es emitida all'i donde la densidad de Ozono es mayor.
+
+\end{description}
+
+\endinput
+%
+%% Local Variables:
+%% mode:latex
+%% End:
+%%EOF

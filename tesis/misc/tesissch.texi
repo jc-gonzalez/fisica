@@ -1,0 +1,336 @@
+\input texinfo @c -*-texinfo-*-
+@c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@c Tesis  :: RCS controlled system                           
+@c Filename: $RCSfile$                          
+@c Revision: $Revision$                            
+@c Date:     $Date$                    
+@c $Id$
+@c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@setfilename tesis-sch.info
+@settitle Esquema de Tesis
+
+@c %% Definiciones %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@c ----  A C T U A L I Z A R   L A   F E C H A  ----
+@set lastupdate 6 de Octubre de 1998
+@set YO J C Gonz@'alez
+@c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+@c \@\(item)
+@c %**end of header 
+
+@ifinfo
+@format
+START-INFO-DIR-ENTRY
+* Tesis: (standards).           Esquema de Tesis
+END-INFO-DIR-ENTRY
+@end format
+@end ifinfo
+
+@c @setchapternewpage odd
+@setchapternewpage off
+
+@c This is used by a cross ref in make-stds.texi
+@set CODESTD  1
+@iftex
+@set CHAPTER chapter*
+@end iftex
+@ifinfo
+@set CHAPTER node
+@end ifinfo
+
+@ifinfo
+Este es el esquema de mi tesis ... y ol@'e!
+@ignore
+... y ol@'e!
+@end ignore
+@end ifinfo
+
+@titlepage
+@title Esquema de Tesis
+@subtitle Simulaci@'on de cascadas de Muy Alta Energia
+@subtitle para el proyecto "The MAGIC Telescope"
+@author @value{YO}
+@author Max-Planck-Institut fuer Physik, Muenchen
+@author @value{lastupdate}
+
+@page
+
+@vskip 0pt plus 1filll
+Copyright @copyright{} 1998, J C Gonzalez
+@end titlepage
+
+@ifinfo
+@node Top
+@top Esquema de Tesis
+
+Last updated @value{lastupdate}.
+@end ifinfo
+
+@menu
+* Esquema de Tesis::            Este es el esquema de mi tesis
+@end menu
+
+@node Esquema de Tesis
+@unnumbered Esquema de la tesis
+@unnumberedsec Contenidos
+
+@enumerate
+
+@item
+Introducci@'on
+@c--------------------------------------------------
+@item
+Los Rayos C@'osmicos
+@enumerate a 
+@item
+Origen de los rayos c@'osmicos
+@itemize @bullet
+@item
+Fuentes puntuales
+@itemize @minus
+@item
+Supernovas
+@item
+P@'ulsares
+@item
+N@'ucleos Activos de Galaxias (AGNs)
+@item
+Cu@'asares
+@item
+@emph{Gamma-Ray Bursts}
+@end itemize
+@item
+Fuentes extensas
+@itemize @minus
+@item
+Halos
+@item
+@emph{WIMPs}
+@item
+Cuerdas c@'osmicas
+@end itemize
+@end itemize
+@item
+La F@'isica de los Rayos C@'osmicos
+@itemize @bullet
+@item
+Formaci@'on de los rayos c@'osmicos
+@itemize @minus
+@item
+Rayos c@'osmicos cargados
+@item
+Rayos gamma
+@item
+Neutrinos
+@item
+Espectro de la radiaci@'on c@'osmica
+@item
+Composicon qu@'imica de los rayos c@'osmicos
+@end itemize
+@item
+Propagaci@'on a trav@'es de los medios 
+              interestelares e intergal@'actico
+@itemize @minus
+@item
+Difusi@'on en las regiones de formaci@'on
+@item
+Absorci@'on en el medio intergal@'actico
+@item
+Absorci@'on en el medio interestelar
+@end itemize
+@item
+Los rayos c@'osmicos a su entrada en la atm@'osfera
+@itemize @minus
+@item
+Generaci@'on de las cascadas
+@item
+Frente de part@'iculas
+@item
+Frente de luz Cherenkov
+@item
+Observables de las cascadas atmosf@'ericas
+@item
+@dots{}
+@end itemize
+@end itemize
+@end enumerate
+
+@item
+Simulaci@'on de Cascadas Atmosf@'ericas
+@enumerate a
+@item
+Simulaci@'on por metodos de Monte Carlo
+@item
+El C@'odigo CORSIKA
+@item
+Generaci@'on de luz Cherenkov
+@item
+Generaci@'on a alto @'angulo cenital
+@item
+Informaci@'on obtenida
+@item
+Estructura temporal del pulso Cherenkov
+@item
+Otros m@'etodos de simulaci@'on
+@end enumerate
+
+@item
+El Telescopio @emph{MAGIC}
+@enumerate a
+@item
+Objetivos f@'isicos
+@itemize @bullet
+@item
+@dots{}
+@end itemize 
+@item
+Caracter@'isticas del reflector
+@item
+La c@'amara de @emph{MAGIC}
+@itemize @bullet
+@item
+Descripci@'on general
+@item
+Dispositivos de deteccion
+@itemize @minus
+@item
+Dispositivos cl@'asicos: fotomultiplicadores (PMTs)
+@item
+Dispositivos avanzados: IPCs
+@item
+El futuro: dispositivos h@'ibridos y fotodiodos de avalancha
+@end itemize
+@end itemize
+@item
+Adquisici@'on de datos
+@item
+Programas observacionales
+@item
+El telescopio CT1 de la colaboraci@'on HEGRA
+@end enumerate
+
+@item
+Simulacion del detector: @emph{MAGIC}
+@enumerate a
+@item
+Eficiencias de Detecci@'on
+@item
+Colecci@'on en el plano focal
+@item
+Detecci@'on en la c@'amara
+@itemize @bullet
+@item
+Simulaci@'on de la electr@'onica
+@item
+Descripci@'on de la l@'ogica de @emph{trigger}
+@item
+Eficiencias de trigger
+@item
+Areas de colecci@'on efectivas
+@item
+Ritmos de detecci@'on
+@itemize @minus
+@item
+Ritmos diferenciales de detecci@'on
+@item
+Ritmos integrales de detecci@'on
+@item
+Fondos hadr@'onico, electr@'onico y mu@'onico
+@end itemize
+@end itemize
+@end enumerate
+
+@item
+Simulacion del detector: @emph{CT1}
+@enumerate a
+@item
+Eficiencias de Detecci@'on
+@item
+Colecci@'on en el plano focal
+@item
+Detecci@'on en la c@'amara
+@itemize @bullet
+@item
+Simulaci@'on de la electr@'onica
+@item
+Descripci@'on de la l@'ogica de @emph{trigger}
+@item
+Eficiencias de trigger
+@item
+Areas de colecci@'on efectivas
+@item
+Ritmos de detecci@'on
+@itemize @minus
+@item
+Ritmos diferenciales de detecci@'on
+@item
+Ritmos integrales de detecci@'on
+@item
+Fondos hadr@'onico, electr@'onico y mu@'onico
+@end itemize
+@end itemize
+@end enumerate
+
+@item
+Analisis de Imagen
+@enumerate a
+@item
+Limpieza de las im@'agenes
+@item
+Parametros de Imagen
+@item
+Analisis estad@'istico de las imagenes
+@end enumerate
+
+@item
+Resoluciones Angular y Energ@'etica de MAGIC
+@enumerate a
+@item
+Estimaci@'on de la resoluci@'on angular
+@item
+C@'alculo de la resoluci@'on energetica
+@item
+Otros procedimientos
+@end enumerate
+
+@item
+Separaci@'on Gamma-Hadr@'on en MAGIC
+@enumerate a
+@item
+An@'alisis de momentos 
+@item
+Factores de calidad
+@itemize @bullet
+@item
+C@'alculo de cortes @'optimos
+@item
+Metodo de las distribuciones acumuladas
+@item
+Metodo de la entrop@'ia
+@item 
+Utilizaci@'on de metodos de L@'ogica Difusa (@i{fuzzy logic}) para
+la separaci@'on gamma-hadr@'on
+@end itemize
+@item
+Otros metodos
+@end enumerate
+
+@item
+Conclusiones 
+
+@end enumerate
+
+@enumerate A
+@item
+Descripci@'on del C@'odigo CORSIKA
+@item
+Obtenci@'on de los par@'ametros de imagen
+@item
+Analisis estad@'istico de correlaciones
+@item
+Descripcion tecnica de los programas de an@'alisis
+@end enumerate
+
+@bye
+
+

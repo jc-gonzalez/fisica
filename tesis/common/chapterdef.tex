@@ -1,0 +1,79 @@
+%\usepackage{oldgerm} 
+%\usepackage{utopia} 
+
+\makeatletter
+
+%\DeclareFontFamily{U}{yswab}{}
+%\DeclareFontShape{U}{yswab}{m}{n}{
+%   <10> <10.95> <12> <14.4> <17.28>  <20.74> <24.88-> yswab   }{}
+
+\def\MIDBONDINGLYHUGE{\fontsize{85}{95}\selectfont}
+
+
+\renewcommand\chapter{\if@openright\cleardoublepage\else\clearpage\fi
+                    \thispagestyle{plain}%
+                    \global\@topnum\z@
+                    \@afterindentfalse
+                    \secdef\mychapter\myschapter}
+
+%%----------------------------------------------------------------------
+
+\def\mychapter[#1]#2{\ifnum \c@secnumdepth >\m@ne
+                       \if@mainmatter
+                         \refstepcounter{chapter}%
+                         \typeout{\@chapapp\space\thechapter.}%
+                         \addcontentsline{toc}{chapter}%
+                                   {\protect\numberline{\thechapter}#1}%
+                       \else
+                         \addcontentsline{toc}{chapter}{#1}%
+                       \fi
+                    \else
+                      \addcontentsline{toc}{chapter}{#1}%
+                    \fi
+                    \chaptermark{#1}%
+                    \addtocontents{lof}{\protect\addvspace{10\p@}}%
+                    \addtocontents{lot}{\protect\addvspace{10\p@}}%
+                    \if@twocolumn
+                      \@topnewpage[\mymakechapterhead{#2}]%
+                    \else
+                      \mymakechapterhead{#2}%
+                      \@afterheading
+                    \fi}
+
+\def\mymakechapterhead#1{%
+  \vspace*{20\p@}%
+  {\parindent \z@ \raggedleft \normalfont
+    \ifnum \c@secnumdepth >\m@ne
+      \if@mainmatter
+        \MIDBONDINGLYHUGE \thechapter
+        \par\nobreak
+        \vskip 15\p@
+      \fi
+    \fi
+    \interlinepenalty\@M
+    \Huge \sffamily #1\par\nobreak
+    \vskip 20\p@
+  }}
+
+%%----------------------------------------------------------------------
+
+\def\myschapter#1{\if@twocolumn
+                   \@topnewpage[\mymakeschapterhead{#1}]%
+                 \else
+                   \mymakeschapterhead{#1}%
+                   \@afterheading
+                 \fi}
+
+\def\mymakeschapterhead#1{%
+  \vspace*{50\p@}%
+  {\parindent \z@ \raggedright
+    \normalfont
+    \interlinepenalty\@M
+    \Huge \bfseries  #1\par\nobreak
+    \vskip 40\p@
+  }}
+
+
+\makeatother
+
+\endinput

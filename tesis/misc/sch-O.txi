@@ -1,0 +1,221 @@
+\input texinfo @c -*-texinfo-*-
+@c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@c Tesis  :: RCS controlled system                           
+@c Filename: $RCSfile$                          
+@c Revision: $Revision$                            
+@c Date:     $Date$                    
+@c $Id$
+@c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@setfilename sch.info
+@settitle Thesis:: Scheme
+
+@c %% Definiciones %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@c ----  A C T U A L I Z A R   L A   F E C H A  ----
+@set lastupdate Tue Jan 12 13:06:44 MET 1999
+@set YO J C Gonz@'alez
+@c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+@c \@\(item)
+@c %**end of header 
+
+@ifinfo
+@format
+START-INFO-DIR-ENTRY
+* Tesis: (standards).           Esquema de Tesis
+END-INFO-DIR-ENTRY
+@end format
+@end ifinfo
+
+@c @setchapternewpage odd
+@setchapternewpage off
+
+@c This is used by a cross ref in make-stds.texi
+@set CODESTD  1
+@iftex
+@set CHAPTER chapter*
+@end iftex
+@ifinfo
+@set CHAPTER node
+@end ifinfo
+
+@ifinfo
+Este es el esquema de mi tesis ... y ol@'e!
+@ignore
+... y ol@'e!
+@end ignore
+@end ifinfo
+
+@titlepage
+@title Esquema de Tesis
+@subtitle Simulaci@'on de cascadas de Muy Alta Energia
+@subtitle para el proyecto "The MAGIC Telescope"
+@author @value{YO}
+@author Max-Planck-Institut fuer Physik, Muenchen
+@author @value{lastupdate}
+
+@page
+
+@vskip 0pt plus 1filll
+Copyright @copyright{} 1998, J C Gonzalez
+@end titlepage
+
+@ifinfo
+@node Top
+@top Esquema de Tesis
+
+Last updated @value{lastupdate}.
+@end ifinfo
+
+@menu
+* Esquema de Tesis::            Este es el esquema de mi tesis
+@end menu
+
+@node Esquema de Tesis
+@unnumbered Esquema de la tesis
+@unnumberedsec Contenidos
+
+@enumerate @c 2
+@item Introduction
+@item Cosmic Rays
+  @enumerate a 
+  @item Origin of the Cosmic Rays
+    @itemize @bullet{}  
+    @item Point Sources
+      @itemize @minus{}  
+      @item Supernovaes
+      @item Pulsars
+      @item Active Galactic Nucleii (AGNs)
+      @item Quasars
+      @item Gamma Ray Bursts
+      @end itemize
+    @item Extended Sources
+      @itemize @minus{}  
+      @item Halos
+      @item WIMPs
+      @item Cosmic Strings
+      @end itemize
+    @end itemize
+  @item The Physics of the Cosmic Rays
+    @itemize @bullet{}  
+    @item Formation of the Cosmic Rays
+      @itemize @minus{}  
+      @item Charged Cosmic Rays
+      @item Gamma Rays
+      @item Neutrinos
+      @item Cosmic Ray's Spectrum
+      @item Chemical Composition of the Cosmic Radiation
+      @end itemize
+    @item Propagation through the interestelar and intergalactic media
+      @itemize @minus{}  
+      @item Diffusion in the formation regions
+      @item Absorption in the intergalactic medium
+      @item Absorption in the interestelar medium
+      @end itemize
+    @item The Cosmic Radiation and its entrance in the Earth atmosphere
+      @itemize @minus{}  
+      @item Production of atmospheric showers
+      @item Front of Particles
+      @item Front of Cherenkov light
+      @item Observables in atmospheric showers
+      @end itemize
+    @end itemize
+  @end enumerate
+@item Simulation of atmospheric showers
+  @enumerate a 
+  @item Monte Carlo methods
+  @item The CORSIKA code
+  @item Production of Cherenkov light
+  @item Simulation of showers at High Zenith Angle
+  @item Information available from the showers
+  @item Time Structure in the Cherenkov pulse
+  @item Other simulation methods
+  @end enumerate
+@item The MAGIC Telescope
+  @enumerate a 
+  @item Phisical goals
+  @item Characteristics of the reflector
+  @item The camera of MAGIC
+    @itemize @bullet{} 
+    @item General overview
+    @item Detection devices
+      @itemize @minus{} 
+      @item Clasical devices: photomultipliers (PMTs)
+      @item Advanced devices: IPCs
+      @item Hybrid devices and Avalanche Photo-Diodes (APDs)
+      @end itemize
+    @end itemize
+  @item Data Acquisition
+  @item Observational Programs
+  @item The Telescope CT1 of the HEGRA Collaboration
+  @end enumerate
+@item Simulation of the detector: MAGIC
+  @enumerate a 
+  @item Detection efficiencies
+  @item Collection of light in the focal plane
+  @item Detection in the camera
+    @itemize @bullet{} 
+    @item Electronics Simulation
+    @item Trigger Logic
+    @item Trigger Efficiencies
+    @item Effective Collection Areas
+    @item Detection Rates
+      @itemize @minus{} 
+      @item Differential rates of detection
+      @item Integral rates of detection
+      @item Hadronic, electronic and muonic backgrounds
+      @end itemize
+    @end itemize
+  @end enumerate
+@item Simulation of the detector: CT1
+  @enumerate a 
+  @item Detection efficiencies
+  @item Collection of light in the focal plane
+  @item Detection in the camera
+    @itemize @bullet{} 
+    @item Electronics Simulation
+    @item Trigger Logic
+    @item Trigger Efficiencies
+    @item Effective Collection Areas
+    @item Detection Rates
+      @itemize @minus{} 
+      @item Differential rates of detection
+      @item Integral rates of detection
+      @item Hadronic, electronic and muonic backgrounds
+      @end itemize
+    @end itemize
+  @end enumerate
+@item Image Analysis
+  @enumerate a 
+  @item Cleanning of the Images
+  @item Image Parameters
+  @item Statistical Analysis of the Images
+  @end enumerate
+@item Angular and Energetic Resolutions in MAGIC
+  @enumerate a 
+  @item Estimation of the angular resolution
+  @item Calculation of the energetic resolution
+  @item Other methods
+  @end enumerate
+@item Gamma-Hadron separation in MAGIC
+  @enumerate a 
+  @item Moments Analysis
+  @item Quality Factors
+    @itemize @bullet{} 
+    @item Optimal Cuts
+    @item Dynamical Super-Cuts
+    @end itemize
+  @item Fuzzy Logic Methods
+  @item Other methods
+  @end enumerate
+@item Conclusions
+@item Apendixes
+  @enumerate a 
+  @item Description of the CORSIKA code
+  @item Calculation of the image parameters
+  @item Statistical analysis of correlations
+  @item Technical description of the analysis programs
+  @end enumerate
+@end enumerate
+
+@bye
+

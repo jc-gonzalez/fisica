@@ -1,0 +1,340 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ATR - Notes about the calculation of the ATR due to LONS
+%
+% Filename: $RCSfile$
+% Author:   $Author$
+% Revision: $Revision$
+% Date:     $Date$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{article}
+
+%\usepackage{emulateapj}
+\usepackage{a4wide}
+\usepackage{amstext}
+\usepackage{amsmath}
+\usepackage{epsfig}
+%\usepackage[spanish,activeacute]{babel}
+\usepackage{xspace}
+%\usepackage{wrapfig}
+%\usepackage{floatflt}
+%\usepackage{charter}
+
+\def\Cherenkov{Cherenkov\xspace}
+
+\def\cph{Ch.\ensuremath{\gamma}\xspace}
+\def\cphs{Ch.\ensuremath{\gamma}s\xspace}
+
+\def\phe{\u{ph.e^{-}}\xspace}
+\def\phes{\u{ph.e^{-}s}\xspace} 
+
+\def\ATR{\ensuremath{\mathrm{ATR}}\xspace}
+\def\Ncomb{\ensuremath{\mathcal{N}_{\mathrm{comb}}}\xspace}
+\def\Npix{\ensuremath{N_{\mathrm{pix}}}\xspace}
+\def\Rate{\ensuremath{R}\xspace}
+\def\Time{\ensuremath{\Delta T}\xspace}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\renewcommand{\u}[1]{\ensuremath{\,\mathrm{#1}}}  %% units
+
+\setlength{\parindent}{0pt}
+%\setlength{\parskip}{2pt}
+
+\pagestyle{empty}
+
+%%% BEGIN %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\begin{center}
+  {\large \scshape Notes on the estimation of the Accidental Trigger
+        Rate due to the Light of Night Sky\\}
+  J. C. Gonz\'alez\\
+  {\small Max-Planck-Institut f\"ur Physik, 
+  F\"ohringer Ring 6, D-80805 M\"unchen, Deutschland\\
+  E.mail: \texttt{gonzalez@mppmu.mpg.de}\\}
+  January, 2000
+\end{center}
+\vskip 1cm
+
+
+%------------------------------------------------------------
+
+\begin{abstract}
+The Artificial Trigger Rate (\ATR) due to the Light of Night Sky
+(LONS) must be known in order to better understand the working
+conditions of our \Cherenkov telescope. In this small note I try to
+estimate such \ATR for different trigger conditions.
+\end{abstract}
+%------------------------------------------------------------
+
+\section*{Light of the Night Sky}
+
+The amount of light from the night sky (LONS) has been measured, and
+is around 
+\begin{equation*}
+\langle\mathrm{LONS}\rangle = 2\cdot 10^{12} \u{ph}/\u{m}^2\u{s}\u{sr}
+\end{equation*}
+
+\subsection*{Estimation of the LONS per pixel for MAGIC}
+
+For this calculation, the following parameters have to be taken into
+account:
+
+\begin{center}
+\begin{tabular}{ll}
+$S_{\text{mirror}} = 230 \u{m}^2 $ &
+$\text{Reflectivity} = 80\% $ \\
+$\epsilon_{\text{l.guides}} = 90\% $ &
+$\epsilon_{\text{plexiglas}} = 95\% $ \\
+$\epsilon_{1^{\mathrm{st}}\text{dyn.coll.}} = 90\%$ &
+$\theta_{\text{1pixel}} = 0.1^\circ$ \\
+$\theta_{\text{h.pixel}} = 0.05^\circ$ &
+$\mathrm{QE}_{\mathrm{LONS}} \sim 13\% $ \\
+$\Delta\Omega = 2\pi(1-\cos\theta_{\text{h.pixel}}) 
+= 2.39\cdot 10^{-6} \u{sr}$ \\
+\end{tabular}
+\end{center}
+
+Then, the mean number of photons arriving at the entrance of the pixel
+in $1\u{ns}$ is:
+
+\begin{eqnarray*}
+\mathcal{N}_{\mathrm{in}} 
+&=& \langle\mathrm{LONS}\rangle 
+\cdot t 
+\cdot S_{\text{mirror}}
+\cdot \epsilon_{\text{l.guides}}
+\cdot \epsilon_{\text{plexiglas}}
+\cdot \Delta\Omega \\
+&=& (2\cdot 10^{12} \u{ph}/\u{m}^2\u{s}\u{sr})
+\cdot (10^{-9} \u{s}/\u{ns}) 
+\cdot (230 \u{m}^2) 
+\cdot (0.90) 
+\cdot (0.95) 
+\cdot (2.39\cdot 10^{-6} \u{sr})  \\
+&=& 0.94 \u{ph}/\u{ns} 
+\end{eqnarray*}
+
+Since our mean QE for the LONS is $\mathrm{QE}_{\mathrm{LONS}} \sim
+13\%$, this means:
+
+\begin{equation*}
+\mathcal{N}_{\mathrm{in}}' = \mathcal{N}_{\mathrm{in}} 
+\cdot \mathrm{QE}_{\mathrm{LONS}} 
+\cdot \epsilon_{1^{\mathrm{st}}\text{dyn.coll.}}
+= 0.11 \phe/\u{ns}
+\end{equation*}
+
+If we use then a gate of $\Delta T=10\u{ns}$, we arrive at a mean
+contribution of LONS per pixel per gate of:
+
+\begin{equation*}
+\langle\text{LONS}\rangle_{\text{1 pixel}} =
+\mathcal{N}_{\mathrm{in}}' \cdot \Delta T = 1.10 \phe/\u{gate}
+\end{equation*}
+
+\section*{Estimation of the Number of Combinations}
+
+For the estimation of the Artificial Trigger Rate (\ATR), we have to
+take into account several parameters:
+
+\begin{enumerate}
+
+\item The trigger pattern used for the trigger: it can be \emph{simple
+  multiplicity} (SM) of $n$ pixels above a single pixel threshold, or a
+  \emph{next-neighbor} (NN) trigger of $n$ pixels above the threshold,
+  or any other pattern.
+
+\item The single pixel threshold, in photoelectrons, milivolts, 
+  \ldots
+
+\item The size of the camera, or more specifically, the size of the
+  trigger region in the camera, and its topology.
+
+\end{enumerate}
+
+In addition, of course, we have to include the rate of the LONS.
+
+For the calculation of the \ATR, then, we will use the following
+formula:
+
+\begin{equation*}
+\ATR = \Ncomb \Rate^{n} \Time^{(n-1)}
+\end{equation*}
+
+where \Rate is the \emph{singles} rate, that is, the trigger rate of a
+given individual pixel due to the LONS, $n$ is the number of pixels
+involved in the trigger, \Time is the time window fixed in our trigger
+logic, and \Ncomb is a geometric term which gives the number of
+possible combinations in the camera for the user-defined trigger
+pattern.
+
+Let's assume we have $m$ pixels in the trigger region (it can be the
+whole camera). In the case of \emph{simple multiplicity} trigger
+conditions for $n$ pixels above threshold (I will call this
+SM$_n$-trigger), the geometrical term is simply:
+
+\begin{equation*}
+\Ncomb = \binom{m}{n} = \frac{n!}{m!\,(m-n)!}
+\end{equation*}
+
+In the case of \emph{next-neighbor} trigger conditions for $n$ pixels
+above threshold (which I will call NN$_n$-trigger) the situation is
+much more complex. For a hexagonal camera or trigger region with
+hexagonal pixels (as is usually the case) with $r$ rings of pixels,
+plus the one in the center, the number of pixels is:
+
+\begin{equation*}
+\Npix(r) \equiv \Npix^r = 3 r (r+1) + 1
+\end{equation*}
+
+with this, we have (assuming $r>3$, in order to avoid problems) the
+results shown in Table \ref{table:Ncomb}.
+
+\begin{table}[b]
+\begin{center}
+  \begin{tabular}{crl}
+    Trigger Condition & \Ncomb \\
+    \hline
+    NN$_2$  & 
+    $3\left(2n+2\overset{2n-1}{\underset{i=n}\sum} i\right) =$& $9n^2+3n$ \\
+%    $[6 \cdot 3 + 6(r-1) \cdot 4 + \Npix^{(r-1)}\cdot 6] / 2$ \\
+    NN$_3$  & 
+    $2\left(\overset{2n}{\underset{i=n+1}\sum} i + 
+            \overset{2n-1}{\underset{i=n}\sum} i\right) =$& $6n^2$ \\
+%    $[6 \cdot 2 + 6(r-1) \cdot 3 + \Npix^{(r-1)}\cdot 6] / 3$ \\
+    NN$_4$  & 
+    $3\left(2n+2\overset{2n-1}{\underset{i=n+1}\sum} i\right) =$& $9n^2-3n$ \\
+%    $[6 \cdot 3 + 6(r-1) \cdot 5 + 6 \cdot (6+4) + 6(r-2)\cdot(6+5) + 
+%    \Npix^{(r-2)}\cdot (6+6)] / 4$ \\
+  \end{tabular}
+  \caption[Number of combinations for NN-triggers]{Number of 
+     combinations (combinatorial factor) for NN-triggers}
+  \label{table:Ncomb}
+\end{center}
+\end{table}
+
+For instance, let's assume we have 217 pixels (number of rings is
+$r=8$). Then, for different configurations of trigger, we will have
+the combinatorial factors shown in Table \ref{table:Ncomb_example}.
+
+\begin{table}[t]
+\begin{center}
+  \begin{tabular}{cr}
+    Trigger Condition & \Ncomb \\
+    \hline
+    SM$_2$  & 23\,436 \\
+    SM$_3$  & 1\,679\,580 \\
+    SM$_4$  & 89\,857\,530 \\
+    NN$_2$  & 600 \\
+    NN$_3$  & 384 \\
+    NN$_4$  & 552 \\
+  \end{tabular}
+  \caption[Number of combinations for different trigger
+     schemes]{Number of combinations for different trigger schemes, 
+     for the case of $r=8$, or 217 pixels.}
+  \label{table:Ncomb_example}
+\end{center}
+\end{table}
+
+\section*{Estimation of the Artificial Trigger Rate}
+
+Let's assume we have a trigger window of $\Time = 10\u{ns} =
+10^{-8}\u{s}$. In this case, we saw that for 1 pixel
+
+\begin{equation*}
+\langle\text{LONS}\rangle = 1.10 \phe/\u{gate}
+\end{equation*}
+
+We then fix a value for the single pixel threshold, $q_0$. Let's
+assume we take a value of $q_0 =
+7\,\phe/\mathrm{pixel}/\mathrm{gate}$.  In our trigger gate, \Time,
+the mean of the Poisson distribution describing the incoming LONS
+photons is $\lambda = \langle\text{LONS}\rangle = 1.10
+\phe/\u{gate}$.  The probability of getting a charge $q$ in one
+pixel due to the LONS, such that $q \geq q_0 \equiv
+7\phe/\mathrm{pixel}/\mathrm{gate}$ is:
+
+\begin{equation*}
+\mathcal{P}(q \geq q_0) = 
+\overset{\infty}{\underset{k=q_0}\sum} \mathcal{P}(q = k) =
+\overset{\infty}{\underset{k=q_0}\sum}
+\frac{\lambda^k}{k!}e^{-\lambda} =
+1-\overset{q_0-1}{\underset{k=0}\sum} 
+\frac{\lambda^k}{k!}e^{-\lambda}
+\end{equation*}
+
+If we want to use the exact values, this last expression is the best
+to be used. However, if $q_0 > \lambda$ (as is the case here) we can
+use an expansion of the first expression, using the property of the
+Poisson distribution $\mathcal{P}(r+1) = [\lambda/(r+1)]\mathcal{P}(r)$
+
+\begin{eqnarray*} 
+\mathcal{P}(q \geq q_0) &=& 
+\overset{\infty}{\underset{k=q_0}\sum} \mathcal{P}(q = k) \\
+&=& \mathcal{P}(q = q_0) + \mathcal{P}(q = q_0+1) +  
+\mathcal{P}(q = q_0+2) + \ldots \\
+&=& \mathcal{P}(q = q_0) + 
+\frac{\lambda}{(q_0+1)} \mathcal{P}(q = q_0) +
+\frac{\lambda^2}{(q_0+1)(q_0+2)} \mathcal{P}(q = q_0) + \ldots \\
+&=& \left[
+1 + \frac{\lambda}{(q_0+1)} + \frac{\lambda^2}{(q_0+1)(q_0+2)} + \ldots
+\right] \left( \frac{\lambda^{q_0}}{q_0!}e^{-\lambda} \right)
+\end{eqnarray*}
+
+We can then simply take the first two or three terms of this
+expansion, since the rest are going to be very small.
+
+Let's take for our example only the first two terms. In this case:
+
+\begin{equation*}
+\mathcal{P}(q \geq 7\phe) \approx 
+\left[ 1 + \frac{1.10}{(7+1)} \right] 
+\left( \frac{1.10^{7}}{7!}e^{-1.10} \right) = 1.46\cdot 10^{-4}
+\end{equation*}
+
+With tihs probability, we can calculate the rate \Rate of a single
+pixel triggering
+
+\begin{equation*}
+\Rate = \mathcal{P}(q \geq 7\phe) / \Time = 14640 \u{Hz} 
+\approx 15 \u{kHz}
+\end{equation*}
+
+This is the \emph{singles-rate}. Using the formula given at the
+beginning, we would have, for instance in the case of NN$_4$ trigger:
+
+\begin{equation*}
+\ATR(\mathrm{NN}_4) = 
+\Ncomb(\mathrm{NN}_4) \Rate^4 \Time^3 =
+552 \cdot 14640^4 \cdot (10^{-8})^3 = 2.5\cdot 10^{-5} \u{Hz}
+\end{equation*}
+
+In the Table \ref{table:results1} I show the results of these
+calculations for different trigger patterns and thresholds.
+
+\begin{table}[t]
+\begin{center}
+  \begin{tabular}{cr}
+  \end{tabular}
+  \caption[Artificial Trigger Rates]{Artificial Trigger Rates
+    calculated for different trigger configurations and single pixel
+    thresholds. In all cases a trigger region of $r=8$ rings, or 217
+    pixels, has been used.}
+  \label{table:results1}
+\end{center}
+\end{table}
+
+\end{document}
+
+%%% END
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+% Last log: $Log$
+% Last log: Revision 1.2  2000/01/31 07:35:43  gonzalez
+% Last log: *** empty log message ***
+% Last log:
+%%EOF
+

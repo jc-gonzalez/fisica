@@ -1,0 +1,373 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%  ch-magicsim.tex
+%%
+%%  Created: Fri Oct 10 14:24:37 1997
+%%  Author.: Jose Carlos Gonzalez
+%%  Notes..:
+%%          
+%%-------------------------------------------------------------------------
+%% Filename: $RCSfile$
+%% Revision: $Revision$
+%% Date:     $Date$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\chapter{Simulaci'on del detector: \MAGIC}
+\label{chapter:simmagic}
+
+A program for the simulation of the detector is necessary in order to
+study the response of our system (the \Cerenkov telescope) to the
+input data (\Cerenkov light from the incoming electromagnetic and
+hadronic showers). Several small simulation codes have been written.
+In this chapter we present the philosophy of the main programs used
+for this topic: the simulation codes \reflector and \camera.
+
+The general flow of the simulation process is outlined in Fig.
+\ref{fig:simprocess}. As it was already shown, the simulation of the
+detector is splitted in three steps:
+%
+\begin{enumerate}[i.]
+  
+\item Generation of the simulated atmospheric showers, with the
+  \CORSIKA code
+  
+\item Passage of the generated \Cherenkov light through a simulation
+  of the atmosphere, and reflection of this light in the multi-mirror
+  of \MAGIC
+  
+\item Pixelization process, simulation of trigger logic and image
+  analysis
+
+\end{enumerate}
+%
+The process of the generation of the atmospheric showers was already
+explained in chapter \ref{chapter:simshowers}. Here I will talk about
+the last two steps.
+
+%------------------------------------------------------------
+\section{Reflexi'on y recolecci'on de la luz en el plano focal}
+\label{sec:reflcoll}
+
+If we look at the output of CORSIKA, we will see some data files with
+information about particles and \Cherenkov photons in each of the user
+selected observation levels. We use only one main observation level
+2\,200\u{m} a.s.l. In our investigations we are interested in the
+\Cherenkov light. Therefore, the programs developed for the simulation
+concentrate in the analysis of this light produced in the atmosphere.
+
+The information stored in disk for each \Cherenkov photon was shown in
+Table \fullref{tab:cphstruct}, and consists for each \Cherenkov photon
+of the 7-tuple $\{\lambda,x,y,u,v,t,h\}$, where:
+%
+{\centering
+\begin{tabular}{cl}
+$\lambda$ & Wavelength of the emitted \Cherenkov photon \\
+$x,y$     & Position of the \Cherenkov photon in the horizontal
+            plane of the observation level \\
+$u,v$     & Director cosines in X and Y directions of the incoming
+            photon\\
+$t$       & Time elapsed since the first interaction of the primary until the 
+            photon was emitted\\
+$h$       & Height of production of the photon\\
+\end{tabular}
+}
+
+The quantities $x,y,u$ and $v$ are measured in the coordinate system
+of the observation level (I will call this system the \emph{observer's
+  coordinate system}). However, we use two more systems in our
+simulation. In total we use these three coordinate systems (see
+Fig.\ref{fig:coordsys}):
+%
+\begin{Ventry}{$S" \equiv O"X"Y"Z"$:}
+\item[$S \equiv OXYZ$] The observer's coordinate system, where all
+  the variables from the output of CORSIKA are measured
+  
+\item[$S' \equiv O'X'Y'Z'$] The system of the global frame of the
+  telescope (we have that $O\equiv O'$)
+  
+\item[$S" \equiv O"X"Y"Z"$] The local system of the small mirror
+  where each incoming photon is actually hitting
+\end{Ventry}
+
+\simprocessfig
+%
+In the simulation of the reflexion, we obey the following algorithm:
+%
+\begin{enumerate}[1.]
+\item Read parameters for the simulation, allocate memory and
+  initialize different variables, and open the files.
+
+\item For each \Cherenkov photon in every shower to be analyzed,
+  perform the following steps:
+  
+  \begin{enumerate}[\theenumi.1.]
+  \item Calculate, for this photon, the transmitance of the
+    atmosphere, and test whether it passed the absorption.
+    
+  \item Apply the reflectivity of the mirrors, possible dead zones and
+    simulation of mirror imperfections.
+
+  \item If the photon survives to all these effects, its way to the
+    camera plane is traced and the photon is saved to the output file.
+  \end{enumerate}
+
+\item Go back to 2.1 while there are photons/showers left.
+\end{enumerate}
+
+Let's explain briefly the most important steps.
+
+\subsection{Simulation of the Atmospheric Absorption}
+
+In order to simulate the atmospheric attenuation suffered by the
+Cherenkov light emitted in the development of an atmospheric shower,
+an appropriate estimation of the quantities involved must be done.
+These quantities are the \emph{true vertical height}, defined as the
+vertical height below a point in the atmosphere, and the \emph{air
+  mass}, defined as the density of air traversed by the photons. Since
+the classical CORSIKA simply gives us the height of emission of a
+photon in the vertical of the observer, we are forced to calculate the
+values of these variables in our simulation programs. They are of
+special importance in the case of High Zenith Angle (HZA) studies.
+
+%\coordsysfig
+\Systemsfig %% in landscape
+
+\subsubsection{Calculation of the true vertical height}
+
+For the simple simulation of HZA using our plane-parallel-atmosphere
+version of CORSIKA, as well as for the calculation of the true
+vertical height of a photon (at its emission point) and the airmass
+(AM) it traverses, a very simple estimation can be done.
+
+We will assume that our observer is located at point A (see
+Fig.\ref{fig:geomview}), at a heigh \ho above sea level (a.s.l.).  Our
+observer is looking at a source (which emits gamma rays, hopefully),
+under a Zenith Angle $\theta$. One of these gamma rays just arrived at
+the top of Earth's atmosphere, and developed an gamma ray induced
+atmospheric shower. (For simplicity, we will assume that the
+trajectory of the photon will cross the observation level at point A.)
+
+I will use the following notation (from Fig.\ref{fig:geomview}):
+
+\begin{tabular}{ll}
+A & Point where the observer is located \\
+O & Point at sea level, in observer's vertical \\
+P & Point of emission of the photon \\
+\ho & Height of the observation level \\
+\hc & Height given by CORSIKA, in the vertical of the observer\\
+\hv & Height in the vertical of the photon\\
+$R \equiv R_\oplus$ & Earth's radius\\
+$\theta$ & Zenith Angle in observer's level\\
+$\omega$ & Zenith Angle at sea level, in observer's vertical\\
+$\alpha$ & Angle from Earth's center between A and P\\
+\end{tabular}
+
+%\geomviewfig
+
+If $\ho \neq 0$ nor negligible with respect to \hc, and $\theta \simeq
+\omega$, the expression that gives us the value of the \emph{true
+  vertical height} at P in the vertical, \hv, is:
+%
+\hveq
+%
+In the case of $\ho \simeq 0$ or negligible with respect to \hc, this
+becomes:
+%
+\hvapproxeq
+
+%------------------------------------------------------------
+\subsubsection{Pure geometrical estimation of the air mass}
+
+In the simplest approximation, the air mass factor (AM, the relation
+between the optical travel path at a given zenith angle and the
+optical path at the vertical) can be estimated from geometrical
+consideratins. Using this simple approach, the air mass factor will
+be:
+%
+\mgeomeq
+
+%------------------------------------------------------------
+\subsubsection{Calculation of the air mass using an 
+exponential density model}
+
+The above expression in Eq.\eqref{eq:mgeom} uses just geometrical 
+arguments to estimate the ratio represented by m. We would like to go
+one step beyond, by introducing an exponential density model. In our
+simulations we are using an atmospheric model represented by 4
+exponentials and a linear function in the top of the
+atmosphere. Therefore, although the expression that we want to get is
+not fully correct, will be closer to the reality.
+
+We will use then the following density model:
+%
+\denseq
+%
+where $h$ is the height a.s.l., and \Hs is the \emph{scale height} of
+the atmosphere. In the Earth this results to be approximately $\Hs =
+7.4\u{km}$. With this model, the optical path (ignoring refraction)
+can be written (with the approximation that $h/R \simeq 0$) as:
+%
+\optpathredeq
+%
+Note that we already wrote explicitly that we want to calculate the
+travel path for a Zenith Angle $\theta$ for vertical heights between
+\ho and \hv. Our \emph{air mass} $\mathcal{AM}$ is defined
+as\footnote{The \emph{Airmass} in Optical Astronomy is usually defined
+  as the relation $\mathit{Airmass} \equiv
+  {I(\theta;0,\infty)}/{I(0\deg;0,\infty)} $}:
+%
+\AMdefeq
+%
+Therefore, integrating we have:
+%
+\AMfulleq
+%
+where $\mathrm{erfc}$ is the \emph{complementary error function}. An
+approximation for low zenith angles, or more technically, for
+moderately large $X\equiv\sqrt{{R\,\cos^2\theta}/{2\,\Hs}}$ is
+%
+\AMapproxeq
+
+\paragraph{Correction for refraction.} We have defined $R \equiv
+R_\oplus$, the radius of the Earth. A simple correction for refraction
+can be obtained by taking instead
+%
+\refracapproxeq
+
+%------------------------------------------------------------
+\subsubsection{Comparison between different approximations}
+
+First, we would like to compare the true expression for the
+calculation of the \hv with the one obtained by assuming that \ho is
+small enough. For this purpose we calculate the vertical height for
+$\ho=0\u{km}$ and $\ho=2.2\u{km}$ (height of the future location of
+MAGIC), for different Zenith Angles, and plot the difference in
+percentage (see Fig.\ref{fig:hvdiffs}). We can see that the difference
+increases with the zenith angle, as expected, although still this
+difference remains far below 5\% up to 85\deg.
+
+\hvdiffsfig
+
+The second thing we want to compare is the geometrical expressions for
+the air mass, namely $m$ and $m_{\mathrm{simple}}$ (the simple
+approximation for $ho=0\u{km}$), with the more elaborated calculation
+using the exponential density model, $mathcal{AM}$. We will include in
+the last expression the simple correction for refraction given in
+Eq.\eqref{eq:refrac}. This comparison, for three value of \ho
+(0\u{km}, 4\u{km} and 2.2\u{km}), is shown in Fig.\ref{fig:AMcomp}. We
+have used in this case two values for the vertical height,
+$\hv=5\u{km}$ and $\hv=100\u{km}$.
+
+\AMcompfig
+
+%------------------------------------------------------------
+\subsubsection{Calculation of the atmospheric transmission}
+
+Three effects have been included in the final calculation of the
+transmission of the atmosphere for the Cherenkov photons:
+
+\paragraph{Rayleigh scattering.} The molecules in the atmosphere
+produce scattering of the photons. This effect is strongly correlated
+with the wavelength $\lambda$ of the light, being more important for
+small wavelengths. The transmission coefficient due to Rayleigh
+scattering is:
+%
+\Rayleigheq
+%
+where $\tau_{i=1,2} = \tau_0 \, \exp(-h_i/H_{\mathrm{S}}) \sec\theta$
+is the \emph{slanted thickness} above a height $h_i$, in the case of
+an exponential density profile (actually in our case we calculatec
+these values with the CORSIKA density model),
+$\tau_{\mathrm{R}}(\lambda=400\u{nm}) = 2970\u{g/cm^2}$ is the mean
+free path of the Rayleigh scattering in terms of thickness, $\tau_0 =
+0.00129\u{g/cm^2}$, and $H_{\mathrm{S}}$ is the mentioned scale-height
+of the atmosphere. We pre-calculated the exponents for different
+wavelengths.
+  
+\paragraph{Mie scattering.} This effect is due to the aerosol (dust)
+particles suspended inthe air, being its effect bigger at lower
+heights. It depends also on the size of these particles. For an
+exponential density profile, the transmission coefficient is
+%
+\Mieeq
+%
+where $l_{\mathrm{M}}(400\u{nm}) \simeq 14\u{km}$ is the mean free
+path for the Mie scattering, and $h_{\mathrm{M}} \simeq 1.2\u{km}$ is
+the scale-height for the aerosol distribution. We have pre-calculated
+the exponents for different wavelengths, although this dependence is
+very small.
+  
+\paragraph{Ozone absorption.} This effect is very important in the
+range 280--340\u{nm} and for low energy showers, in which most of the
+Cherenkov light emission is located where the density of ozone is high
+(between 20--30\u{km}). For this we have first estimated the
+extinction in magnitudes per unit of air mass:
+%
+\amagneq
+%
+where $k(\lambda)$ is the absorption coefficient in \u{cm^{-1}}, and
+$T(\hv)$ is the total ozone concentration for a typical Tropical
+region (we coose this because was very similar to the actual profile
+in La Palma), above the vertical in each position, in \u{atm cm}. The
+coefficient 1.11 was chosen to correspond to Elterman's optical
+thickness for ozone at 320\u{nm}\cite{Elterman}.
+
+With this value, we can estimate the extinction in magnitudes per air
+mass between two height, and using the Pogson law we can determine the
+transmission coefficient, which results (for more details, please
+refer to \cite{Aitor:tesina}):
+%
+\Ozoneeq
+
+Of course, the total transmission coefficient will be:
+%
+\TotalTransmissioneq
+
+%------------------------------------------------------------
+\section{Conclusions}
+
+I hope that with this small document, the way we calculate the
+parameters for the simulation of the atmospheric attenuation is a bit
+more clear. Note that the more appropriate procedure to calculate the
+air mass for a given Zenith angle, between two vertical height, is, at
+the time of writing these note, \emph{not} yet implemented in the
+simulation code.
+
+The right equations should be used, when available and when the cost
+in computing time is inexistent with respect to any other more simple
+approach. However, from our studies it becomes clear that, under some
+conditions, simple approximations can give results that are accurate
+enough for most of the studies.
+
+
+
+\randpoifig
+
+\section{Detecci'on en la c'amara}
+
+\subsection{Simulaci'on de la cadena de proceso de la señal}
+
+\subsection{L'ogica de disparo}
+
+\section{Resultados}
+
+\subsection{Eficiencias de disparo}
+
+\subsection{'Areas de colecci'on efectivas}
+
+\subsection{Ritmos de detecci'on}
+
+\subsubsection{Ritmos diferenciales de detecci'on}
+
+\subsubsection{Ritmos integrales de detecci'on}
+
+\subsubsection{Fondos hadr'onico, electr'onico y mu'onico}
+
+\endinput
+%
+%% Local Variables:
+%% mode:latex
+%% End:
+
+%%EOF

@@ -1,0 +1,158 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% LONS - Notes about the calculation of the LONS for each pixel
+%
+% Filename: $RCSfile$
+% Author:   $Author$
+% Revision: $Revision$
+% Date:     $Date$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{article}
+
+%\usepackage{emulateapj}
+\usepackage{a4wide}
+\usepackage{amstext}
+\usepackage{amsmath}
+\usepackage{epsfig}
+%\usepackage[spanish,activeacute]{babel}
+\usepackage{xspace}
+%\usepackage{wrapfig}
+%\usepackage{floatflt}
+%\usepackage{charter}
+
+\def\Cherenkov{Cherenkov\xspace}
+
+\def\cph{Ch.\ensuremath{\gamma}\xspace}
+\def\cphs{Ch.\ensuremath{\gamma}s\xspace}
+
+\def\phe{ph.e\ensuremath{^{-}}\xspace}
+\def\phes{ph.e\ensuremath{^{-}}s\xspace} 
+
+\def\QE{\ensuremath{\mathcal{QE}}\xspace}
+
+\def\Nphot{\ensuremath{%
+  \mathcal{N}_{\gamma}}\xspace}
+\def\Ntrial{\ensuremath{%
+  \mathcal{N}_{\mathrm{ph.e.s}}}\xspace}
+\def\Nmean{\ensuremath{%
+  \bar\mathcal{N}_{\mathrm{ph.e.s}}}\xspace}
+\def\Nrand{\ensuremath{%
+  \mathcal{N}^{\mathrm{r}}_{\mathrm{ph.e.s}}}\xspace}
+\def\Ntrialrand{\ensuremath{%
+  \mathcal{N}^{\mathrm{t+r}}_{\mathrm{ph.e.s}}}\xspace}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\renewcommand{\u}[1]{\ensuremath{\mathrm{\,#1}}}  %% units
+
+\setlength{\parindent}{0pt}
+%\setlength{\parskip}{2pt}
+
+\pagestyle{empty}
+
+%%% BEGIN %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\begin{center}
+  {\large \scshape Notes on the estimation of the contribution\\
+                  of the Light of Night Sky per pixel\\}
+  J. C. Gonz\'alez\\
+  (Original notes by R. Mirzoyan)\\
+  {\small Max-Planck-Institut f\"ur Physik, 
+  F\"ohringer Ring 6, D-80805 M\"unchen, Deutschland\\
+  E.mail: \texttt{gonzalez@mppmu.mpg.de}\\}
+  January, 2000
+\end{center}
+\vskip 1cm
+
+%------------------------------------------------------------
+
+\subsection*{Light of the Night Sky}
+
+The amount of light from the night sky (LONS) has been measured, and
+is around 
+\[
+\langle\mathrm{LONS}\rangle = 2\cdot 10^{12} \u{ph}/\u{m}^2\u{s}\u{sr}
+\]
+
+\subsection*{Estimation of the LONS per pixel for MAGIC}
+
+For this calculation, the following parameters have to be taken into
+account:
+
+\begin{center}
+\begin{tabular}{ll}
+$S_{\text{mirror}} = 230 \u{m}^2 $ &
+$\text{Reflectivity} = 80\% $ \\
+$\epsilon_{\text{l.guides}} = 90\% $ &
+$\epsilon_{\text{plexiglas}} = 95\% $ \\
+$\epsilon_{1^{\mathrm{st}}\text{dyn.coll.}} = 90\%$ &
+$\theta_{\text{1pixel}} = 0.1^\circ$ \\
+$\theta_{\text{h.pixel}} = 0.05^\circ$ &
+$\mathrm{QE}_{\mathrm{LONS}} \sim 13\% $ \\
+$\Delta\Omega = 2\pi(1-\cos\theta_{\text{h.pixel}}) 
+= 2.39\cdot 10^{-6} \u{sr}$ \\
+\end{tabular}
+\end{center}
+
+Then, the mean number of photons arriving at the entrance of the pixel
+in $1\u{ns}$ is:
+
+\begin{eqnarray*}
+\mathcal{N}_{\mathrm{in}} 
+&=& \langle\mathrm{LONS}\rangle 
+\cdot t 
+\cdot S_{\text{mirror}}
+\cdot \epsilon_{\text{l.guides}}
+\cdot \epsilon_{\text{plexiglas}}
+\cdot \Delta\Omega \\
+&=& (2\cdot 10^{12} \u{ph}/\u{m}^2\u{s}\u{sr})
+\cdot (10^{-9} \u{s}/\u{ns}) 
+\cdot (230 \u{m}^2) 
+\cdot (0.90) 
+\cdot (0.95) 
+\cdot (2.39\cdot 10^{-6} \u{sr})  \\
+&=& 0.94 \u{ph}/\u{ns} 
+\end{eqnarray*}
+
+Since our mean QE for the LONS is $\mathrm{QE}_{\mathrm{LONS}} \sim
+13\%$, this means:
+
+\[
+\mathcal{N}_{\mathrm{in}}' = \mathcal{N}_{\mathrm{in}} 
+\cdot \mathrm{QE}_{\mathrm{LONS}} 
+\cdot \epsilon_{1^{\mathrm{st}}\text{dyn.coll.}}
+= 0.11 \u{ph.e.}/\u{ns}
+\]
+
+If we use then a gate of $\Delta T=5\u{ns}$, we arrive at a mean
+contribution of LONS per pixel per gate of:
+
+\[
+\langle\text{LONS}\rangle_{\text{1 pixel}} =
+\mathcal{N}_{\mathrm{in}}' \cdot \Delta T = 0.55 \u{ph.e.}/\u{gate}
+\]
+
+
+
+\end{document}
+
+%%% END
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+% Last log: $Log$
+% Last log: Revision 1.2  2000/01/27 12:56:06  gonzalez
+% Last log: *** empty log message ***
+% Last log:
+% Last log: Revision 1.1  2000/01/27 10:36:12  gonzalez
+% Last log: *** empty log message ***
+% Last log:
+% Last log: Revision 1.1  2000/01/24 08:40:13  gonzalez
+% Last log: QE_notes almost finished...
+% Last log: 
+% Last log: Revision 1.1 2000/01/21 17:33:12 gonzalez 
+% Last log: Small document about simulation of QE in PMTs 
+% Last log: 
+%%EOF
+

@@ -1,0 +1,118 @@
+#--------------------------------------------------------------------
+# tesisesq.doc
+#
+# Thesis (scheme)
+# J C Gonzalez
+#
+# Notes:
+#  291298 Format "outline+enriched-mode" (EMACS)
+#--------------------------------------------------------------------
+#
+
+* Introduction
+
+* Los Rayos Cosmicos
+** Origen de los rayos cosmicos
+*** Fuentes puntuales
+**** Supernovas
+**** Pulsares
+**** Nucleos Activos de Galaxias (AGNs)
+**** Cuasares
+**** Gamma-Ray Bursts
+*** Fuentes extensas
+**** Halos
+**** WIMPs
+**** Cuerdas cosmicas
+** La Fisica de los Rayos Cosmicos
+*** Formacion de los rayos cosmicos
+**** Rayos cosmicos cargados
+**** Rayos gamma
+**** Neutrinos
+**** Espectro de la radiacion cosmica
+**** Composicon quimica de los rayos cosmicos
+*** Propagacion a traves de los medios interestelares e intergalactico
+**** Difusion en las regiones de formacion
+**** Absorcion en el medio intergalactico
+**** Absorcion en el medio interestelar
+*** Los rayos cosmicos a su entrada en la atmosfera
+**** Generacion de las cascadas
+**** Frente de particulas
+**** Frente de luz Cherenkov
+**** Observables de las cascadas atmosfericas
+
+* Simulacion de Cascadas Atmosfericas
+** Simulacion por metodos de Monte Carlo
+** El Codigo CORSIKA
+** Generacion de luz Cherenkov
+** Generacion a alto angulo cenital
+** Informacion obtenida
+** Estructura temporal del pulso Cherenkov
+** Otros metodos de simulacion
+
+* El Telescopio MAGIC
+** Objetivos fisicos
+** Caracteristicas del reflector
+** La camara de MAGIC
+*** Descripcion general
+*** Dispositivos de deteccion
+**** Dispositivos clasicos: fotomultiplicadores (PMTs)
+**** Dispositivos avanzados: IPCs
+**** El futuro: dispositivos hibridos y fotodiodos de avalancha
+** Adquisicion de datos
+** Programas observacionales
+** El telescopio CT1 de la colaboracion HEGRA
+
+* Simulacion del detector: MAGIC
+** Eficiencias de Deteccion
+** Coleccion en el plano focal
+** Deteccion en la camara
+*** Simulacion de la electronica
+*** Descripcion de la logica de trigger
+*** Eficiencias de trigger
+*** Areas de coleccion efectivas
+*** Ritmos de deteccion
+**** Ritmos diferenciales de deteccion
+**** Ritmos integrales de deteccion
+**** Fondos hadronico, electronico y muonico
+
+* Simulacion del detector: CT1
+** Eficiencias de Deteccion
+** Coleccion en el plano focal
+** Deteccion en la camara
+*** Simulacion de la electronica
+*** Descripcion de la logica de trigger
+*** Eficiencias de trigger
+*** Areas de coleccion efectivas
+*** Ritmos de deteccion
+**** Ritmos diferenciales de deteccion
+**** Ritmos integrales de deteccion
+**** Fondos hadronico, electronico y muonico
+
+* Resoluciones Angular y Energetica de MAGIC
+** Estimacion de la resolucion angular
+** Calculo de la resolucion energetica
+** Otros procedimientos
+
+* Analisis de Imagen
+** Limpieza de las imagenes
+** Parametros de Imagen
+** Analisis estadistico de las imagenes
+
+* Separacion Gamma-Hadron en MAGIC
+** Analisis de momentos
+** Factores de calidad
+*** Calculo de cortes optimos
+*** Metodo de las distribuciones acumuladas
+*** Metodo de la entropia
+** Otros metodos
+
+* Conclusiones
+
+* Descripcion del Codigo CORSIKA
+
+* Obtencion de los parametros de imagen
+
+* Analisis estadistico de correlaciones
+
+* Descripcion tecnica de los programas de analisis
+

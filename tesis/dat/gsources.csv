@@ -1,0 +1,310 @@
+ Source Name ;Alternate Name(s);Type ;TypeID;Gal_Long;Gal_Lat;RA;Dec;Skymap_x;Skymap_y;Distance(kpc/z);Energy(MeV);General Information 
+1A 0535+262;4U 0538+26,1H 0536+263;HMXRB;1;181.45;-2.64;84.73;26.32;-178.3605;-2.6400;;0.05–0.30;"Gamma-ray spectra (Grove et al. 1995b; Hameury et al. 1983; Dal Fiume, Frontera, & Morelli 1988; Polcaro et al. 1983); flux measurements (Levine et al. 1984; Fishman & Watts 1977; Refloc'h et al. 1986)"
+1A 1742-294;1E 1742.9-2929,2S 1742-294;LMXRB;1;359.56;-0.39;266.53;-29.52;-0.4400;-0.3900;7;0.05–0.18;"Flux measurement (Levine et al. 1984); distance (Christian & Swank 1997)"
+1E 1740.7-2942;Great Annihilator,IRAS 17408-2942;Accretor;1;359.15;-0.12;266.01;29.72;-0.8500;-0.1200;;0.05–0.40;"Low-energy continuum spectral observations (Heindl et al. 1993; Skinner et al. 1991; Bazzano et al. 1992);"
+2CG 006+00;GRO J1758-23,2EG J1801-2312;Unidentified;5;6.73;-0.14;270.34;-23.21;6.7300;-0.1400;;100;"Flux measurements (Thompson et al. 1995; Swanenburg et al. 1981)"
+2CG 010-31;;Unidentified;5;10.53;-31.52;304.75;-31.8;8.9764;-31.5200;;100;Flux measurement (Swanenburg et al. 1981)
+2CG 013+00;;Unidentified;5;13.69;0.6;273.27;-16.77;13.6892;0.6000;;100;Flux measurement (Swanenburg et al. 1981)
+2CG 036+01;;Unidentified;5;36.49;1.53;283.12;3.86;36.4770;1.5300;;100;Flux measurement (Swanenburg et al. 1981)
+2CG 065+00;GEV J1957+2859;Unidentified;5;65.75;-0.01;299.25;28.8;65.7500;-0.0100;;100;"Flux measurement (Swanenburg et al. 1981); high-energy measurement (Lamb & Macomb 1997)"
+2CG 075+00;GRO J2021+37,2EG J2019+3719;Unidentified;5;75.46;0.6;304.94;37.32;75.4559;0.6000;;100;"Flux measurement (Swanenburg et al. 1981; Thompson et al. 1995)"
+2CG 078+01;GRO J2019+40,2EG J2020+4026;Unidentified;5;78.12;2.23;305.14;40.44;78.0608;2.2300;;100;"Flux measurement (Swanenburg et al. 1981; Thompson et al. 1995); possible association with an X-ray point source and proposed identification as a pulsar (Brazier et al. 1996)"
+2CG 095+04;;Unidentified;5;95.43;4.27;313.07;55.2;95.1651;4.2700;;100;High-energy flux measurement (Swanenburg et al. 1981)
+2CG 121+04;;Unidentified;5;121;3.98;8;66.8;120.7082;3.9800;;100;Flux measurement (Swanenburg et al. 1981)
+2CG 135+01;GRO J0240+61,2EG J0241+6119;Unidentified;5;135.67;1.09;40.13;61.24;135.6455;1.0900;;0.12–30,100;"High-energy flux measurement (Swanenburg et al. 1981; Thompson et al. 1995); MeV detection (van Dijk et al. 1994b)"
+2CG 218-00;;Unidentified;5;218.36;-0.53;104.75;-5.1;-141.6339;-0.5300;;100;Flux measurement (Swanenburg et al. 1981)
+2CG 235-01;;Unidentified;5;235.41;-1.07;112.5;-20.4;-124.5683;-1.0700;;100;Flux measurement (Swanenburg et al. 1981)
+2CG 284-00;GRO J1021-58,2EG J1021-5835;Unidentified;5;284.45;-1.2;155.41;-58.59;-75.5334;-1.2000;;100;"Flux measurement (Thompson et al. 1995; Swanenburg et al. 1981)"
+2CG 288-00;GRO J1047-58,2EG J1049-5847;Unidentified;5;287.63;0.4;162.25;-58.78;-72.3682;0.4000;;100;"Flux measurement (Thompson et al. 1995; Swanenburg et al. 1981)"
+2CG 311-01;GRO J1416-61,2EG J1412-6211;Unidentified;5;312.28;-0.81;213.23;-62.19;-47.7152;-0.8100;;0.05–0.11,100;"Flux measurement (Thompson et al. 1995; Swanenburg et al. 1981)"
+2CG 333+01;;Unidentified;5;333.52;0.96;244.25;-49.3;-26.4763;0.9600;;100;Flux measurement (Swanenburg et al. 1981)
+2CG 356+00;;Unidentified;5;356.56;0.23;264;-31.7;-3.4400;0.2300;;100;Flux measurement (Swanenburg et al. 1981)
+2CG 359-00;2EG J1747-3039,GRO J1732-31;Unidentified;5;358.77;-1.3;266.95;-30.66;-1.2297;-1.3000;;1-3,100;"Flux measurement (Thompson et al. 1995; Swanenburg et al. 1981; Macomb & Shrader 1996)"
+2CG 359-00;;Unidentified;5;359.53;-0.76;266.87;-29.3;-0.4700;-0.7600;;100;Flux measurement (Swanenburg et al. 1981)
+2EG J0008+7307;GRO J0004+73;Unidentified;5;119.77;10.52;2.09;73.13;117.7568;10.5200;;30;"Flux measurement (Thompson et al. 1995); gamma-ray spectrum (Nolan et al. 1996)"
+2EG J0119+0312;GRO J0118+02;Unidentified;5;136.77;-58.9;19.97;3.21;70.6463;-58.9000;;100;Flux measurement (Thompson et al. 1995)
+2EG J0159-3557;;Unidentified;5;248.55;-73.08;29.85;-35.95;-32.4360;-73.0800;;100;Flux measurement (Thompson et al. 1995)
+2EG J0216+1107;GRO J0215+11;Unidentified;5;153.93;-46.6;34;11.12;105.7634;-46.6000;;100;Flux measurement (Thompson et al. 1995)
+2EG J0220+4228;GRO J0222+42;Unidentified;5;139.98;-17.33;35.19;42.57;133.6256;-17.3300;;100;"High-energy detection and possible identification as QSO 0219+428 (Thompson et al. 1995; Dingus et al. 1996); possible alternative identification of 2EG source as PSR J0218+4232 (Verbunt et al. 1996)"
+2EG J0239+2818;;Unidentified;5;150.33;-28.8;40.09;28.21;131.7352;-28.8000;;30–1000;"Flux measurements and possible identification with 4C 28.07 (Thompson et al. 1995; Dingus et al. 1996)"
+2EG J0323+5126;;Unidentified;5;145.53;-4.65;50.77;51.44;145.0510;-4.6500;;100;Flux measurement (Thompson et al. 1995)
+2EG J0403+3357;;Unidentified;5;162.4;-13.79;60.95;33.96;157.7190;-13.7900;;100;Flux measurement (Thompson et al. 1995)
+2EG J0406+1704;GRO J0407+17;Unidentified;5;175.61;-25.23;61.67;17.08;158.8575;-25.2300;;100;Flux measurement (Thompson et al. 1995)
+2EG J0422+1414;GRO J0421+15;Unidentified;5;180.65;-24.26;65.53;14.24;-163.5117;-24.2600;;100;Flux measurement (Thompson et al. 1995)
+2EG J0426+6618;;Unidentified;5;142.24;11.87;66.51;66.31;139.1985;11.8700;;100;Flux measurement (Thompson et al. 1995)
+2EG J0432+2910;GRO J0431+29;Unidentified;5;170.34;-12.68;68.21;29.18;166.1856;-12.6800;;30;Flux measurement (Thompson et al. 1995)
+2EG J0437+1524;GRO J0438+15;Unidentified;5;182.1;-20.68;69.3;15.41;-166.4374;-20.6800;;100;Flux measurement (Thompson et al. 1995)
+2EG J0506+3424;;Unidentified;5;170.85;-3.79;76.7;34.4;170.4764;-3.7900;;100;Flux measurement (Thompson et al. 1995)
+2EG J0511+5523;;Unidentified;5;154.4;9.35;77.95;55.4;152.3487;9.3500;;100;Flux measurement (Thompson et al. 1995)
+2EG J0520+2626;;Unidentified;5;179.04;-6.07;80.06;26.44;178.0362;-6.0700;;100;Flux measurement (Thompson et al. 1995)
+2EG J0521+2206;;Unidentified;5;182.87;-8.18;80.48;22.11;-175.3279;-8.1800;;100;Flux measurement (Thompson et al. 1995)
+2EG J0545+3943;GRO J0544+39;Unidentified;5;170.79;5.65;86.48;39.73;169.9603;5.6500;;100;Flux measurement (Thompson et al. 1995)
+2EG J0617-0652;GRO J0605-09;Unidentified;5;215.27;-10.62;94.42;-6.88;-142.2509;-10.6200;;100;Flux measurement (Thompson et al. 1995)
+2EG J0618+2234;GRO J0617+22;Unidentified;5;189.13;3.19;94.5;22.58;-170.6052;3.1900;;100;Flux measurement (Thompson et al. 1995)
+2EG J0635+0521;GRO J0635+05;Unidentified;5;206.3;-1.2;98.75;5.35;-153.6663;-1.2000;;100;Flux measurement (Thompson et al. 1995)
+2EG J0720-4746;GRO J0724-47;Unidentified;5;259.24;-15.19;110.12;-47.77;-97.2397;-15.1900;;30;Flux measurement (Thompson et al. 1995)
+2EG J0744+5438;GRO J0744+54;Unidentified;5;163.18;29.34;116.12;54.65;142.2485;29.3400;;70;Flux measurement (Thompson et al. 1995)
+2EG J0809+5117;;Unidentified;5;167.46;32.74;122.27;51.29;140.8562;32.7400;;100;Flux measurement (Thompson et al. 1995)
+2EG J0812-0648;GRO J0812-06;Unidentified;5;228.64;14.55;123.07;-6.82;-127.1471;14.5500;1.837;30;"Flux measurements and possible ID (Thompson et al. 1995); gamma-ray spectrum (Nolan et al. 1997)"
+2EG J0852-1237;GRO J0853-12;Unidentified;5;239.35;19.75;133.12;-12.63;-113.5529;19.7500;;100;Flux measurement (Thompson et al. 1995)
+2EG J1054+5736;;Unidentified;5;148.8;53.26;163.7;57.61;89.0099;53.2600;;100;Flux measurement (Thompson et al. 1995)
+2EG J1103-6106;GRO J1110-60;Unidentified;5;290.3;-0.9;165.95;-61.1;-69.6914;-0.9000;;100;Flux measurement (Thompson et al. 1995)
+2EG J1136-0414;;Unidentified;5;270.26;53.84;174.23;-4.24;-52.9504;53.8400;;100;Flux measurement (Thompson et al. 1995)
+2EG J1233-1407;;Unidentified;5;296.2;48.5;188.26;-14.13;-42.2752;48.5000;;30;Flux measurement (Thompson et al. 1995)
+2EG J1239+0441;GRO J1237+04;Unidentified;5;295.04;67.38;189.82;4.69;-24.9848;67.3800;;30;Flux measurement (Thompson et al. 1995)
+2EG J1248-8308;GRO J1227-83;Unidentified;5;302.83;-20.27;192.06;-83.14;-53.6295;-20.2700;;30;"Flux measurement (Thompson et al. 1995); spectral information (Dingus et al. 1996)"
+2EG J1324-4317;GRO J1314-42;Unidentified;5;309.32;19.16;201.16;-43.3;-47.8726;19.1600;;100;"Gamma-ray observations and possible association with Cen A (Thompson et al. 1995; Nolan et al. 1996)"
+2EG J1332+8821;;Unidentified;5;122.6;28.75;203.04;88.35;107.4867;28.7500;;100;Flux measurement (Thompson et al. 1995)
+2EG J1346+2942;;Unidentified;5;48.11;77.57;206.7;29.7;10.3555;77.5700;;100;Flux measurement (Thompson et al. 1995)
+2EG J1430+5356;;Unidentified;5;95.52;57.58;217.66;53.95;51.2103;57.5800;;100;Flux measurement (Thompson et al. 1995)
+2EG J1443-6040;GRO J1443-60;Unidentified;5;316.28;-0.75;220.98;-60.67;-43.7163;-0.7500;;100;Flux measurement (Thompson et al. 1995)
+2EG J1457-1916;GRO J1456-19;Unidentified;5;339.68;34.46;224.36;-19.27;-16.7543;34.4600;;100;Flux measurement (Thompson et al. 1995)
+2EG J1528-2352;;Unidentified;5;343.23;26.45;232.15;-23.87;-15.0146;26.4500;;100;Flux measurement (Thompson et al. 1995)
+2EG J1631-2845;;Unidentified;5;350.4;13.26;247.76;-28.75;-9.3441;13.2600;;100;Flux measurement (Thompson et al. 1995)
+2EG J1635-1427;GRO J1648-15;Unidentified;5;2.57;21.67;248.76;-14.46;2.3884;21.6700;;30;Flux measurement (Thompson et al. 1995)
+2EG J1648-5042;;Unidentified;5;335.95;-3.68;252.04;-50.71;-24.0004;-3.6800;;100;Flux measurement (Thompson et al. 1995)
+2EG J1709-0350;GRO J1709-03;Unidentified;5;17.07;20.63;257.32;-3.84;15.9754;20.6300;;100;Flux measurement (Thompson et al. 1995)
+2EG J1718-3310;GRO J1716-35;Unidentified;5;353.31;2.48;259.71;-33.18;-6.6837;2.4800;;100;Flux measurement (Thompson et al. 1995)
+2EG J1731+6007;;Unidentified;5;88.93;33.14;262.9;60.12;74.4644;33.1400;;100;Flux measurement (Thompson et al. 1995)
+2EG J1742-2250;;Unidentified;5;4.78;3.86;265.53;-22.85;4.7692;3.8600;;100;Flux measurement (Thompson et al. 1995)
+2EG J1746-0935;GRO J1747-09;Unidentified;5;16.76;9.81;266.56;-9.59;16.5149;9.8100;;100;Flux measurement (Thompson et al. 1995)
+2EG J1746-2852;GRO J1744-28;Unidentified;5;0.17;-0.15;266.65;-28.87;0.1700;-0.1500;;100;Flux measurement (Thompson et al. 1995)
+2EG J1811-2339;;Unidentified;5;7.52;-2.47;272.98;-23.65;7.5130;-2.4700;;100;Flux measurement (Thompson et al. 1995)
+2EG J1813-1229;GRO J1813-12;Unidentified;5;17.52;2.53;273.41;-12.48;17.5029;2.5300;;100;Flux measurement (Thompson et al. 1995)
+2EG J1815+2950;GRO J1815+30;Unidentified;5;56.89;20.37;273.83;29.84;53.3323;20.3700;;100;Flux measurement (Thompson et al. 1995)
+2EG J1821-7915;GRO J1731-78;Unidentified;5;314.72;-25.25;275.43;-79.26;-40.9537;-25.2500;;100;"Flux measurement (Thompson et al. 1995); spectral information (Dingus et al. 1996);"
+2EG J1825-1307;GRO J1823-12;Unidentified;5;18.38;-0.43;276.5;-13.12;18.3795;-0.4300;;1–30,100;"Flux measurement (Thompson et al. 1995); possible medium energy detection (Macomb & Shrader 1996)"
+2EG J1828+0145;GRO J1834+01;Unidentified;5;31.92;5.82;277.22;1.75;31.7555;5.8200;;100;Flux measurement (Thompson et al. 1995)
+2EG J1834-2138;;Unidentified;5;11.77;-6.22;278.71;-21.64;11.7007;-6.2200;;100;Flux measurement (Thompson et al. 1995)
+2EG J1835+5919;GRO J1837+59;Unidentified;5;88.74;25.12;278.78;59.33;80.3470;25.1200;;30;Flux measurement (Thompson et al. 1995)
+2EG J1847-3220;;Unidentified;5;3.17;-13.33;281.84;-32.35;3.0846;-13.3300;;100;Flux measurement (Thompson et al. 1995)
+2EG J1850-2638;GRO J1852-25;Unidentified;5;8.82;-11.7;282.74;-26.65;8.6367;-11.7000;;100;"Flux measurement (Thompson et al. 1995); spectral information (Dingus et al. 1996)"
+2EG J1857+0118;GRO J1853+01;Unidentified;5;34.8;-0.76;284.39;1.32;34.7969;-0.7600;;100;"Flux measurement (Thompson et al. 1995); possible association with W44 (Esposito et al. 1996; De Jager & Mastichiadis 1997)"
+2EG J1950-3503;GRO J1949-34;Unidentified;5;5.17;-26.5;297.51;-35.06;4.6268;-26.5000;;30;"Flux measurement (Thompson et al. 1995); spectral information (Dingus et al. 1996)"
+2EG J2006-2253;GRO J2009-23;Unidentified;5;19.32;-26.17;301.62;-22.9;17.3395;-26.1700;;100;Flux measurement (Thompson et al. 1995)
+2EG J2026+3610;;Unidentified;5;75.31;-1.18;306.65;36.18;75.2940;-1.1800;;100;Flux measurement (Thompson et al. 1995)
+2EG J2027+1054;;Unidentified;5;54.24;-15.55;306.78;10.91;52.2546;-15.5500;;100;Flux measurement (Thompson et al. 1995)
+2EG J2033+4112;GRO J2032+40;Unidentified;5;80.19;0.66;308.42;41.21;80.1847;0.6600;;100;Flux measurement (Thompson et al. 1995)
+2EG J2039+1131;GRO J2039+11;Unidentified;5;56.46;-17.71;309.81;11.52;53.7843;-17.7100;;30;"Flux measurement (Thompson et al. 1995); gamma-ray spectrum (Dingus et al. 1996)"
+2EG J2227+6122;GRO J2231+61;Unidentified;5;106.6;3.14;336.98;61.37;106.4400;3.1400;;100;Flux measurement (Thompson et al. 1995)
+2EG J2243+1545;;Unidentified;5;83.17;-37.04;340.82;15.75;66.3876;-37.0400;;100;Flux measurement (Thompson et al. 1995)
+2EG J2354+3811;;Unidentified;5;110.73;-23.32;358.56;38.19;101.6843;-23.3200;;100;Flux measurement (Thompson et al. 1995)
+2EGS J0426+1636;;Unidentified;5;179.4;-21.92;66.66;16.61;166.4305;-21.9200;;100;Flux measurement (Thompson et al. 1996)
+2EGS J0500+5902;;Unidentified;5;150.5;10.26;75.15;59.04;148.0934;10.2600;;100–1000;Flux measurement (Thompson et al. 1996)
+2EGS J0552-1026;;Unidentified;5;215.78;-17.78;88.12;-10.45;-137.3315;-17.7800;;100;Flux measurement (Thompson et al. 1996)
+2EGS J0555+0408;;Unidentified;5;202.77;-10.4;88.95;4.14;-154.6469;-10.4000;;100;Flux measurement (Thompson et al. 1996)
+2EGS J0724-5157;;Unidentified;5;263.47;-16.34;111.02;-51.97;-92.6311;-16.3400;;100;Flux measurement (Thompson et al. 1996)
+2EGS J0852-4343;GRO J0856-42;Unidentified;5;264.28;0.47;133.05;-43.73;-95.7168;0.4700;;100;Flux measurement (Thompson et al. 1996)
+2EGS J0909+6558;;Unidentified;5;148.29;38.47;137.43;65.97;116.1013;38.4700;;100;Flux measurement (Thompson et al. 1996)
+2EGS J1050-7650;GRO J1044-77;Unidentified;5;296.08;-15.62;162.53;-76.85;-61.5593;-15.6200;;100;"Flux measurement (Thompson et al. 1996); spectral information (Dingus et al. 1996)"
+2EGS J1133+0037;;Unidentified;5;264.41;57.54;173.33;0.63;-51.3042;57.5400;;100;Flux measurement (Thompson et al. 1996)
+2EGS J1220-1510;;Unidentified;5;291.77;47.02;185;-15.17;-46.5153;47.0200;;100;Gamma-ray discovery (Thompson et al. 1996)
+2EGS J1236-0416;;Unidentified;5;295.58;58.38;189;-4.27;-33.7743;58.3800;;100;Flux measurement (Thompson et al. 1996)
+2EGS J1324+2210;;Unidentified;5;1.59;80.95;201.2;22.18;0.2501;80.9500;;100;Flux measurement (Thompson et al. 1996)
+2EGS J1418-6049;;Unidentified;5;313.31;0.29;214.54;-60.82;-46.6894;0.2900;;100;Flux measurement (Thompson et al. 1996)
+2EGS J1504-1537;;Unidentified;5;344.06;36.37;226.22;-15.63;-12.8350;36.3700;;100;Flux measurement (Thompson et al. 1996)
+2EGS J1642-2659;;Unidentified;5;353.46;12.48;250.62;-26.99;-6.3855;12.4800;;100;Flux measurement (Thompson et al. 1996)
+2EGS J1653-4604;;Unidentified;5;340.08;-1.39;253.34;-46.07;-19.9141;-1.3900;;100;Flux measurement (Thompson et al. 1996)
+2EGS J1703-6302;;Unidentified;5;327.39;-12.88;255.79;-63.05;-31.7895;-12.8800;;100;Flux measurement (Thompson et al. 1996)
+2EGS J1708-0927;;Unidentified;5;11.92;17.8;257.16;-9.47;11.3494;17.8000;;100;Flux measurement (Thompson et al. 1996)
+2EGS J1736-2904;;Unidentified;5;358.78;1.7;264.02;-29.07;-1.2195;1.7000;;100;Flux measurement (Thompson et al. 1996)
+2EGS J1800-4005;;Unidentified;5;351.82;-8.18;270.01;-40.1;-8.0968;-8.1800;;100;Flux measurement and possible ID (Thompson et al. 1996)
+2EGS J1833-2754;;Unidentified;5;6;-8.8;278.45;-27.91;5.9294;-8.8000;;100;Flux measurement (Thompson et al. 1996)
+2EGS J1903+0529;GRO J1904+06;Unidentified;5;39.15;-0.08;285.77;5.49;39.1500;-0.0800;;100;Flux measurement (Thompson et al. 1996)
+2EGS J1905-1120;;Unidentified;5;24.36;-8.24;286.38;-11.34;24.1085;-8.2400;;100;Flux measurement (Thompson et al. 1996)
+2EGS J1954-1419;GRO J1940-12;Unidentified;5;26.85;-20.42;298.75;-14.33;25.1628;-20.4200;;100;"Gamma-ray flux measurement (Thompson et al. 1996); spectral information (Dingus et al. 1996)"
+2EGS J2322-0321;;Unidentified;5;77.24;-58.1;350.6;-3.36;40.8166;-58.1000;;100;Flux measurement (Thompson et al. 1996)
+3C 111;1H 0414+380,4U 0407+37,EQ 0415+3754;Seyfert 1;3;161.67;-8.82;64.59;38.03;159.7582;-8.8200;0.049;0.05–0.15;Low-energy gamma-ray emission (Johnson et al. 1994)
+3C 120;1H 0426+051;Seyfert 1;3;190.37;-27.4;68.3;5.35;-150.6001;-27.4000;0.033;0.05–0.15;"Low-energy gamma-ray emission (Johnson et al. 1994; Rothschild et al. 1983)"
+3C 273;H1226+023,2EG J1229+0206,2CG 289+64;Quasar;7;289.95;64.36;187.28;2.05;-30.3117;64.3600;0.1575;0.05–8,70–2000;"Original hard X-ray detection (Levine et al. 1984); radio through gamma-ray multiwavelength observation (Lichti et al. 1995; von Montigny et al. 1997); high-energy spectrum (von Montigny et al. 1993)"
+3C 279;QSO 1253-055,2EG J1256-0546,1E 1253.5-0531,1Jy 1253-05;Quasar;7;305.1;57.06;194.05;-5.79;-29.8525;57.0600;0.5362;0.05–0.15,8–30,50–10000;"100 MeV variability (Kniffen et al. 1993); multiwavelength observations including gamma-rays (Hartman et al. 1996); gamma-ray spectroscopy (McNaron-Brown et al. 1995); medium energy flux (Williams et al. 1995b)"
+3C 390.3;QSO 1845+796,1H 1858+797,4U 1847+78,2E 1845.6+7943,1Jy 1845+79;Seyfert 1;3;111.43;27.07;280.56;79.76;99.2230;27.0700;0.056;0.05–0.15;"Low-energy gamma-ray emission (Johnson et al. 1994; Rothschild et al. 1983)"
+3C 454.3;QSO 2251+158,2EG J2253+1615,2E 2251.5+1553,RX J22539+1608;Quasar;7;86.1;-38.2;343.49;16.13;67.6623;-38.2000;0.859;0.05–0.15,100–10000;"Low-energy flux (McNaron-Brown et al. 1995); high-energy observations (Hartman et al. 1993)"
+4U 0115+63;1H 0115+635,1XRS 01152+634,CAS Gamma-1;HMXRB;1;125.92;1.03;169.63;63.74;125.8997;1.0300;;0.05–0.1;Detection of low-energy gamma-ray emission during an outburst (Negueruela et al. 1997)
+4U 0352+30;X Persei;HMXRB;1;163.08;-17.14;58.85;31.05;155.8372;-17.1400;1.3;0.05–0.17;"Low-energy spectrum (Worrall et al. 1981); distance (Fabregat et al. 1992)"
+4U 1543-47;;LMXRB;1;330.92;5.43;236.79;-47.67;-28.9495;5.4300;;0.05–0.23;Low-energy gamma-ray emission (Harmon et al. 1992)
+4U 1626-67;1H 1627-673,2A 1627-673,2S 1627-673;LMXRB;1;321.79;-13.09;248.07;-67.46;-37.2171;-13.0900;8;0.05–0.08;"Low-enegy spectroscopy (Maurer et al. 1982; Pravdo et al. 1979); flux measurement (Levine et al. 1984); distance (McClintock et al. 1977)"
+4U 1630-47;GX 337+00;LMXRB;1;336.91;0.25;248.5;-47.39;-23.0898;0.2500;11;0.05–0.10;"Gamma-ray flu and light curve (Bloser et al. 1996a); distance (Christian & Swank 1997)"
+4U 1700-377;V884 Sco,2S 1700-377,H1700-377;X-ray source;1;347.75;2.17;255.99;-37.84;-12.2412;2.1700;1.8;0.05–0.20;"Low-energy spectroscopy and variability (Laurent et al. 1992; Rubin et al. 1996); other flux measurement (Levine et al. 1984); distance (Hutchings et al. 1973)"
+A1118-616;;HMXRB;1;292.5;-0.89;170.24;-61.92;-67.4919;-0.8900;4;0.05–0.1;"Multiwavelength detection of outburst and gamma-ray observations (Coe et al. 1994a); distance (Coe & Payne 1985)"
+Aql X-1;H1908+005,4U 1908+00,V1333 Aql,3A 1908+005;LMXRB;1;35.72;-4.14;287.82;0.59;35.6268;-4.1400;4.8;0.05–0.12;"Flux measurement (Levine et al. 1984); distance (Christian & Swank 1997)"
+Briggs source;;Unidentified;5;4.96;-14.36;283.76;-31.16;4.8050;-14.3600;;0.333–0.635;Annihilation line detection and possible identifications (Briggs et al. 1995)
+CAS A;1H 2321+585,4U 2321+58,2E 2321.1+5833,SNR 111.7-02.1;SNR;6;111.71;-2.12;350.8;58.81;111.6335;-2.1200;2.8;0.05–0.25,1.16,(line);"44Ti line emission (Iyudin et al. 1994); low-energy continuum and line upper limits (The et al. 1996); distance (van den Bergh 1971)"
+Cen A;H1322-427,NGC 5128;Seyfert 2;3;309.52;19.42;201.37;-43.02;-47.6080;19.4200;0.002;0.05–20.0,300000;"Gamma-ray spectroscopy (Jourdain et al. 1993; Kinzer et al. 1995; Baity et al. 1981; Ubertini et al. 1993); consideration of relativistic jet model (Skibo, Dermer, & Kinzer 1994)"
+Cen X-3;1H 1118-602,GX 292+00,4U 1118-60,V779 Cen;HMXRB;1;292.09;0.34;170.31;-60.62;-67.9088;0.3400;8;0.05–0.6,100–1000;"Low-energy flux measurement (Levine et al. 1984; Coe, Engel, & Quenby 1976b); 100 MeV emission (Vestrand, Sreekumar, & Mori 1997); distance (Krzeminski 1974)"
+Cen X-4;2E 1455.2-3127;LMXRB;1;332.24;23.88;224.59;-31.67;-25.3836;23.8800;;0.2–0.163;Low-energy flux (Bouchacourt et al. 1984)
+Coma;4U 1257+28,H1257+283,2E 1257.4+2812;Galaxy cluster;4;58.16;88.01;194.9;27.96;2.0196;88.0100;;0.05–0.13;Nature of high-energy emission (Rephaeli & Goldschmidt 1992)
+Crab;PSR B0531+21,2EG J0534+2158;Pulsar;2;184.56;-5.78;83.52;22.19;-174.5480;-5.7800;2;0.05–10000,250000;"Composite GRO spectra and light curves (Ulmer et al. 1995); models of unpulsed emission (De Jager & Harding 1992; Cheng et al. 1990; Kwok, Cheng, & Lau 1991); time variability of pulse peak counts ratio (Kanbach 1990; Nolan et al. 1993a); pulsed emission models (Cheng, Ho, & Ruderman 1986a, 1986b)"
+CTA 102;2EG J2233+1140,QSO 2230+114;Quasar;7;77.44;-38.58;338.15;11.73;60.5378;-38.5800;1.04;0.05–0.15,30–2000;"High-energy spectrum (Nolan et al. 1993b); hard X-ray spectrum (McNaron-Brown et al. 1995)"
+Cyg X-1;4U 1956+35,1H 1956+350,3A 1956+350,V1357 Cyg;HMXRB;1;71.33;3.07;299.59;35.2;71.2276;3.0700;;0.05–9;"Spectroscopy (Jain et al. 1976; Ubertini et al. 1994; Perotti et al. 1986; Ling et al. 1983; Maisack et al. 1994); definition of gamma-ray spectral states (Ling et al. 1987); inverse Compton model (Sunyaev & Titarchuk 1980); corona plus accretion disk model (Haardt et al. 1993); model of MeV excess (Liang & Dermer 1988)"
+Cyg X-2;4U 2142+38,1H 2142+380,3A 2142+380,V1341 Cyg;LMXRB;1;87.33;-11.32;326.17;38.32;85.6311;-11.3200;8;0.05–0.06;"Low-energy spectral observations (Matt et al. 1990; Maurer et al. 1982); distance (Christian & Swank 1997)"
+Cyg X-3;;HMXRB;1;79.85;0.7;308.11;40.96;79.8440;0.7000;;0.05–0.2,100,500000;"Low-energy gamma-ray flux (Levine et al. 1984); spectral measurements (Rocchia et al. 1969; Hermsen et al. 1987; Baity et al. 1973; Matz et al. 1994b); high-energy emission (Lamb et al. 1977); overview of TeV claims (Weekes 1988)"
+ESO 141-G55;4U 1924-59;Seyfert 1;3;338.18;-26.71;290.31;-58.67;-19.4917;-26.7100;0.036;0.05–0.120;Low-energy gamma-ray flux (Rothschild et al. 1983)
+EXO 2030+375;;HMXRB;1;44.33;-20.91;38.36;37.69;41.4105;-20.9100;;0.05–0.2;Flux measurements (Stollberg et al. 1993)
+EXS 1737.9-2952;;Accretor;1;358.67;0.34;264.48;-29.87;-1.3300;0.3400;;0.083–0.111;Low-energy flux measurment of possible double-backscattered 511 keV radiation (Grindlay et al. 1993)
+Geminga;1E 0630+17.8,2EG J0633+1745;Pulsar;2;195.13;4.27;98.48;17.77;-164.4124;4.2700;;30–20000,800000;"Discovery of gamma-ray pulsations (Bertsch et al. 1992); SAS 2 pulse timing (Mattox et al. 1992); COS B pulse timing (Grenier et al. 1994); polar cap model applied (Harding, Ozernoy, & Usov 1993); spectral variability (Grenier, Hermsen, & Henriksen 1993); polar cap model of unified X-ray/gamma-ray emission(Harding et al. 1993)"
+GEV J0319+2407;;Unidentified;5;161.13;-27.6;49.76;24.12;142.7940;-27.6000;;1000;High-energy emission (Lamb & Macomb 1997)
+GEV J0508+0540;;Unidentified;5;195.32;-19.81;77.17;5.67;-154.9345;-19.8100;;1000;High-energy emission (Lamb & Macomb 1997)
+GEV J0615+4200;;Unidentified;5;171.45;11.61;93.82;42.01;167.9422;11.6100;;1000;High-energy emission (Lamb & Macomb 1997)
+GEV J1837-0610;;Unidentified;5;25.82;0.33;279.31;-6.17;25.8196;0.3300;;1000;High-energy emission (Lamb & Macomb 1997)
+GEV J1907+0557;;Unidentified;5;40.08;-0.88;286.92;5.95;40.0753;-0.8800;;1000;High-energy emission (Lamb & Macomb 1997)
+GEV J2026+4124;;Unidentified;5;79.56;1.86;306.64;41.41;79.5181;1.8600;;1000;High-energy emission (Lamb & Macomb 1997)
+GEV J2035+4214;;Unidentified;5;81.22;1.02;308.86;42.25;81.2071;1.0200;;1000;High-energy emission (Lamb & Macomb 1997)
+GEV J2053+5644;;Unidentified;5;94.42;7.72;313.26;56.74;93.5642;7.7200;;1000;High-energy emission (Lamb & Macomb 1997)
+GRO 0516-609;;Unidentified;5;270.11;-35.04;78.9;-60.95;-73.5976;-35.0400;;1–10;"Gamma-ray observations and possible identification with PKS 0516-609 (Bloemen et al. 1995; Blom et al. 1996)"
+GRO J0422+32;Nova Per 1992,Granat 0417+335;X-ray nova;1;165.88;-11.91;65.43;32.91;162.3091;-11.9100;;0.05–2.0;"Spectroscopy observation (Roques et al. 1994); MeV emission (van Dijk et al. 1994a)"
+GRO J0435+25;;Unidentified;5;172.8;-14.7;68.26;26.05;167.1439;-14.7000;;30–1000;"Gamma-ray discovery (Fichtel et al. 1994); further observations and possible identification (Dingus et al. 1996)"
+GRO J1008-57;;HMXRB;1;283;-1.82;152.45;-58.29;-76.9612;-1.8200;5;0.05–0.16;"Low-energy emission and discovery (Wilson et al. 1994b); distance (Coe et al. 1994b)"
+GRO J1040+48;;Unidentified;5;165;57.1;156;47.88;89.6238;57.1000;;0.75–1.4;Discovery and spectrum at MeV energies (Iyudin et al. 1996)
+GRO J1214+06;;Unidentified;5;278.4;67.07;182.86;6.28;-31.7919;67.0700;;3–10;Gamma-ray discovery (Collmar et al. 1996)
+GRO J1655-40;Nova Sco 1994;X-ray nova;1;344.59;1.9;253.74;-40.5;-15.4015;1.9000;3.2;0.05–0.6;"Gamma-ray spectroscopy and variability (Kroeger et al. 1996); correlations between X-ray outbursts and relativistic outflow (Harmon et al. 1995); multiwavelength high-energy observations (Zhang et al. 1997); distance (Hjellming et al. 1995)"
+GRO J1719-24;GRS 1716-249,Nova Oph 1993;Accretor;1;0.2;6.99;259.94;-24.97;0.1985;6.9900;36587;0.05–0.1;"Flux history and variability studies (van der Hooft et al. 1996); distance (Della Valle, Mirabel, & Rodriguez 1994)"
+GRO J1744-28;;Accretor;1;0.03;0.29;266.14;-28.77;0.0300;0.2900;8;0.050–0.15;"Discovery of bursting behavior (Kouveliotou et al. 1996); gamma-ray pulsations and spectroscopy (Strickman et al. 1996c; Finger et al. 1996a); distance (Giles et al. 1996)"
+GRO J1750-27;;Accretor;1;2.16;0.17;267.5;-27;2.1600;0.1700;;0.05–0.07;Discovery, spectrum, and orbit (Scott et al. 1997)
+GRO J1753+57;;Unidentified;5;85.5;30.5;267.92;57.18;73.6693;30.5000;;0.75–8;Discovery and spectrum at MeV energies (Williams et al. 1995a)
+GRO J1838-04;;Unidentified;5;27.31;1.04;279.36;-4.53;27.3055;1.0400;;100–2000;Gamma-ray discovery (Tavani et al. 1997)
+GRO J1849-03;;Accretor;1;29.64;-0.9;282.16;-3.34;29.6363;-0.9000;;0.05–0.1;Gamma-ray outbursts (Zhang et al. 1996b)
+GRO J1940-12;;Unidentified;5;28.9;-19.2;297.73;-12.2;27.2925;-19.2000;;30-100;Gamma-ray discovery (Dingus et al. 1996)
+GRO J1948+32;;Accretor;1;72.02;-0.03;303.22;34.12;72.0200;-0.0300;;0.05–0.12;Low-energy gamma-ray discovery (Chakrabarty et al. 1995)
+GRO J2058+42;;Accretor;1;83.55;-2.72;314.28;41.52;83.4559;-2.7200;;0.50–0.10;Gamma-ray observations (Wilson et al. 1997b)
+GRO J2250-13;;Unidentified;5;53.33;-58.3;342.5;-13;28.0234;-58.3000;;100;Gamma-ray discovery (Vestrand, Stacy, & Sreekumar 1996)
+GRO J2254-50;;Unidentified;5;339.41;-57.98;343.49;-50;-10.9171;-57.9800;;100;Gamma-ray discovery (Vestrand et al. 1996)
+GRO J2303+44;;Unidentified;5;103.26;-14.57;345.86;44.14;99.9393;-14.5700;;1000;Gamma-ray observations and possible identification (Dingus et al. 1996)
+GRS 1009-45;Nova Velorum 1993;X-ray nova;1;275.55;9.03;152.77;-45.15;-83.4034;9.0300;;0.05–0.15;"Discovery (Lapshov, Sazonov, & Sunyaev 1993; Harmon et al. 1993a); flux measurements and spectrum (Goldoni et al. 1998)"
+GRS 1227+025;EQ 1227+0224,1E 1227+0224;Quasar;7;290.35;64.48;187.47;2.14;-30.0070;64.4800;;0.05–0.08;Gamma-ray discovery (Jourdain et al. 1992)
+GRS 1724-308;CL Terzan 2;Accretor;1;356.32;2.3;261.89;-30.8;-3.6770;2.3000;10;0.05–0.2;"Gamma-ray spectrum (Barret et al. 1991); distance (Djorgovski 1993)"
+GRS 1730-312;KS 1730-312;Accretor;1;356.33;1.59;262.6;-31.18;-3.6686;1.5900;;0.35–0.15;Gamma-ray discovery (Vargas et al. 1996)
+GRS 1739-278;;Accretor;1;0.66;1.17;259.88;-27.76;0.6599;1.1700;;0.035-0.30;Gamma-ray discovery (Vargas et al. 1997)
+GRS 1758-258;;Accretor;1;4.51;-1.36;270.3;-25.74;4.5087;-1.3600;;0.05–0.3;"Gamma-ray spectrum (Gilfanov et al. 1993; Bazzano et al. 1993); flux measurement (Heindl et al. 1993)"
+GRS 1915+105;;Accretor;1;45.26;-0.85;289.33;10.55;45.2550;-0.8500;12.5;0.02–0.10;"Discovery (Castro-Tirado et al. 1994); spectral and variability studies (Paciesas et al. 1996); anticorrelation with radio (Harmon et al. 1997); superluminal motion and distance (Mirabel & Rodriguez 1994)"
+GS 0834-43;;HMXRB;1;262.02;-1.5;128.98;-43.18;-97.9464;-1.5000;;0.05–0.1;"Gamma-ray outbursts (Wilson et al. 1997a); other flux (Denis et al. 1993)"
+GS 1826-24;RX J1829.4-2347;LMXRB;1;9.27;-6.09;277.37;-23.8;9.2177;-6.0900;10;0.05–0.2;"Gamma-ray detection and spectrum (Strickman et al. 1996a); distance (Barret, Motch, & Pietsch 1995)"
+GS 2000+25;Nova Vul 1988;X-ray nova;1;63.37;-3;300.71;25.24;63.2832;-3.0000;2;0.05–0.3;"Low-energy spectroscopy (Sunyaev et al. 1988a); distance (Callanan et al. 1996)"
+GX 1+4;4U 1728-24,1H 1728-247,2S 1728-247,3A 1728-247,V2116 Oph;LMXRB;1;1.94;4.79;263.01;-24.75;1.9332;4.7900;8.3;0.05–0.50;"Spectral measurements (Laurent et al. 1993; Maurer et al. 1982; Greenhill et al. 1993; Mony et al. 1991; Beurle et al. 1984); flux measurements (Jayanthi, Jablonski, & Braga 1987; Levine et al. 1984; Refloc'h et al. 1986); distance (Jablonski & Pereira 1997)"
+GX 17+2;;LMXRB;1;16.43;1.28;274.01;-14.04;16.4259;1.2800;7.5;0.05–0.08;"Flux measurement (Levine et al. 1984); distance (Christian & Swank 1997)"
+GX 3+1;4U 1744-26,1H 1744-265,2S 1744-265,3A 1744-265,Sgr X-1;LMXRB;1;2.29;0.79;266.98;-26.56;2.2898;0.7900;5.6;0.05–0.08;"Flux measurement (Levine et al. 1984); distance (Christian & Swank 1997)"
+GX 301-2;4U 1223-62,2S 1223-624,3A 1223-624,BP Cru;HMXRB;1;300.1;-0.04;186.66;-62.77;-59.9000;-0.0400;1.8 ± 0.4;0.05–0.08;"Flux measurements (Levine et al. 1984; Coe et al. 1976b); distance (Parkes et al. 1980)"
+GX 304-1;4U 1258-61,2S 1258-613,V850 Cen,1H 1257-610;HMXRB;1;304.1;1.25;195.32;-61.6;-55.8867;1.2500;;0.05–0.08;Flux measurement (Levine et al. 1984)
+GX 339-4;4U 1658-48,3A 1659-487,1H 1659-487,V821 Ara;LMXRB;1;338.94;-4.33;255.71;-48.79;-20.9999;-4.3300;4;0.05–0.6;"Spectroscopy observations (Dolan et al. 1987; Bouchet et al. 1993; Grabelsky et al. 1995; Nolan et al. 1982); distance (Christian & Swank 1997)"
+GX 349+2;4U 1702-36,Sco X-2;LMXRB;1;349.1;2.75;256.44;-36.42;-10.8874;2.7500;5;0.05–0.18;"Flux measurement (Levine et al. 1984; Greenhill et al. 1979); distance (Christian & Swank 1997)"
+GX 354-0;4U 1728-34,MXB 1728-34,1H 1728-334,3A 1728-337;LMXRB;1;354.3;-0.15;262.99;-33.83;-5.7000;-0.1500;;0.05–0.2;"Low-energy spectroscopy (Claret et al. 1994; Cook et al. 1991b); flux measurement (Levine et al. 1984)"
+GX 359+2;;LMXRB;1;359.57;1.56;264.65;-28.48;-0.4298;1.5600;;0.05–0.18;Flux measurement (Levine et al. 1984)
+GX 5-1;4U 1758-25,2S 1758-25,1H 1758-250;LMXRB;1;5.08;-1.02;270.28;-25.08;5.0792;-1.0200;9;0.05–0.18;"Flux measurement (Levine et al. 1984); spectrum (Beurle et al. 1984); distance (Christian & Swank 1997)"
+GX 9+1;4U 1758-20,2S 1758-205,1H 1758-205,Sgr X-3;LMXRB;1;9.08;1.1;270.38;-20.53;9.0783;1.1000;7;0.05–0.08;"Flux measurement (Levine et al. 1984); distance (Christian & Swank 1997)"
+H0614+091;4U 0614+09,2S 0614+091,3A 0614+091;LMXRB;1;200.88;-3.36;94.28;9.14;-158.8465;-3.3600;5;0.05–0.08;"Flux measurement (Levine et al. 1984); distance (Christian & Swank 1997)"
+H0918-549;4U 0919-54,2S 0918-549;LMXRB;1;275.85;-3.84;140.11;-55.21;-83.9611;-3.8400;15;0.05–0.08;"Flux measurement (Levine et al. 1984); distance (Christian & Swank 1997)"
+H1145-619;4U 1145-61,2S 1145-619,3A 1145-619,2E 1145.5-6155;HMXRB;1;295.61;-0.24;177;-62.21;-64.3894;-0.2400;1.5;0.05–0.08;"Flux measurement (Levine et al. 1984); distance (Jones, Chetin, & Miller 1974)"
+H1254-690;4U 1254-69,2E 1254.3-6900;Accretor;1;303.48;-6.42;194.41;-69.29;-56.1656;-6.4200;12;0.05–0.06;"Low-energy flux (Coe et al. 1976b); distance (Christian & Swank 1997)"
+H1417-624;4U 1416-62,3A 1417-624,2S 1417-624;HMXRB;1;313.02;-1.6;215.3;-62.7;-46.9617;-1.6000;;0.05–0.12;"Flux measurement (Levine et al. 1984); monitoring observations (Finger, Wilson, & Chakrabarty 1996b)"
+H1517+656;;Quasar;7;102.87;45.24;229.03;65.84;72.4347;45.2400;;0.05–0.15;Detection of low-energy gamma-rays (McNaron-Brown et al. 1995)
+H1538-522;GX 327+05.5,4U 1538-52,2S 1538-522,NOR X-2;HMXRB;1;327.42;2.16;235.6;-52.39;-32.5569;2.1600;5.5 ± 1.5;0.05–0.08;"Flux measurement (Levine et al. 1984); distance (Crampton, Hutchings, & Cowley 1978)"
+H1608-522;4U 1608-52,2S 1608-523,GX 331-01,QX Nor;LMXRB;1;330.93;-0.85;243.18;-52.42;-29.0668;-0.8500;4;0.02–0.20;"Detection of low-energy outburst (Zhang et al. 1996b); distance (Christian & Swank 1997)"
+H1624-490;4U 1624-49,2S 1624-49,3A 1624-490;LMXRB;1;334.91;-0.27;247.02;-49.2;-25.0897;-0.2700;15;0.05–0.08;"Flux measurement (Levine et al. 1984); distance (Christian & Swank 1997)"
+H1636-536;4U 1636-53,2S 1636-536,3A 1636-536;LMXRB;1;332.91;-4.82;250.23;-53.75;-26.9942;-4.8200;6.5;0.05–0.08;"Flux measurement (Levine et al. 1984); distance (Christian & Swank 1997)"
+H1658-298;4U 1704-30,3A 1658-298,V2134 Oph;LMXRB;1;353.83;7.27;255.53;-29.95;-6.1204;7.2700;;0.05–0.08;Flux measurement (Levine et al. 1984)
+H1705-250;3A 1705-250,Nova Oph 1977,V2107 Oph;LMXRB;1;358.59;9.06;257.06;-25.09;-1.3924;9.0600;6;0.05–0.2;"Low-energy spectral observation (Wilson & Rothschild 1983); distance (Remillard et al. 1996)"
+H1705-440;4U 1705-44,2S 1705-44,EXO 1705-440;LMXRB;1;343.32;-2.34;257.23;-44.1;-16.6661;-2.3400;11;0.05–0.08;"Flux measurements (Levine et al. 1984; Barret et al. 1996); distance (Christian & Swank 1997)"
+H1743-322;;LMXRB;1;357.13;-1.61;266.26;-32.23;-2.8689;-1.6100;;0.05–0.18;Flux measurement (Levine et al. 1984)
+H1745-203;;LMXRB;1;7.72;3.79;267.22;-20.37;7.7031;3.7900;;0.05–0.08;Flux measurement (Levine et al. 1984)
+H1755-338;Sco X-6,4U 1755-33,2S 1755-33,V4134 Sgr;LMXRB;1;357.22;-4.87;269.67;-33.81;-2.7700;-4.8700;6;0.05–0.08;"Flux measurement (Levine et al. 1984); distance (Christian & Swank 1997)"
+H1820-303;SGR X-4,4U 1820-30,3A 1820-303,2S 1820-303;LMXRB;1;2.79;-7.91;275.92;-30.36;2.7635;-7.9100;6.4;0.18;"Low-energy gamma-ray emission (Jayanthi, Jablonski, & Steiner 1989); distance (Christian & Swank 1997)"
+H1907+097;4U 1907+09,1M 1906+097,3A 1907+097;HMXRB;1;43.74;0.48;287.41;9.83;43.7385;0.4800;2.4-5.9;0.05–0.10;"Flux measurements (Levine et al. 1984); spectrum (Chinis et al. 1993); distance (van Kerkwijk, van Oijen, & van den Heuvel 1989)"
+Her X-1;4U 1656+35,2A 1655+353,H1656+354;LMXRB;1;58.2;37.52;254.46;35.34;46.1608;37.5200;;0.5–0.06,200000;"Low-energy spectrum (Gruber et al. 1980; Wilson et al. 1994a; Matt et al. 1990); discussion of possible TeV emission (Reynolds et al. 1993; Vishwanath et al. 1989)"
+IC 4329A;1H 1345-300;Seyfert 1;3;317.5;30.92;207.33;-30.31;-36.4601;30.9200;0.016;0.05–0.15;Gamma-ray spectrum (Madejski et al. 1995)
+KS 1731-260;;LMXRB;1;1.06;3.65;263.55;-26.1;1.0578;3.6500;;0.05–0.15;Low-energy spectrum (Barret et al. 1992b)
+LMC;2EG J0532-6914;Galaxy;4;280.47;-32.89;80.9;-69.75;-66.7825;-32.8900;52;100;"High-energy emission (Sreekumar et al. 1992); distance (Di Benedetto 1997)"
+LMC X-4;1A 0532-66,1H 0534-667,4U 0532-66;HMXRB;1;276.34;-32.53;83.21;-66.37;-70.5346;-32.5300;52;0.05–0.08;"Flux measurement (Levine et al. 1984); distance based on LMC"
+MCG +8-11-11;1H 0551+463;Seyfert 1;3;165.73;10.41;88.72;46.44;163.0021;10.4100;0.021;0.05–0.15;"Low-energy spectra (Mushotzky et al. 1978; Frontera et al. 1979b)"
+MCG -5-23-16;EQ 0945-307;Seyfert 2;3;262.74;17.23;146.92;-30.95;-92.8953;17.2300;0.008;0.05–0.15;"Spectrum (Rothschild et al. 1983); flux measurement(Johnson et al. 1993)"
+MCG -6-30-15;EQ 1333-340;Seyfert 1;3;313.29;27.68;203.98;-34.3;-41.3643;27.6800;0.07;0.05–0.15;Low-energy gamma-ray emission (Johnson et al. 1994)
+MRK 279;1H 1350+696,QSO 1351+695;Seyfert 1;3;115.04;46.87;208.26;69.31;78.6478;46.8700;0.029;0.05–0.15;"Low-energy gamma-ray emission (Johnson et al. 1994; Rothschild et al. 1983)"
+MRK 421;QSO 1101+386,2EG 1104+3812,1H 1104+382,2E 1101.6+3828;Quasar;7;179.83;65.03;166.11;38.21;75.9141;65.0300;0.031;100500000;"Original high-energy detection (Lin et al. 1993); TeV flare (Kerrick et al. 1995); multiwavelength observations (Macomb et al. 1995)"
+MRK 463;IRAS F13536+1836;Seyfert 2;3;5.81;72.74;209.01;18.37;1.7239;72.7400;0.0505;0.05–0.1;Gamma-ray flux (Bassani et al. 1996)
+MRK 501;4U 1651+39,H1652+398,QSO 1652+398,RX J16538+3945,2E 1652.1+3950;BL Lac;7;63.6;38.86;253.47;39.76;49.5241;38.8600;0.033;300000;Discovery of TeV emission (Quinn et al. 1996)
+MRK 509;1H 2041-108,3A 2041-107;Seyfert 1;3;35.97;-29.86;311.04;-10.72;31.1948;-29.8600;0.034;0.05–0.15;"Low-energy gamma-ray emission (Johnson et al. 1994; Dil et al. 1981)"
+NGC 1275;PER A;Seyfert 2;3;150.58;-13.26;49.95;41.51;146.5654;-13.2600;0.018;0.05–0.20;"Gamma-ray spectrum (Rothschild et al. 1981; Matt et al. 1990; Ubertini et al. 1984; Johnson et al. 1994);"
+NGC 253;PKS 0045-25,RX J00475-2517,2E 0045.1-2533,1Jy 0045-25;Galaxy;4;97.3;-87.96;11.89;-25.29;3.4636;-87.9600;0.000817;0.05–0.165;"Low-energy continuum emission (Bhattacharya et al. 1994); high-energy upper limits related to cosmic-ray acceleration in supernovae (Paglione et al. 1996)"
+NGC 3783;1H 1135-372;Seyfert 1;3;287.46;22.95;174.76;-37.74;-66.7981;22.9500;0.011;0.05–0.15;"Low-energy gamma-ray emission (Johnson et al. 1994; Rothschild et al. 1983)"
+NGC 4151;H1208+396;Seyfert 1.5;3;155.08;75.06;182.64;39.41;39.9808;75.0600;0.003;0.05–0.56;"Review of high-energy observations (Perotti et al. 1991); pair model including reprocessing (Coppi & Zdziarski 1992); generalized Compton model (Titarchuk & Mastichiadis 1994); combined nonthermal/thermal model (Zdziarski, Lightman & Maciolek-Niedzwiecki1993); gamma-ray spectroscopy (Frontera et al. 1979b; Baity et al. 1984; Maisack et al. 1993; Churazov et al. 1994)"
+NGC 4388;MCG+02-32-041;Seyfert 2;3;279.18;74.34;186.45;12.65;-21.8156;74.3400;0.008;0.05–0.15;"Spectroscopy (Dil et al. 1981); flux measurements (Johnson et al. 1994; Lebrun et al. 1992)"
+NGC 4507;EQ 1232-396;Seyfert 2;3;299.64;22.86;188.9;-39.91;-55.6191;22.8600;0.013;0.05–0.20;Gamma-ray spectrum (Bassani et al. 1995)
+NGC 5506;1E 1410.6-0258,4U 1410-03,2A 1410-029,1H 1408-031;Seyfert 2;3;339.15;53.81;213.31;-3.21;-12.3112;53.8100;0.006;0.05–0.1;Gamma-ray flux (Bassani et al. 1996)
+NGC 5548;H1415+253;Seyfert 1.5;3;31.96;70.5;214.5;25.13;10.6685;70.5000;0.017;0.05–0.15;"Spectrum (Rothschild et al. 1983); flux measurement (Johnson et al. 1994)"
+NGC 6814;QSO 1939-104;Seyfert 1;3;29.35;-16.01;295.67;-10.32;28.2116;-16.0100;0.005;0.05–0.15;Low-energy gamma-ray emission (Johnson et al. 1994)
+NGC 7582;PKS 2315-426;Seyfert 2;3;348.08;-65.7;349.6;-42.37;-4.9053;-65.7000;0.005;0.05–0.15;Flux measurement (Johnson et al. 1994)
+Nova Muscae 1991;GRS 1124-68;LMXRB;1;295.3;-7.07;171.61;-68.68;-64.2081;-7.0700;4;0.05–0.3;"Peak flux and spectrum with possible annihilation feature (Goldwurm et al. 1992); distance (King, Harrison, & McNamara 1996)"
+NRAO 190;1E 0439.9-0023,QSO 0440-003,2EGS J0442-0033,1Jy 0440-003;Quasar;7;197.2;-28.46;70.66;-0.29;-143.1256;-28.4600;0.85;100;"Flux measurement and identification (Thompson et al. 1996); detection of a gamma-ray flare (McGlynn et al. 1997)"
+OAO 1657-415;H1657-415;HMXRB;1;344.45;0.31;255.2;-41.67;-15.5498;0.3100;;0.05–0.08;"Flux measurement (Levine et al. 1984; Mereghetti et al. 1991)"
+OJ 287;QSO 0851+202,2E 0851.9+2018,1Jy 0851+20;BL Lac;7;206.81;35.82;133.7;20.11;-124.2156;35.8200;0.31;100;High-energy detection and multiwavelength observation (Shrader, Hartman, & Webb 1995)
+Perseus;4U 0316+41,H0316+413,2E 0316.5+4120;Cluster;4;150.58;-13.26;49.96;41.53;146.5654;-13.2600;0.184;0.05–0.08;Flux measurement (Levine et al. 1984)
+PG 1416-129;QSO 1416-1256,2E 1416.3-1256;Quasar;7;333.5;44.43;214.76;-13.18;-18.9238;44.4300;0.089583333;0.05–0.15;Gamma-ray flux (Staubert & Maisack 1996)
+PKS 0235+164;2EG J0238+1657,2E 0235.8+1624,1Jy 0235+16;Quasar;7;156.77;-39.11;39.66;16.61;121.6435;-39.1100;0.94;70–10000;High-energy flux (Thompson et al. 1995)
+PKS 0446+112;2EG J0450+1122,1Jy 0446+11;Quasar;7;187.43;-20.74;72.28;11.36;-161.3870;-20.7400;1.21;30;Flux measurements (Thompson et al. 1995)
+PKS 0454-234;2E 0454.9-2329,1Jy 0454-234;Quasar;7;223.71;-34.9;74.26;-23.41;-111.7785;-34.9000;1;100;"Gamma-ray detections (Fichtel et al. 1993; Thompson et al. 1993c)"
+PKS 0528+134;2EG J0531+1324,RX J05039+1332,2E 0528.1+1329,1Jy 0528+134;Quasar;7;191.37;-11.01;82.73;13.53;-165.5262;-11.0100;2.06;0.05–0.15,0.75;"High-energy spectrum and variability (Hunter et al. 1993a); low-energy spectrum (McNaron-Brown et al. 1995); medium-energy observations (Collmar et al. 1997)"
+PKS 1622-297;1Jy 1622-297;Quasar;7;348.82;13.32;246.53;-29.86;-10.8792;13.3200;0.815;0.05–0.8,30–4000;Gamma-ray flare (Mattox et al. 1997)
+PKS 2155-304;1H 2156-304,3A 2156-306,2E 2155.9-3027;BL Lac;7;17.73;-52.25;329.72;-30.22;10.8546;-52.2500;0.116;0.5–0.15,30–10000;"High-energy emission (Vestrand, Stacy, & Sreekumar 1995); hard X-ray detection (McNaron-Brown et al. 1995)"
+PKS 2209+236;2EG J2210+2358;Quasar;7;82.24;-26.09;333.03;23.93;73.8601;-26.0900;;30;"High-energy flux (Thompson et al. 1995); spectral information (Dingus et al. 1996)"
+PSR 1509-58;Cir Pulsar,PSR J1513-5908;Pulsar;2;320.32;-1.16;228.48;-59.14;-39.6719;-1.1600;6.7;0.04–5;"Comparison of gamma-ray and radio pulsations (Ulmer et al. 1993); hint of a detection with COMPTEL (Bennett et al. 1994)"
+PSR B0656+14;2E 0656.9+1418;Pulsar;2;201.11;8.26;104.59;14.24;-157.2417;8.2600;0.76;100;Pulsed high-energy emission (Ramanamurthy et al. 1996)
+PSR B1055-52;2EG J1059-5237,PSR J1057-5226;Pulsar;2;285.98;6.65;164.5;-52.45;-73.5220;6.6500;1.5;100–4000;Pulsed high-energy emission (Fierro et al. 1993)
+PSR B1259-63;;HMXRB;1;304.18;-0.99;195.7;-63.84;-55.8117;-0.9900;2;0.05–0.2;"Gamma-ray detection (Grove et al. 1995b); distance (Johnston et al. 1994)"
+PSR B1706-44;2CG 342-02,2EG J1710-4432;Pulsar;2;343.05;-2.68;257.39;-44.52;-16.9315;-2.6800;1.5;50–10000,1000000;"Gamma-ray spectroscopy and pulse (Thompson et al. 1996); original detection as 2CG 342-02 (Swanenburg et al. 1981); very high-energy detection of unpulsed emission (Kifune et al. 1995)"
+PSR B1951+32;;Pulsar;2;68.77;2.82;298.24;32.88;68.6867;2.8200;1.3;100;"Detection of pulsed emission (Ramanamurthy et al. 1995); claims and counterclaims regarding COS B detection (Li et al. 1987; D'Amico et al. 1987)"
+QSO 1424-418;2EGS J1429-4224;Quasar;7;321.57;16.9;217.32;-42.4;-36.7703;16.9000;1.52;100;Flux measurement and identification (Thompson et al. 1996)
+QSO 0130-171;2EG J0129-1748;Quasar;7;168.21;-77.18;22.39;-17.8;37.3239;-77.1800;1.02;100;High-energy flux (Thompson et al. 1995)
+QSO 0202+149;2EG J0204+1512,4C 15.05,1Jy 0202+14;Quasar;7;147.93;-44.04;31.21;15.24;106.3402;-44.0400;0.833;100;High-energy flux (Thompson et al. 1995)
+QSO 0208-512;2EG J0210-5051,RX J02107-5100,1Jy 0208-512;Quasar;7;276.1;-61.78;32.69;-51.02;-39.6728;-61.7800;1;1–3,30–4000;"MeV detection (Blom et al. 1995); high-energy spectrum (Bertsch et al. 1993)"
+QSO 0420-014;2EG J0423-0058,RX J04232-0120,2E 0420.7-0127,1Jy 0420-01;Quasar;7;195.29;-33.14;65.82;1.34;-137.9178;-33.1400;0.915;50–2000;"High-energy spectrum (Radecke et al. 1995); correlative gamma-ray/optical flares and consequences (Wagner et al. 1995a)"
+QSO 0458-020;2EG J0458-0122,4C-02.19,2E 0458.6-0203,1Jy 0458-02;Quasar;7;201.45;-25.3;75.3;-1.99;-143.3423;-25.3000;2.29;100;High-energy flux (Thompson et al. 1995)
+QSO 0521-365;2EG J0524-3630;BL Lac;7;240.61;-32.72;80.74;36.46;-100.4455;-32.7200;0.061;50–1000;High-energy spectrum (Lin et al. 1995)
+QSO 0537-441;2EG J0536-4348,RX J05388-4405,2E 0537.3-4406,1Jy 0537-441;Quasar;7;250.08;-31.09;84.71;-44.09;-94.1308;-31.0900;0.896;100–1000;High-energy spectrum (Thompson et al. 1993b)
+QSO 0716+714;2EG J0720+7126,1H 0717+714,RX J07218+7120,2E 0716.2+7126,1Jy 0716+71;BL Lac;7;143.98;28.02;110.47;71.34;127.1032;28.0200;0.3;50–1000;High-energy spectrum (Lin et al. 1995)
+QSO 0735+178;2EG J0737+1725;BL Lac;7;202.09;17.91;114.47;17.43;-150.2578;17.9100;0.424;30–300;"High-energy flux (Thompson et al. 1995; Nolan et al. 1996)"
+QSO 0804+499;2EG J0807+4849,1Jy 0804+49;Quasar;7;169.16;32.56;122.17;49.84;142.5728;32.5600;1.43;30–1000;"High-energy flux (Thompson et al. 1995); Spectrum (Nolan et al. 1996)"
+QSO 0827+243;2EG J0831+2403,2E 0827.8+2421,RX J08308+2410;Quasar;7;200.02;31.88;127.72;24.18;-135.8480;31.8800;2.05;100;"Flux measurements (Thompson et al. 1995); spectrum (Nolan et al. 1996)"
+QSO 0829+046;2EG J0828+0510,2E 0829.1+0439;BL Lac;7;220.69;24.33;127.95;4.49;-126.9376;24.3300;0.18;100;High-energy detection (Thompson et al. 1995)
+QSO 0836+710;2EG J0831+7044,4C 71.07,1Jy 0836+71;Quasar;7;143.54;34.43;130.35;70.9;118.3943;34.4300;2.17;30–1000;"High-energy flux (Thompson et al. 1995); Spectrum (Nolan et al. 1996)"
+QSO 0917+449;GRO J0916+43,2EG J0917+4420,RX J0920.9+4441;Quasar;7;175.7;44.82;140.24;44.7;124.6284;44.8200;2.18;30–1000;Gamma-ray spectrum (Sreekumar et al. 1996)
+QSO 0954+556;2EG J0957+5515,RX J09576+5523,1Jy 0954+556,4C 55.17;Quasar;7;158.6;47.93;149.41;55.38;106.2680;47.9300;0.901;100;"High-energy flux (Thompson et al. 1995); spectral information (Sreekumar et al. 1996)"
+QSO 0954+658;GRO J0937+68,2EG J0958+6537;BL Lac;7;145.73;43.03;149.51;65.63;106.5281;43.0300;0.367;100–1000;"High-energy flux (Thompson et al. 1995); spectral information (Mukherjee et al. 1995)"
+QSO 1127-145;2EG J1134-1515,2E 1127.5-1432,1Jy 1127-145;Quasar;7;275.28;43.64;172.53;-14.82;-61.3110;43.6400;1.19;100–1000;"High-energy flux (Thompson et al. 1995); spectral information (Sreekumar et al. 1996)"
+QSO 1156+295;2EG J1158+2906,RX J11595+2914,4C 29.45;Quasar;7;199.42;78.38;179.88;29.25;-32.3440;78.3800;0.729;100;"High-energy flux (Thompson et al. 1995); spectral information (Sreekumar et al. 1996)"
+QSO 1219+285;RX J12215+2813,2E 1219.0+2830,W Com,2EGS J1222+2821;BL Lac;7;201.74;83.29;185.38;28.23;-18.4917;83.2900;0.102;100;High-energy flux (Thompson et al. 1996)
+QSO 1222+216;GRO J1222+22,2EG J1224+2155,RX J12249+2122,4C 21.35;Quasar;7;255.07;81.66;186.23;21.38;-15.2198;81.6600;0.435;30–1000;"High-energy flux (Thompson et al. 1995); spectral information (Sreekumar et al. 1996)"
+QSO 1229-021;2EG J1230-0254,2E 1229.4-0207,1Jy 1229-02;Quasar;7;293.16;60.1;188;-2.4;-33.3189;60.1000;1.04;30–1000;"High-energy flux (Thompson et al. 1995); spectral information (Sreekumar et al. 1996)"
+QSO 1313-333;2EG J1314-3430,1Jy 1313-333;Quasar;7;308.8;28.94;199.03;-33.65;-44.8065;28.9400;1.21;100;"High-energy flux (Thompson et al. 1995); spectral information (Nolan et al. 1996)"
+QSO 1317+520;2EG J1314+5151,RX J13197+5148,4C 52.27;Quasar;7;112.63;64.76;199.94;51.8;48.0267;64.7600;1.06;100;High-energy flux (Thompson et al. 1995)
+QSO 1331+170;2EG J1330+1652;Quasar;7;348.51;75.81;203.4;16.82;-2.8166;75.8100;2.1;100;High-energy flux (Thompson et al. 1995)
+QSO 1406-076;2EG J1409-0742,1Jy 1406-076;Quasar;7;333.88;50.28;212.24;-7.87;-16.6916;50.2800;1.49;30;"Flux measurements (Thompson et al. 1995); high-energy spectrum (Sreekumar et al. 1996); correlated optical and gamma-ray observations (Wagner et al. 1995b)"
+QSO 1510-089;2EG J1513-0857,2E 1510.1-0854,1Jy 1510-08;Quasar;7;351.29;40.14;228.21;-9.1;-6.6585;40.1400;0.36;100–300;"High-energy flux (Thompson et al. 1995); spectral information (Sreekumar et al. 1996)"
+QSO 1604+159;2EG J1605+1558,4C 15.54,2E 1604.8+1559;BL Lac;7;29.38;43.41;241.78;15.86;21.3432;43.4100;0.357;100–1000;"High-energy detection (Thompson et al. 1995); spectral information (Sreekumar et al. 1996)"
+QSO 1606+106;2EG J1608+1046,RX J16087+1028,2E 1606.3+1036,1Jy 1606+10,4C 10.45;Quasar;7;22.95;40.87;242;10.5;17.3547;40.8700;1.24;30–1000;"Flux measurements (Thompson et al. 1995); high-energy spectrum (Sreekumar et al. 1996)"
+QSO 1611+343;2EG J1614+3431,RX J16136+3412,1Jy 1611+343;Quasar;7;55.15;46.38;243.42;34.21;38.0465;46.3800;1.4;100;"Flux measurements (Thompson et al. 1995); high-energy spectrum (Sreekumar et al. 1996)"
+QSO 1622-253;2EG J1626-2452;Quasar;7;352.14;16.32;246.45;-25.46;-7.5433;16.3200;0.786;30;High-energy flux (Thompson et al. 1995)
+QSO 1633+382;4C 38.41,1Jy 1633+38,GRO J1635+38,2EG J1635+3813;Quasar;7;61.09;42.34;248.81;38.13;45.1553;42.3400;1.81;100;High-energy spectrum (Mattox et al. 1993)
+QSO 1730-130;2EG J1735-1312,GRO J1730-11,RX J17330-1304,2E 1730.2-1302;Quasar;7;12.03;10.81;263.26;-13.08;11.8165;10.8100;0.9;30;"Flux measurements (Thompson et al. 1995); spectral information (Nolan et al. 1996)"
+QSO 1739+522;GRO J1742+49,2EG J1739+5152,4C 51.37,RX J17405+5211,2E 1739.5+5213,1Jy 1739+522;Quasar;7;79.56;31.75;265.15;52.2;67.6540;31.7500;1.38;30;"High-energy flux (Thompson et al. 1995); spectral information (Nolan et al. 1996)"
+QSO 1908-201;2EG J1911-1945,GRO J1911-20;Quasar;7;16.87;-13.22;287.79;-20.12;16.4229;-13.2200;;30;"Flux measurements (Thompson et al. 1995); spectral information (Dingus et al. 1996)"
+QSO 1933-400;2EG J1934-4014,RX J19372-3958,1Jy 1933-400;Quasar;7;359.16;-25.37;294.32;-39.97;-0.7590;-25.3700;0.966;30;"Flux measurements (Thompson et al. 1995); spectral information but possible alternative identification (Dingus et al. 1996)"
+QSO 2005-489;RX J20094-4849,1Jy 2005-489,GEV J2009-4827;BL Lac;7;350.37;-32.6;302.35;-48.83;-8.1128;-32.6000;0.071;100;Review of high-energy observations (Lin et al. 1997)
+QSO 2022-077;2EG J2023-0836;Quasar;7;36.9;-24.38;306.42;-7.59;33.6095;-24.3800;0.697;30;"Flux measurements (Thompson et al. 1995); high-energy spectrum (Dingus et al. 1996)"
+QSO 2052-474;2EG J2058-4657;Quasar;7;352.59;-40.38;314.07;-47.25;-5.6447;-40.3800;1.49;100;High-energy spectrum (Lin et al. 1995)
+QSO 2200+420;QSO 2200+420,1Jy 2200+420,2E 2200.6+4202;BL Lac;7;92.59;-10.44;330.68;42.28;91.0572;-10.4400;0.069;100;Gamma-ray spectrum (Catanese et al. 1997)
+QSO 2356+196;2EG J0000+2041;Quasar;7;106.38;-41.25;359.69;19.92;79.9807;-41.2500;1.07;100;High-energy flux (Thompson et al. 1995)
+Rho Oph;2CG 353+16;Molecular cloud;4;353.22;16.53;247.03;-24.54;-6.4998;16.5300;;100;Recent gamma-ray observations (Hunter et al. 1994)
+Sco X-1;H1617-155,4U 1617-15,3A 1617-155;LMXRB;1;359.09;23.78;244.98;-15.64;-0.8327;23.7800;1.3;0.05–0.3;"Low-energy spectroscopy (Haymes et al. 1972); flux measurements (Greenhill et al. 1979; Soong & Rothschild 1983); distance (Christian & Swank 1997)"
+SCT X-1;1A 1829-06,1H 1832-076;HMXRB;1;24.46;-0.16;279.12;-7.61;24.4599;-0.1600;;0.05–0.08;Flux measurements (Levine et al. 1984)
+SGR 1806-20;;SGR;6;9.97;-0.25;272.15;-20.44;9.9699;-0.2500;14.5;0.5–0.15;"Burst detection (Kouveliotou et al. 1987); identification with SNR 10.0-0.3 (Kulkarni & Frail 1993); distance (Corbel et al. 1997)"
+SGR 1900+14;;SGR;6;46.7;4.01;285.58;14.07;46.5857;4.0100;;0.05–0.30;Recent burst spectroscopy (Kouveliotou et al. 1993), possible X-ray counterpart (Vasisht et al. 1994)
+SLX 1735-269;;Accretor;1;0.81;2.46;264.52;-26.95;0.8093;2.4600;;0.05–0.15;Gamma-ray spectrum and variability (Goldwurm et al. 1996)
+SMC X-1;4U 0115-73,2A 0116-737,1E 0115.5-7342;HMXRB;1;300.41;-43.56;19.27;-73.44;-43.1821;-43.5600;65;0.05–0.08;"Flux measurement (Levine et al. 1984); spectrum (Kunz et al. 1993); distance defined as SMC distance (Wang & Wu 1992)"
+SMC X-3;H0050-727,3A 0049-726,2S 0050-727;HMXRB;1;302.86;-44.69;13.03;-72.44;-40.6221;-44.6900;65;0.05–0.08;"Flux measurement (Levine et al. 1984); distance defined as SMC distance (Wang & Wu 1992)"
+SN 1987A;;Supernova;6;279.7;-31.94;83.87;-69.27;-68.1428;-31.9400;51.1;0.05–0.3,0.847,1.238;"Low-energy continuum spectrum (Palmer et al. 1993; Ubertini et al. 1989); low energy flux measurements (Sunyaev et al. 1987a); detections of line emission (Tueller et al. 1990; Matz et al. 1988; Sandie et al. 1988); distance (Panagia et al. 1991)"
+SN 1993J;;Supernova;6;142.15;40.92;148.85;69.02;107.4121;40.9200;6360;0.05–0.15;Low-energy continuum emission (Leising et al. 1994)
+SS 433;1H 1908+047,1A 1909+04,4U 1908+05,V1343 Aql;HMXRB;1;39.69;-2.24;287.96;4.98;39.6597;-2.2400;4.85;1–2;"Possible MeV line emission (Lamb et al. 1983); distance (Vermeulen et al. 1993)"
+TRA X-1;A 1524-62,2S 1524-617;LMXRB;1;320.32;-4.43;232.07;-61.88;-39.5615;-4.4300;4.4;0.05–0.1;"Spectral observation (Barret et al. 1992a); distance (Christian & Swank 1997)"
+Vela Pulsar;PSR B0833-45,2EG J0835-4513,4U 0833-45;Pulsar;2;263.55;-2.79;128.84;-45.18;-96.3357;-2.7900;0.5;0.05–0.6,1–3000;"Peak separation as a function of energy (Ramanamurthy 1994); spectral variability (Grenier, Hermsen, & Clear 1988; Grenier et al. 1993)"
+Vela X-1;H0900-403,4U 0900-40,3A 0900-403;HMXRB;1;263.06;3.93;135.28;-40.55;-96.7120;3.9300;2;0.05–0.7,300000;"Low-energy spectra (Bautz et al. 1983; Staubert et al. 1980); TeV emission (Raubenheimer et al. 1994; Carraminana et al. 1989); distance (Sadakane et al. 1985)"
+Virgo Cluster;H1228+125;Galaxy cluster;4;281.63;75.18;187.5;13.2;-20.0457;75.1800;0.0038;0.05–0.08;Flux measurement (Levine et al. 1984)
+X 1732-304;CL TERZAN 1;Accretor;1;357.56;0.9;263.95;-30.48;-2.4397;0.9000;10;0.05–0.075;Gamma-ray detection (Borrel et al. 1996)

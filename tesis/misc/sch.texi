@@ -1,0 +1,237 @@
+\input texinfo                                       @c -*-texinfo-*-
+@c %**start of header 
+
+@c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@c Tesis  :: RCS controlled system                           
+@c Filename: $RCSfile$                          
+@c Revision: $Revision$                            
+@c Date:     $Date$                    
+@c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@setfilename sch.info
+@settitle Thesis -- Scheme
+
+@c %% Definitions %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@c ----  A C T U A L I Z A R   L A   F E C H A  ----
+@set lastupdate Tue Jan 12 13:06:44 MET 1999
+@set YO J C Gonz@'alez
+@c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+@c %**end of header 
+
+@setchapternewpage off
+
+@titlepage
+@title Thesis Scheme
+@subtitle Simulation of Atmospheric Showers and 
+@subtitle Performance Studies for Cherenkov Telescopes
+@author @value{YO}
+@author Max-Planck-Institut f@"ur Physik, M@"unchen
+@author @value{lastupdate}
+
+@page
+
+@vskip 0pt plus 1filll
+Copyright @copyright{} 1997, 1998, 1999  @value{YO}
+@end titlepage
+
+@unnumbered Thesis Scheme : Contents
+
+@enumerate
+
+@item Introduction
+
+@item Cosmic Radiation
+  @enumerate a 
+  @item Origin of the Cosmic Radiation
+@c    @itemize @bullet{}  
+@c    @item Point-like Sources
+@c      @itemize @minus{}  
+@c      @item Supernovae
+@c      @item Pulsars
+@c      @item Active Galactic Nuclei (AGNs)
+@c      @item Quasars
+@c      @item Gamma Ray Bursts
+@c      @end itemize
+@c    @item Extended Sources
+@c      @itemize @minus{}  
+@c      @item Halos
+@c      @item WIMPs
+@c      @item Cosmic Strings
+@c      @end itemize
+@c    @end itemize
+  @item The Physics of the Cosmic Radiation
+    @itemize @bullet{}  
+    @item Formation of the Cosmic Radiation
+@c       @itemize @minus{}  
+@c       @item Charged Cosmic Rays
+@c       @item Gamma Rays
+@c       @item Neutrinos
+@c       @item Cosmic Ray's Spectrum
+@c       @item Chemical Composition of the Cosmic Radiation
+@c       @end itemize
+    @item Propagation through the interstellar and intergalactic media
+@c       @itemize @minus{}  
+@c       @item Diffusion in the formation regions
+@c       @item Absorption in the intergalactic medium
+@c       @item Absorption in the interstellar medium
+@c       @end itemize
+    @item The Cosmic Radiation and its entrance in the Earth atmosphere
+@c       @itemize @minus{}  
+@c       @item Production of atmospheric showers
+@c       @item Front of Particles
+@c       @item Front of Cherenkov light
+@c       @item Observables in atmospheric showers
+@c       @end itemize
+    @end itemize
+  @end enumerate
+
+@item Simulation of atmospheric showers
+  @enumerate a 
+  @item Monte Carlo methods
+  @item The CORSIKA code
+  @item Production of Cherenkov light
+  @item Simulation of showers at High Zenith Angle
+  @item Information available from the showers
+  @item Time Structure in the Cherenkov pulse
+  @item Other simulation methods
+  @end enumerate
+
+@item The MAGIC Telescope
+  @enumerate a 
+  @item Physical goals
+  @item Characteristics of the reflector
+  @item The camera of MAGIC
+    @itemize @bullet{} 
+    @item General overview
+    @item Detection devices
+      @itemize @minus{} 
+      @item Classical devices: photomultipliers (PMTs)
+      @item Advanced devices: IPCs
+      @item Hybrid devices and Avalanche Photo-Diodes (APDs)
+      @end itemize
+    @end itemize
+  @item Data Acquisition
+  @item Observational Programs
+  @item The Telescope CT1 of the HEGRA Collaboration
+  @end enumerate
+
+@item Simulation of the detector: MAGIC
+  @enumerate a 
+  @item Detection efficiencies
+  @item Collection of light in the focal plane
+  @item Detection in the camera
+    @itemize @bullet{} 
+    @item Electronics Simulation
+    @item Trigger Logic
+    @end itemize
+  @item Physical parameters
+    @itemize @bullet{} 
+    @item Trigger Efficiencies
+    @item Effective Collection Areas
+    @item Detection Rates
+      @itemize @minus{} 
+      @item Differential rates of detection
+      @item Integral rates of detection
+      @item Hadronic, electronic and muonic backgrounds
+      @end itemize
+    @end itemize
+  @end enumerate
+
+@item Simulation of the detector: CT1
+  @enumerate a 
+  @item Detection efficiencies
+  @item Collection of light in the focal plane
+  @item Detection in the camera
+    @itemize @bullet{} 
+    @item Electronics Simulation
+    @item Trigger Logic
+    @end itemize
+  @item Physical parameters
+    @itemize @bullet{} 
+    @item Trigger Efficiencies
+    @item Effective Collection Areas
+    @item Detection Rates
+      @itemize @minus{} 
+      @item Differential rates of detection
+      @item Integral rates of detection
+      @item Hadronic, electronic and muonic backgrounds
+      @end itemize
+    @end itemize
+  @end enumerate
+
+@item Image Analysis
+  @enumerate a 
+  @item Cleaning of the Images
+  @item Image Parameters
+  @item Statistical Analysis of the Images
+  @end enumerate
+
+@item Angular and Energetic Resolutions in MAGIC
+  @enumerate a 
+  @item Estimation of the angular resolution
+  @item Calculation of the energetic resolution
+  @item Other methods
+  @end enumerate
+
+@item Gamma-Hadron separation in MAGIC
+  @enumerate a 
+  @item Moments Analysis
+  @item Quality Factors
+    @itemize @bullet{} 
+    @item Optimal Cuts
+    @item Dynamical Super-Cuts
+    @end itemize
+  @item Fuzzy Logic Methods
+  @item Other methods
+  @end enumerate
+
+@item Analysis of observational data: Mkn 501
+  @enumerate a
+  @item Analysis of Mkn 501 data for CT1
+    @itemize @bullet{}
+    @item Data selection procedure
+    @item Analysis programs
+    @item Aplication of Fuzzy Methods for g/h separation
+    @item Results from the analysis
+    @end itemize
+  @item Results for MAGIC
+    @itemize @bullet{}
+    @item Extrapolation criteria
+    @item Estimations for MAGIC
+    @item Discussion of the results
+    @end itemize
+  @item Time analysis of Mkn 501 data
+    @itemize @bullet{}
+    @item Analysis with CT1
+    @item Extrapolation for MAGIC
+    @item Aplication of Fuzzy Methods for g/h separation
+    @item Advanced analysis with MAGIC
+    @end itemize
+  @end enumerate
+
+@item Analysis of observational data: Pulsars
+  @enumerate a
+  @item Estimations of Pulsar analysis
+  @item Time dependent observation
+  @item Aplication of Fuzzy Methods for g/h separation
+  @item Results
+  @end enumerate
+
+@item Conclusions
+
+@ignore
+@item Appendixes
+  @enumerate a 
+  @item Description of the CORSIKA code
+  @item Calculation of the image parameters
+  @item Technical description of the analysis programs
+  @item Fuzzy Logic and Fuzzy Systems
+  @item Statistical analysis of correlations
+  @item Units and orders of magnitude
+  @end enumerate
+@end ignore
+
+@end enumerate
+
+@bye
+

@@ -1,0 +1,41 @@
+This is TeX, Version 3.14159 (Web2C 7.3.1) (format=tex 1999.9.25)  12 SEP 2000 16:03
+**mproof pulsar.mp
+(/usr/share/texmf/tex/plain/misc/mproof.tex
+(/usr/share/texmf/tex/plain/dvips/epsf.tex
+This is `epsf.tex' v2.7k <10 July 1997>
+\epsffilein=\read0
+\epsfframemargin=\dimen16
+\epsfframethickness=\dimen17
+\epsfrsize=\dimen18
+\epsftmp=\dimen19
+\epsftsize=\dimen20
+\epsfxsize=\dimen21
+\epsfysize=\dimen22
+\pspoints=\dimen23
+\epsfnoopenhelp=\toks12
+)
+\m=\count26
+\n=\count27
+)
+No BoundingBox comment found in file pulsar.mp; using defaults
+pulsar.mp: BoundingBox: llx = 72 lly = 72 urx = 540 ury = 720 
+pulsar.mp: scaled width = 469.74957pt scaled height = 650.42249pt
+
+Overfull \vbox (23.44217pt too high) has occurred while \output is active
+\vbox(643.20255+0.0)x469.75499, glue set - 1.0
+.\glue(\topskip) 3.88889
+.\hbox(6.11111+2.22223)x469.75499, glue set 402.5054fil
+..\hbox(0.0+0.0)x20.0
+..\textt p
+..\textt u
+..\textt l
+..\textt s
+..etc.
+.\penalty 10000
+.\glue(\abovedisplayskip) 12.0 plus 3.0 minus 9.0
+.\glue(\lineskip) 1.0
+.etc.
+
+
+[1] [2]
+Output written on mproof.dvi (2 pages, 520 bytes).

@@ -1,0 +1,23 @@
+#! /bin/sh 
+##################################################################### 
+# Shell script n2ie 
+# Call as: n2ie basename
+# Renames the files basenameN.{eps,pdf} to:
+#  N=1:   basename1 -> basename
+#  N=2:   basename2 -> basename_e
+# 
+# Copyright 2000, J C Gonzalez
+##################################################################### 
+basename=${1:?"A file basename is required."} 
+echo "Files ${basename}1.\*, will be renamed to ${basename}.\*"
+echo "Files ${basename}2.\*, will be renamed to ${basename}_e.\*"
+for ext in mps pdf eps
+do
+    if [ -f ${basename}1.$ext ]; then
+        mv ${basename}1.$ext ${basename}.$ext
+        mv ${basename}2.$ext ${basename}_e.$ext
+        echo "${basename}1.$ext -> ${basename}.$ext"
+        echo "${basename}2.$ext -> ${basename}_e.$ext"
+    fi
+done 
+####################### end shell script ###########################

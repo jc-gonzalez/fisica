@@ -1,0 +1,2615 @@
+# Grace project file
+#
+@version 50100
+@page size 842, 595
+@page scroll 5%
+@page inout 5%
+@link page off
+@map font 0 to "Times-Roman", "Times-Roman"
+@map font 1 to "Times-Italic", "Times-Italic"
+@map font 2 to "Times-Bold", "Times-Bold"
+@map font 3 to "Times-BoldItalic", "Times-BoldItalic"
+@map font 4 to "Helvetica", "Helvetica"
+@map font 5 to "Helvetica-Oblique", "Helvetica-Oblique"
+@map font 6 to "Helvetica-Bold", "Helvetica-Bold"
+@map font 7 to "Helvetica-BoldOblique", "Helvetica-BoldOblique"
+@map font 8 to "Courier", "Courier"
+@map font 9 to "Courier-Oblique", "Courier-Oblique"
+@map font 10 to "Courier-Bold", "Courier-Bold"
+@map font 11 to "Courier-BoldOblique", "Courier-BoldOblique"
+@map font 12 to "Symbol", "Symbol"
+@map font 13 to "ZapfDingbats", "ZapfDingbats"
+@map color 0 to (255, 255, 255), "white"
+@map color 1 to (0, 0, 0), "black"
+@map color 2 to (255, 0, 0), "red"
+@map color 3 to (0, 255, 0), "green"
+@map color 4 to (0, 0, 255), "blue"
+@map color 5 to (255, 255, 0), "yellow"
+@map color 6 to (188, 143, 143), "brown"
+@map color 7 to (220, 220, 220), "grey"
+@map color 8 to (148, 0, 211), "violet"
+@map color 9 to (0, 255, 255), "cyan"
+@map color 10 to (255, 0, 255), "magenta"
+@map color 11 to (255, 165, 0), "orange"
+@map color 12 to (114, 33, 188), "indigo"
+@map color 13 to (103, 7, 72), "maroon"
+@map color 14 to (64, 224, 208), "turquoise"
+@map color 15 to (0, 139, 0), "green4"
+@reference date 0
+@date wrap off
+@date wrap year 1950
+@default linewidth 1.0
+@default linestyle 1
+@default color 1
+@default pattern 1
+@default font 0
+@default char size 1.000000
+@default symbol size 1.000000
+@default sformat "%16.8g"
+@background color 0
+@page background fill on
+@timestamp off
+@timestamp 0.03, 0.03
+@timestamp color 1
+@timestamp rot 0
+@timestamp font 0
+@timestamp char size 1.000000
+@timestamp def "Sat Aug 26 12:51:01 2000"
+@with string
+@    string on
+@    string loctype view
+@    string 1.32941176471, 0.497478991597
+@    string color 1
+@    string rot 0
+@    string font 0
+@    string just 0
+@    string char size 0.800000
+@    string def "-180"
+@with string
+@    string on
+@    string loctype view
+@    string 0.0537815126055, 0.500840336135
+@    string color 1
+@    string rot 0
+@    string font 0
+@    string just 0
+@    string char size 0.800000
+@    string def "+180"
+@with string
+@    string on
+@    string loctype view
+@    string 0.721008403361, 0.86218487395
+@    string color 1
+@    string rot 0
+@    string font 0
+@    string just 0
+@    string char size 0.800000
+@    string def "+90"
+@with string
+@    string on
+@    string loctype view
+@    string 0.724369747899, 0.109243697479
+@    string color 1
+@    string rot 0
+@    string font 0
+@    string just 0
+@    string char size 0.800000
+@    string def "-90"
+@r0 type above
+@r0 linestyle 1
+@r0 linewidth 1.0
+@r0 color 1
+@r0 line 0, 0, 0, 0
+@r1 type above
+@r1 linestyle 1
+@r1 linewidth 1.0
+@r1 color 1
+@r1 line 0, 0, 0, 0
+@r2 type above
+@r2 linestyle 1
+@r2 linewidth 1.0
+@r2 color 1
+@r2 line 0, 0, 0, 0
+@r3 type above
+@r3 linestyle 1
+@r3 linewidth 1.0
+@r3 color 1
+@r3 line 0, 0, 0, 0
+@r4 type above
+@r4 linestyle 1
+@r4 linewidth 1.0
+@r4 color 1
+@r4 line 0, 0, 0, 0
+@g0 on
+@g0 hidden false
+@g0 type XY
+@g0 stacked false
+@g0 bar hgap 0.000000
+@g0 fixedpoint off
+@g0 fixedpoint type 0
+@g0 fixedpoint xy 0.000000, 0.000000
+@g0 fixedpoint format general general
+@g0 fixedpoint prec 6, 6
+@with g0
+@    world xmin -180
+@    world xmax 180
+@    world ymin -90
+@    world ymax 90
+@    stack world 0, 0, 0, 0
+@    znorm 1
+@    view xmin 0.081699
+@    view xmax 1.347899
+@    view ymin 0.120915
+@    view ymax 0.857143
+@    title "Gamma-Ray Sources Skymap"
+@    title font 0
+@    title size 1.500000
+@    title color 1
+@    subtitle ""
+@    subtitle font 0
+@    subtitle size 1.000000
+@    subtitle color 1
+@    xaxes scale Normal
+@    yaxes scale Normal
+@    xaxes invert on
+@    yaxes invert off
+@    xaxis  on
+@    xaxis  type zero true
+@    xaxis  offset 0.000000 , 0.000000
+@    xaxis  bar on
+@    xaxis  bar color 1
+@    xaxis  bar linestyle 1
+@    xaxis  bar linewidth 1.0
+@    xaxis  label ""
+@    xaxis  label layout para
+@    xaxis  label place auto
+@    xaxis  label char size 1.000000
+@    xaxis  label font 0
+@    xaxis  label color 1
+@    xaxis  label place normal
+@    xaxis  tick off
+@    xaxis  tick major 360
+@    xaxis  tick minor ticks 0
+@    xaxis  tick default 6
+@    xaxis  tick place rounded true
+@    xaxis  tick in
+@    xaxis  tick major size 1.000000
+@    xaxis  tick major color 1
+@    xaxis  tick major linewidth 1.0
+@    xaxis  tick major linestyle 1
+@    xaxis  tick major grid off
+@    xaxis  tick minor color 1
+@    xaxis  tick minor linewidth 1.0
+@    xaxis  tick minor linestyle 1
+@    xaxis  tick minor grid off
+@    xaxis  tick minor size 0.500000
+@    xaxis  ticklabel off
+@    xaxis  ticklabel format general
+@    xaxis  ticklabel prec 5
+@    xaxis  ticklabel formula ""
+@    xaxis  ticklabel append ""
+@    xaxis  ticklabel prepend ""
+@    xaxis  ticklabel angle 0
+@    xaxis  ticklabel skip 0
+@    xaxis  ticklabel stagger 0
+@    xaxis  ticklabel place normal
+@    xaxis  ticklabel offset auto
+@    xaxis  ticklabel offset 0.000000 , 0.010000
+@    xaxis  ticklabel start type auto
+@    xaxis  ticklabel start 0.000000
+@    xaxis  ticklabel stop type auto
+@    xaxis  ticklabel stop 0.000000
+@    xaxis  ticklabel char size 1.000000
+@    xaxis  ticklabel font 0
+@    xaxis  ticklabel color 1
+@    xaxis  tick place both
+@    xaxis  tick spec type none
+@    yaxis  on
+@    yaxis  type zero true
+@    yaxis  offset 0.000000 , 0.000000
+@    yaxis  bar on
+@    yaxis  bar color 1
+@    yaxis  bar linestyle 1
+@    yaxis  bar linewidth 1.0
+@    yaxis  label ""
+@    yaxis  label layout para
+@    yaxis  label place auto
+@    yaxis  label char size 1.000000
+@    yaxis  label font 0
+@    yaxis  label color 1
+@    yaxis  label place normal
+@    yaxis  tick off
+@    yaxis  tick major 50
+@    yaxis  tick minor ticks 0
+@    yaxis  tick default 6
+@    yaxis  tick place rounded true
+@    yaxis  tick in
+@    yaxis  tick major size 1.000000
+@    yaxis  tick major color 1
+@    yaxis  tick major linewidth 1.0
+@    yaxis  tick major linestyle 1
+@    yaxis  tick major grid off
+@    yaxis  tick minor color 1
+@    yaxis  tick minor linewidth 1.0
+@    yaxis  tick minor linestyle 1
+@    yaxis  tick minor grid off
+@    yaxis  tick minor size 0.500000
+@    yaxis  ticklabel off
+@    yaxis  ticklabel format general
+@    yaxis  ticklabel prec 5
+@    yaxis  ticklabel formula ""
+@    yaxis  ticklabel append ""
+@    yaxis  ticklabel prepend ""
+@    yaxis  ticklabel angle 0
+@    yaxis  ticklabel skip 0
+@    yaxis  ticklabel stagger 0
+@    yaxis  ticklabel place normal
+@    yaxis  ticklabel offset auto
+@    yaxis  ticklabel offset 0.000000 , 0.010000
+@    yaxis  ticklabel start type auto
+@    yaxis  ticklabel start 0.000000
+@    yaxis  ticklabel stop type auto
+@    yaxis  ticklabel stop 0.000000
+@    yaxis  ticklabel char size 1.000000
+@    yaxis  ticklabel font 0
+@    yaxis  ticklabel color 1
+@    yaxis  tick place both
+@    yaxis  tick spec type ticks
+@    yaxis  tick spec 2
+@    yaxis  tick major 0,              -90
+@    yaxis  tick major 1,               90
+@    altxaxis  off
+@    altyaxis  off
+@    legend on
+@    legend loctype view
+@    legend x1 0.05
+@    legend y1 0.25
+@    legend box color 1
+@    legend box pattern 1
+@    legend box linewidth 1.0
+@    legend box linestyle 1
+@    legend box fill color 0
+@    legend box fill pattern 1
+@    legend font 0
+@    legend char size 0.800000
+@    legend color 1
+@    legend length 4
+@    legend vgap 1
+@    legend hgap 1
+@    legend invert false
+@    frame type 0
+@    frame linestyle 1
+@    frame linewidth 0.0
+@    frame color 0
+@    frame pattern 0
+@    frame background color 0
+@    frame background pattern 0
+@    s0 hidden false
+@    s0 type xy
+@    s0 symbol 0
+@    s0 symbol size 1.000000
+@    s0 symbol color 1
+@    s0 symbol pattern 1
+@    s0 symbol fill color 1
+@    s0 symbol fill pattern 0
+@    s0 symbol linewidth 1.0
+@    s0 symbol linestyle 1
+@    s0 symbol char 65
+@    s0 symbol char font 0
+@    s0 symbol skip 0
+@    s0 line type 1
+@    s0 line linestyle 2
+@    s0 line linewidth 1.0
+@    s0 line color 1
+@    s0 line pattern 1
+@    s0 baseline type 0
+@    s0 baseline off
+@    s0 dropline off
+@    s0 fill type 0
+@    s0 fill rule 0
+@    s0 fill color 1
+@    s0 fill pattern 1
+@    s0 avalue off
+@    s0 avalue type 2
+@    s0 avalue char size 1.000000
+@    s0 avalue font 0
+@    s0 avalue color 1
+@    s0 avalue rot 0
+@    s0 avalue format general
+@    s0 avalue prec 3
+@    s0 avalue prepend ""
+@    s0 avalue append ""
+@    s0 avalue offset 0.000000 , 0.000000
+@    s0 errorbar on
+@    s0 errorbar place both
+@    s0 errorbar color 1
+@    s0 errorbar pattern 1
+@    s0 errorbar size 1.000000
+@    s0 errorbar linewidth 1.0
+@    s0 errorbar linestyle 1
+@    s0 errorbar riser linewidth 1.0
+@    s0 errorbar riser linestyle 1
+@    s0 errorbar riser clip off
+@    s0 errorbar riser clip length 0.100000
+@    s0 comment "/home/gonzalez/axis45.dat"
+@    s0 legend  ""
+@    s1 hidden false
+@    s1 type xy
+@    s1 symbol 0
+@    s1 symbol size 1.000000
+@    s1 symbol color 1
+@    s1 symbol pattern 1
+@    s1 symbol fill color 1
+@    s1 symbol fill pattern 0
+@    s1 symbol linewidth 1.0
+@    s1 symbol linestyle 1
+@    s1 symbol char 65
+@    s1 symbol char font 0
+@    s1 symbol skip 0
+@    s1 line type 1
+@    s1 line linestyle 2
+@    s1 line linewidth 1.0
+@    s1 line color 1
+@    s1 line pattern 1
+@    s1 baseline type 0
+@    s1 baseline off
+@    s1 dropline off
+@    s1 fill type 0
+@    s1 fill rule 0
+@    s1 fill color 1
+@    s1 fill pattern 1
+@    s1 avalue off
+@    s1 avalue type 2
+@    s1 avalue char size 1.000000
+@    s1 avalue font 0
+@    s1 avalue color 1
+@    s1 avalue rot 0
+@    s1 avalue format general
+@    s1 avalue prec 3
+@    s1 avalue prepend ""
+@    s1 avalue append ""
+@    s1 avalue offset 0.000000 , 0.000000
+@    s1 errorbar on
+@    s1 errorbar place both
+@    s1 errorbar color 1
+@    s1 errorbar pattern 1
+@    s1 errorbar size 1.000000
+@    s1 errorbar linewidth 1.0
+@    s1 errorbar linestyle 1
+@    s1 errorbar riser linewidth 1.0
+@    s1 errorbar riser linestyle 1
+@    s1 errorbar riser clip off
+@    s1 errorbar riser clip length 0.100000
+@    s1 comment "/home/gonzalez/axis90.dat"
+@    s1 legend  ""
+@    s2 hidden false
+@    s2 type xy
+@    s2 symbol 0
+@    s2 symbol size 1.000000
+@    s2 symbol color 1
+@    s2 symbol pattern 1
+@    s2 symbol fill color 1
+@    s2 symbol fill pattern 0
+@    s2 symbol linewidth 1.0
+@    s2 symbol linestyle 1
+@    s2 symbol char 65
+@    s2 symbol char font 0
+@    s2 symbol skip 0
+@    s2 line type 1
+@    s2 line linestyle 2
+@    s2 line linewidth 1.0
+@    s2 line color 1
+@    s2 line pattern 1
+@    s2 baseline type 0
+@    s2 baseline off
+@    s2 dropline off
+@    s2 fill type 0
+@    s2 fill rule 0
+@    s2 fill color 1
+@    s2 fill pattern 1
+@    s2 avalue off
+@    s2 avalue type 2
+@    s2 avalue char size 1.000000
+@    s2 avalue font 0
+@    s2 avalue color 1
+@    s2 avalue rot 0
+@    s2 avalue format general
+@    s2 avalue prec 3
+@    s2 avalue prepend ""
+@    s2 avalue append ""
+@    s2 avalue offset 0.000000 , 0.000000
+@    s2 errorbar on
+@    s2 errorbar place both
+@    s2 errorbar color 1
+@    s2 errorbar pattern 1
+@    s2 errorbar size 1.000000
+@    s2 errorbar linewidth 1.0
+@    s2 errorbar linestyle 1
+@    s2 errorbar riser linewidth 1.0
+@    s2 errorbar riser linestyle 1
+@    s2 errorbar riser clip off
+@    s2 errorbar riser clip length 0.100000
+@    s2 comment "/home/gonzalez/axis135.dat"
+@    s2 legend  ""
+@    s3 hidden false
+@    s3 type xy
+@    s3 symbol 0
+@    s3 symbol size 1.000000
+@    s3 symbol color 1
+@    s3 symbol pattern 1
+@    s3 symbol fill color 1
+@    s3 symbol fill pattern 0
+@    s3 symbol linewidth 1.0
+@    s3 symbol linestyle 1
+@    s3 symbol char 65
+@    s3 symbol char font 0
+@    s3 symbol skip 0
+@    s3 line type 1
+@    s3 line linestyle 1
+@    s3 line linewidth 1.0
+@    s3 line color 1
+@    s3 line pattern 1
+@    s3 baseline type 0
+@    s3 baseline off
+@    s3 dropline off
+@    s3 fill type 0
+@    s3 fill rule 0
+@    s3 fill color 1
+@    s3 fill pattern 1
+@    s3 avalue off
+@    s3 avalue type 2
+@    s3 avalue char size 1.000000
+@    s3 avalue font 0
+@    s3 avalue color 1
+@    s3 avalue rot 0
+@    s3 avalue format general
+@    s3 avalue prec 3
+@    s3 avalue prepend ""
+@    s3 avalue append ""
+@    s3 avalue offset 0.000000 , 0.000000
+@    s3 errorbar on
+@    s3 errorbar place both
+@    s3 errorbar color 1
+@    s3 errorbar pattern 1
+@    s3 errorbar size 1.000000
+@    s3 errorbar linewidth 1.0
+@    s3 errorbar linestyle 1
+@    s3 errorbar riser linewidth 1.0
+@    s3 errorbar riser linestyle 1
+@    s3 errorbar riser clip off
+@    s3 errorbar riser clip length 0.100000
+@    s3 comment "/home/gonzalez/axis180.dat"
+@    s3 legend  ""
+@    s4 hidden false
+@    s4 type xy
+@    s4 symbol 1
+@    s4 symbol size 0.800000
+@    s4 symbol color 1
+@    s4 symbol pattern 1
+@    s4 symbol fill color 1
+@    s4 symbol fill pattern 0
+@    s4 symbol linewidth 1.0
+@    s4 symbol linestyle 1
+@    s4 symbol char 65
+@    s4 symbol char font 0
+@    s4 symbol skip 0
+@    s4 line type 0
+@    s4 line linestyle 1
+@    s4 line linewidth 1.0
+@    s4 line color 1
+@    s4 line pattern 1
+@    s4 baseline type 0
+@    s4 baseline off
+@    s4 dropline off
+@    s4 fill type 0
+@    s4 fill rule 0
+@    s4 fill color 1
+@    s4 fill pattern 1
+@    s4 avalue off
+@    s4 avalue type 2
+@    s4 avalue char size 1.000000
+@    s4 avalue font 0
+@    s4 avalue color 1
+@    s4 avalue rot 0
+@    s4 avalue format general
+@    s4 avalue prec 3
+@    s4 avalue prepend ""
+@    s4 avalue append ""
+@    s4 avalue offset 0.000000 , 0.000000
+@    s4 errorbar on
+@    s4 errorbar place both
+@    s4 errorbar color 1
+@    s4 errorbar pattern 1
+@    s4 errorbar size 1.000000
+@    s4 errorbar linewidth 1.0
+@    s4 errorbar linestyle 1
+@    s4 errorbar riser linewidth 1.0
+@    s4 errorbar riser linestyle 1
+@    s4 errorbar riser clip off
+@    s4 errorbar riser clip length 0.100000
+@    s4 comment "/home/gonzalez/gs_1.dat"
+@    s4 legend  "Accreting Source"
+@    s5 hidden false
+@    s5 type xy
+@    s5 symbol 2
+@    s5 symbol size 0.800000
+@    s5 symbol color 2
+@    s5 symbol pattern 1
+@    s5 symbol fill color 2
+@    s5 symbol fill pattern 0
+@    s5 symbol linewidth 1.0
+@    s5 symbol linestyle 1
+@    s5 symbol char 65
+@    s5 symbol char font 0
+@    s5 symbol skip 0
+@    s5 line type 0
+@    s5 line linestyle 1
+@    s5 line linewidth 1.0
+@    s5 line color 2
+@    s5 line pattern 1
+@    s5 baseline type 0
+@    s5 baseline off
+@    s5 dropline off
+@    s5 fill type 0
+@    s5 fill rule 0
+@    s5 fill color 1
+@    s5 fill pattern 1
+@    s5 avalue off
+@    s5 avalue type 2
+@    s5 avalue char size 1.000000
+@    s5 avalue font 0
+@    s5 avalue color 1
+@    s5 avalue rot 0
+@    s5 avalue format general
+@    s5 avalue prec 3
+@    s5 avalue prepend ""
+@    s5 avalue append ""
+@    s5 avalue offset 0.000000 , 0.000000
+@    s5 errorbar on
+@    s5 errorbar place both
+@    s5 errorbar color 2
+@    s5 errorbar pattern 1
+@    s5 errorbar size 1.000000
+@    s5 errorbar linewidth 1.0
+@    s5 errorbar linestyle 1
+@    s5 errorbar riser linewidth 1.0
+@    s5 errorbar riser linestyle 1
+@    s5 errorbar riser clip off
+@    s5 errorbar riser clip length 0.100000
+@    s5 comment "/home/gonzalez/gs_2.dat"
+@    s5 legend  "Pulsar"
+@    s6 hidden false
+@    s6 type xy
+@    s6 symbol 3
+@    s6 symbol size 0.800000
+@    s6 symbol color 15
+@    s6 symbol pattern 1
+@    s6 symbol fill color 15
+@    s6 symbol fill pattern 0
+@    s6 symbol linewidth 1.0
+@    s6 symbol linestyle 1
+@    s6 symbol char 65
+@    s6 symbol char font 0
+@    s6 symbol skip 0
+@    s6 line type 0
+@    s6 line linestyle 1
+@    s6 line linewidth 1.0
+@    s6 line color 3
+@    s6 line pattern 1
+@    s6 baseline type 0
+@    s6 baseline off
+@    s6 dropline off
+@    s6 fill type 0
+@    s6 fill rule 0
+@    s6 fill color 1
+@    s6 fill pattern 1
+@    s6 avalue off
+@    s6 avalue type 2
+@    s6 avalue char size 1.000000
+@    s6 avalue font 0
+@    s6 avalue color 1
+@    s6 avalue rot 0
+@    s6 avalue format general
+@    s6 avalue prec 3
+@    s6 avalue prepend ""
+@    s6 avalue append ""
+@    s6 avalue offset 0.000000 , 0.000000
+@    s6 errorbar on
+@    s6 errorbar place both
+@    s6 errorbar color 15
+@    s6 errorbar pattern 1
+@    s6 errorbar size 1.000000
+@    s6 errorbar linewidth 1.0
+@    s6 errorbar linestyle 1
+@    s6 errorbar riser linewidth 1.0
+@    s6 errorbar riser linestyle 1
+@    s6 errorbar riser clip off
+@    s6 errorbar riser clip length 0.100000
+@    s6 comment "/home/gonzalez/gs_3.dat"
+@    s6 legend  "AGN Seyfert"
+@    s7 hidden false
+@    s7 type xy
+@    s7 symbol 4
+@    s7 symbol size 0.800000
+@    s7 symbol color 4
+@    s7 symbol pattern 1
+@    s7 symbol fill color 4
+@    s7 symbol fill pattern 0
+@    s7 symbol linewidth 1.0
+@    s7 symbol linestyle 1
+@    s7 symbol char 65
+@    s7 symbol char font 0
+@    s7 symbol skip 0
+@    s7 line type 0
+@    s7 line linestyle 1
+@    s7 line linewidth 1.0
+@    s7 line color 4
+@    s7 line pattern 1
+@    s7 baseline type 0
+@    s7 baseline off
+@    s7 dropline off
+@    s7 fill type 0
+@    s7 fill rule 0
+@    s7 fill color 1
+@    s7 fill pattern 1
+@    s7 avalue off
+@    s7 avalue type 2
+@    s7 avalue char size 1.000000
+@    s7 avalue font 0
+@    s7 avalue color 1
+@    s7 avalue rot 0
+@    s7 avalue format general
+@    s7 avalue prec 3
+@    s7 avalue prepend ""
+@    s7 avalue append ""
+@    s7 avalue offset 0.000000 , 0.000000
+@    s7 errorbar on
+@    s7 errorbar place both
+@    s7 errorbar color 4
+@    s7 errorbar pattern 1
+@    s7 errorbar size 1.000000
+@    s7 errorbar linewidth 1.0
+@    s7 errorbar linestyle 1
+@    s7 errorbar riser linewidth 1.0
+@    s7 errorbar riser linestyle 1
+@    s7 errorbar riser clip off
+@    s7 errorbar riser clip length 0.100000
+@    s7 comment "/home/gonzalez/gs_4.dat"
+@    s7 legend  "Galaxy/Cluster/Diffuse"
+@    s8 hidden false
+@    s8 type xy
+@    s8 symbol 3
+@    s8 symbol size 0.800000
+@    s8 symbol color 8
+@    s8 symbol pattern 1
+@    s8 symbol fill color 14
+@    s8 symbol fill pattern 1
+@    s8 symbol linewidth 1.0
+@    s8 symbol linestyle 1
+@    s8 symbol char 85
+@    s8 symbol char font 0
+@    s8 symbol skip 0
+@    s8 line type 0
+@    s8 line linestyle 1
+@    s8 line linewidth 1.0
+@    s8 line color 5
+@    s8 line pattern 1
+@    s8 baseline type 0
+@    s8 baseline off
+@    s8 dropline off
+@    s8 fill type 0
+@    s8 fill rule 0
+@    s8 fill color 1
+@    s8 fill pattern 1
+@    s8 avalue off
+@    s8 avalue type 2
+@    s8 avalue char size 1.000000
+@    s8 avalue font 0
+@    s8 avalue color 1
+@    s8 avalue rot 0
+@    s8 avalue format general
+@    s8 avalue prec 3
+@    s8 avalue prepend ""
+@    s8 avalue append ""
+@    s8 avalue offset 0.000000 , 0.000000
+@    s8 errorbar on
+@    s8 errorbar place both
+@    s8 errorbar color 8
+@    s8 errorbar pattern 1
+@    s8 errorbar size 1.000000
+@    s8 errorbar linewidth 1.0
+@    s8 errorbar linestyle 1
+@    s8 errorbar riser linewidth 1.0
+@    s8 errorbar riser linestyle 1
+@    s8 errorbar riser clip off
+@    s8 errorbar riser clip length 0.100000
+@    s8 comment "/home/gonzalez/gs_5.dat"
+@    s8 legend  "Unidentified"
+@    s9 hidden false
+@    s9 type xy
+@    s9 symbol 2
+@    s9 symbol size 0.800000
+@    s9 symbol color 6
+@    s9 symbol pattern 1
+@    s9 symbol fill color 11
+@    s9 symbol fill pattern 1
+@    s9 symbol linewidth 1.0
+@    s9 symbol linestyle 1
+@    s9 symbol char 65
+@    s9 symbol char font 0
+@    s9 symbol skip 0
+@    s9 line type 0
+@    s9 line linestyle 1
+@    s9 line linewidth 1.0
+@    s9 line color 6
+@    s9 line pattern 1
+@    s9 baseline type 0
+@    s9 baseline off
+@    s9 dropline off
+@    s9 fill type 0
+@    s9 fill rule 0
+@    s9 fill color 1
+@    s9 fill pattern 1
+@    s9 avalue off
+@    s9 avalue type 2
+@    s9 avalue char size 1.000000
+@    s9 avalue font 0
+@    s9 avalue color 1
+@    s9 avalue rot 0
+@    s9 avalue format general
+@    s9 avalue prec 3
+@    s9 avalue prepend ""
+@    s9 avalue append ""
+@    s9 avalue offset 0.000000 , 0.000000
+@    s9 errorbar on
+@    s9 errorbar place both
+@    s9 errorbar color 6
+@    s9 errorbar pattern 1
+@    s9 errorbar size 1.000000
+@    s9 errorbar linewidth 1.0
+@    s9 errorbar linestyle 1
+@    s9 errorbar riser linewidth 1.0
+@    s9 errorbar riser linestyle 1
+@    s9 errorbar riser clip off
+@    s9 errorbar riser clip length 0.100000
+@    s9 comment "/home/gonzalez/gs_6.dat"
+@    s9 legend  "Supernova/remnant"
+@    s10 hidden false
+@    s10 type xy
+@    s10 symbol 1
+@    s10 symbol size 0.800000
+@    s10 symbol color 13
+@    s10 symbol pattern 1
+@    s10 symbol fill color 9
+@    s10 symbol fill pattern 1
+@    s10 symbol linewidth 1.0
+@    s10 symbol linestyle 1
+@    s10 symbol char 65
+@    s10 symbol char font 0
+@    s10 symbol skip 0
+@    s10 line type 0
+@    s10 line linestyle 1
+@    s10 line linewidth 1.0
+@    s10 line color 7
+@    s10 line pattern 1
+@    s10 baseline type 0
+@    s10 baseline off
+@    s10 dropline off
+@    s10 fill type 0
+@    s10 fill rule 0
+@    s10 fill color 1
+@    s10 fill pattern 1
+@    s10 avalue off
+@    s10 avalue type 2
+@    s10 avalue char size 1.000000
+@    s10 avalue font 0
+@    s10 avalue color 1
+@    s10 avalue rot 0
+@    s10 avalue format general
+@    s10 avalue prec 3
+@    s10 avalue prepend ""
+@    s10 avalue append ""
+@    s10 avalue offset 0.000000 , 0.000000
+@    s10 errorbar on
+@    s10 errorbar place both
+@    s10 errorbar color 13
+@    s10 errorbar pattern 1
+@    s10 errorbar size 1.000000
+@    s10 errorbar linewidth 1.0
+@    s10 errorbar linestyle 1
+@    s10 errorbar riser linewidth 1.0
+@    s10 errorbar riser linestyle 1
+@    s10 errorbar riser clip off
+@    s10 errorbar riser clip length 0.100000
+@    s10 comment "/home/gonzalez/gs_7.dat"
+@    s10 legend  "AGN Quasar"
+@target G0.S0
+@type xy
+   2.7553643e-15              -90
+      0.78535829              -89
+       1.5704774              -88
+        2.355118              -87
+       3.1390413              -86
+       3.9220084              -85
+       4.7037808              -84
+       5.4841205              -83
+       6.2627895              -82
+       7.0395509              -81
+        7.814168              -80
+       8.5864048              -79
+       9.3560261              -78
+       10.122797              -77
+       10.886485              -76
+       11.646857              -75
+       12.403681              -74
+       13.156727              -73
+       13.905765              -72
+       14.650567              -71
+       15.390906              -70
+       16.126558              -69
+       16.857297              -68
+       17.582901              -67
+       18.303149              -66
+       19.017822              -65
+       19.726702              -64
+       20.429572              -63
+        21.12622              -62
+       21.816433              -61
+            22.5              -60
+       23.176713              -59
+       23.846367              -58
+       24.508757              -57
+       25.163681              -56
+        25.81094              -55
+       26.450336              -54
+       27.081676              -53
+       27.704766              -52
+       28.319418              -51
+       28.925442              -50
+       29.522656              -49
+       30.110877              -48
+       30.689926              -47
+       31.259627              -46
+       31.819805              -45
+       32.370291              -44
+       32.910917              -43
+       33.441517              -42
+       33.961931              -41
+          34.472              -40
+       34.971568              -39
+       35.460484              -38
+       35.938598              -37
+       36.405765              -36
+       36.861842              -35
+       37.306691              -34
+       37.740176              -33
+       38.162164              -32
+       38.572529              -31
+       38.971143              -30
+       39.357887              -29
+       39.732642              -28
+       40.095294              -27
+       40.445732              -26
+        40.78385              -25
+       41.109546              -24
+       41.422718              -23
+       41.723273              -22
+       42.011119              -21
+       42.286168              -20
+       42.548336              -19
+       42.797543              -18
+       43.033714              -17
+       43.256776              -16
+       43.466662              -15
+       43.663308              -14
+       43.846653              -13
+       44.016642              -12
+       44.173223              -11
+       44.316349              -10
+       44.445975               -9
+       44.562063               -8
+       44.664577               -7
+       44.753485               -6
+       44.828761               -5
+       44.890382               -4
+       44.938329               -3
+       44.972587               -2
+       44.993146               -1
+              45                0
+       44.993146                1
+       44.972587                2
+       44.938329                3
+       44.890382                4
+       44.828761                5
+       44.753485                6
+       44.664577                7
+       44.562063                8
+       44.445975                9
+       44.316349               10
+       44.173223               11
+       44.016642               12
+       43.846653               13
+       43.663308               14
+       43.466662               15
+       43.256776               16
+       43.033714               17
+       42.797543               18
+       42.548336               19
+       42.286168               20
+       42.011119               21
+       41.723273               22
+       41.422718               23
+       41.109546               24
+        40.78385               25
+       40.445732               26
+       40.095294               27
+       39.732642               28
+       39.357887               29
+       38.971143               30
+       38.572529               31
+       38.162164               32
+       37.740176               33
+       37.306691               34
+       36.861842               35
+       36.405765               36
+       35.938598               37
+       35.460484               38
+       34.971568               39
+          34.472               40
+       33.961931               41
+       33.441517               42
+       32.910917               43
+       32.370291               44
+       31.819805               45
+       31.259627               46
+       30.689926               47
+       30.110877               48
+       29.522656               49
+       28.925442               50
+       28.319418               51
+       27.704766               52
+       27.081676               53
+       26.450336               54
+        25.81094               55
+       25.163681               56
+       24.508757               57
+       23.846367               58
+       23.176713               59
+            22.5               60
+       21.816433               61
+        21.12622               62
+       20.429572               63
+       19.726702               64
+       19.017822               65
+       18.303149               66
+       17.582901               67
+       16.857297               68
+       16.126558               69
+       15.390906               70
+       14.650567               71
+       13.905765               72
+       13.156727               73
+       12.403681               74
+       11.646857               75
+       10.886485               76
+       10.122797               77
+       9.3560261               78
+       8.5864048               79
+        7.814168               80
+       7.0395509               81
+       6.2627895               82
+       5.4841205               83
+       4.7037808               84
+       3.9220084               85
+       3.1390413               86
+        2.355118               87
+       1.5704774               88
+      0.78535829               89
+   2.7553643e-15               90
+  -2.7553643e-15               90
+     -0.78535829               89
+      -1.5704774               88
+       -2.355118               87
+      -3.1390413               86
+      -3.9220084               85
+      -4.7037808               84
+      -5.4841205               83
+      -6.2627895               82
+      -7.0395509               81
+       -7.814168               80
+      -8.5864048               79
+      -9.3560261               78
+      -10.122797               77
+      -10.886485               76
+      -11.646857               75
+      -12.403681               74
+      -13.156727               73
+      -13.905765               72
+      -14.650567               71
+      -15.390906               70
+      -16.126558               69
+      -16.857297               68
+      -17.582901               67
+      -18.303149               66
+      -19.017822               65
+      -19.726702               64
+      -20.429572               63
+       -21.12622               62
+      -21.816433               61
+           -22.5               60
+      -23.176713               59
+      -23.846367               58
+      -24.508757               57
+      -25.163681               56
+       -25.81094               55
+      -26.450336               54
+      -27.081676               53
+      -27.704766               52
+      -28.319418               51
+      -28.925442               50
+      -29.522656               49
+      -30.110877               48
+      -30.689926               47
+      -31.259627               46
+      -31.819805               45
+      -32.370291               44
+      -32.910917               43
+      -33.441517               42
+      -33.961931               41
+         -34.472               40
+      -34.971568               39
+      -35.460484               38
+      -35.938598               37
+      -36.405765               36
+      -36.861842               35
+      -37.306691               34
+      -37.740176               33
+      -38.162164               32
+      -38.572529               31
+      -38.971143               30
+      -39.357887               29
+      -39.732642               28
+      -40.095294               27
+      -40.445732               26
+       -40.78385               25
+      -41.109546               24
+      -41.422718               23
+      -41.723273               22
+      -42.011119               21
+      -42.286168               20
+      -42.548336               19
+      -42.797543               18
+      -43.033714               17
+      -43.256776               16
+      -43.466662               15
+      -43.663308               14
+      -43.846653               13
+      -44.016642               12
+      -44.173223               11
+      -44.316349               10
+      -44.445975                9
+      -44.562063                8
+      -44.664577                7
+      -44.753485                6
+      -44.828761                5
+      -44.890382                4
+      -44.938329                3
+      -44.972587                2
+      -44.993146                1
+             -45                0
+      -44.993146               -1
+      -44.972587               -2
+      -44.938329               -3
+      -44.890382               -4
+      -44.828761               -5
+      -44.753485               -6
+      -44.664577               -7
+      -44.562063               -8
+      -44.445975               -9
+      -44.316349              -10
+      -44.173223              -11
+      -44.016642              -12
+      -43.846653              -13
+      -43.663308              -14
+      -43.466662              -15
+      -43.256776              -16
+      -43.033714              -17
+      -42.797543              -18
+      -42.548336              -19
+      -42.286168              -20
+      -42.011119              -21
+      -41.723273              -22
+      -41.422718              -23
+      -41.109546              -24
+       -40.78385              -25
+      -40.445732              -26
+      -40.095294              -27
+      -39.732642              -28
+      -39.357887              -29
+      -38.971143              -30
+      -38.572529              -31
+      -38.162164              -32
+      -37.740176              -33
+      -37.306691              -34
+      -36.861842              -35
+      -36.405765              -36
+      -35.938598              -37
+      -35.460484              -38
+      -34.971568              -39
+         -34.472              -40
+      -33.961931              -41
+      -33.441517              -42
+      -32.910917              -43
+      -32.370291              -44
+      -31.819805              -45
+      -31.259627              -46
+      -30.689926              -47
+      -30.110877              -48
+      -29.522656              -49
+      -28.925442              -50
+      -28.319418              -51
+      -27.704766              -52
+      -27.081676              -53
+      -26.450336              -54
+       -25.81094              -55
+      -25.163681              -56
+      -24.508757              -57
+      -23.846367              -58
+      -23.176713              -59
+           -22.5              -60
+      -21.816433              -61
+       -21.12622              -62
+      -20.429572              -63
+      -19.726702              -64
+      -19.017822              -65
+      -18.303149              -66
+      -17.582901              -67
+      -16.857297              -68
+      -16.126558              -69
+      -15.390906              -70
+      -14.650567              -71
+      -13.905765              -72
+      -13.156727              -73
+      -12.403681              -74
+      -11.646857              -75
+      -10.886485              -76
+      -10.122797              -77
+      -9.3560261              -78
+      -8.5864048              -79
+       -7.814168              -80
+      -7.0395509              -81
+      -6.2627895              -82
+      -5.4841205              -83
+      -4.7037808              -84
+      -3.9220084              -85
+      -3.1390413              -86
+       -2.355118              -87
+      -1.5704774              -88
+     -0.78535829              -89
+  -2.7553643e-15              -90
+&
+@target G0.S1
+@type xy
+   5.5107286e-15              -90
+       1.5707166              -89
+       3.1409547              -88
+       4.7102361              -87
+       6.2780826              -86
+       7.8440168              -85
+       9.4075617              -84
+       10.968241              -83
+       12.525579              -82
+       14.079102              -81
+       15.628336              -80
+        17.17281              -79
+       18.712052              -78
+       20.245595              -77
+       21.772971              -76
+       23.293714              -75
+       24.807362              -74
+       26.313453              -73
+       27.811529              -72
+       29.301134              -71
+       30.781813              -70
+       32.253115              -69
+       33.714593              -68
+       35.165802              -67
+       36.606298              -66
+       38.035644              -65
+       39.453403              -64
+       40.859145              -63
+       42.252441              -62
+       43.632866              -61
+              45              -60
+       46.353427              -59
+       47.692734              -58
+       49.017513              -57
+       50.327361              -56
+       51.621879              -55
+       52.900673              -54
+       54.163352              -53
+       55.409533              -52
+       56.638835              -51
+       57.850885              -50
+       59.045313              -49
+       60.221755              -48
+       61.379852              -47
+       62.519253              -46
+        63.63961              -45
+       64.740582              -44
+       65.821833              -43
+       66.883034              -42
+       67.923862              -41
+          68.944              -40
+       69.943137              -39
+       70.920968              -38
+       71.877196              -37
+       72.811529              -36
+       73.723684              -35
+       74.613382              -34
+       75.480351              -33
+       76.324329              -32
+       77.145057              -31
+       77.942286              -30
+       78.715774              -29
+       79.465283              -28
+       80.190587              -27
+       80.891464              -26
+       81.567701              -25
+       82.219091              -24
+       82.845437              -23
+       83.446547              -22
+       84.022238              -21
+       84.572336              -20
+       85.096672              -19
+       85.595086              -18
+       86.067428              -17
+       86.513553              -16
+       86.933324              -15
+       87.326615              -14
+       87.693306              -13
+       88.033284              -12
+       88.346447              -11
+       88.632698              -10
+       88.891951               -9
+       89.124126               -8
+       89.329154               -7
+       89.506971               -6
+       89.657523               -5
+       89.780765               -4
+       89.876658               -3
+       89.945174               -2
+       89.986293               -1
+              90                0
+       89.986293                1
+       89.945174                2
+       89.876658                3
+       89.780765                4
+       89.657523                5
+       89.506971                6
+       89.329154                7
+       89.124126                8
+       88.891951                9
+       88.632698               10
+       88.346447               11
+       88.033284               12
+       87.693306               13
+       87.326615               14
+       86.933324               15
+       86.513553               16
+       86.067428               17
+       85.595086               18
+       85.096672               19
+       84.572336               20
+       84.022238               21
+       83.446547               22
+       82.845437               23
+       82.219091               24
+       81.567701               25
+       80.891464               26
+       80.190587               27
+       79.465283               28
+       78.715774               29
+       77.942286               30
+       77.145057               31
+       76.324329               32
+       75.480351               33
+       74.613382               34
+       73.723684               35
+       72.811529               36
+       71.877196               37
+       70.920968               38
+       69.943137               39
+          68.944               40
+       67.923862               41
+       66.883034               42
+       65.821833               43
+       64.740582               44
+        63.63961               45
+       62.519253               46
+       61.379852               47
+       60.221755               48
+       59.045313               49
+       57.850885               50
+       56.638835               51
+       55.409533               52
+       54.163352               53
+       52.900673               54
+       51.621879               55
+       50.327361               56
+       49.017513               57
+       47.692734               58
+       46.353427               59
+              45               60
+       43.632866               61
+       42.252441               62
+       40.859145               63
+       39.453403               64
+       38.035644               65
+       36.606298               66
+       35.165802               67
+       33.714593               68
+       32.253115               69
+       30.781813               70
+       29.301134               71
+       27.811529               72
+       26.313453               73
+       24.807362               74
+       23.293714               75
+       21.772971               76
+       20.245595               77
+       18.712052               78
+        17.17281               79
+       15.628336               80
+       14.079102               81
+       12.525579               82
+       10.968241               83
+       9.4075617               84
+       7.8440168               85
+       6.2780826               86
+       4.7102361               87
+       3.1409547               88
+       1.5707166               89
+   5.5107286e-15               90
+  -5.5107286e-15               90
+      -1.5707166               89
+      -3.1409547               88
+      -4.7102361               87
+      -6.2780826               86
+      -7.8440168               85
+      -9.4075617               84
+      -10.968241               83
+      -12.525579               82
+      -14.079102               81
+      -15.628336               80
+       -17.17281               79
+      -18.712052               78
+      -20.245595               77
+      -21.772971               76
+      -23.293714               75
+      -24.807362               74
+      -26.313453               73
+      -27.811529               72
+      -29.301134               71
+      -30.781813               70
+      -32.253115               69
+      -33.714593               68
+      -35.165802               67
+      -36.606298               66
+      -38.035644               65
+      -39.453403               64
+      -40.859145               63
+      -42.252441               62
+      -43.632866               61
+             -45               60
+      -46.353427               59
+      -47.692734               58
+      -49.017513               57
+      -50.327361               56
+      -51.621879               55
+      -52.900673               54
+      -54.163352               53
+      -55.409533               52
+      -56.638835               51
+      -57.850885               50
+      -59.045313               49
+      -60.221755               48
+      -61.379852               47
+      -62.519253               46
+       -63.63961               45
+      -64.740582               44
+      -65.821833               43
+      -66.883034               42
+      -67.923862               41
+         -68.944               40
+      -69.943137               39
+      -70.920968               38
+      -71.877196               37
+      -72.811529               36
+      -73.723684               35
+      -74.613382               34
+      -75.480351               33
+      -76.324329               32
+      -77.145057               31
+      -77.942286               30
+      -78.715774               29
+      -79.465283               28
+      -80.190587               27
+      -80.891464               26
+      -81.567701               25
+      -82.219091               24
+      -82.845437               23
+      -83.446547               22
+      -84.022238               21
+      -84.572336               20
+      -85.096672               19
+      -85.595086               18
+      -86.067428               17
+      -86.513553               16
+      -86.933324               15
+      -87.326615               14
+      -87.693306               13
+      -88.033284               12
+      -88.346447               11
+      -88.632698               10
+      -88.891951                9
+      -89.124126                8
+      -89.329154                7
+      -89.506971                6
+      -89.657523                5
+      -89.780765                4
+      -89.876658                3
+      -89.945174                2
+      -89.986293                1
+             -90                0
+      -89.986293               -1
+      -89.945174               -2
+      -89.876658               -3
+      -89.780765               -4
+      -89.657523               -5
+      -89.506971               -6
+      -89.329154               -7
+      -89.124126               -8
+      -88.891951               -9
+      -88.632698              -10
+      -88.346447              -11
+      -88.033284              -12
+      -87.693306              -13
+      -87.326615              -14
+      -86.933324              -15
+      -86.513553              -16
+      -86.067428              -17
+      -85.595086              -18
+      -85.096672              -19
+      -84.572336              -20
+      -84.022238              -21
+      -83.446547              -22
+      -82.845437              -23
+      -82.219091              -24
+      -81.567701              -25
+      -80.891464              -26
+      -80.190587              -27
+      -79.465283              -28
+      -78.715774              -29
+      -77.942286              -30
+      -77.145057              -31
+      -76.324329              -32
+      -75.480351              -33
+      -74.613382              -34
+      -73.723684              -35
+      -72.811529              -36
+      -71.877196              -37
+      -70.920968              -38
+      -69.943137              -39
+         -68.944              -40
+      -67.923862              -41
+      -66.883034              -42
+      -65.821833              -43
+      -64.740582              -44
+       -63.63961              -45
+      -62.519253              -46
+      -61.379852              -47
+      -60.221755              -48
+      -59.045313              -49
+      -57.850885              -50
+      -56.638835              -51
+      -55.409533              -52
+      -54.163352              -53
+      -52.900673              -54
+      -51.621879              -55
+      -50.327361              -56
+      -49.017513              -57
+      -47.692734              -58
+      -46.353427              -59
+             -45              -60
+      -43.632866              -61
+      -42.252441              -62
+      -40.859145              -63
+      -39.453403              -64
+      -38.035644              -65
+      -36.606298              -66
+      -35.165802              -67
+      -33.714593              -68
+      -32.253115              -69
+      -30.781813              -70
+      -29.301134              -71
+      -27.811529              -72
+      -26.313453              -73
+      -24.807362              -74
+      -23.293714              -75
+      -21.772971              -76
+      -20.245595              -77
+      -18.712052              -78
+       -17.17281              -79
+      -15.628336              -80
+      -14.079102              -81
+      -12.525579              -82
+      -10.968241              -83
+      -9.4075617              -84
+      -7.8440168              -85
+      -6.2780826              -86
+      -4.7102361              -87
+      -3.1409547              -88
+      -1.5707166              -89
+  -5.5107286e-15              -90
+&
+@target G0.S2
+@type xy
+   8.2660929e-15              -90
+       2.3560749              -89
+       4.7114321              -88
+       7.0653541              -87
+        9.417124              -86
+       11.766025              -85
+       14.111343              -84
+       16.452361              -83
+       18.788369              -82
+       21.118653              -81
+       23.442504              -80
+       25.759214              -79
+       28.068078              -78
+       30.368392              -77
+       32.659456              -76
+       34.940571              -75
+       37.211043              -74
+        39.47018              -73
+       41.717294              -72
+       43.951701              -71
+       46.172719              -70
+       48.379673              -69
+        50.57189              -68
+       52.748702              -67
+       54.909447              -66
+       57.053465              -65
+       59.180105              -64
+       61.288717              -63
+       63.378661              -62
+       65.449299              -61
+            67.5              -60
+        69.53014              -59
+       71.539101              -58
+        73.52627              -57
+       75.491042              -56
+       77.432819              -55
+       79.351009              -54
+       81.245028              -53
+       83.114299              -52
+       84.958253              -51
+       86.776327              -50
+       88.567969              -49
+       90.332632              -48
+       92.069779              -47
+        93.77888              -46
+       95.459415              -45
+       97.110873              -44
+        98.73275              -43
+       100.32455              -42
+       101.88579              -41
+         103.416              -40
+        104.9147              -39
+       106.38145              -38
+       107.81579              -37
+       109.21729              -36
+       110.58553              -35
+       111.92007              -34
+       113.22053              -33
+       114.48649              -32
+       115.71759              -31
+       116.91343              -30
+       118.07366              -29
+       119.19793              -28
+       120.28588              -27
+        121.3372              -26
+       122.35155              -25
+       123.32864              -24
+       124.26816              -23
+       125.16982              -22
+       126.03336              -21
+        126.8585              -20
+       127.64501              -19
+       128.39263              -18
+       129.10114              -17
+       129.77033              -16
+       130.39999              -15
+       130.98992              -14
+       131.53996              -13
+       132.04993              -12
+       132.51967              -11
+       132.94905              -10
+       133.33793               -9
+       133.68619               -8
+       133.99373               -7
+       134.26046               -6
+       134.48628               -5
+       134.67115               -4
+       134.81499               -3
+       134.91776               -2
+       134.97944               -1
+             135                0
+       134.97944                1
+       134.91776                2
+       134.81499                3
+       134.67115                4
+       134.48628                5
+       134.26046                6
+       133.99373                7
+       133.68619                8
+       133.33793                9
+       132.94905               10
+       132.51967               11
+       132.04993               12
+       131.53996               13
+       130.98992               14
+       130.39999               15
+       129.77033               16
+       129.10114               17
+       128.39263               18
+       127.64501               19
+        126.8585               20
+       126.03336               21
+       125.16982               22
+       124.26816               23
+       123.32864               24
+       122.35155               25
+        121.3372               26
+       120.28588               27
+       119.19793               28
+       118.07366               29
+       116.91343               30
+       115.71759               31
+       114.48649               32
+       113.22053               33
+       111.92007               34
+       110.58553               35
+       109.21729               36
+       107.81579               37
+       106.38145               38
+        104.9147               39
+         103.416               40
+       101.88579               41
+       100.32455               42
+        98.73275               43
+       97.110873               44
+       95.459415               45
+        93.77888               46
+       92.069779               47
+       90.332632               48
+       88.567969               49
+       86.776327               50
+       84.958253               51
+       83.114299               52
+       81.245028               53
+       79.351009               54
+       77.432819               55
+       75.491042               56
+        73.52627               57
+       71.539101               58
+        69.53014               59
+            67.5               60
+       65.449299               61
+       63.378661               62
+       61.288717               63
+       59.180105               64
+       57.053465               65
+       54.909447               66
+       52.748702               67
+        50.57189               68
+       48.379673               69
+       46.172719               70
+       43.951701               71
+       41.717294               72
+        39.47018               73
+       37.211043               74
+       34.940571               75
+       32.659456               76
+       30.368392               77
+       28.068078               78
+       25.759214               79
+       23.442504               80
+       21.118653               81
+       18.788369               82
+       16.452361               83
+       14.111343               84
+       11.766025               85
+        9.417124               86
+       7.0653541               87
+       4.7114321               88
+       2.3560749               89
+   8.2660929e-15               90
+  -8.2660929e-15               90
+      -2.3560749               89
+      -4.7114321               88
+      -7.0653541               87
+       -9.417124               86
+      -11.766025               85
+      -14.111343               84
+      -16.452361               83
+      -18.788369               82
+      -21.118653               81
+      -23.442504               80
+      -25.759214               79
+      -28.068078               78
+      -30.368392               77
+      -32.659456               76
+      -34.940571               75
+      -37.211043               74
+       -39.47018               73
+      -41.717294               72
+      -43.951701               71
+      -46.172719               70
+      -48.379673               69
+       -50.57189               68
+      -52.748702               67
+      -54.909447               66
+      -57.053465               65
+      -59.180105               64
+      -61.288717               63
+      -63.378661               62
+      -65.449299               61
+           -67.5               60
+       -69.53014               59
+      -71.539101               58
+       -73.52627               57
+      -75.491042               56
+      -77.432819               55
+      -79.351009               54
+      -81.245028               53
+      -83.114299               52
+      -84.958253               51
+      -86.776327               50
+      -88.567969               49
+      -90.332632               48
+      -92.069779               47
+       -93.77888               46
+      -95.459415               45
+      -97.110873               44
+       -98.73275               43
+      -100.32455               42
+      -101.88579               41
+        -103.416               40
+       -104.9147               39
+      -106.38145               38
+      -107.81579               37
+      -109.21729               36
+      -110.58553               35
+      -111.92007               34
+      -113.22053               33
+      -114.48649               32
+      -115.71759               31
+      -116.91343               30
+      -118.07366               29
+      -119.19793               28
+      -120.28588               27
+       -121.3372               26
+      -122.35155               25
+      -123.32864               24
+      -124.26816               23
+      -125.16982               22
+      -126.03336               21
+       -126.8585               20
+      -127.64501               19
+      -128.39263               18
+      -129.10114               17
+      -129.77033               16
+      -130.39999               15
+      -130.98992               14
+      -131.53996               13
+      -132.04993               12
+      -132.51967               11
+      -132.94905               10
+      -133.33793                9
+      -133.68619                8
+      -133.99373                7
+      -134.26046                6
+      -134.48628                5
+      -134.67115                4
+      -134.81499                3
+      -134.91776                2
+      -134.97944                1
+            -135                0
+      -134.97944               -1
+      -134.91776               -2
+      -134.81499               -3
+      -134.67115               -4
+      -134.48628               -5
+      -134.26046               -6
+      -133.99373               -7
+      -133.68619               -8
+      -133.33793               -9
+      -132.94905              -10
+      -132.51967              -11
+      -132.04993              -12
+      -131.53996              -13
+      -130.98992              -14
+      -130.39999              -15
+      -129.77033              -16
+      -129.10114              -17
+      -128.39263              -18
+      -127.64501              -19
+       -126.8585              -20
+      -126.03336              -21
+      -125.16982              -22
+      -124.26816              -23
+      -123.32864              -24
+      -122.35155              -25
+       -121.3372              -26
+      -120.28588              -27
+      -119.19793              -28
+      -118.07366              -29
+      -116.91343              -30
+      -115.71759              -31
+      -114.48649              -32
+      -113.22053              -33
+      -111.92007              -34
+      -110.58553              -35
+      -109.21729              -36
+      -107.81579              -37
+      -106.38145              -38
+       -104.9147              -39
+        -103.416              -40
+      -101.88579              -41
+      -100.32455              -42
+       -98.73275              -43
+      -97.110873              -44
+      -95.459415              -45
+       -93.77888              -46
+      -92.069779              -47
+      -90.332632              -48
+      -88.567969              -49
+      -86.776327              -50
+      -84.958253              -51
+      -83.114299              -52
+      -81.245028              -53
+      -79.351009              -54
+      -77.432819              -55
+      -75.491042              -56
+       -73.52627              -57
+      -71.539101              -58
+       -69.53014              -59
+           -67.5              -60
+      -65.449299              -61
+      -63.378661              -62
+      -61.288717              -63
+      -59.180105              -64
+      -57.053465              -65
+      -54.909447              -66
+      -52.748702              -67
+       -50.57189              -68
+      -48.379673              -69
+      -46.172719              -70
+      -43.951701              -71
+      -41.717294              -72
+       -39.47018              -73
+      -37.211043              -74
+      -34.940571              -75
+      -32.659456              -76
+      -30.368392              -77
+      -28.068078              -78
+      -25.759214              -79
+      -23.442504              -80
+      -21.118653              -81
+      -18.788369              -82
+      -16.452361              -83
+      -14.111343              -84
+      -11.766025              -85
+       -9.417124              -86
+      -7.0653541              -87
+      -4.7114321              -88
+      -2.3560749              -89
+  -8.2660929e-15              -90
+&
+@target G0.S3
+@type xy
+   1.1021457e-14              -90
+       3.1414332              -89
+       6.2819094              -88
+       9.4204721              -87
+       12.556165              -86
+       15.688034              -85
+       18.815123              -84
+       21.936482              -83
+       25.051158              -82
+       28.158204              -81
+       31.256672              -80
+       34.345619              -79
+       37.424104              -78
+        40.49119              -77
+       43.545941              -76
+       46.587428              -75
+       49.614724              -74
+       52.626907              -73
+       55.623059              -72
+       58.602268              -71
+       61.563626              -70
+       64.506231              -69
+       67.429187              -68
+       70.331603              -67
+       73.212596              -66
+       76.071287              -65
+       78.906806              -64
+        81.71829              -63
+       84.504881              -62
+       87.265732              -61
+              90              -60
+       92.706853              -59
+       95.385468              -58
+       98.035026              -57
+       100.65472              -56
+       103.24376              -55
+       105.80135              -54
+        108.3267              -53
+       110.81907              -52
+       113.27767              -51
+       115.70177              -50
+       118.09063              -49
+       120.44351              -48
+        122.7597              -47
+       125.03851              -46
+       127.27922              -45
+       129.48116              -44
+       131.64367              -43
+       133.76607              -42
+       135.84772              -41
+         137.888              -40
+       139.88627              -39
+       141.84194              -38
+       143.75439              -37
+       145.62306              -36
+       147.44737              -35
+       149.22676              -34
+        150.9607              -33
+       152.64866              -32
+       154.29011              -31
+       155.88457              -30
+       157.43155              -29
+       158.93057              -28
+       160.38117              -27
+       161.78293              -26
+        163.1354              -25
+       164.43818              -24
+       165.69087              -23
+       166.89309              -22
+       168.04448              -21
+       169.14467              -20
+       170.19334              -19
+       171.19017              -18
+       172.13486              -17
+       173.02711              -16
+       173.86665              -15
+       174.65323              -14
+       175.38661              -13
+       176.06657              -12
+       176.69289              -11
+        177.2654              -10
+        177.7839               -9
+       178.24825               -8
+       178.65831               -7
+       179.01394               -6
+       179.31505               -5
+       179.56153               -4
+       179.75332               -3
+       179.89035               -2
+       179.97259               -1
+             180                0
+       179.97259                1
+       179.89035                2
+       179.75332                3
+       179.56153                4
+       179.31505                5
+       179.01394                6
+       178.65831                7
+       178.24825                8
+        177.7839                9
+        177.2654               10
+       176.69289               11
+       176.06657               12
+       175.38661               13
+       174.65323               14
+       173.86665               15
+       173.02711               16
+       172.13486               17
+       171.19017               18
+       170.19334               19
+       169.14467               20
+       168.04448               21
+       166.89309               22
+       165.69087               23
+       164.43818               24
+        163.1354               25
+       161.78293               26
+       160.38117               27
+       158.93057               28
+       157.43155               29
+       155.88457               30
+       154.29011               31
+       152.64866               32
+        150.9607               33
+       149.22676               34
+       147.44737               35
+       145.62306               36
+       143.75439               37
+       141.84194               38
+       139.88627               39
+         137.888               40
+       135.84772               41
+       133.76607               42
+       131.64367               43
+       129.48116               44
+       127.27922               45
+       125.03851               46
+        122.7597               47
+       120.44351               48
+       118.09063               49
+       115.70177               50
+       113.27767               51
+       110.81907               52
+        108.3267               53
+       105.80135               54
+       103.24376               55
+       100.65472               56
+       98.035026               57
+       95.385468               58
+       92.706853               59
+              90               60
+       87.265732               61
+       84.504881               62
+        81.71829               63
+       78.906806               64
+       76.071287               65
+       73.212596               66
+       70.331603               67
+       67.429187               68
+       64.506231               69
+       61.563626               70
+       58.602268               71
+       55.623059               72
+       52.626907               73
+       49.614724               74
+       46.587428               75
+       43.545941               76
+        40.49119               77
+       37.424104               78
+       34.345619               79
+       31.256672               80
+       28.158204               81
+       25.051158               82
+       21.936482               83
+       18.815123               84
+       15.688034               85
+       12.556165               86
+       9.4204721               87
+       6.2819094               88
+       3.1414332               89
+   1.1021457e-14               90
+  -1.1021457e-14               90
+      -3.1414332               89
+      -6.2819094               88
+      -9.4204721               87
+      -12.556165               86
+      -15.688034               85
+      -18.815123               84
+      -21.936482               83
+      -25.051158               82
+      -28.158204               81
+      -31.256672               80
+      -34.345619               79
+      -37.424104               78
+       -40.49119               77
+      -43.545941               76
+      -46.587428               75
+      -49.614724               74
+      -52.626907               73
+      -55.623059               72
+      -58.602268               71
+      -61.563626               70
+      -64.506231               69
+      -67.429187               68
+      -70.331603               67
+      -73.212596               66
+      -76.071287               65
+      -78.906806               64
+       -81.71829               63
+      -84.504881               62
+      -87.265732               61
+             -90               60
+      -92.706853               59
+      -95.385468               58
+      -98.035026               57
+      -100.65472               56
+      -103.24376               55
+      -105.80135               54
+       -108.3267               53
+      -110.81907               52
+      -113.27767               51
+      -115.70177               50
+      -118.09063               49
+      -120.44351               48
+       -122.7597               47
+      -125.03851               46
+      -127.27922               45
+      -129.48116               44
+      -131.64367               43
+      -133.76607               42
+      -135.84772               41
+        -137.888               40
+      -139.88627               39
+      -141.84194               38
+      -143.75439               37
+      -145.62306               36
+      -147.44737               35
+      -149.22676               34
+       -150.9607               33
+      -152.64866               32
+      -154.29011               31
+      -155.88457               30
+      -157.43155               29
+      -158.93057               28
+      -160.38117               27
+      -161.78293               26
+       -163.1354               25
+      -164.43818               24
+      -165.69087               23
+      -166.89309               22
+      -168.04448               21
+      -169.14467               20
+      -170.19334               19
+      -171.19017               18
+      -172.13486               17
+      -173.02711               16
+      -173.86665               15
+      -174.65323               14
+      -175.38661               13
+      -176.06657               12
+      -176.69289               11
+       -177.2654               10
+       -177.7839                9
+      -178.24825                8
+      -178.65831                7
+      -179.01394                6
+      -179.31505                5
+      -179.56153                4
+      -179.75332                3
+      -179.89035                2
+      -179.97259                1
+            -180                0
+      -179.97259               -1
+      -179.89035               -2
+      -179.75332               -3
+      -179.56153               -4
+      -179.31505               -5
+      -179.01394               -6
+      -178.65831               -7
+      -178.24825               -8
+       -177.7839               -9
+       -177.2654              -10
+      -176.69289              -11
+      -176.06657              -12
+      -175.38661              -13
+      -174.65323              -14
+      -173.86665              -15
+      -173.02711              -16
+      -172.13486              -17
+      -171.19017              -18
+      -170.19334              -19
+      -169.14467              -20
+      -168.04448              -21
+      -166.89309              -22
+      -165.69087              -23
+      -164.43818              -24
+       -163.1354              -25
+      -161.78293              -26
+      -160.38117              -27
+      -158.93057              -28
+      -157.43155              -29
+      -155.88457              -30
+      -154.29011              -31
+      -152.64866              -32
+       -150.9607              -33
+      -149.22676              -34
+      -147.44737              -35
+      -145.62306              -36
+      -143.75439              -37
+      -141.84194              -38
+      -139.88627              -39
+        -137.888              -40
+      -135.84772              -41
+      -133.76607              -42
+      -131.64367              -43
+      -129.48116              -44
+      -127.27922              -45
+      -125.03851              -46
+       -122.7597              -47
+      -120.44351              -48
+      -118.09063              -49
+      -115.70177              -50
+      -113.27767              -51
+      -110.81907              -52
+       -108.3267              -53
+      -105.80135              -54
+      -103.24376              -55
+      -100.65472              -56
+      -98.035026              -57
+      -95.385468              -58
+      -92.706853              -59
+             -90              -60
+      -87.265732              -61
+      -84.504881              -62
+       -81.71829              -63
+      -78.906806              -64
+      -76.071287              -65
+      -73.212596              -66
+      -70.331603              -67
+      -67.429187              -68
+      -64.506231              -69
+      -61.563626              -70
+      -58.602268              -71
+      -55.623059              -72
+      -52.626907              -73
+      -49.614724              -74
+      -46.587428              -75
+      -43.545941              -76
+       -40.49119              -77
+      -37.424104              -78
+      -34.345619              -79
+      -31.256672              -80
+      -28.158204              -81
+      -25.051158              -82
+      -21.936482              -83
+      -18.815123              -84
+      -15.688034              -85
+      -12.556165              -86
+      -9.4204721              -87
+      -6.2819094              -88
+      -3.1414332              -89
+  -1.1021457e-14              -90
+&
+@target G0.S4
+@type xy
+       -178.3605            -2.64
+           -0.44            -0.39
+           -0.85            -0.12
+        125.8997             1.03
+        155.8372           -17.14
+        -28.9495             5.43
+        -37.2171           -13.09
+        -23.0898             0.25
+        -12.2412             2.17
+        -67.4919            -0.89
+         35.6268            -4.14
+        -67.9088             0.34
+        -25.3836            23.88
+         71.2276             3.07
+         85.6311           -11.32
+          79.844              0.7
+         41.4105           -20.91
+           -1.33             0.34
+        162.3091           -11.91
+        -76.9612            -1.82
+        -15.4015              1.9
+          0.1985             6.99
+            0.03             0.29
+            2.16             0.17
+         29.6363             -0.9
+           72.02            -0.03
+         83.4559            -2.72
+        -83.4034             9.03
+          -3.677              2.3
+         -3.6686             1.59
+          0.6599             1.17
+          4.5087            -1.36
+          45.255            -0.85
+        -97.9464             -1.5
+          9.2177            -6.09
+         63.2832               -3
+          1.9332             4.79
+         16.4259             1.28
+          2.2898             0.79
+           -59.9            -0.04
+        -55.8867             1.25
+        -20.9999            -4.33
+        -10.8874             2.75
+            -5.7            -0.15
+         -0.4298             1.56
+          5.0792            -1.02
+          9.0783              1.1
+       -158.8465            -3.36
+        -83.9611            -3.84
+        -64.3894            -0.24
+        -56.1656            -6.42
+        -46.9617             -1.6
+        -32.5569             2.16
+        -29.0668            -0.85
+        -25.0897            -0.27
+        -26.9942            -4.82
+         -6.1204             7.27
+         -1.3924             9.06
+        -16.6661            -2.34
+         -2.8689            -1.61
+          7.7031             3.79
+           -2.77            -4.87
+          2.7635            -7.91
+         43.7385             0.48
+         46.1608            37.52
+          1.0578             3.65
+        -70.5346           -32.53
+        -64.2081            -7.07
+        -15.5498             0.31
+        -55.8117            -0.99
+         -0.8327            23.78
+         24.4599            -0.16
+          0.8093             2.46
+        -43.1821           -43.56
+        -40.6221           -44.69
+         39.6597            -2.24
+        -39.5615            -4.43
+         -96.712             3.93
+         -2.4397              0.9
+&
+@target G0.S5
+@type xy
+        -174.548            -5.78
+       -164.4124             4.27
+        -39.6719            -1.16
+       -157.2417             8.26
+         -73.522             6.65
+        -16.9315            -2.68
+         68.6867             2.82
+        -96.3357            -2.79
+&
+@target G0.S6
+@type xy
+        159.7582            -8.82
+       -150.6001            -27.4
+          99.223            27.07
+         -47.608            19.42
+        -19.4917           -26.71
+        -36.4601            30.92
+        163.0021            10.41
+        -92.8953            17.23
+        -41.3643            27.68
+         78.6478            46.87
+          1.7239            72.74
+         31.1948           -29.86
+        146.5654           -13.26
+        -66.7981            22.95
+         39.9808            75.06
+        -21.8156            74.34
+        -55.6191            22.86
+        -12.3112            53.81
+         10.6685             70.5
+         28.2116           -16.01
+         -4.9053            -65.7
+&
+@target G0.S7
+@type xy
+          2.0196            88.01
+        -66.7825           -32.89
+          3.4636           -87.96
+        146.5654           -13.26
+         -6.4998            16.53
+        -20.0457            75.18
+&
+@target G0.S8
+@type xy
+            6.73            -0.14
+          8.9764           -31.52
+         13.6892              0.6
+          36.477             1.53
+           65.75            -0.01
+         75.4559              0.6
+         78.0608             2.23
+         95.1651             4.27
+        120.7082             3.98
+        135.6455             1.09
+       -141.6339            -0.53
+       -124.5683            -1.07
+        -75.5334             -1.2
+        -72.3682              0.4
+        -47.7152            -0.81
+        -26.4763             0.96
+           -3.44             0.23
+         -1.2297             -1.3
+           -0.47            -0.76
+        117.7568            10.52
+         70.6463            -58.9
+         -32.436           -73.08
+        105.7634            -46.6
+        133.6256           -17.33
+        131.7352            -28.8
+         145.051            -4.65
+         157.719           -13.79
+        158.8575           -25.23
+       -163.5117           -24.26
+        139.1985            11.87
+        166.1856           -12.68
+       -166.4374           -20.68
+        170.4764            -3.79
+        152.3487             9.35
+        178.0362            -6.07
+       -175.3279            -8.18
+        169.9603             5.65
+       -142.2509           -10.62
+       -170.6052             3.19
+       -153.6663             -1.2
+        -97.2397           -15.19
+        142.2485            29.34
+        140.8562            32.74
+       -127.1471            14.55
+       -113.5529            19.75
+         89.0099            53.26
+        -69.6914             -0.9
+        -52.9504            53.84
+        -42.2752             48.5
+        -24.9848            67.38
+        -53.6295           -20.27
+        -47.8726            19.16
+        107.4867            28.75
+         10.3555            77.57
+         51.2103            57.58
+        -43.7163            -0.75
+        -16.7543            34.46
+        -15.0146            26.45
+         -9.3441            13.26
+          2.3884            21.67
+        -24.0004            -3.68
+         15.9754            20.63
+         -6.6837             2.48
+         74.4644            33.14
+          4.7692             3.86
+         16.5149             9.81
+            0.17            -0.15
+           7.513            -2.47
+         17.5029             2.53
+         53.3323            20.37
+        -40.9537           -25.25
+         18.3795            -0.43
+         31.7555             5.82
+         11.7007            -6.22
+          80.347            25.12
+          3.0846           -13.33
+          8.6367            -11.7
+         34.7969            -0.76
+          4.6268            -26.5
+         17.3395           -26.17
+          75.294            -1.18
+         52.2546           -15.55
+         80.1847             0.66
+         53.7843           -17.71
+          106.44             3.14
+         66.3876           -37.04
+        101.6843           -23.32
+        166.4305           -21.92
+        148.0934            10.26
+       -137.3315           -17.78
+       -154.6469            -10.4
+        -92.6311           -16.34
+        -95.7168             0.47
+        116.1013            38.47
+        -61.5593           -15.62
+        -51.3042            57.54
+        -46.5153            47.02
+        -33.7743            58.38
+          0.2501            80.95
+        -46.6894             0.29
+         -12.835            36.37
+         -6.3855            12.48
+        -19.9141            -1.39
+        -31.7895           -12.88
+         11.3494             17.8
+         -1.2195              1.7
+         -8.0968            -8.18
+          5.9294             -8.8
+           39.15            -0.08
+         24.1085            -8.24
+         25.1628           -20.42
+         40.8166            -58.1
+           4.805           -14.36
+         142.794            -27.6
+       -154.9345           -19.81
+        167.9422            11.61
+         25.8196             0.33
+         40.0753            -0.88
+         79.5181             1.86
+         81.2071             1.02
+         93.5642             7.72
+        -73.5976           -35.04
+        167.1439            -14.7
+         89.6238             57.1
+        -31.7919            67.07
+         73.6693             30.5
+         27.3055             1.04
+         27.2925            -19.2
+         28.0234            -58.3
+        -10.9171           -57.98
+         99.9393           -14.57
+&
+@target G0.S9
+@type xy
+        111.6335            -2.12
+          9.9699            -0.25
+         46.5857             4.01
+        -68.1428           -31.94
+        107.4121            40.92
+&
+@target G0.S10
+@type xy
+        -30.3117            64.36
+        -29.8525            57.06
+         67.6623            -38.2
+         60.5378           -38.58
+         -30.007            64.48
+         72.4347            45.24
+         75.9141            65.03
+         49.5241            38.86
+       -143.1256           -28.46
+       -124.2156            35.82
+        -18.9238            44.43
+        121.6435           -39.11
+        -161.387           -20.74
+       -111.7785            -34.9
+       -165.5262           -11.01
+        -10.8792            13.32
+         10.8546           -52.25
+         73.8601           -26.09
+        -36.7703             16.9
+         37.3239           -77.18
+        106.3402           -44.04
+        -39.6728           -61.78
+       -137.9178           -33.14
+       -143.3423            -25.3
+       -100.4455           -32.72
+        -94.1308           -31.09
+        127.1032            28.02
+       -150.2578            17.91
+        142.5728            32.56
+        -135.848            31.88
+       -126.9376            24.33
+        118.3943            34.43
+        124.6284            44.82
+         106.268            47.93
+        106.5281            43.03
+         -61.311            43.64
+         -32.344            78.38
+        -18.4917            83.29
+        -15.2198            81.66
+        -33.3189             60.1
+        -44.8065            28.94
+         48.0267            64.76
+         -2.8166            75.81
+        -16.6916            50.28
+         -6.6585            40.14
+         21.3432            43.41
+         17.3547            40.87
+         38.0465            46.38
+         -7.5433            16.32
+         45.1553            42.34
+         11.8165            10.81
+          67.654            31.75
+         16.4229           -13.22
+          -0.759           -25.37
+         -8.1128            -32.6
+         33.6095           -24.38
+         -5.6447           -40.38
+         91.0572           -10.44
+         79.9807           -41.25
+&

@@ -1,0 +1,255 @@
+#! /bin/bash
+########################################################
+##
+## ltx.sh
+##
+## Bash shell script to process the thesis files
+## in both versions english (eng => -i) and
+## spanish (esp => -e).
+##
+## Copyright (c) 1998,1999,2000 J C Gonzalez
+##
+########################################################
+
+#set -x
+
+#TEXINPUTS=.
+TESIS=common/tesis
+TESISCVS=/hd62/gonzalez/tesis-cvs
+#export TEXINPUTS
+export TESIS
+export TESISCVS
+
+latex="texis"
+dopdf="n"
+
+THIS=`pwd`
+export THIS
+
+#-- run texis
+do_texis () {
+    $latex tesis-$1
+}
+
+#-- run latex
+do_latex () {
+    $latex tesis-$1
+}
+
+#-- run bibtex
+do_bibtex () {
+    bibtex tesis-$1
+}
+
+#-- run both latex and bibtex - stops at errors
+do_fulltex () {
+    $latex tesis-$1 && bibtex tesis-$1 
+    $latex tesis-$1 && $latex tesis-$1
+}
+
+do_fullidxtex () {
+    $latex tesis-$1 && bibtex tesis-$1 
+    makeindex tesis-$1
+    $latex tesis-$1 && $latex tesis-$1
+}
+
+#-- select either "esp" or "eng" version
+selecciona () {
+#    TEXINPUTS=:${THIS}:${THIS}/common:${THIS}/figs:${THIS}/$1
+    TEXINPUTS=.:${TEXINPUTS}:${THIS}:${THIS}/common:${THIS}/figs:${THIS}/$1:
+    TEXPSHEADERS=${TEXINPUTS}
+    export TEXINPUTS
+    export TEXPSHEADERS
+    # rm ${THIS}/eng.tex ${THIS}/esp.tex  1> /dev/null 2>&1
+    if [ "$1" = "esp" ]; then
+        englishvalue=false
+    else
+        englishvalue=true
+    fi
+    cat << EOF > ${THIS}/language.tex
+%% TESIS version $1
+\newif\ifenglish
+\english$englishvalue
+\typeout{^^J^^J=======================================================}
+\ifenglish 
+\typeout{Compiling THESIS, English version  . . .}
+\else 
+\typeout{Compilando TESIS, version Espanol  . . .}
+\fi
+\typeout{=======================================================^^J^^J}
+\ifenglish 
+\usepackage[english]{babel}
+\else 
+\usepackage[spanish,activeacute]{babel}
+\fi
+%\input{chapterdef.tex}
+\endinput
+%%EOF
+EOF
+}
+
+
+#-- initialize and run
+run () {
+
+    mkdir scratch 2>/dev/null || echo ''
+
+    cd scratch
+
+#    for i in aux lof lot toc log; do
+#      rm tesis-*.$i  > /dev/null
+#    done
+
+    files=""
+    files="$files ${THIS}/common/tesis.tex"
+    files="$files ${THIS}/common/{jc.bst,tesis.bib,magic.bib}"
+    files="$files ${THIS}/common/{texis,texis.fmt}"
+    files="$files ${THIS}/common/{pdftexis,pdftexis.fmt}"
+
+#    if [ "$dopdf" = "y" ]; then
+#        files="$files ${THIS}/figs/*.{pdf,png,jpg}"
+#    fi 
+
+    files=`eval echo $files`
+
+    for i in $files; do
+        echo Making symbolic link for $i . . .
+        ln -sf $i .
+    done
+
+    ln -sf tesis.tex tesis-$2.tex
+
+    $1 $2
+
+    for i in $files; do
+        k=./`basename $i`
+        echo Deleting symbolic link for $i . . .
+        rm $k
+    done
+
+    cd ../
+
+    if [ "$dopdf" = "y" ]; then
+        ln -sf scratch/tesis-$2.pdf .
+    else
+        ln -sf scratch/tesis-$2.dvi .
+    fi
+
+#     if [ "$dopdf" = "y" ]; then
+#         cp scratch/tesis-$2.dvi figs/
+#         cd figs
+#         dvips tesis-$2.dvi -o tesis-$2.ps
+#         ps2pdf tesis-$2.ps tesis-$2.pdf
+#         mv tesis-$2.pdf ../scratch
+#         rm tesis-$2.dvi
+#         cd ..
+#         ln -sf scratch/tesis-$2.pdf .
+#     else
+#         ln -sf scratch/tesis-$2.dvi .
+#     fi
+
+}
+
+#
+# MAIN
+#
+
+args=$@
+if [ -z "$args" ]; then
+    echo ''
+    echo 'ltx.sh'
+    echo ''
+    echo 'options:'
+    echo '          -e     espan~ol'
+    echo '          -i     ingles'
+    echo '          -f     full compilation'
+    echo '          -x     full compilation + index'
+    echo '          -p     generate PDF (use pdfLaTeX)'
+    echo ''
+    exit 0
+fi
+
+set -- `getopt eipfx $*`
+if [ $? -ne 0 ]; then
+    exit 1
+fi
+
+esp=0
+eng=0
+full=0
+full2=0
+
+#-- see options
+
+while [ $1 != -- ]; do
+    case $1 in
+        -e)  # selecciona esp (espa~nol)
+             esp=1
+             lang=esp;;
+        -i)  # selecciona eng (ingles)
+             eng=1
+             lang=eng;;
+        -p)  # selecciona eng (ingles)
+             dopdf="y"
+             latex="pdf$latex";;
+        -f)  # do full compilation
+             full=1
+             full2=0;;
+        -x)  # do full compilation
+             full=0
+             full2=1;;
+    esac
+    shift
+done
+
+#-- compile
+
+# if esp
+if [ $esp -eq 1 ]; then
+
+    selecciona esp
+
+    if [ $full -eq 1 ]; then
+        run do_fulltex esp
+    elif [ $full2 -eq 1 ]; then
+        run do_fullidxtex esp
+    else
+        run do_$latex esp
+    fi
+
+fi
+
+# if eng
+if [ $eng -eq 1 ]; then
+
+    selecciona eng
+
+    if [ $full -eq 1 ]; then
+        run do_fulltex eng
+    elif [ $full2 -eq 1 ]; then
+        run do_fullidxtex eng
+    else
+        run do_$latex eng
+    fi
+
+fi
+    
+awk '
+(/Warning/)  {print "    " $0;} 
+(/^Chapter/) {n=split(prev,a,"/");file=a[n]}
+(/^CHAPTER/) {gsub("CHAPTER:", "");print prev,$0,"(" file ")";}
+             {prev=$0}
+'  scratch/tesis-$lang.log > scratch/tesis-$lang.wrn
+grep "erful" scratch/tesis-$lang.log | sort > scratch/tesis-$lang.ful
+
+echo ""
+echo "#### Over/Underfuls ########################"
+cat scratch/tesis-$lang.ful
+
+echo ""
+echo "#### Warnings ########################"
+cat scratch/tesis-$lang.wrn
+
+exit 0
+
+

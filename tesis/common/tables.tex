@@ -1,0 +1,169 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%  tables.tex
+%%
+%%  Created: Mon Oct 20 14:58:56 1997
+%%  Author.: Jose Carlos Gonzalez
+%%  Notes..:
+%%          
+%%-------------------------------------------------------------------------
+%% Filename: $RCSfile$
+%% Revision: $Revision$
+%% Date:     $Date$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% THE COSMIC RADIATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% ATMOPHERIC GAMMA AND COSMIC RAY SHOWERS %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SIMULATION OF ATMOSPHERIC SHOWERS %%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\CORSIKAGeantcodes_table{
+\begin{table}[htb]
+\vskip 30pt
+\ifenglish
+\caption{List of particles handled by CORSIKA}
+\else
+\caption{Lista de part'iculas que son contempladas por CORSIKA}
+\fi
+\label{table:CORSIKA_GEANTcodes}
+\begin{itemize}
+\item[]\begin{tabular}{lll}
+\br
+head1 & head2 & head4 \\
+\mr
+1 & 2 & 4 \\
+1 & 2 & 4 \\
+1 & 2 & 4 \\
+1 & 2 & 4 \\
+\br
+\end{tabular}
+\end{itemize}
+\end{table}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SIMULATION OF THE DETECTOR: MAGIC %%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\seventupletbl{
+\begin{center}
+\begin{tabular}{cl}
+$\lambda$ & Wavelength of the emitted \Cherenkov photon \\
+$x,y$     & Position of the \Cherenkov photon in the horizontal
+  plane of the observation level \\
+$u,v$     & Director cosines in X and Y directions of the incoming
+  photon\\
+$t$       & Time elapsed since the primary of the shower entered the
+  atmosphere until the photon was emitted\\
+$h$       & Height of production of the photon\\
+\end{tabular}
+\end{center}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\zonefocalstbl{
+\begin{table}
+\begin{center}
+\begin{tabular}{|c|D{.}{.}{4}|D{.}{.}{2}|}
+\hline
+%\ifenglish
+%\multirow{2}{2cm}{~~Zone} & 
+%\multicolumn{1}{c|}{Focal Length} & 
+%\multicolumn{1}{c|}{N.mirrors} \\
+%~ & \multicolumn{1}{c|}{(cm)} & ~ \\
+%\else 
+%\multirow{2}{2cm}{~~Zona} & 
+%\multicolumn{1}{c|}{Dist. Focal} & 
+%\multicolumn{1}{c|}{N.espejos} \\
+%~ & \multicolumn{1}{c|}{(cm)} & ~ \\
+%\fi
+\ifenglish
+Zone & 
+\multicolumn{1}{c|}{Focal Length} & 
+\multicolumn{1}{c|}{N.mirrors} \\
+~ & \multicolumn{1}{c|}{(cm)} & ~ \\
+\else 
+Zona & 
+\multicolumn{1}{c|}{Dist. Focal} & 
+\multicolumn{1}{c|}{N.espejos} \\
+~ & \multicolumn{1}{c|}{(cm)} & ~ \\
+\fi
+\hline
+I     &  1703.34 &  36 \\
+II    &  1709.22 &  60 \\
+III   &  1718.14 &  96 \\
+IV    &  1730.06 & 108 \\
+V     &  1745.07 & 132 \\
+VI    &  1763.26 & 168 \\
+VII   &  1784.73 & 196 \\
+VIII  &  1805.40 & 124 \\
+\hline
+\end{tabular}
+\end{center}
+\ifenglish
+\caption{Zones in which the dish of \MAGIC has been divided.}
+\else 
+\caption{Zonas en que se ha dividido el espejo global de \MAGIC.}  
+\fi
+\label{tbl:zonefocals}
+\end{table}
+}
+
+
+%% \begin{description}
+%% \item[$\lambda$:] Wavelength of the emitted \Cherenkov photon.
+%%   
+%% \item[$x,y$:] Position of the \Cherenkov photon in the horizontal
+%%   plane of the observation level.
+%%   
+%% \item[$u,v$:] Director cosines in X and Y directions of the incoming
+%%   photon.
+%%   
+%% \item[$t$:] Time elapsed since the primary of the shower entered the
+%%   atmosphere until the photon was emitted.
+%%   
+%% \item[$h$:] Height of production of the photon.
+%% \end{description}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\q_tbl{
+\begin{table}[hbt]
+%\vspace{-6pt}
+\DependingOnLanguagE%
+{\caption{Quality factor calculated for different MaxDIST bins, for the
+ Standard IAPDs Camera.}\label{q:tbl}}%
+{\caption{Quality factor calculated for different MaxDIST bins, for the
+ Standard IAPDs Camera.}\label{q:tbl}}
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+~& Gammas & Protons &~\\
+ MaxDIST bin &Aceptance factor &Aceptance factor &Q\\
+\hline
+0.4\tdeg-- 0.5\tdeg &  0.451 & 0.0077 & 5.14  \\ 
+0.5\tdeg-- 0.9\tdeg &  0.452 & 0.0049 & 6.47  \\ 
+0.9\tdeg-- 1.1\tdeg &  0.446 & 0.0012 & 12.84 \\ 
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+}
+
+\endinput
+%
+%%EOF

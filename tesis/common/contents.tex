@@ -1,0 +1,32 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%  contents.tex
+%%
+%%  Created: Mon Oct 20 16:12:49 1997
+%%  Author.: Jose Carlos Gonzalez
+%%  Notes..:
+%%          
+%%-------------------------------------------------------------------------
+%% Filename: $RCSfile$
+%% Revision: $Revision$
+%% Date:     $Date$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\typeout{----> Reading/updating tables of contents . . .}
+
+\renewcommand{\headname}{\contentsname}
+\tableofcontents 
+\echapter
+
+\renewcommand{\headname}{\listfigurename}
+\listoffigures   
+\echapter
+
+\renewcommand{\headname}{\listtablename}
+\listoftables    
+\echapter
+
+\endinput
+%
+%%EOF

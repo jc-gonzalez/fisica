@@ -1,0 +1,11 @@
+
+v/del 0
+v/read wl,qe,stdqe 'qepmtstat.dat'
+
+sigma ex=qe*0
+
+null 250 650 0 30
+graph 28 wl qe cs
+gr/hpl/errors wl qe ex stdqe 28 25 .2 1
+
+

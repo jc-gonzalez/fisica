@@ -1,0 +1,630 @@
+% +--------------------------------------------------+
+% | Typeset this file to get the documentation.      |
+% +--------------------------------------------------+
+%
+% This file is copyrighted (c) 1998 by Javier Bezos.
+%
+% This file is distributed without any warranty and specificallly
+% disclaims any implied warranty of MERCHANTABILITY or FITNESS
+% FOR ANY PARTICULAR PURPOSE. While the author firmly belives this
+% to be a high quality product, the user must assume all risks of
+% using the file.
+%
+% NO PERMISSION is granted to produce or to distribute a modified
+% version of this file under its original name.
+%
+% You are NOT ALLOWED to change this file.
+%
+% For further copyright information contact with the author.
+
+\def\fileversion{1.1}
+\def\docdate{May 6, 1998}
+
+\documentclass{ltxguide}
+\usepackage[bf,sf,compact]{titlesec}
+
+
+\title{The \textsf{titlesec} Package\footnote{This 
+package is currently at version 1.1.}}
+
+\author{Javier Bezos\footnote{Please, send your
+comments and suggestions to \texttt{jbezos@mx3.redestb.es}, or
+to my postal address: Apartado 116.035, E-28080 Madrid, Spain.
+English is not my strong point, so contact me when you
+find mistakes in the manual. Other packages by the same author:
+\textsf{accents, polyglot, spanishb}.}}
+
+\date{1998/3/6}
+
+\setheadindent{2.1pc}{0pc}
+
+\renewpagestyle{plain}[\small\sffamily\slshape]{
+  \footrule
+  \setfoot{}{\usepage}{}}
+
+\newpagestyle{myps}[\small\sffamily\slshape]{
+  \headrule
+  \sethead{Titlesec}{\sectiontitle}{\usepage}}
+  
+\pagestyle{myps}
+
+\addtolength{\topmargin}{-3pc}
+\addtolength{\textwidth}{6pc}
+\addtolength{\oddsidemargin}{-2pc}
+\addtolength{\textheight}{7pc}
+
+\raggedright
+\parindent1em
+\nofiles
+
+\begin{document}
+
+\maketitle
+
+With this package, you can change in a straightforward way the 
+sectioning format in a document.  It works with the standard classes 
+and with many others (but not the AMS ones).  Because |\part| is usually 
+implemented in a non-standard way, it remains untouched and should 
+be changed ``by hand.''  (Not a real quibble since this command is not 
+very used.)
+
+The package is loaded by |\usepackage| and then you redefine the 
+sectioning commands.  That may be done by the package itself (see 
+section ``Simple Interface'') or by you with the provided commands (see 
+section ``Advanced Interface.'')  In the latter case, you only need 
+redefine the commands you'll use.  Both methods are available at 
+time.
+
+\section{Simple Interface}
+
+The easiest way to change the format is by means of a set of package 
+options.
+
+\paragraph{Format}
+There are three option groups controlling font, size and align. You 
+need not set all of these groups, since a default is provided for
+each one; however, you must at least set one of them, or otherwise 
+\textsf{titlesec} performs no formatting.
+\begin{decl}
+|rm sf tt md bf up it sl sc|
+\end{decl}
+which select the corresponding family/series/shape.  Default is |bf|.  
+
+Size adjustment is allowed with
+\begin{decl}
+|big medium small tiny|
+\end{decl}
+Default is |big|, which gives the size of standard classes.
+
+Align is controlled by
+\begin{decl}
+|flushleft center flushright|
+\end{decl}
+
+\paragraph{Spacing}
+This options is independent from the above and reduces the spacing.
+\begin{decl}
+|compact|
+\end{decl}
+
+For example, at the beginning of this document we just said
+\begin{verbatim}
+\usepackage[bf,sf,compact]{titlesec}
+\end{verbatim}
+
+
+\section{Advanced Interface}
+
+Two commands are provided to change the title format. The first one is 
+used for the ``internal'' format, i.~e., shape, font, label\dots, 
+the second one defines the ``external'' format, i.~e., spacing before 
+and after, indentation\dots{} This scheme is intended to easy definitions, 
+since in most of cases you will want to modify either spacing or 
+format.\footnote{Information is ``extracted'' from 
+the class sectioning commands, except for chapter.  Standard 
+definitions with |\string\@startsection| are presumed, and if an special 
+procedure was followed an arbitary value is provided, which you may 
+change later. Sadly, there is no way to fetch the chapter format and 
+one similar to that of standard classes will be used.} Note that you
+can redefine existing sectioning commands, but you cannot define \emph{new} ones.
+
+\begin{decl}
+|\titleformat{<command>}[<shape>]{<format>}{<label>}{<sep>}{<style>}|
+\end{decl}
+
+Here
+\begin{itemize}
+\item |<command>| is the sectioning command to be redefined, i.~e., 
+|\chapter|, |\section|, |\subsection|, |\subsubsection|, |\paragraph| 
+or |\subparagraph|.  As stated above, \textsf{titlesec} does not 
+handle |\part|.
+
+\item The paragraph shape is set by |<shape>|, which can
+be:\footnote{Further styles are intended in future releases.}
+\begin{description}
+\item[hang] is the default value, with a hanging label.
+
+\item[block] typeset the whole title in a block (a paragraph) without
+additional formatting.
+
+\item[display] puts the label in a separate paragraph.
+
+\item[runin] A run-in title. (Like the standard |\paragraph|.) Not 
+available to |\chapter|.
+
+\item[leftmargin] puts the 
+title at the left margin.  Large titles at the very end of a page can lead 
+to unpredictable results, but short titles work pretty well and do not
+stick out in the bottom margin. Not available to |\chapter|. |margin| 
+is a synonymous.
+
+\item[rightmargin] is like |leftmargin| but at the right margin.
+
+\item[drop] wraps the text around the title.  The comment in |leftmargin| also 
+applies here. Not available to |\chapter|.
+\end{description}
+
+\item |<format>| is the format to be applied to the whole 
+title---label and text.
+
+\item The label is defined in |<label>|.  See below for illustrative 
+examples.
+
+\item |<sep>| is the separation between label and title body.  This 
+space is horizontal in |hang|, |block|, |runin|, |drop| and |...margin|, and
+vertical in |display|. Both |<label>| and |<sep>| are ignored in
+starred versions of sectioning commands.
+
+\item And finally, |<style>| is the style of the title body. The 
+very last command can take an argument, which is the title text.
+\end{itemize}
+
+\begin{decl}
+|\titlespacing*{<command>}{<left>}{<before>}{<sep>}|
+\end{decl}
+
+The starred version supresses the indentation of the paragraph 
+following the title, except in |drop| and |runin| where this
+alternative does not make sense.
+\begin{itemize}
+\item |<left>| is the ``left space'' of the title.  In the |...margin|
+and |drop| shapes this parameter set the title width, in the |runin| one the
+indentation, and in the remainder a new left margin with
+respect to the current one. With negative value the title 
+hangs. This parameter is not equal to |<indent>| of 
+|\@startsection|, which doesn't work correctly.
+With a negative value in the latter, the first line of the title will
+start in the outer margin, as expected, but the second, third\dots{} 
+lines will not; worse, those lines will be shortened by |<margin>|.
+
+\item |<before>| is the vertical space before the title.
+\item |<sep>| is the separation of title and text---vertical with |hang|,
+|block|, and |display|, and horizontal with |runin|, |drop| and |...margin|.
+By making the value negative, you may define an effective space
+of less than |\parskip|.\footnote{See Goosens, Mittelbach and
+Samarin: \textit{The \LaTeX{} Companion}, Reading, Addison Wesley, 
+1993, p.~25.}
+\end{itemize}
+
+\begin{decl}
+|\filright  \filcenter  \filleft  \fillast  \filinner  \filouter|
+\end{decl}
+
+Drastic versions of the |\ragged...| commands, which cancel word 
+hypenation.  |\fillast| justifies the paragraph, except the last line 
+which is centered.  If the document is |\raggedright| you must reset 
+the value of |\rightskip| to 0 pt, or some irregular format can arise.
+
+|\filinner| and |\filouter| are |\filleft| or |\filright| depending
+on the page. Because of the asyncronous \TeX{} page 
+breaking, these commands can be used in |\chapter| only.
+
+\begin{decl}
+|\wordsep|
+\end{decl}
+
+The inter-word space of the current font. See below for an example.
+
+Related package options are:
+\begin{decl}
+|indentfirst nonindentfirst|
+\end{decl}
+
+By-pass the settings for all of sectioning command.
+
+\begin{decl}
+|rigidchapters rubberchapters|
+\end{decl}
+
+With |rigidchapters| the space for chapter titles is always the same 
+and |<sep>| in |\titlespacing| is the total amount reserved to them, 
+i.~e., |<before>| $+$ |<sep>| is the distance
+from the top of the page to the
+main text.  The default is |rubberchapters| which |<sep>| is the 
+separation of title and text in, as usual.
+
+\begin{decl}
+|clearempty|
+\end{decl}
+
+Modifies the behaviour of |\cleardoublepage| so that the |empty| page style
+will be used in empty pages.
+
+The following examples will be illustrative.
+
+\begingroup
+
+\rightskip=0pt
+
+\begin{verbatim}
+\titleformat{\section}[block]
+  {\normalfont\bfseries\filcenter}{\fbox{\itshape\thesection}}{1em}{}
+\end{verbatim}
+
+\titleformat{\section}[block]
+  {\normalfont\bfseries\filcenter}{\fbox{\itshape\thesection}}{1em}{}
+
+\section[Advanced Interface]{This is an 
+example of the section command just defined and, what's more, this is 
+an example of the section command just defined}
+
+\begin{verbatim}
+\titleformat{\section}[display]
+  {\normalfont\narrower\narrower\fillast}
+  {\scshape section \oldstylenums{\thesection}}
+  {1ex minus .1ex}
+  {\small}
+\end{verbatim}
+
+\titleformat{\section}[display]
+  {\normalfont\narrower\narrower\fillast}
+  {\scshape section \oldstylenums{\thesection}}
+  {1ex minus .1ex}
+  {\small}
+
+\section[Advanced Interface]{This is an example of the section
+command just defined 
+and, what's more, this is 
+an example of the section command just defined. Let us repeat it.
+This is an example of the section command just defined 
+and, what's more, this is 
+an example of the section command just defined}
+
+\begin{verbatim}
+\titleformat{\section}
+  {\hrule\vspace{.5ex}\normalfont\itshape}
+  {\thesection.}{.5em}{}
+\end{verbatim}
+
+\titleformat{\section}
+  {\hrule\vspace{.5ex}\normalfont\itshape}
+  {\thesection.}{.5em}{}
+
+\section[Advanced Interface]{A Ruled Title}
+
+\begin{verbatim}
+\titleformat{\section}[block]
+  {\normalfont\sffamily}
+  {\thesection}{.5em}{\hrulefill\\[.8ex]\bfseries}
+\end{verbatim}
+
+\titleformat{\section}[block]
+  {\normalfont\sffamily}
+  {\thesection}{.5em}{\hrulefill\\[.8ex]\bfseries}
+
+\section[Advanced Interface]{Another Ruled Title}
+
+\begin{verbatim}
+\titleformat{\section}[runin]
+  {\normalfont\scshape}
+  {}{0pt}{}
+\titlespacing{\section}
+  {\parindent}{\medskipamount}{\wordsep}
+\end{verbatim}
+
+\titleformat{\section}[runin]
+  {\normalfont\scshape}
+  {}{0pt}{}
+\titlespacing{\section}
+  {\parindent}{\medskipamount}{\wordsep}
+  
+\section*{The investigation of transport processes}
+requires a consideration of the effects of molecular\ldots
+
+\begin{verbatim}
+\titleformat{\section}[drop]
+  {\normalfont\fontseries{b}\selectfont\filright}
+  {\thesection.}{.5em}{}
+\titlespacing{\section}
+  {12pc}{1.5ex plus .1ex minus .2ex}{1.5pc}
+\end{verbatim}
+
+\titleformat{\section}[drop]
+  {\normalfont\fontseries{b}\selectfont\filright}
+  {\thesection.}{.5em}{}
+\titlespacing{\section}
+  {12pc}{1.5ex plus .1ex minus .2ex}{1.5pc}
+
+\section[Advanced Interface]{A Simple Example of the
+  ``drop'' Section Shape}
+
+Which is followed by some text to show the result. And blah, blah, blah, 
+blah,  blah,  blah,  blah,  blah,  blah,  blah,  blah,  blah,  blah, 
+blah,  blah,  blah,  blah,  blah,  blah,  blah,  blah,  blah,  blah, 
+blah,  blah,  blah,  blah,  blah,  blah,  blah.  And blah, blah, blah, 
+blah,  blah,  blah,  blah,  blah,  blah,  blah,  blah,  blah,  blah, 
+blah,  blah,  blah,  blah,  blah,  blah,  blah.
+
+\begin{verbatim}
+\titleformat{\section}[leftmargin]
+  {\normalfont\sffamily\bfseries\filleft}
+  {\thesection}{.5em}{}
+\titlespacing{\section}
+  {4pc}{1.5ex plus .1ex minus .2ex}{1pc}
+\end{verbatim}
+
+\titleformat{\section}[leftmargin]
+  {\normalfont\sffamily\bfseries\filleft}
+  {\thesection}{.5em}{}
+\titlespacing{\section}
+  {4pc}{1.5ex plus .1ex minus .2ex}{1pc}
+
+\section*{Example of margin section}
+
+Which is followed by some text to show the result.
+But don't stop reading, because the following example illustrates how
+to take advantage of other packages. The last command in the last
+argument can take an argument, which is the title with no
+aditional command inside it. We just give the code, but you
+may try it by yourself. Thus, with the \textsf{letterspace} package
+you may say
+\begin{verbatim}
+\newcommand{\secform}[1]{
+  \MakeLowercase{\protect\letterspace to 1.3\naturalwidth{#1}}}
+\titleformat{\section}[block]
+  {\normalfont\scshape\filcenter}
+  {\thesection}
+  {1em}
+  {\secform}
+\end{verbatim}
+
+\endgroup
+
+\smallskip
+\begin{center}
+*\hspace{3pc}*\hspace{3pc}*
+\end{center}
+\bigskip
+
+\section{Page Styles}
+
+As a part of this package a set of commands are provided for one-step
+headline and footline settings.  It's not intented for complex headlines 
+which packages like \textsf{fancyhdr} o \textsf{scrpage}
+are best suited for, but most of 
+cases can be handled. The main limitation is that you must restrict 
+yourself to pass information to headlines; footlines may contain text 
+and page numbers, but not section titles, numbers, etc. It works with
+standard classes and others, even if titles are not redefined;
+however, it clashes with the \textsc{AMS} classes, which provide
+their own solutions. If you use an alternative package, like those
+above, don't forget the package option
+\begin{decl}
+|nops|
+\end{decl}
+and all of commands described in this section will be ignored. 
+
+\begin{decl}
+|\newpagestyle{<name>}[<global-style>]{<commands>}|\\
+|\renewpagestyle{<name>}[<global-style>]{<commands>}|
+\end{decl}
+
+Defines a new style and redefines an existing one, named |<name>|.  For 
+convenience, end of lines are ignored, and you needn't hide them with 
+|\%|.
+
+|<global-style>| is any command to be applied to both footlines and 
+headlines. Fragile commands are allowed.
+
+In |<commands>| you may use
+\begin{decl}
+|\headrule \footrule|
+\end{decl}
+
+If you want a rule below the headline and above the footline.  You may 
+also set their width directly with the commands |\setheadrule| and 
+|\setfootrule|. (For instance, |\setheadrule{.4pt}| which is,
+by the way, the default value.)
+
+\begin{decl}
+|\sethead[<even-left>][<even-center>][<even-right>]|\\
+|        {<odd-left>}{<odd-center>}{<odd-right>}|\\
+|\setfoot[<even-left>][<even-center>][<even-right>]|\\
+|        {<odd-left>}{<odd-center>}{<odd-right>}|
+\end{decl}
+
+Set the corresponding part in heads and foots.  The optional arguments 
+are all or none.  If no optional arguments are given the odd-page 
+settings applies to both even and odd pages.  In the arguments of 
+|\sethead| and because of its one-step mechanism, we must distingish 
+between two groups of command. The first one are those expanded when 
+the marks are stored, with information related to sections, and 
+includes:
+\begin{itemize}
+\item |\thechapter|, |\thesection|\dots{}
+\item |\chaptertitle|, |\sectiontitle|\dots{} which print the chapter, 
+section\dots{} title.
+\item Any command which 
+is neither fragile nor protected (a command just containing text, for 
+example).
+\end{itemize}
+The second one are those expanded in every page, and includes:
+\begin{itemize}
+\item |\usepage|.  The 
+page number, but evaluated in every page.  (|\thepage| is evaluated 
+when the mark is sent---not a desired behaviour, indeed.)
+\item Any protected command.
+\end{itemize}
+Fragile commands must be protected with |\protect|.
+
+In |\setfoot| the commands are always evaluated in every page.
+
+\begin{decl}
+|\setmarks{<primary>}{<secondary>}|
+\end{decl}
+Sets which |\...title| commands are to be defined, and when the marks
+are updated. For example 
+|\setmarks{chapter}{section}|
+means that:
+\begin{itemize}
+\item |\chaptertitle| and |\sectiontitle| are the allowed titles in 
+  heads,
+\item |\sectiontitle| is reset in |\chapter|, and
+\item 
+  |\markboth{<even-head>}{<odd-head>}| is executed in |\chapter| and 
+  |\section|, where |<even-head>| and |<odd-head>| stands for the 
+  internal definitions generated by |\sethead|.
+\end{itemize}
+By default it is 
+|\setmarks{chapter}{section}| but |\setmarks{section}{subsection}| in 
+\textsf{article} class.
+
+Related package options are:
+\begin{decl}
+|outermarks innermarks topmarks|
+\end{decl}
+
+|innermarks| is the default in \LaTeX, with bottom marks in even pages 
+and first marks in odd pages---not useful, not usual and, furthermore, it
+can lead to undesired results.  More 
+convenient is |outermarks|, with top marks in even pages and bottom 
+marks in odd pages; it's the usual system and described in \textit{The 
+\TeX{}book}, p.~259.  Both of them are intended for two side printing; 
+|topmarks| is intended for one side printing with top marks in every 
+page.
+
+Since |\markboth| is used when the marks are updated, as set by |\setmarks|,
+special constructions like that are allowed:
+\begin{verbatim}
+\newpagestyle{mypagestyle}[\small\sffamily]{
+  \sethead [\textbf{\usepage}] 
+           [\textsl{\chaptertitle}]
+           [[\thesection]
+           {\thesection]} 
+           {\textsl{\sectiontitle}}
+           {\textbf{\usepage}}}
+\end{verbatim}
+As you can see, |\thesection| is printed in both left and right heads (with
+right values!)
+
+\begin{decl}
+|\setheadindent[<even-left>][<even-right>]{<odd-left>}{<odd-right>}|
+\end{decl}
+
+Sets the indent of footlines and headlines.
+
+In this document, the following styles are used:
+\begin{verbatim}
+\setheadindent{2.1pc}{0pc}
+\renewpagestyle{plain}[\small\sffamily\slshape]{
+  \footrule 
+  \setfoot{}{\usepage}{}}
+\newpagestyle{myps}[\small\sffamily\slshape]{
+  \headrule
+  \sethead{Titlesec}{\sectiontitle}{\usepage}}
+\end{verbatim}
+
+The following definitions provide page styles similar to
+those of Lamport's \LaTeX\ book.
+
+\begin{verbatim}
+\newlength{\headind}
+\setlength{\headind}{\marginparsep}
+\addtolength{\headind}{\marginparwidth}
+\setheadindent[\headind][0pt]{0pt}{\headind}
+\renewpagestyle{plain}{}
+\newpagestyle{latex}[\bfseries]{
+  \headrule
+  \sethead[\usepage][][\chaptertitle]
+          {\thesection\ \sectiontitle}{}{\usepage}}
+\end{verbatim}
+
+\section{Example}
+
+Now an example of a complete new title scheme follows.
+
+\begin{verbatim}
+\documentclass[twoside]{report}
+\usepackage[sf,sl,outermarks]{titlesec}
+
+% \chapter, \subsection...: no additional code
+
+\titleformat{\section}
+  {\LARGE\sffamily\slshape}
+  {\thesection}{1em}{}
+\titlespacing{\section}
+  {-6pc}{3.5ex plus .1ex minus .2ex}{1.5ex minus .1ex}
+
+\titleformat{\paragraph}[leftmargin]
+  {\sffamily\slshape\filright}
+  {}{}{}
+\titlespacing{\paragraph}
+  {5pc}{1.5ex minus .1 ex}{1pc}
+
+% 5+1=6, ie, the negative left margin in section
+
+\setheadindent{6pc}{0pc}
+  
+\renewpagestyle{plain}{}
+
+\newpagestyle{special}[\small\sffamily]{
+   \headrule
+   \sethead[\usepage][\textsl{\chaptertitle}][]
+           {}{\textsl{\chaptertitle}}{\usepage}}
+               
+\newpagestyle{main}[\small\sffamily]{
+   \headrule
+   \sethead[\usepage][\textsl{\thechapter. \chaptertitle}][]
+           {}{\textsl{\thesection. \sectiontitle}}{\usepage}}
+
+\pagestyle{special}
+
+\begin{document}
+
+---TOC
+
+\pagestyle{main}
+
+---Body
+
+\pagestyle{special}
+
+---Index
+\end{document}
+\end{verbatim}
+
+
+\section{Other Changes}
+
+In addition, this version has the following changes:
+\begin{itemize}
+\item The |\chapter| as generated by the ``simple interface'' has been
+modified, since version 1.0 didn't reproduce correctly the standard 
+classes one. Further, space between label and body now depends on the 
+font size.
+
+\item Instead of the promised |mirrorchapters| option, I provide the
+|\filinner| and |\filouter| commands.
+
+\item The starred version of |\titlespacing| now works in |...margin|.
+\end{itemize}
+
+\section{To do}
+\begin{itemize}
+\item Improved |...margin| title styles.  
+\item Package options |bottomtitles| and |nobottontitles|.
+\item Perhaps |\newtitle|, |\newtitlestyle|, and |\newchapterstyle|.
+\end{itemize}
+
+Happy \TeX{}ing!
+\end{document}
