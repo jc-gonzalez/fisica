@@ -72,6 +72,14 @@
 #define ID_VIEW_TOOLBAR             12010
 #define ID_VIEW_STATUSBAR           12020
 
+#define ID_VIEW_ZOOM25              12025
+#define ID_VIEW_ZOOM50              12050
+#define ID_VIEW_ZOOM100             12100
+#define ID_VIEW_ZOOM200             12200
+#define ID_VIEW_ZOOM400             12400
+
+#define ID_NORMALIZE_ZOOM           12000
+
 ///////////////////////////////////////////////////////////////////
 // Help-menu entries
 #define ID_HELP_ABOUT               1002

@@ -1,6 +1,6 @@
 /*************************************************************************
  *                                                                          
- * qscanplotdoc.cpp  -  description
+ * gpoint.h  -  description
  *
  * Copyright (C) 2001  J C Gonzalez
  * gonzalez@gae.ucm.es
@@ -28,58 +28,19 @@
  ************************************************************************/
 
 
-#include "qscanplotdoc.h"
+#ifndef GPOINT_H
+#define GPOINT_H
 
+#include "point.h"
 
-QScanPlotDoc::QScanPlotDoc()
-{
-  modified = false;
-}
+/**Base class for points in the graphics
+  *@author J C Gonzalez
+  */
 
-QScanPlotDoc::~QScanPlotDoc()
-{
-}
+class GPoint : public Point  {
+public: 
+	GPoint(double x=0., double y=0.);
+	virtual ~GPoint();
+};
 
-void QScanPlotDoc::newDoc()
-{
-}
-
-bool QScanPlotDoc::save()
-{
-  return true;
-}
-
-bool QScanPlotDoc::saveAs(const QString &filename)
-{
-  return true;
-}
-
-bool QScanPlotDoc::load(const QString &filename)
-{
-  loadImage( filename );
-
-  emit documentChanged();
-  return true;
-}
-
-bool QScanPlotDoc::isModified() const
-{
-  return modified;
-}
-
-/** Loads image file in any of the supported formats */
-bool QScanPlotDoc::loadImage(const char* filename)
-{
-  bool ok = true;
-
-  if ( filename )
-    ok = image.load(filename, 0);
-
-	return ok;
-}
-
-/** Exports image */
-QImage* QScanPlotDoc::getImage()
-{
-	return &image;
-}
+#endif

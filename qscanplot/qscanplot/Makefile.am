@@ -1,11 +1,15 @@
 ####### kdevelop will overwrite this part!!! (begin)##########
 bin_PROGRAMS = qscanplot
-qscanplot_SOURCES = qscanplotview.cpp qscanplotdoc.cpp qscanplot.cpp main.cpp 
+qscanplot_SOURCES = axispoint.cpp curvepoint.cpp figurepoint.cpp gpoint.cpp point.cpp qsp.cpp qscanplotview.cpp qscanplotdoc.cpp qscanplot.cpp main.cpp 
+SOURCES = axispoint.cpp curvepoint.cpp figurepoint.cpp gpoint.cpp point.cpp qsp.cpp qscanplotview.cpp qscanplotdoc.cpp qscanplot.cpp main.cpp 
+INTERFACES = 
+TRANSLATIONS = 
+KDE_OPTIONS = qtonly
 qscanplot_LDADD   = -lqt -lXext -lX11 $(LIBSOCKET)
 
 SUBDIRS = docs 
 
-EXTRA_DIST = main.cpp qscanplot.cpp qscanplot.h qscanplotdoc.cpp qscanplotdoc.h qscanplotview.cpp qscanplotview.h resource.h qscanplot.xpm mini-qscanplot.xpm filenew.xpm filesave.xpm fileopen.xpm 
+EXTRA_DIST = main.cpp qscanplot.cpp qscanplot.h qscanplotdoc.cpp qscanplotdoc.h qscanplotview.cpp qscanplotview.h resource.h qscanplot.xpm mini-qscanplot.xpm filenew.xpm filesave.xpm fileopen.xpm qsp.cpp qsp.h point.cpp point.h gpoint.cpp gpoint.h figurepoint.cpp figurepoint.h curvepoint.cpp curvepoint.h axispoint.cpp axispoint.h 
 
 ####### kdevelop will overwrite this part!!! (end)############
 

@@ -32,7 +32,8 @@
 #define QSCANPLOTVIEW_H
 
 // include files for QT
-#include <qwidget.h>
+#include <qcanvas.h>
+#include <qpixmap.h>
 
 // application specific includes
 #include "qscanplotdoc.h"
@@ -41,16 +42,40 @@
  * This class provides an incomplete base for your application view. 
  */
 
-class QScanPlotView : public QWidget
+class QScanPlotView : public QCanvasView
 {
   Q_OBJECT
+
   public:
     QScanPlotView(QWidget *parent=0, QScanPlotDoc* doc=0);
     ~QScanPlotView();
-  
+
+    /** converts image to pixmap */
+    bool convertImage();
+    /** scales pixmap to fit window */
+    void scale();
+    /** Changes the first zoom to view image */
+    void setInitialZoom(double z);
+    /** Changes the zoom to view image */
+    void setZoom(double z);
+    /** shows the scaled pixmap */
+    void showImage();
+
+  protected:
+    //void paintEvent( QPaintEvent * );
+    //void resizeEvent( QResizeEvent * );
+
   protected slots:
     void slotDocumentChanged();
-  
+
+  private:
+    QScanPlotDoc *theDoc;
+
+    QImage       *image;
+    QPixmap      pm;            // the converted pixmap
+    QPixmap      pmScaled;      // the scaled pixmap
+	  double       zoom;
+	  QCanvas      *theCanvas;
 };
 
 #endif

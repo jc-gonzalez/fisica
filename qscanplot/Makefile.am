@@ -1,6 +1,4 @@
 ####### kdevelop will overwrite this part!!! (begin)##########
-dist-hook:
-	-perl am_edit
 
 SUBDIRS = qscanplot 
 

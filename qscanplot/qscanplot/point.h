@@ -1,6 +1,6 @@
 /*************************************************************************
  *                                                                          
- * qscanplotdoc.cpp  -  description
+ * point.h  -  description
  *
  * Copyright (C) 2001  J C Gonzalez
  * gonzalez@gae.ucm.es
@@ -28,58 +28,28 @@
  ************************************************************************/
 
 
-#include "qscanplotdoc.h"
+#ifndef POINT_H
+#define POINT_H
 
 
-QScanPlotDoc::QScanPlotDoc()
-{
-  modified = false;
-}
+/**Base class for points
+  *@author J C Gonzalez
+  */
 
-QScanPlotDoc::~QScanPlotDoc()
-{
-}
+class Point {
+public: 
+	Point(double x=0., double y=0.);
+	virtual ~Point();
+	
+public:
+	void setX(double nx);
+	void setY(double ny);
+	double getX();
+	double getY();
+	
+protected:
+	double x;
+	double y;
+};
 
-void QScanPlotDoc::newDoc()
-{
-}
-
-bool QScanPlotDoc::save()
-{
-  return true;
-}
-
-bool QScanPlotDoc::saveAs(const QString &filename)
-{
-  return true;
-}
-
-bool QScanPlotDoc::load(const QString &filename)
-{
-  loadImage( filename );
-
-  emit documentChanged();
-  return true;
-}
-
-bool QScanPlotDoc::isModified() const
-{
-  return modified;
-}
-
-/** Loads image file in any of the supported formats */
-bool QScanPlotDoc::loadImage(const char* filename)
-{
-  bool ok = true;
-
-  if ( filename )
-    ok = image.load(filename, 0);
-
-	return ok;
-}
-
-/** Exports image */
-QImage* QScanPlotDoc::getImage()
-{
-	return &image;
-}
+#endif

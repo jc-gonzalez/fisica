@@ -1,6 +1,6 @@
 /*************************************************************************
  *                                                                          
- * qscanplotdoc.cpp  -  description
+ * axispoint.h  -  description
  *
  * Copyright (C) 2001  J C Gonzalez
  * gonzalez@gae.ucm.es
@@ -28,58 +28,19 @@
  ************************************************************************/
 
 
-#include "qscanplotdoc.h"
+#ifndef AXISPOINT_H
+#define AXISPOINT_H
 
+#include <figurepoint.h>
 
-QScanPlotDoc::QScanPlotDoc()
-{
-  modified = false;
-}
+/**
+  *@author J C Gonzalez
+  */
 
-QScanPlotDoc::~QScanPlotDoc()
-{
-}
+class AxisPoint : public FigurePoint  {
+public: 
+	AxisPoint(QCanvas *c=0);
+	~AxisPoint();
+};
 
-void QScanPlotDoc::newDoc()
-{
-}
-
-bool QScanPlotDoc::save()
-{
-  return true;
-}
-
-bool QScanPlotDoc::saveAs(const QString &filename)
-{
-  return true;
-}
-
-bool QScanPlotDoc::load(const QString &filename)
-{
-  loadImage( filename );
-
-  emit documentChanged();
-  return true;
-}
-
-bool QScanPlotDoc::isModified() const
-{
-  return modified;
-}
-
-/** Loads image file in any of the supported formats */
-bool QScanPlotDoc::loadImage(const char* filename)
-{
-  bool ok = true;
-
-  if ( filename )
-    ok = image.load(filename, 0);
-
-	return ok;
-}
-
-/** Exports image */
-QImage* QScanPlotDoc::getImage()
-{
-	return &image;
-}
+#endif

@@ -1,6 +1,6 @@
 /*************************************************************************
  *                                                                          
- * qscanplotdoc.cpp  -  description
+ * figurepoint.cpp  -  description
  *
  * Copyright (C) 2001  J C Gonzalez
  * gonzalez@gae.ucm.es
@@ -28,58 +28,32 @@
  ************************************************************************/
 
 
-#include "qscanplotdoc.h"
+#include "figurepoint.h"
 
+#include <qpainter.h>
 
-QScanPlotDoc::QScanPlotDoc()
+FigurePoint::FigurePoint(QCanvas *c) : QCanvasPolygon(c)
 {
-  modified = false;
+  QPointArray p(12);
+  p.setPoint( 0, -5,  0);
+  p.setPoint( 1, -2,  0);
+  p.setPoint( 2,  0,  2);
+  p.setPoint( 3,  0,  5);
+  p.setPoint( 4,  0,  2);
+  p.setPoint( 5,  2,  0);
+  p.setPoint( 6,  5,  0);
+  p.setPoint( 7,  2,  0);
+  p.setPoint( 8,  0, -2);
+  p.setPoint( 9,  0, -5);
+  p.setPoint(10,  0, -2);
+  p.setPoint(11, -2,  0);
+  setPoints(p);
 }
 
-QScanPlotDoc::~QScanPlotDoc()
+FigurePoint::~FigurePoint() {}
+
+/** Re-implemented from QCanvasPolygonalItem. Draws the point */
+void FigurePoint::drawShape ( QPainter & p )
 {
-}
-
-void QScanPlotDoc::newDoc()
-{
-}
-
-bool QScanPlotDoc::save()
-{
-  return true;
-}
-
-bool QScanPlotDoc::saveAs(const QString &filename)
-{
-  return true;
-}
-
-bool QScanPlotDoc::load(const QString &filename)
-{
-  loadImage( filename );
-
-  emit documentChanged();
-  return true;
-}
-
-bool QScanPlotDoc::isModified() const
-{
-  return modified;
-}
-
-/** Loads image file in any of the supported formats */
-bool QScanPlotDoc::loadImage(const char* filename)
-{
-  bool ok = true;
-
-  if ( filename )
-    ok = image.load(filename, 0);
-
-	return ok;
-}
-
-/** Exports image */
-QImage* QScanPlotDoc::getImage()
-{
-	return &image;
+  p.drawPolygon( areaPoints() );
 }

@@ -33,13 +33,16 @@
 
 #include "qscanplot.h"
 
+#include "figurepoint.h"
+
 int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
   a.setFont(QFont("helvetica", 12));
+
   /* uncomment the following line, if you want a Windows 95 look*/
   // a.setStyle(WindowsStyle);
-    
+
   QScanPlot *qscanplot=new QScanPlot();
   a.setMainWidget(qscanplot);
 

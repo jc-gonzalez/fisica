@@ -114,7 +114,9 @@ class QScanPlot : public QMainWindow
     void slotViewToolBar();
     /** toggle the statusbar*/
     void slotViewStatusBar();
-  
+    /** sends new zoom to view*/
+    void slotChangeZoom(int z);
+
     /** shows an about dlg*/
     void slotHelpAbout();
   
@@ -145,6 +147,10 @@ class QScanPlot : public QMainWindow
   
     QToolBar *fileToolbar;
 
+  public: // Public attributes
+
+    /** Previous ZOOM selected in View menu */
+    int oldz;
 };
 #endif 
 

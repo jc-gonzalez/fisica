@@ -35,6 +35,8 @@
 
 // application specific includes
 
+#include <qimage.h>
+
 /**
   * the Document Class
   */
@@ -52,11 +54,20 @@ class QScanPlotDoc : public QObject
     bool load(const QString &filename);
     bool isModified() const;
 
+    /** Loads image file in any of the supported formats */
+    bool loadImage(const char* filename);
+    /**  */
+    QImage* getImage();
+
   signals:
     void documentChanged();
 
   protected:
     bool modified;
+
+  private:
+    QImage      image;         // the loaded image
+
 };
 
 #endif

@@ -33,6 +33,8 @@
 #include "fileopen.xpm"
 #include "filenew.xpm"
 
+inline double normalized_zoom(int z) { return (double(z - ID_NORMALIZE_ZOOM) * .01); }
+
 QScanPlot::QScanPlot()
 {
   setCaption("QScanPlot " VERSION);
@@ -85,9 +87,19 @@ void QScanPlot::initMenuBar()
   viewMenu->setCheckable(true);
   viewMenu->insertItem("Tool&bar", this, SLOT(slotViewToolBar()), 0, ID_VIEW_TOOLBAR);
   viewMenu->insertItem("&Statusbar", this, SLOT(slotViewStatusBar()), 0, ID_VIEW_STATUSBAR);
+  viewMenu->insertSeparator();
+  viewMenu->insertItem(" 1:4 ( 25%)", this, SLOT(slotChangeZoom(int)), 0, ID_VIEW_ZOOM25);
+  viewMenu->insertItem(" 1:2 ( 50%)", this, SLOT(slotChangeZoom(int)), 0, ID_VIEW_ZOOM50);
+  viewMenu->insertItem(" &1:1 (100%)", this, SLOT(slotChangeZoom(int)), 0, ID_VIEW_ZOOM100);
+  viewMenu->insertItem(" &2:1 (200%)", this, SLOT(slotChangeZoom(int)), 0, ID_VIEW_ZOOM200);
+  viewMenu->insertItem(" &4:1 (400%)", this, SLOT(slotChangeZoom(int)), 0, ID_VIEW_ZOOM400);
+
 
   viewMenu->setItemChecked(ID_VIEW_TOOLBAR, true);
   viewMenu->setItemChecked(ID_VIEW_STATUSBAR, true);
+
+  oldz = ID_VIEW_ZOOM50;
+  viewMenu->setItemChecked(oldz, true);
 
   ///////////////////////////////////////////////////////////////////
   // EDIT YOUR APPLICATION SPECIFIC MENUENTRIES HERE
@@ -169,6 +181,7 @@ void QScanPlot::initView()
   // set the main widget here
   view=new QScanPlotView(this, doc);
   setCentralWidget(view);
+  view->setInitialZoom( normalized_zoom(oldz) );
 }
 
 bool QScanPlot::queryExit()
@@ -177,12 +190,9 @@ bool QScanPlot::queryExit()
                                     "Do your really want to quit?",
                                     QMessageBox::Ok, QMessageBox::Cancel);
 
-  if (exit==1)
-  {
+  if (exit==1) {
 
-  }
-  else
-  {
+  } else {
 
   };
 
@@ -360,6 +370,14 @@ void QScanPlot::slotHelpAbout()
                      IDS_APP_ABOUT );
 }
 
+void QScanPlot::slotChangeZoom(int z)
+{
+  viewMenu->setItemChecked(oldz, false);
+  viewMenu->setItemChecked(z, true);
+  view->setZoom( normalized_zoom(z) );
+  oldz = z;
+}
+
 void QScanPlot::slotStatusHelpMsg(const QString &text)
 {
   ///////////////////////////////////////////////////////////////////
@@ -421,6 +439,14 @@ void QScanPlot::statusCallback(int id_)
 
     case ID_VIEW_STATUSBAR:
          slotStatusHelpMsg("Enables/disables the statusbar");
+         break;
+
+    case ID_VIEW_ZOOM25:
+    case ID_VIEW_ZOOM50:
+    case ID_VIEW_ZOOM100:
+    case ID_VIEW_ZOOM200:
+    case ID_VIEW_ZOOM400:
+         slotStatusHelpMsg("Changes zoom");
          break;
 
     case ID_HELP_ABOUT:

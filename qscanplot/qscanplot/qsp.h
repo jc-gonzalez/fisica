@@ -1,6 +1,6 @@
 /*************************************************************************
  *                                                                          
- * qscanplotdoc.cpp  -  description
+ * qsp.h  -  description
  *
  * Copyright (C) 2001  J C Gonzalez
  * gonzalez@gae.ucm.es
@@ -28,58 +28,30 @@
  ************************************************************************/
 
 
-#include "qscanplotdoc.h"
+#ifndef QSP_H
+#define QSP_H
 
 
-QScanPlotDoc::QScanPlotDoc()
-{
-  modified = false;
-}
+/** All key parameters are defined inside namespace Qsp
+	* Using a class for compiler compatibility
+  *@author J C Gonzalez
+  */
 
-QScanPlotDoc::~QScanPlotDoc()
-{
-}
+class Qsp {
+public: 
 
-void QScanPlotDoc::newDoc()
-{
-}
+	enum CoordSysClass {
+		CartesianCoordSys,
+		PolarCoordSys
+	};
 
-bool QScanPlotDoc::save()
-{
-  return true;
-}
+	enum ScaleMode {
+		LinLinScale,
+		LinLogScale,
+		LogLinScale,
+		LogLogScale
+	};
+	
+};
 
-bool QScanPlotDoc::saveAs(const QString &filename)
-{
-  return true;
-}
-
-bool QScanPlotDoc::load(const QString &filename)
-{
-  loadImage( filename );
-
-  emit documentChanged();
-  return true;
-}
-
-bool QScanPlotDoc::isModified() const
-{
-  return modified;
-}
-
-/** Loads image file in any of the supported formats */
-bool QScanPlotDoc::loadImage(const char* filename)
-{
-  bool ok = true;
-
-  if ( filename )
-    ok = image.load(filename, 0);
-
-	return ok;
-}
-
-/** Exports image */
-QImage* QScanPlotDoc::getImage()
-{
-	return &image;
-}
+#endif

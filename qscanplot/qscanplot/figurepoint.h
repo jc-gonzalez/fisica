@@ -1,6 +1,6 @@
 /*************************************************************************
  *                                                                          
- * qscanplotdoc.cpp  -  description
+ * figurepoint.h  -  description
  *
  * Copyright (C) 2001  J C Gonzalez
  * gonzalez@gae.ucm.es
@@ -28,58 +28,45 @@
  ************************************************************************/
 
 
-#include "qscanplotdoc.h"
+#ifndef FIGUREPOINT_H
+#define FIGUREPOINT_H
 
+#include <qcanvas.h>
 
-QScanPlotDoc::QScanPlotDoc()
-{
-  modified = false;
-}
+#include "point.h"
+#include "gpoint.h"
 
-QScanPlotDoc::~QScanPlotDoc()
-{
-}
+#include <qcolor.h>
+#include <qbrush.h>
+#include <qpen.h>
 
-void QScanPlotDoc::newDoc()
-{
-}
+/**
+  *@author J C Gonzalez
+  */
 
-bool QScanPlotDoc::save()
-{
-  return true;
-}
+class FigurePoint : public QCanvasPolygon  {
+public: 
+	FigurePoint(QCanvas* c=0);
+	~FigurePoint();
+	
+public:
+	inline void setX(double nx) { p.setX( nx ); }
+	inline void setY(double ny) { p.setY( ny ); }
+	inline double getX() { return p.getX(); }
+	inline double getY() { return p.getY(); }
+	
+	inline void setGX(double nx) { gp.setX( nx ); }
+	inline void setGY(double ny) { gp.setY( ny ); }
+	inline double getGX() { return gp.getX(); }
+	inline double getGY() { return gp.getY(); }
 
-bool QScanPlotDoc::saveAs(const QString &filename)
-{
-  return true;
-}
+  /** Re-implemented from QCanvasPolygon. Draws the point */
+  void drawShape ( QPainter & p );
+	
+	
+private:
+  Point p;
+  GPoint gp;
+};
 
-bool QScanPlotDoc::load(const QString &filename)
-{
-  loadImage( filename );
-
-  emit documentChanged();
-  return true;
-}
-
-bool QScanPlotDoc::isModified() const
-{
-  return modified;
-}
-
-/** Loads image file in any of the supported formats */
-bool QScanPlotDoc::loadImage(const char* filename)
-{
-  bool ok = true;
-
-  if ( filename )
-    ok = image.load(filename, 0);
-
-	return ok;
-}
-
-/** Exports image */
-QImage* QScanPlotDoc::getImage()
-{
-	return &image;
-}
+#endif
