@@ -79,7 +79,7 @@ Splash::Splash( const char *pixmap_name,
 
   show();
 
-  QTimer::singleShot(3 * 1000, this, SLOT(close()));
+  QTimer::singleShot(4 * 1000, this, SLOT(close()));
 }
 
 /*  

@@ -27,21 +27,20 @@
 * 
 ************************************************************************/
 
+
 #ifndef QMAGICDISPLAYDOC_H
 #define QMAGICDISPLAYDOC_H
 
 // include files for QT
 #include <qobject.h>
+#include <qfile.h>
+#include <qarray.h>
 
 // application specific includes
 #include "filefactory.h"
 #include "eventheader.h"
 #include "eventdata.h"
 #include "eventpostdata.h"
-
-#include <qfile.h>
-
-#include <qarray.h>
 
 /**
 * the Document Class

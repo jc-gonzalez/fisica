@@ -54,10 +54,10 @@
 #include "resource.h"
 
 /**
-* This Class is the base class for your application. It sets up the main
-* window and providing a menubar, toolbar
-* and statusbar. For the main view, an instance of class QMAGICDisplayView is
-* created which creates your view.
+* This Class is the base class of the application. It sets up the main
+* window and providing a menubar, toolbar and statusbar. For the main
+* view, an instance of class QMAGICDisplayView is created when opening
+* a file (which creates the view).
 */
 class QMAGICDisplay : public QMainWindow
 {
@@ -85,12 +85,9 @@ public:
 
 public slots:
 
-/** switch argument for Statusbar help entries on slot selection */
-void statusCallback(int id_);
-  /** open a new application window */
+  /** switch argument for Statusbar help entries on slot selection */
+  void statusCallback(int id_);
 
-  //    /** generate a new document in the actual view */
-  //    void slotFileNew();
   /** open a document */
   void slotFileOpen();
   /** save a document */
@@ -138,6 +135,7 @@ private:
    * changing the view class.
    */
   QMAGICDisplayView *view;
+
   /** doc represents your actual document and is created only once. It keeps
    * information such as filename and does the serialization of your files.
    */
@@ -154,8 +152,10 @@ private:
   /** help_menu contains all items of the menubar entry "Help" */
   QPopupMenu *helpMenu;
 
+  /** the toolbar */
   QToolBar *fileToolbar;
 
+  /** has the type of the file we read */
   int readMode;
 
 };

@@ -33,6 +33,7 @@
 #include "wdatgui.design.h"
 
 #include <qcombobox.h>
+#include <string>
 
 class QMAGICDisplayDoc;
 
@@ -49,6 +50,7 @@ public:
   void setTotalEvents(int);
   void setTrigger(bool t);
   void addPalette(const char*, bool redisplay=false);
+  void addPalette(string, bool redisplay=false);
   void setFilename(const char* s);
 
 signals:
@@ -68,6 +70,7 @@ public slots:
   void slotSetPaletteMax(int);
   void slotSetPaletteMin(int);
   void slotSetPaletteMode(int);
+  void slotToggleMarkEvent();
   void slotToggleShowItem(int);
   void slotInit();
           

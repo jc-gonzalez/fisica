@@ -1,6 +1,6 @@
 /*************************************************************************
 *                                                                          
-* main.cpp  -  description
+* inputfilestate.h  -  description
 *
 * Copyright (C) 2001  J C Gonzalez
 * gonzalez@gae.ucm.es
@@ -28,42 +28,32 @@
 ************************************************************************/
 
 
-#include <qapplication.h>
-#include <qfont.h>
-#include <qcdestyle.h>
-#include <qplatinumstyle.h>
-#include <qguardedptr.h>
+#ifndef INPUTFILESTATE_H
+#define INPUTFILESTATE_H
 
-#include "qmagicdisplay.h"
-#include "splash.h"
-#include "systempar.h"
 
-int main(int argc, char *argv[])
-{
-  QGuardedPtr<Splash> splash;
+/**
+*@author J C Gonzalez
+*/
 
-  QApplication a(argc, argv);
-  a.setFont(QFont("helvetica", 12));
-  a.setStyle(new QCDEStyle());
-  //a.setPalette( QPalette( QColor(100, 220, 200) ) );
+class InputFile;
 
-  SystemPar systemINI;
+class InputFileState {
+public: 
+  InputFileState();
+  virtual ~InputFileState();
 
-  systemINI.readAll();
+public:
+  virtual void openFile(InputFile*);
+  virtual void closeFile(InputFile*);
+  virtual void preReadFile(InputFile*);
+  virtual void readEvent(InputFile*);
 
-  qDebug("splash is: %d", systemINI.get_splash());
-  qDebug("palette_path is: %s", systemINI.get_palette_path().c_str());
+protected:
+  virtual void changeState(InputFile*, InputFileState*);
+};
 
-  QMAGICDisplay *qmagicdisplay = new QMAGICDisplay();
-  a.setMainWidget(qmagicdisplay);
-  qmagicdisplay->setCaption("File: <none>");
-  qmagicdisplay->show();
-
-  if ( systemINI.get_splash() )
-    splash = new Splash(SPLASH_PIXMAP, SPLASH_TEXT);
-
-  return a.exec();
-}
+#endif
 
 // Local Variables:
 // mode: c++

@@ -37,6 +37,8 @@
 
 #include "qmagicdisplaydoc.h"
 
+#include "systempar.h"
+
 /* 
 *  Constructs a wDATGUI which is a child of 'parent', with the 
 *  name 'name' and widget flags set to 'f' 
@@ -190,7 +192,14 @@ void wDATGUI::slotSetPaletteMode(int n)
   emit setPaletteMode( n );
   emit reDisplayEvent();
 }
-/* 
+/*
+* public slot
+*/
+void wDATGUI::slotToggleMarkEvent()
+{
+  qWarning( "wDATGUI::slotToggleMarkEvent(): Not implemented yet!" );
+}
+/*
 * public slot
 */
 void wDATGUI::slotToggleShowItem(int i)
@@ -202,9 +211,9 @@ void wDATGUI::slotToggleShowItem(int i)
 */
 void wDATGUI::slotInit()
 {
-  addPalette( "/tmp/White2Black" );
-  addPalette( "/tmp/Black2White" );
-  addPalette( "/tmp/Firecode" );
+  addPalette( SystemPar::Instance()->get_palette_path() + "/White2Black" );
+  addPalette( SystemPar::Instance()->get_palette_path() + "/Black2White" );
+  addPalette( SystemPar::Instance()->get_palette_path() + "/Firecode" );
 }
 /*
 * changed the filename
@@ -215,6 +224,11 @@ void wDATGUI::setFilename(const char* s)
   lblFilename->update();
   QToolTip::remove( lblFilename );
   QToolTip::add( lblFilename, "Filename: " + QString(s) );
+}
+/** add palette name into list */
+void wDATGUI::addPalette( string fname, bool redisplay )
+{
+  addPalette(fname.c_str(), redisplay);
 }
 /** add palette name into list */
 void wDATGUI::addPalette( const char* fname, bool redisplay )

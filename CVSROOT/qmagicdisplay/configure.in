@@ -58,5 +58,5 @@ dnl Perform program name transformation
 AC_ARG_PROGRAM
 
 dnl add here all your Makefiles. This are created by configure
-AC_OUTPUT(Makefile qmagicdisplay/Makefile qmagicdisplay/docs/Makefile qmagicdisplay/docs/en/Makefile )
+AC_OUTPUT(Makefile qmagicdisplay/Makefile qmagicdisplay/docs/Makefile qmagicdisplay/docs/en/Makefile qmagicdisplay/designer/Makefile )
 

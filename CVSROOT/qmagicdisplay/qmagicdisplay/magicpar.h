@@ -62,6 +62,7 @@ public:
   static const int numberOfPixels = 595;
   static const double pix[ numberOfPixels ][ 2 ];
   static const int pixsize[ numberOfPixels ];
+
 };
 
 
