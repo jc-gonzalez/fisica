@@ -381,7 +381,7 @@ main(int argc, char **argv)
 
   int   nPMT;                 //@< number of pixel
 
-  float wl, last_wl;          //@< wavelength of the photon
+  float wl=0., last_wl;       //@< wavelength of the photon
   float qe;                   //@< quantum efficiency
   float **qeptr = 0;          //@< quantum efficiency table
 
@@ -787,12 +787,12 @@ main(int argc, char **argv)
   still_in_loop = TRUE;
 
   while (
-         ((! Data_From_STDIN) && (! inputfile.eof()))
-         ||
-         (Data_From_STDIN && still_in_loop)
-         ||
-         (current_eventNSB <= eventsNSB)
-         ) {
+				 ((! Data_From_STDIN) && (! inputfile.eof()))
+				 ||
+				 (Data_From_STDIN && still_in_loop)
+				 ||
+				 (current_eventNSB <= eventsNSB)
+				 ) {
 
     /*"
       We can read the data from the RFL files (standard behaviour), or
@@ -926,7 +926,9 @@ main(int argc, char **argv)
         // get core position
         coreD = mcevth.get_core(&coreX, &coreY);
 
+#ifdef __DEBUG__
         cerr << "coreD=" << coreD << "     " << coreX << ',' << coreY << endl;
+#endif // __DEBUG__
 
         // read the direction of the incoming shower
         thetashw = mcevth.get_theta();
@@ -1075,6 +1077,15 @@ main(int argc, char **argv)
           last_wl = wl;
           wl = cphoton.get_wl();
 
+#ifdef __DEBUG__
+	  if (last_wl == wl) {
+	    char *qqqc;
+	    qqqc = (char*)&cphoton;
+	    for (int qqq=0; qqq<40; qqq++)
+	      fprintf(stderr, "%02x(%1c)\n", qqqc[qqq]);
+	  }
+#endif // __DEBUG__
+
           if ( (wl > 600.0) || (wl < 290.0) )
             break;
 
@@ -1105,18 +1116,10 @@ main(int argc, char **argv)
 
 #ifdef __DEBUG__
           cout << "@#1 " << nshow << ' '
-               << cx << ' ' << cy << ' ' << nPMT << '\t';
-          if (nshow>75) {
-            char *qqqc;
-            qqqc = (char*)&cphoton;
-            for (int qqq=0; qqq<SIZE_OF_FLAGS; qqq++) {
-              printf("%c", (qqqc[qqq]>' ' && qqqc[qqq]<'~') ? (char)qqqc[qqq] : '.');
-            }
-          }
-          cout << endl;
+               << cx << ' ' << cy << ' ' << nPMT << ' '
+	       << wl << ' ' << last_wl<< endl;
 #endif // __DEBUG__
 
-        
 #ifdef __QE__
 
           //### QE simulation.
@@ -1143,6 +1146,10 @@ main(int argc, char **argv)
             continue;
 
           }
+
+#ifdef __DEBUG__
+          cerr << "QE passed: " << qe << endl;
+#endif __DEBUG__
 
 #endif // __QE__
 
@@ -1202,25 +1209,15 @@ main(int argc, char **argv)
             // store in hpulse(htimeshower_conv) a ph.e. signal
 
             fnpix[ nPMT ] += 1.;
-            
+						
           }
-          
+					
           // read next photon
           read_bin_data( (char*)&cphoton, cphoton.mysize(),
                          Data_From_STDIN, inputfile);
 
         } // end-of-while there are still photons in this event
 
-        if (nshow>75) {
-          char *qqqc;
-          qqqc = (char*)&cphoton;
-          printf("\t\t");
-          for (int qqq=0; qqq<SIZE_OF_FLAGS; qqq++) {
-            printf("%c", (qqqc[qqq]>' ' && qqqc[qqq]<'~') ? (char)qqqc[qqq] : '.');
-          }
-          puts("");
-        }
-         
 #ifdef __LINUX_INPUT__
 
         //** <warning> ***************************************************
@@ -1322,17 +1319,21 @@ main(int argc, char **argv)
           // read image of the shower from the PHE file
           log(SIGNATURE, "Reading image...\n");
 
+#ifdef __DEBUG__
           for (int mm=0; mm<ct_NPixels; mm++)
             cerr << fnpix[mm] << ' ';
           cerr << endl;
-          
+#endif // __DEBUG__
+
           // read next photon
           read_bin_data( (char*)fnpix, ct_NPixels * sizeof( float ),
                          Data_From_STDIN, inputfile);
 
+#ifdef __DEBUG__
           for (int mm=0; mm<ct_NPixels; mm++)
             cerr << fnpix[mm] << ' ';
           cerr << endl;
+#endif // __DEBUG__
           
           if ( Select_Energy ) {
             if (( mcevth.get_energy() < Select_Energy_le ) ||
@@ -1400,26 +1401,26 @@ main(int argc, char **argv)
 
         for ( i=0; i<ct_NPixels_small+ct_NPixels_gap; ++i ) {
 
-          nsb_added = static_cast<float>( ignpoi( meanNSB ) );
-          
-          if (nsb_added > 0.0) {
-            fnpix[i] += nsb_added;
-          }
+					nsb_added = static_cast<float>( ignpoi( meanNSB ) );
+					
+					if (nsb_added > 0.0) {
+						fnpix[i] += nsb_added;
+					}
             
-        }
+				}
 
         // then the big ones (area = 4 x area_small_pixels)
 
         for ( i=ct_NPixels_small+ct_NPixels_gap; i<ct_NPixels; ++i ) {
 
-          nsb_added = static_cast<float>( ignpoi( meanNSB * 4 ) );
+					nsb_added = static_cast<float>( ignpoi( meanNSB * 4 ) );
 
-          if (nsb_added > 0.0) {
+					if (nsb_added > 0.0) {
             fnpix[i] += nsb_added;
-          }
+					}
           
         }
-        
+				
       }
 
 #endif // __NSB__
@@ -1477,11 +1478,11 @@ main(int argc, char **argv)
 
       /*
       for ( i=0 ; i<ct_NPixels ; ++i ) 
-        cerr << i << ':' << fnpix[i] << '\t';
-      cerr << endl;
+				cerr << i << ':' << fnpix[i] << '\t';
+			cerr << endl;
       */
       
-      //++
+			//++
       // TRIGGER LOGIC
       //--
       
@@ -1594,7 +1595,7 @@ main(int argc, char **argv)
 
       } // for each pixel i
 
-      novq0 = noverq0;
+			novq0 = noverq0;
 
       tmpdeviation = mcevth.get_deviations (&dtheta, &dphi);
       tmpdeviation = isnan( tmpdeviation ) ? 0. : tmpdeviation;
@@ -1780,16 +1781,16 @@ main(int argc, char **argv)
         // put this information in the data file,
         if ( Write_All_Data ) {
 
-          datafile << ntrigger;
-          for ( i=0; i<nvar; ++i )
-            datafile << ' ' << image_data[i];
+					datafile << ntrigger;
+					for ( i=0; i<nvar; ++i )
+						datafile << ' ' << image_data[i];
 
           datafile << endl << -9999;
           for ( i=0; i<ct_NPixels; ++i )
             datafile << ' ' << fnpixclean[i];
 
-          datafile << endl << -9998;
-          
+					datafile << endl << -9998;
+					
         }
 
         datafile << endl;
@@ -1876,7 +1877,7 @@ main(int argc, char **argv)
           for ( i=0; i<ct_NPixels; ++i )
             datafile << ' ' << fnpixclean[i];
 
-          datafile << endl << -9998;
+					datafile << endl << -9998;
 
         }
         
@@ -1930,7 +1931,8 @@ main(int argc, char **argv)
   log( SIGNATURE, "%d event(s), with a total of %d C.photons\n",
        ntshow, ntcph );
   log( SIGNATURE, "Fraction of triggers: %5.1f%% (%d out of %d)\n",
-       ((float)ntrigger) / ((float)ntshow) * 100.0, ntrigger, ntshow);
+       ((ntshow>0)? float(ntrigger) / float(ntshow) * 100.0 : 0.0), 
+       ntrigger, ntshow);
 
   // close files
   log( SIGNATURE, "Closing files\n" );
@@ -2275,7 +2277,7 @@ read_ct_file(void)
 
       ct_NPixels_small = SumNumPixelInRings( ct_NRings_small );
 
-      ct_NPixels_gap = (ct_NRings_big>0) ? ((ct_NRings_big-1)*6) : 0;
+      ct_NPixels_gap = (ct_NRings_big-1)*6;
 
       ct_NBig1 = (ct_NRings_small + 1) / 2;
 
@@ -3618,23 +3620,10 @@ random_von_neumann( float *x, float *y, int n,
 static void
 read_bin_data( char *pdata, int bytes, int source, ifstream &file )
 {
-  static int nbytes;
-  static int ntotbytes = 0;
-  
-  if ( source ) {
+  if ( source )
     cin.read( pdata, bytes );
-    nbytes = cin.gcount();
-  } else {
+  else
     file.read( pdata, bytes );
-    nbytes = file.gcount();
-  }
-
-  ntotbytes += nbytes;
-  
-  if (nbytes != bytes)
-    error("read_bin_data",
-          "ERROR: Requested %d bytes, only %d bytes read.\n\t%s %d\n",
-          bytes, nbytes, "Total bytes read from stream:", ntotbytes);
 }
 //}
 

@@ -24,6 +24,9 @@
 \endfoot
 \endlastfoot
 
+
+
+
 $A$                                      & Atomic mass of a nucleus\\
 $\mathit{Airmass}$                       & Air Mass in Optical Astronomy\\
 $AM$                                     & Air Mass geometrical factor\\
@@ -32,11 +35,16 @@ $\mathcal{AM}_{\mathrm{approx}}$         & Air Mass, for low Zenith Angle\\
 $A_{\mathrm{Ozo}}$                       & Ozone absorption, in magnitudes\\
 $\alpha$                                 & Fine structure constant\\
 $\beta$                                  & Velocity of a particle (natural units)\\
+$\delta$                                 & ``Off-axis'' angle of an incoming cosmic-ray shower\\
+$\delta_{\mathrm{max}}$                  & Assumed maximum ``off-axis'' angle, where the trigger eff. becomes zero\\
 $e$                                      & Charge of the electron\\
 $E_0$                                    & Energy of a primary particle\\
 $E_{\mathrm{c}}$                         & Critical energy\\
 $E_{\mathrm{min}}$                       & Threshold energy for \Cherenkov light emission\\
+$\varepsilon_{\mathrm{cr}}(r,\delta;E,\Theta)$    & Trigger efficiency for cosmic-rays\\
+$\varepsilon_\gamma(r;E,\Theta)$         & Trigger efficiency for gamma-rays\\
 $\eta_0$                                 & Parameter for refraction index\\
+$\varphi_{\mathrm{trig}}$                & Radius of the pre-set trigger area in the camera of \MAGIC\\
 $\gamma$                                 & Gamma ray\\
 $\gamma$                                 & Photon\\
 $h$                                      & Height abovel sea level\\
@@ -57,7 +65,11 @@ $m_{\mathrm{simple}}$                    & Simple approximation of $m\equiv AM$ 
 $n$                                      & Number of branchings (\emph{toy model})\\
 $n$                                      & Refraction index \\
 $N$                                      & Number of photons generated \\
+$n_{\mathrm{cr}}(r,\delta;E,\Theta)$              & Number of incoming cosmic-ray showers\\
+$n_{\mathrm{cr}}^T(r,\delta;E,\Theta)$            & Number of triggered cosmic-ray showers\\
 $N_{\mathrm{e}}$                         & Number of electrons generated in an atmospheric shower\\
+$n_\gamma(r;E,\Theta)$                   & Number of incoming gamma-ray showers\\
+$n_\gamma^T(r;E,\Theta)$                 & Number of triggered gamma-ray showers\\
 $\omega$                                 & Zenith Angle at sea level\\
 $\pi^{0}$                                & Neutral pion\\
 $r$                                      & Radial distance to the atmospheric shower's axis\\
@@ -67,7 +79,10 @@ $R_\oplus$                               & Earth's radius\\
 $\rho_0$                                 & Density of the air at sea level\\
 $\rho(h)$                                & Density of the air at a height $h$ above sea level\\
 $\rho(r)$                                & Density of electrons at a distance $r$\\
+$\rhump$                                 & Distance up to where the \Cherenkov light pool extends\\
 $s$                                      & \emph{age parameter} of an atmospheric shower\\
+$S_\gamma(E,\Theta)$                     & Effective Collection Area for gamma-rays\\
+$S_{\mathrm{cr}}(E,\Theta)$              & Effective Collection Area for cosmic-rays\\
 $t$                                      & Time \\
 $T$                                      & Temperature \\
 $\mathcal{T}$                            & Total atmospheric transmission\\
@@ -79,7 +94,12 @@ $\tau$                                   & Atmospheric slant depth\\
 $\tau_i$                                 & Atmospheric slant thickness above a height $h_i$\\
 $\tau_{\mathrm{R}}$                      & Mean free path of Rayleigh scattering in terms of thickness\\
 $\theta$                                 & Zenith Angle in observer's level\\
+$\Theta$                                 & Zenith Angle of an incoming shower\\
 $\theta_{\mathrm{c}}$                    & \Cherenkov emission angle\\
+\trigM{n}{q_0}                           & Multiplicity trigger, $n$ pixels with at least a charge $q_0$\\
+\trigNN{n}{q_0}                          & Next-Neighbour trigger, $n$ pixels with at least a charge $q_0$\\
+\trigNNc{n}{q_0}                         & Closed-packet Next-Neighbour trigger, $n$ pixels with at least a charge $q_0$\\
+\trigTop{S}{q_0}                         & Topological trigger, given by region $S$ and charge per pixel of at least $q_0$\\
 $u$                                      & Director cosines in X axis\\
 $v$                                      & Director cosines in Y axis\\
 $x$                                      & X coordinate \\
@@ -93,6 +113,7 @@ $y$                                      & Y coordinate \\
 %
 %% Local Variables:
 %% mode:latex
+%% TeX-master: t
 %% End:
 
 %%EOF

@@ -49,8 +49,8 @@
 //{
 
 // flag for debugging (default: OFF )
-#undef  __DEBUG__
 #define __DEBUG__
+#undef  __DEBUG__
 
 // flag for NNT in CT1 camera (default: ON )
 #undef  __CT1_NO_NEIGHBOURS__
@@ -394,6 +394,9 @@ static void  read_bin_data( char *pdata, int bytes,
 
 /*
  *$Log$
+ *Revision 1.1.1.1  2000/11/04 17:08:16  gonzalez
+ *...
+ *
  *Revision 1.1.1.1  2000/06/07 21:03:49  gonzalez
  *camera-simple created from camera-complex
  *

@@ -62,7 +62,7 @@ DEBUG    =
 
 ##-- paths & applications
 
-DOCUMDIR      = ${HOME}/detector/sus
+DOCUMDIR      = ${HOME}/src/detector/sus
 DOCUMAPP      = ${DOCUMDIR}/sus2
 
 INCLUDE       = ../include

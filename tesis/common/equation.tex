@@ -598,6 +598,78 @@ m \equiv \mathrm{AM} =
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\effgammaeq{
+\begin{equation}
+  \label{eq:effgamma}
+  \varepsilon_\gamma(r;E,\Theta) \equiv 
+  \frac{n_\gamma^T(r;E,\Theta)}{n_\gamma(r;E,\Theta)}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\effcreq{
+\begin{equation}
+  \label{eq:effcr}
+  \varepsilon_{\mathrm{cr}}(r,\delta;E,\Theta) \equiv 
+  \frac{n_{\mathrm{cr}}^T(r,\delta;E,\Theta)}{n_{\mathrm{cr}}(r,\delta;E,\Theta)}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\Sgammaeq{
+\begin{equation}
+  \label{eq:Sgamma}
+  S_\gamma(E,\Theta) = 
+  \int_0^{2\pi}\,\mathrm{d}\varphi 
+  \int_0^{\infty}\,\varepsilon_\gamma(r;E,\Theta) \,r\, \mathrm{d}r 
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\Screq{
+\begin{equation}
+  \label{eq:Scr}
+  \hat{S}_{\mathrm{cr}}(E,\Theta) = 
+  \int_0^{2\pi}\,\mathrm{d}\varphi 
+  \int_0^{\infty}\,r\,\mathrm{d}r 
+  \int_0^{2\pi}\, \mathrm{d}\phi
+  \int_0^{\delta_{\mathrm{max}}}\,
+  \varepsilon_{\mathrm{cr}}(r,\delta;E,\Theta)\,\sin\delta\,\mathrm{d}\delta
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\normsolidangleeq{
+\begin{equation}
+  \label{eq:normsolidangle}
+  \Omega_{\mathrm{trig}} 
+  = 2\pi(1-\cos\varphi_{\mathrm{trig}}) % = 0.00061246
+  = 6.1\E{-4}\u{sr}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\Scrnormeq{
+\begin{equation}
+  \label{eq:Scrnorm}
+    S_{\mathrm{cr}}(E,\Theta) \equiv 
+    \frac{\hat{S}_{\mathrm{cr}}(E,\Theta)}{\Omega_{\mathrm{trig}}}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\phitriggereq{
+\begin{equation}
+  \label{eq:phitrigger}
+  \varphi_{\mathrm{trig}} = 0.8\deg
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\eq{
+%}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\def\eq{
 %\begin{equation}
 %  \label{eq:}
@@ -609,3 +681,8 @@ m \equiv \mathrm{AM} =
 \endinput
 %
 %%EOF
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "figures"
+%%% End: 

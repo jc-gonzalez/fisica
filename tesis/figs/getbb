@@ -1,0 +1,11 @@
+#!/bin/sh
+
+files=$*
+
+for i in $files; do 
+  echo "## " $i . . . 
+  convert $i eps:- | grep "%%BoundingBox" | head -1 | tee $i.bb
+done
+
+exit 0
+

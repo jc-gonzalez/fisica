@@ -967,14 +967,12 @@ in detail in section \ref{sec:triggerlogic}.
 First, we defined a \emph{trigger area} in the camera: the area where
 we allow the pixels to give trigger is not the whole camera. The
 defined \emph{trigger area} is a disc centered in the center of the
-camera, with a radius of $0.8\deg$. We made investigations also
-varying the size of this area, and even using the whole camera, but
-this is the canonical value of the radius. In Fig.\ref{fig:trigarea}
-we see how big in the whole camera is this area. The estimation of
-this radius is given as follows. We are interested mainly in the low
+camera, with a fixed radius. In our investigations we used different
+sizes for this area, and even the whole camera. The estimation of the
+optimal radius is as follows. We are interested mainly in the low
 energy gamma-ray showers, i.e., with primary energies in the range
 $10-100\u{GeV}$. The maximum development of this showers, as we said
-above, is at around $10-12\u{km}$ a.s.l., this means, a height of
+above, is at around $10-12\u{km}$ a.s.l., this means a height of
 $\hv\simeq 8-10\u{km}$, when looking at the Zenith. On the other hand,
 the \Cherenkov pull of light extends up to about $\rhump\simeq
 100-120\u{m}$ from the shower axis: let's take $\rhump=110\u{m}$.
@@ -986,8 +984,17 @@ corresponds to an angular distance calculated as
 \trigradeq
 %
 The value of $\varphi$ oscillates in the range $\simeq
-0.7\deg-0.8\deg$ for primaries in the energy range indicated. We chose
-the larger, more conservative value of $0.8\deg$.
+0.7\deg-0.8\deg$, for primaries in the energy range indicated. We
+chose the larger, more conservative value of 
+%
+\phitriggereq
+%
+However, we should not make this area too big, since we will not
+notice an improvement in the rate of the gamma showers in our energy
+range of interest, but we \emph{will} get an increment of the
+backaground rate proportional to the square of the increment in radius
+in the trigger area. In Fig.\ref{fig:trigarea} we see how big in the
+whole camera is this area of $0.8\deg$ radius.
 
 \trigareafig
 
@@ -1016,7 +1023,7 @@ Another kind of trigger conditions are the \emph{next-neighbour
 \noindent 
 We should note that for fixed values of $n$ and $q_0$ we can define a
 subset of \emph{next neighbour trigger} conditions, namely, those
-which require that those pixels in the simply connected area form
+which require that those pixels in the simply connected area, form
 what is called a \emph{closed packet}. We will denote this sub-class
 of conditions with the symbol \trigNNc{n}{q_0}.
 
@@ -1053,7 +1060,7 @@ In the simulation of the trigger logic, even for \trigNN{k}{q_0} and
 of $k$, and both for \trigNN{k}{q_0} and \trigNNc{k}{q_0} conditions,
 we define the set of possible geometric arrangements of triggering
 pixels (following the selected trigger condition) in a fictitious
-group of seven pixels ( a central pixel plus its seven neighbours),
+group of seven pixels (a central pixel plus its seven neighbours),
 where the charges of the pixels are supposed to be either $0$ or $\geq
 q_0$. We give then a name to each of these sets of arrangements.
 Finally, in the simulation process, only those patterns in the sets
@@ -1065,21 +1072,251 @@ sets of patterns.
 
 \MORE%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-
-\randpoifig
-
 %%------------------------------------------------------------
 \section{Results}
+
+After analyzing the raw output data, with the programs
+\texttt{reflector} and \texttt{camera}, described above, we obtained
+the following results.
 
 %%------------------------------------------------------------
 \subsection{Trigger Efficiencies}
 
+The trigger efficiencies for gammas and hadrons are estimated from the
+ratio of triggered showers, with a certain trigger criterion, to the
+total of incoming showers, for a given set of primary particle, range
+in Zenith Angle and core distance. 
+
+For gamma-rays we have the following quantities:
+%
+\begin{center}
+  \begin{tabular}{cl}
+    $n_\gamma(r;E,\Theta)$ & number of \emph{incoming} 
+    gamma showers arrived with primary energy $E$ \\
+    & at an impact parameter $r$ from a zenith angle $\Theta$.\\
+    $n_\gamma^T(r;E,\Theta)$ & number of \emph{triggered} 
+    gamma showers arrived with primary energy $E$ \\
+    & at an impact parameter $r$ from a zenith angle $\Theta$.\\
+  \end{tabular}
+\end{center}
+%
+therefore, the \emph{trigger efficiency} (for a given trigger set-up)
+for gamma-rays of energy $E$, a zenith angle $\Theta$ and an impact
+parameter $r$ is:
+%
+\effgammaeq
+
+For the background of cosmic rays the situation is more complex. Since
+this background comes isotropically, we have a new degree of freedom,
+the \emph{angle off-axis}, $\delta$, of the incoming shower with
+respect to the optical axis of the telescope. The quantities involved
+are now:
+%
+\begin{center}
+  \begin{tabular}{cl}
+    $n_{\mathrm{cr}}(r,\delta;E,\Theta)$ & number of \emph{incoming} 
+    cosmic ray showers arrived with primary energy $E$ \\
+    & at an impact parameter $r$ from a zenith angle $\Theta$
+    and an off-axis angle $\delta$\\
+    $n_{\mathrm{cr}}^T(r,\delta;E,\Theta)$ & number of \emph{triggered} 
+    cosmic ray showers arrived with primary energy $E$ \\
+    & at an impact parameter $r$ from a zenith angle $\Theta$
+    and an off-axis angle $\delta$\\
+  \end{tabular}
+\end{center}
+%
+Thus, \emph{trigger efficiency} (for a given trigger set-up) for
+cosmic rays is given by:
+%
+\effcreq
+
+Using different trigger patterns and different values of the Zenith
+Angle $\Theta$, we studied the dependence of the \emph{trigger
+  efficiency} with the angle $\delta$ and the impact parameters $r$.
+The results are shown in Figs. \ref{fig:effg1}--\ref{fig:effh2}
+
 %%------------------------------------------------------------
 \subsection{Effective Collection Areas}
 
+The definition of \emph{effective collection area} is the following:
+%
+\begin{description}
+\item[{\bfseries Effective Collection Area}:] Hypothetic circular area
+  in the plane perpendicular to the optical axis of the telescope, at
+  his level, where an incoming shower falling inside will be detected.
+\end{description}
+%
+The intuitive idea behind this definition is illustrated in Fig.
+\ref{fig:collareaIdea}. In reality, the probability of detection, for
+a given energy of the primary (and hence for a given height of
+development of the shower), is a more or less smooth function of the
+distance to the optical axis of the telescope, and not only a matter
+of a yes/no decision. However, this concept is very useful to compare
+different detectors.
+
+\collareaIdeafig
+
+For gamma-rays, the calculation of the effective collection area is
+very simple. Once we have the trigger efficiency, we calculate, for a
+fixed energy $E$ of the primary, and a fixed Zenith Angle $\Theta$:
+%
+\Sgammaeq
+%
+The first integral comes from the symmetry around the telescope axis,
+and will give just a factor $2\pi$.
+
+For our background of cosmic rays, the situation is now much more
+complicated. We are now forced to include our additional degree of
+freedom in the calculations. We have
+%
+\Screq
+%
+The third integral comes now from symmetry around the telescope axis
+of the arrival directions of the incoming showers (giving again a
+factor $2\pi$). The fourth integral sums up all the contributions for
+diferent off-axis angles $\delta$, up to an angle where the trigger
+efficiency is zero (here expressed as $\delta_{\mathrm{max}}$).
+
+Note that this $\hat{S}_{\mathrm{cr}}(E,\Theta)$ has now dimensions
+[area$\times$solid angle]. This means that for any comparison with the
+effective collection area for gammas we must normalize in solid angle.
+The first thing that comes to our mind is to divide by the solid angle
+calculated up to the maximum value of $\delta$, that is by
+$\Omega_{\mathrm{max}}=2\pi(1-\cos\delta_{\mathrm{max}})$. This is
+wrong, since by using an arbitrarily large $\delta'_{\mathrm{max}} \gg
+\delta_{\mathrm{max}}$, and hence $\Omega'_{\mathrm{max}} \gg
+\Omega_{\mathrm{max}}$, we will barely increase the value of
+$\hat{S}_{\mathrm{cr}}(E,\Theta)$, but make the quantity
+$\hat{S}_{\mathrm{cr}}(E,\Theta)/\Omega'_{\mathrm{max}}$ arbitrarily small.
+
+%One solution is to estimate the derivative of $\hat{S}_{\mathrm{cr}}$ with
+%respect to $\delta_{\mathrm{max}}$, at the point $\delta_0 = 0\deg$,
+%%
+%\begin{equation}
+%  \label{eq:Shadron0}
+%  S_{h,0}(E,\Theta) = 
+%  \left.
+%    \frac{\partial\hat{S}_{\mathrm{cr}}(E,\Theta)}{\partial\delta_{\mathrm{max}}}
+%  \right|_{\delta_{\mathrm{max}}=\delta_0}  
+%\end{equation}
+
+%One solution is to estimate the value of the trigger efficiency for
+%hadrons assuming they all come in the limit $\delta\rightarrow 0\deg$,
+%that is
+%%
+%\begin{equation}
+%  \label{eq:limiteff}
+%  \varepsilon_{h,0}(r;E,\Theta) = 
+%  \lim_{\delta\rightarrow 0\deg} \varepsilon_{\mathrm{cr}}(r,\delta;E,\Theta)
+%\end{equation}
+%%
+%and then use this value to calculate a hypothetic maximum value for
+%$\delta$, $\delta_{\mathrm{calc}}$, the working scenario being that we
+%get all the showers inside this solid angle, and we have in this
+%region a constant trigger efficiency equal to
+%$\varepsilon_{h,0}(r;E,\Theta)$ (and therefore, we would end up with
+%the same value of $\hat{S}_{\mathrm{cr}}(E,\Theta)$).
+
+We will normalize to the solid angle given by the trigger area in the
+camera\footnote{ Note that this does not need to be the same as the
+  field of view. Indeed, usually the trigger area is smaller.}. This
+normalization takes into account, therefore, the different trigger
+efficiency resulting from defining different trigger areas in the
+camera. In our standard scenario, having a trigger area given by
+$\varphi_{\mathrm{trig}} = 0.8\deg$ (see section
+\ref{sec:triggerlogic} above, in particular Eqs.  \ref{eq:trigrad} and
+\ref{eq:phitrigger}, and Fig. \ref{fig:trigarea}) this results:
+%
+\normsolidangleeq
+%
+and 
+%
+\Scrnormeq
+
+In this way we calculated the effective collection areas for gammas
+and cosmic rays (properly normalized, as we indicated). The results
+are shown in Figs. \ref{fig:areagamma}, \ref{fig:areahadr} and
+\ref{fig:areacompare}.
+
+\MORE%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %%------------------------------------------------------------
 \subsection{Detection Rates}
+
+One of our goals is the estimation of the detection rates for gamma
+and cosmic rays, mainly at threshold. Let's see how to calculate these
+quantities.
+
+Let's assume we are observing a point like source of gamma rays, with
+a flux similar to that of our standard candle, the Crab Nebula.
+Indeed, we will use as the spectrum for our assumed source of gamma
+rays
+%
+\begin{equation}
+  \label{eq:gFlux}
+  \Phi_\gamma(E) = 
+  10^{-8} \left(\frac{E}{10\u{GeV}}\right)^{-1.5} 
+  \u{ph}\u{cm^{-2}}\u{s^{-1}}
+\end{equation}
+%
+normalized at $10\u{GeV}$, and extrapolated to higher energies.
+This means, in the same normalization, a differential flux of
+%
+\begin{equation}
+  \label{eq:gdFlux}
+  \frac{\d\Phi_\gamma}{\d E}(E) = 
+  1.5\E{-9} \left(\frac{E}{10\u{GeV}}\right)^{-2.5} 
+  \u{ph}\u{cm^{-2}}\u{s^{-1}}\u{GeV^{-1}}
+\end{equation}
+%
+We will call $\alpha=2.5$ to the (positive) exponent of the
+differential flux.
+
+For the cosmic rays, we used the measured flux:
+%
+\begin{equation}
+  \label{eq:crFlux}
+  \frac{\d\Phi_{\mathrm{cr}}}{\d E}(E) = 
+  10.91\E{-2} \left(\frac{E}{1\u{TeV}}\right)^{-2.75} 
+  \u{m^{-2}}\u{s^{-1}}\u{sr^{-1}}\u{TeV^{-1}}
+\end{equation}
+
+With these differential fluxes, we can calculate the differential
+detection rates as follows: for gamma rays
+%
+\begin{equation}
+  \label{eq:gdRate}
+  \frac{\d R_\gamma}{\d E}(E) = S_\gamma(E) \cdot
+  \frac{\d\Phi_\gamma}{\d E}(E) 
+\end{equation}
+%
+where we do not write the dependency in $\Theta$; for cosmic rays
+%
+\begin{equation}
+  \label{eq:crdRate}
+  \frac{\d R_{\mathrm{cr}}}{\d E}(E) = S_{\mathrm{cr}}(E) \cdot
+  \frac{\d\Phi_{\mathrm{cr}}}{\d E}(E) 
+\end{equation}
+%
+From this, the expressions for the integral detection rates is, for
+gammas (forgetting once more the dependency with $\Theta$; i.e., for a
+given value of the Zenith Angle)
+%
+\begin{equation}
+  \label{eq:gRate}
+  R_\gamma(E) = \int_E^\infty \, 
+  S_\gamma(E) \, \frac{\d\Phi_\gamma}{\d E}(E) \, \d E
+\end{equation}
+%
+whereas for cosmic rays becomes
+%
+\begin{equation}
+  \label{eq:crRate}
+  R_{\mathrm{cr}}(E) = \int_E^\infty \,
+  S_{\mathrm{cr}}(E) \, \frac{\d\Phi_{\mathrm{cr}}}{\d E}(E) \, \d E
+\end{equation}
+%
+
 
 %%------------------------------------------------------------
 \subsubsection{Differential rates of detection}
@@ -1091,10 +1328,23 @@ sets of patterns.
 \subsubsection{Hadronic, electronic and muonic backgrounds}
 
 
+\randpoifig
+
+
+
 \endinput
 %
 %% Local Variables:
 %% mode:latex
+%% TeX-master: t
 %% End:
+
+%%TODO
+%
+% Efficiencias de trigger para gammas y hadrones 
+%
+%
+%%TODO
+
 
 %%EOF

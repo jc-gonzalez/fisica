@@ -19,6 +19,8 @@ RUNPDF=pdf$(RUN)
 
 RUNBIB=bibtex
 
+RUNIDX=makeindex
+
 DVIPS=dvips
 
 DOC=tesis
@@ -37,6 +39,14 @@ ESP_PATH=$(THIS)/esp
 ADD_TEXINPUTS_ENG=$(THIS):$(COMMON_PATH):$(FIGS_PATH):$(ENG_PATH)
 ADD_TEXINPUTS_ESP=$(THIS):$(COMMON_PATH):$(FIGS_PATH):$(ESP_PATH)
 
+LOGFILE=$(SCRATCH_PATH)/$(DOC).out
+WRNFILE=$(SCRATCH_PATH)/warning
+FULFILE=$(SCRATCH_PATH)/overfuls
+LSTFILE=$(SCRATCH_PATH)/filelist
+MEMFILE=$(SCRATCH_PATH)/memory
+
+ANALYZELOG=$(COMMON_PATH)/log.awk
+
 DOCSRC=$(COMMON_PATH)/$(DOC).tex
 BIBSRC=$(COMMON_PATH)/jc.bst
 BIBLIO=$(COMMON_PATH)/tesis.bib $(COMMON_PATH)/magic.bib
@@ -47,11 +57,12 @@ FORMATS=$(FORMATS1) $(FORMATS2)
 
 COMMON_FILES=$(DOCSRC) $(BIBSRC) $(BIBLIO) $(ENGINES) $(FORMATS)
 
-.PHONY: eng esp ps pdf dvi all prepare banner 
+.PHONY: eng esp ps pdf dvi all prepare banner log
 .PHONY: clean mrproper redo
 .PHONY: clearlang lang
 .PHONY: engpdf pdfeng esppdf pdfesp
 .PHONY: engps pseng espps psesp
+.PHONY: virtex 
 .PHONY: common $(COMMON_FILES)
 .PHONY: $(OUTDVI) $(OUTPDF) $(OUTPS)
 
@@ -72,11 +83,19 @@ all: ps pdf
 
 ps:: dvi $(OUTPS) clearlang
 
-dvi: prepare $(OUTDVI) clearlang
+dvi: prepare $(OUTDVI) log clearlang
 
-pdf:: prepare $(OUTPDF) clearlang
+pdf:: prepare $(OUTPDF) log clearlang
 
 prepare: banner common lang
+
+virtex: 
+	cd $(COMMON_PATH);\
+	cp $(COMMON_PATH)/$(RUN).tex $(COMMON_PATH)/$(RUNPDF).tex;\
+	initex '&latex '$(COMMON_PATH)/$(RUN).tex' \dump' && \
+	pdfinitex '&pdflatex '$(COMMON_PATH)/$(RUNPDF).tex' \dump';\
+	ln -sf `which virtex` $(COMMON_PATH)/$(RUN) && \
+	ln -sf `which pdfvirtex` $(COMMON_PATH)/$(RUNPDF)
 
 common: $(COMMON_FILES)
 	if [ -f .esp ]; then \
@@ -125,11 +144,11 @@ $(OUTDVI):
 	export TEXINPUTS;\
 	export TEXPSHEADERS;\
 	cd $(SCRATCH_PATH);\
-	for run in $(RUN) $(RUN) $(RUNBIB) $(RUN); do \
+	for run in $(RUN) $(RUN) $(RUNBIB) $(RUNIDX) $(RUN); do \
 	  if [ -f .esp ]; then \
-	    $$run $(DOC)-esp.tex;\
+	    $$run $(DOC)-esp.tex 2>&1 | tee $(LOGFILE);\
 	  else \
-	    $$run $(DOC)-eng.tex;\
+	    $$run $(DOC)-eng.tex 2>&1 | tee $(LOGFILE);\
 	  fi; \
 	done;\
 	cd -;\
@@ -158,11 +177,11 @@ $(OUTPDF):
 	export TEXINPUTS;\
 	export TEXPSHEADERS;\
 	cd $(SCRATCH_PATH);\
-	for run in $(RUNPDF) $(RUNPDF) $(RUNBIB) $(RUNPDF); do \
+	for run in $(RUNPDF) $(RUNPDF) $(RUNBIB) $(RUNIDX) $(RUNPDF); do \
 	  if [ -f .esp ]; then \
-	    $$run $(DOC)-esp.tex;\
+	    $$run $(DOC)-esp 2>&1 | tee $(LOGFILE);\
 	  else \
-	    $$run $(DOC)-eng.tex;\
+	    $$run $(DOC)-eng 2>&1 | tee $(LOGFILE);\
 	  fi; \
 	done;\
 	cd -;\
@@ -171,6 +190,25 @@ $(OUTPDF):
 	else \
 	  ln -sf {$(SCRATCH_PATH),$(THIS)}/$(DOC)-eng.pdf;\
 	fi
+
+log:
+	-rm -f $(FULFILE)
+	-rm -f $(LSTFILE)
+	-rm -f $(WRNFILE)
+	cd $(SCRATCH_PATH);\
+	awk -f $(ANALYZELOG) $(LOGFILE);\
+	if [ -f .esp ]; then \
+	  tail -30 $(DOC)-esp.log | grep "^ [0-9]" > $(MEMFILE);\
+	else \
+	  tail -30 $(DOC)-eng.log | grep "^ [0-9]" > $(MEMFILE);\
+	fi; \
+	cd -
+	echo "";echo "#### Over/Underfuls ########################"
+	cat $(FULFILE)
+	echo "";echo "#### List of files #########################"
+	cat $(LSTFILE)
+	echo "";echo "#### Warnings ##############################"
+	cat $(WRNFILE)
 
 banner:
 	@echo "----------------------------------------"
@@ -195,5 +233,4 @@ mrproper: clean
 
 redo: clean all
 
-# @endcode
-
+#EOF
