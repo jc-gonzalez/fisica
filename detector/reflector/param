@@ -1,0 +1,37 @@
+reflector 0.3                                      -*- sh -*-
+# @T \newpage
+# @section Source code of {\tt param}
+# @code
+#
+# Sample parameters file
+#
+verbose_level 0
+#
+#fixed_target  0. 0.
+#range_events 1 2946 
+#skip 1 2946
+#range_events 381 382
+#max_events   2
+#energy_cuts   800. 1000.
+#
+ct_file        magic.def 
+#
+#output_file   /hd80/MC/CT1/ana/g_magic_run16.rfl
+output_file   ./p.dummy
+#
+#atm_model     ATM_CORSIKA
+atm_model     ATM_NOATMOSPHERE   
+#
+data_paths 1
+./
+#
+data_from_stdin
+data_to_stdout
+#
+#output_file   ./pb.rfl
+#parallel_beam  0. 0. 0. 0. 2000. 2000. 300 300 1.e7
+#pm_parallel_beam unnamed.ppm 2. 10000.
+#
+end_file
+#
+# @endcode

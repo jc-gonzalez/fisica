@@ -1,0 +1,8347 @@
+%!PS-Adobe-3.0
+%%Title: camera.cxx
+%%Creator: Jose Carlos Gonzalez (using ps-print v4.1.4)
+%%CreationDate: 11:35:43 Oct 24 2000
+%%Orientation: Portrait
+%%DocumentNeededResources: font Times-Roman Times-Italic
+%%+ font Courier
+%%+ font Courier-Bold
+%%+ font Courier-Oblique
+%%+ font Courier-BoldOblique
+%%+ font Helvetica
+%%+ font Helvetica-Bold
+%%Pages: (atend)
+%%Requirements:
+%%EndComments
+
+%%BeginPrologue
+
+/LandscapeMode false def
+/NumberOfColumns 1 def
+/LandscapePageHeight 841.8897637795276 def
+/PrintPageWidth      481.8897637795275 def
+/PrintWidth   481.8897637795275 def
+/PrintHeight  693.5927370078741 def
+/LeftMargin   56.69291338582677 def
+/RightMargin  56.69291338582677 def
+/InterColumn  56.69291338582677 def
+/BottomMargin 42.51968503937008 def
+/TopMargin    42.51968503937008 def
+/HeaderOffset 28.346456692913385 def
+/HeaderPad    2.4276 def
+/PrintHeader true def
+/PrintOnlyOneHeader false def
+/PrintHeaderFrame true def
+/ShowNofN true def
+/Duplex false def
+/LineHeight   8.967500000000001 def
+/LinesPerColumn 78 def
+/Zebra false def
+/PrintLineNumber false def
+/ZebraHeight 3 def
+% ISOLatin1Encoding stolen from ps_init.ps in GhostScript 2.6.1.4:
+/ISOLatin1Encoding where { pop } {
+% -- The ISO Latin-1 encoding vector isn't known, so define it.
+% -- The first half is the same as the standard encoding,
+% -- except for minus instead of hyphen at code 055.
+/ISOLatin1Encoding
+StandardEncoding 0 45 getinterval aload pop
+    /minus
+StandardEncoding 46 82 getinterval aload pop
+%*** NOTE: the following are missing in the Adobe documentation,
+%*** but appear in the displayed table:
+%*** macron at 0225, dieresis at 0230, cedilla at 0233, space at 0240.
+% 0200 (128)
+    /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+    /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+    /dotlessi /grave /acute /circumflex /tilde /macron /breve /dotaccent
+    /dieresis /.notdef /ring /cedilla /.notdef /hungarumlaut /ogonek /caron
+% 0240 (160)
+    /space /exclamdown /cent /sterling
+	/currency /yen /brokenbar /section
+    /dieresis /copyright /ordfeminine /guillemotleft
+	/logicalnot /hyphen /registered /macron
+    /degree /plusminus /twosuperior /threesuperior
+	/acute /mu /paragraph /periodcentered
+    /cedilla /onesuperior /ordmasculine /guillemotright
+	/onequarter /onehalf /threequarters /questiondown
+% 0300 (192)
+    /Agrave /Aacute /Acircumflex /Atilde
+	/Adieresis /Aring /AE /Ccedilla
+    /Egrave /Eacute /Ecircumflex /Edieresis
+	/Igrave /Iacute /Icircumflex /Idieresis
+    /Eth /Ntilde /Ograve /Oacute
+	/Ocircumflex /Otilde /Odieresis /multiply
+    /Oslash /Ugrave /Uacute /Ucircumflex
+	/Udieresis /Yacute /Thorn /germandbls
+% 0340 (224)
+    /agrave /aacute /acircumflex /atilde
+	/adieresis /aring /ae /ccedilla
+    /egrave /eacute /ecircumflex /edieresis
+	/igrave /iacute /icircumflex /idieresis
+    /eth /ntilde /ograve /oacute
+	/ocircumflex /otilde /odieresis /divide
+    /oslash /ugrave /uacute /ucircumflex
+	/udieresis /yacute /thorn /ydieresis
+256 packedarray def
+} ifelse
+
+/reencodeFontISO { %def
+  dup
+  length 12 add dict	% Make a new font (a new dict the same size
+			% as the old one) with room for our new symbols.
+
+  begin			% Make the new font the current dictionary.
+
+
+    { 1 index /FID ne
+      { def } { pop pop } ifelse
+    } forall		% Copy each of the symbols from the old dictionary
+			% to the new one except for the font ID.
+
+    currentdict /FontType get 0 ne {
+      /Encoding ISOLatin1Encoding def	% Override the encoding with
+					% the ISOLatin1 encoding.
+    } if
+
+    % Use the font's bounding box to determine the ascent, descent,
+    % and overall height; don't forget that these values have to be
+    % transformed using the font's matrix.
+
+%          ^    (x2 y2)
+%          |       |
+%          |       v
+%          |  +----+ - -
+%          |  |    |   ^
+%          |  |    |   | Ascent (usually > 0)
+%          |  |    |   |
+% (0 0) -> +--+----+-------->
+%             |    |   |
+%             |    |   v Descent (usually < 0)
+% (x1 y1) --> +----+ - -
+
+    currentdict /FontType get 0 ne {
+      /FontBBox load aload pop			% -- x1 y1 x2 y2
+      FontMatrix transform /Ascent  exch def pop
+      FontMatrix transform /Descent exch def pop
+    } {
+      /PrimaryFont FDepVector 0 get def
+      PrimaryFont /FontBBox get aload pop
+      PrimaryFont /FontMatrix get transform /Ascent exch def pop
+      PrimaryFont /FontMatrix get transform /Descent exch def pop
+    } ifelse
+
+    /FontHeight Ascent Descent sub def	% use `sub' because descent < 0
+
+    % Define these in case they're not in the FontInfo
+    % (also, here they're easier to get to).
+    /UnderlinePosition  Descent 0.70 mul def
+    /OverlinePosition   Descent UnderlinePosition sub Ascent add def
+    /StrikeoutPosition  Ascent 0.30 mul def
+    /LineThickness      FontHeight 0.05 mul def
+    /Xshadow            FontHeight  0.08 mul def
+    /Yshadow            FontHeight -0.09 mul def
+    /SpaceBackground    Descent neg UnderlinePosition add def
+    /XBox               Descent neg def
+    /YBox               LineThickness 0.7 mul def
+
+    currentdict		% Leave the new font on the stack
+    end			% Stop using the font as the current dictionary.
+    definefont		% Put the font into the font dictionary
+    pop			% Discard the returned font.
+} bind def
+
+/DefFont {				% Font definition
+  findfont exch scalefont reencodeFontISO
+} def
+
+/F {					% Font selection
+  findfont
+  dup /Ascent            get /Ascent            exch def
+  dup /Descent           get /Descent           exch def
+  dup /FontHeight        get /FontHeight        exch def
+  dup /UnderlinePosition get /UnderlinePosition exch def
+  dup /OverlinePosition  get /OverlinePosition  exch def
+  dup /StrikeoutPosition get /StrikeoutPosition exch def
+  dup /LineThickness     get /LineThickness     exch def
+  dup /Xshadow           get /Xshadow           exch def
+  dup /Yshadow           get /Yshadow           exch def
+  dup /SpaceBackground   get /SpaceBackground   exch def
+  dup /XBox              get /XBox              exch def
+  dup /YBox              get /YBox              exch def
+  setfont
+} def
+
+/FG /setrgbcolor load def
+
+/bg false def
+/BG {
+  dup /bg exch def
+  {mark 4 1 roll ]}
+  {[ 1.0 1.0 1.0 ]}
+  ifelse
+  /bgcolor exch def
+} def
+
+%  B    width    C
+%   +-----------+
+%               | Ascent  (usually > 0)
+% A +           +
+%               | Descent (usually < 0)
+%   +-----------+
+%  E    width    D
+
+/dobackground {				% width --
+  currentpoint				% -- width x y
+  gsave
+    newpath
+    moveto				% A (x y)
+    0 Ascent rmoveto			% B
+    dup 0 rlineto			% C
+    0 Descent Ascent sub rlineto	% D
+    neg 0 rlineto			% E
+    closepath
+    bgcolor aload pop setrgbcolor
+    fill
+  grestore
+} def
+
+/eolbg {				% dobackground until right margin
+  PrintWidth				% -- x-eol
+  currentpoint pop			% -- cur-x
+  sub					% -- width until eol
+  dobackground
+} def
+
+/PLN {PrintLineNumber {doLineNumber}if} def
+
+/SL {					% Soft Linefeed
+  bg { eolbg } if
+  0  currentpoint exch pop LineHeight sub  moveto
+} def
+
+/HL {SL PLN} def			% Hard Linefeed
+
+% Some debug
+/dcp { currentpoint exch 40 string cvs print (, ) print = } def
+/dp { print 2 copy  exch 40 string cvs print (, ) print = } def
+
+/W {
+  ( ) stringwidth	% Get the width of a space in the current font.
+  pop			% Discard the Y component.
+  mul			% Multiply the width of a space
+			% by the number of spaces to plot
+  bg { dup dobackground } if
+  0 rmoveto
+} def
+
+/Effect 0 def
+/EF {/Effect exch def} def
+
+% stack:  string  |-  --
+% effect: 1  - underline  2   - strikeout  4  - overline
+%         8  - shadow     16  - box        32 - outline
+/S {
+  /xx currentpoint dup Descent add /yy exch def
+  Ascent add /YY exch def def
+  dup stringwidth pop xx add /XX exch def
+  Effect 8 and 0 ne {
+    /yy yy Yshadow add def
+    /XX XX Xshadow add def
+  } if
+  bg {
+    true
+    Effect 16 and 0 ne
+      {SpaceBackground doBox}
+      {xx yy XX YY doRect}
+    ifelse
+  } if							% background
+  Effect 16 and 0 ne {false 0 doBox}if			% box
+  Effect 8  and 0 ne {dup doShadow}if			% shadow
+  Effect 32 and 0 ne
+    {true doOutline}					% outline
+    {show}						% normal text
+  ifelse
+  Effect 1  and 0 ne {UnderlinePosition Hline}if	% underline
+  Effect 2  and 0 ne {StrikeoutPosition Hline}if	% strikeout
+  Effect 4  and 0 ne {OverlinePosition  Hline}if	% overline
+} bind def
+
+% stack:  position  |-  --
+/Hline {
+  currentpoint exch pop add dup
+  gsave
+  newpath
+  xx exch moveto
+  XX exch lineto
+  closepath
+  LineThickness setlinewidth stroke
+  grestore
+} bind def
+
+% stack:  fill-or-not delta  |-  --
+/doBox {
+  /dd exch def
+  xx XBox sub dd sub yy YBox sub dd sub
+  XX XBox add dd add YY YBox add dd add
+  doRect
+} bind def
+
+% stack:  fill-or-not lower-x lower-y upper-x upper-y  |-  --
+/doRect {
+  /rYY exch def
+  /rXX exch def
+  /ryy exch def
+  /rxx exch def
+  gsave
+  newpath
+  rXX rYY moveto
+  rxx rYY lineto
+  rxx ryy lineto
+  rXX ryy lineto
+  closepath
+  % top of stack: fill-or-not
+    {FillBgColor}
+    {LineThickness setlinewidth stroke}
+  ifelse
+  grestore
+} bind def
+
+% stack:  string  |-  --
+/doShadow {
+  gsave
+  Xshadow Yshadow rmoveto
+  false doOutline
+  grestore
+} bind def
+
+/st 1 string def
+
+% stack:  string fill-or-not  |-  --
+/doOutline {
+  /-fillp- exch def
+  /-ox- currentpoint /-oy- exch def def
+  gsave
+  LineThickness setlinewidth
+  {
+    st 0 3 -1 roll put
+    st dup true charpath
+    -fillp- {gsave FillBgColor grestore}if
+    stroke stringwidth
+    -oy- add /-oy- exch def
+    -ox- add /-ox- exch def
+    -ox- -oy- moveto
+  } forall
+  grestore
+  -ox- -oy- moveto
+} bind def
+
+% stack:  --
+/FillBgColor {bgcolor aload pop setrgbcolor fill} bind def
+
+/L0 6 /Times-Italic DefFont
+
+% stack:  --
+/doLineNumber {
+  /LineNumber where
+  {
+    pop
+    currentfont
+    gsave
+    0.0 0.0 0.0 setrgbcolor
+    /L0 findfont setfont
+    LineNumber Lines ge
+      {(end      )}
+      {LineNumber 6 string cvs (      ) strcat}
+    ifelse
+    dup stringwidth pop neg 0 rmoveto
+    show
+    grestore
+    setfont
+    /LineNumber LineNumber 1 add def
+  } if
+} def
+
+% stack: --
+/printZebra {
+  gsave
+  0.985 setgray
+  /double-zebra ZebraHeight ZebraHeight add def
+  /yiter double-zebra LineHeight mul neg def
+  /xiter PrintWidth InterColumn add def
+  NumberOfColumns {LinesPerColumn doColumnZebra xiter 0 rmoveto}repeat
+  grestore
+} def
+
+% stack:  lines-per-column |- --
+/doColumnZebra {
+  gsave
+  dup double-zebra idiv {ZebraHeight doZebra 0 yiter rmoveto}repeat
+  double-zebra mod
+  dup 0 le {pop}{dup ZebraHeight gt {pop ZebraHeight}if doZebra}ifelse
+  grestore
+} def
+
+% stack:  zebra-height (in lines) |- --
+/doZebra {
+  /zh exch 0.05 sub LineHeight mul def
+  gsave
+  0 LineHeight 0.65 mul rmoveto
+  PrintWidth 0 rlineto
+  0 zh neg rlineto
+  PrintWidth neg 0 rlineto
+  0 zh rlineto
+  fill
+  grestore
+} def
+
+% tx ty rotation xscale yscale xpos ypos BeginBackImage
+/BeginBackImage {
+  /-save-image- save def
+  /showpage {}def
+  translate
+  scale
+  rotate
+  translate
+} def
+
+/EndBackImage {
+  -save-image- restore
+} def
+
+% string fontsize fontname rotation gray xpos ypos ShowBackText
+/ShowBackText {
+  gsave
+  translate
+  setgray
+  rotate
+  findfont exch dup /-offset- exch -0.25 mul def scalefont setfont
+  0 -offset- moveto
+  /-saveLineThickness- LineThickness def
+  /LineThickness 1 def
+  false doOutline
+  /LineThickness -saveLineThickness- def
+  grestore
+} def
+
+/BeginDoc {
+  % ---- Remember space width of the normal text font `f0'.
+  /SpaceWidth /f0 findfont setfont ( ) stringwidth pop def
+  % ---- save the state of the document (useful for ghostscript!)
+  /docState save def
+  % ---- [jack] Kludge: my ghostscript window is 21x27.7 instead of 21x29.7
+  /JackGhostscript where {pop 1 27.7 29.7 div scale}if
+  % ---- [andrewi] set PageSize based on chosen dimensions
+%  /setpagedevice where {
+%    pop
+%    1 dict dup
+%    /PageSize [ PrintPageWidth LeftMargin add RightMargin add
+%		 LandscapePageHeight ] put
+%    setpagedevice
+%  }{
+    LandscapeMode {
+      % ---- translate to bottom-right corner of Portrait page
+      LandscapePageHeight 0 translate
+      90 rotate
+    }if
+%  }ifelse
+  /ColumnWidth PrintWidth InterColumn add def
+  % ---- translate to lower left corner of TEXT
+  LeftMargin BottomMargin translate
+  % ---- define where  printing will start
+  /f0 F					% this installs Ascent
+  /PrintStartY PrintHeight Ascent sub def
+  /ColumnIndex 1 def
+} def
+
+/EndDoc {
+  % ---- on last page but not last column, spit out the page
+  ColumnIndex 1 eq not { showpage } if
+  % ---- restore the state of the document (useful for ghostscript!)
+  docState restore
+} def
+
+/BeginDSCPage {
+  % ---- when 1st column, save the state of the page
+  ColumnIndex 1 eq { /pageState save def } if
+  % ---- save the state of the column
+  /columnState save def
+} def
+
+/PrintHeaderWidth PrintOnlyOneHeader{PrintPageWidth}{PrintWidth}ifelse def
+
+/BeginPage {
+  % ---- when 1st column, print all background effects
+  ColumnIndex 1 eq {
+  0 PrintStartY moveto			% move to where printing will start
+  Zebra {printZebra}if
+  printGlobalBackground
+  printLocalBackground
+  } if
+  PrintHeader {
+    PrintOnlyOneHeader{ColumnIndex 1 eq}{true}ifelse {
+      PrintHeaderFrame {HeaderFrame}if
+      HeaderText
+    } if
+  } if
+  0 PrintStartY moveto			% move to where printing will start
+  PLN
+} def
+
+/EndPage {
+  bg { eolbg } if
+} def
+
+/EndDSCPage {
+  ColumnIndex NumberOfColumns eq {
+    % ---- on last column, spit out the page
+    showpage
+    % ---- restore the state of the page
+    pageState restore
+    /ColumnIndex 1 def
+  } { % else
+    % ---- restore the state of the current column
+    columnState restore
+    % ---- and translate to the next column
+    ColumnWidth 0 translate
+    /ColumnIndex ColumnIndex 1 add def
+  } ifelse
+} def
+
+/SetHeaderLines {			% nb-lines --
+  /HeaderLines exch def
+  % ---- bottom up
+  HeaderPad
+  HeaderLines 1 sub HeaderLineHeight mul add
+  HeaderTitleLineHeight add
+  HeaderPad add
+  /HeaderHeight exch def
+} def
+
+% |---------|
+% |  tm     |
+% |---------|
+% |  header |
+% |-+-------| <-- (x y)
+% |  ho     |
+% |---------|
+% |  text   |
+% |-+-------| <-- (0 0)
+% |  bm     |
+% |---------|
+
+/HeaderFrameStart {			% -- x y
+  0  PrintHeight HeaderOffset add
+} def
+
+/HeaderFramePath {
+  PrintHeaderWidth	0			rlineto
+  0			HeaderHeight		rlineto
+  PrintHeaderWidth neg	0			rlineto
+  0			HeaderHeight neg	rlineto
+} def
+
+/HeaderFrame {
+  gsave
+    0.4 setlinewidth
+    % ---- fill a black rectangle (the shadow of the next one)
+    HeaderFrameStart moveto
+    1 -1 rmoveto
+    HeaderFramePath
+    0 setgray fill
+    % ---- do the next rectangle ...
+    HeaderFrameStart moveto
+    HeaderFramePath
+    gsave 0.9 setgray fill grestore	% filled with grey
+    gsave 0 setgray stroke grestore	% drawn  with black
+  grestore
+} def
+
+/HeaderStart {
+  HeaderFrameStart
+  exch HeaderPad add exch	% horizontal pad
+  % ---- bottom up
+  HeaderPad add			% vertical   pad
+  HeaderDescent sub
+  HeaderLineHeight HeaderLines 1 sub mul add
+} def
+
+/strcat {
+  dup length 3 -1 roll dup length dup 4 -1 roll add string dup
+  0 5 -1 roll putinterval
+  dup 4 2 roll exch putinterval
+} def
+
+/pagenumberstring {
+  PageNumber 32 string cvs
+  ShowNofN {
+    (/) strcat
+    PageCount 32 string cvs strcat
+  } if
+} def
+
+/HeaderText {
+  HeaderStart moveto
+
+  HeaderLinesRight HeaderLinesLeft	% -- rightLines leftLines
+
+  % ---- hack: `PN 1 and'  ==  `PN 2 modulo'
+
+  % ---- if duplex and even page number, then exchange left and right
+  Duplex PageNumber 1 and 0 eq and { exch } if
+
+  { % ---- process the left lines
+    aload pop
+    exch F
+    gsave
+      dup xcheck { exec } if
+      show
+    grestore
+    0 HeaderLineHeight neg rmoveto
+  } forall
+
+  HeaderStart moveto
+
+  { % ---- process the right lines
+    aload pop
+    exch F
+    gsave
+      dup xcheck { exec } if
+      dup stringwidth pop
+      PrintHeaderWidth exch sub HeaderPad 2 mul sub 0 rmoveto
+      show
+    grestore
+    0 HeaderLineHeight neg rmoveto
+  } forall
+} def
+
+/ReportFontInfo {
+  2 copy
+  /t0 3 1 roll DefFont
+  /t0 F
+  /lh FontHeight def
+  /sw ( ) stringwidth pop def
+  /aw (01234567890abcdefghijklmnopqrstuvwxyz) dup length exch
+  stringwidth pop exch div def
+  /t1 12 /Helvetica-Oblique DefFont
+  /t1 F
+  gsave
+    (For ) show
+    128 string cvs show
+    ( ) show
+    32 string cvs show
+    ( point, the line height is ) show
+    lh 32 string cvs show
+    (, the space width is ) show
+    sw 32 string cvs show
+    (,) show
+  grestore
+  0 FontHeight neg rmoveto
+  gsave
+    (and a crude estimate of average character width is ) show
+    aw 32 string cvs show
+    (.) show
+  grestore
+  0 FontHeight neg rmoveto
+} def
+
+/cm { % cm to point
+  72 mul 2.54 div
+} def
+
+/ReportAllFontInfo {
+  FontDirectory
+  { % key = font name  value = font dictionary
+    pop 10 exch ReportFontInfo
+  } forall
+} def
+
+% 3 cm 20 cm moveto  10 /Courier ReportFontInfo  showpage
+% 3 cm 20 cm moveto  ReportAllFontInfo           showpage
+
+/printGlobalBackground {
+} def
+/printLocalBackground {
+} def
+/h0 14 (Helvetica-Bold) cvn DefFont
+/h1 12 (Helvetica) cvn DefFont
+
+% ---- These lines must be kept together because...
+
+/h0 F
+/HeaderTitleLineHeight FontHeight def
+
+/h1 F
+/HeaderLineHeight FontHeight def
+/HeaderDescent    Descent def
+
+% ---- ...because `F' has a side-effect on `FontHeight' and `Descent'
+
+/f0 8.5 (Courier) cvn DefFont
+/f1 8.5 (Courier-Bold) cvn DefFont
+/f2 8.5 (Courier-Oblique) cvn DefFont
+/f3 8.5 (Courier-BoldOblique) cvn DefFont
+/SpaceWidthRatio 0.600000 def
+
+%%EndPrologue
+
+%%BeginSetup
+%%%% Start of Mule Section
+
+%% Working dictionary for general use.
+/MuleDict 10 dict def
+
+%% Adjust /RelativeCompose properly by checking /BaselineOffset.
+/AdjustRelativeCompose {	% fontdict  |-  fontdict
+  dup length 2 add dict begin
+    { 1 index /FID ne { def } { pop pop } ifelse } forall
+    currentdict /BaselineOffset known {
+	BaselineOffset false eq { /BaselinfOffset 0 def } if
+    } {
+      /BaselineOffset 0 def
+    } ifelse
+    currentdict /RelativeCompose known not {
+      /RelativeCompose [ 0 0.1 ] def
+    } {
+      RelativeCompose false ne {
+        [ BaselineOffset RelativeCompose BaselineOffset add
+          [ FontMatrix { FontSize div } forall ] transform ]
+        /RelativeCompose exch def
+      } if
+    } ifelse
+    currentdict
+  end
+} def
+
+%% Define already scaled font for non-ASCII character sets.
+/DefFontMule {			% fontname size basefont  |-  --
+  findfont exch scalefont AdjustRelativeCompose definefont pop
+} bind def
+
+%% Define already scaled font for ASCII character sets.
+/DefAsciiFontMule {		% fontname size basefont  |-
+  MuleDict begin
+  findfont dup /Encoding get /ISOLatin1Encoding exch def
+  exch scalefont AdjustRelativeCompose reencodeFontISO
+  end
+} def
+
+%% Set the specified non-ASCII font to use.  It doesn't install
+%% Ascent, etc.
+/FM {				%  fontname  |-  --
+  findfont setfont
+} bind def
+
+%% Show vacant box for characters which don't have appropriate font.
+/SB {				% count column |-  --
+    SpaceWidth mul /w exch def
+    1 exch 1 exch { %for
+	pop
+	gsave
+	0 setlinewidth
+	0 Descent rmoveto w 0 rlineto
+	0 LineHeight rlineto w neg 0 rlineto closepath stroke
+	grestore
+	w 0 rmoveto
+    } for
+} bind def
+
+%% Flag to tell if we are now handling a composite character.  This is
+%% defined here because both composite character handler and bitmap font
+%% handler require it.
+/Cmpchar false def
+
+%%%% End of Mule Section
+
+BeginDoc
+%%EndSetup
+
+%%Page: 1 1
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 1 def
+/PageNumber 1 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+0.000 0.000 0.000 FG
+0 EF
+(//!/////////////////////////////////////////////////////////////////////) S
+HL
+(//) S
+HL
+(// camera) S
+HL
+(//) S
+HL
+(// @file      camera.cxx) S
+HL
+(// @title     Camera simulation) S
+HL
+(// @subtitle  Code for the simulation of the camera phase) S
+HL
+(// @desc      Code for the simulation of the camera of CT1 and MAGIC) S
+HL
+(// @author    J C Gonzalez) S
+HL
+(// @date      Time-stamp: "Sat Feb 12 12:58:12 CET 2000") S
+HL
+(// @email     gonzalez@mppmu.mpg.de) S
+HL
+(//) S
+HL
+(//----------------------------------------------------------------------) S
+HL
+(//) S
+HL
+(// Created:   Thu May  7 16:24:22 1998) S
+HL
+(// Author:    Jose Carlos Gonzalez) S
+HL
+(// Purpose:   Program for reflector simulation) S
+HL
+(// Notes:     See files README for details) S
+HL
+(//) S
+HL
+(//----------------------------------------------------------------------) S
+HL
+(//) S
+HL
+(// $RCSfile$) S
+HL
+(// $Revision$) S
+HL
+(// $Author$) S
+HL
+(// $Date$) S
+HL
+(//) S
+HL
+(////////////////////////////////////////////////////////////////////////) S
+HL
+(// @tableofcontents @coverpage) S
+HL
+HL
+(//=-----------------------------------------------------------) S
+HL
+(//# Source code of |camera.cxx|.) S
+HL
+HL
+(/*") S
+HL
+(  In this section we show the \(commented\) code of the program for the) S
+HL
+(  read-out of the output files generated by the simulator of the) S
+HL
+(  reflector, |reflector 0.3|.) S
+HL
+(**/) S
+HL
+HL
+(//=-----------------------------------------------------------) S
+HL
+(//## Includes and file-scope variables definition.) S
+HL
+HL
+(/*") S
+HL
+(  All the defines are located in the file |camera.h|.) S
+HL
+(**/) S
+HL
+HL
+(//{) S
+HL
+(#include "camera.h") S
+HL
+(//}) S
+HL
+HL
+HL
+(//=-----------------------------------------------------------) S
+HL
+(//## Definition of global variables.) S
+HL
+HL
+(//{) S
+HL
+HL
+(/*") S
+HL
+(  Now we define some global variables with data about the telescope,) S
+HL
+(  such as "focal distance",  number of pixels/mirrors,) S
+HL
+(  "size of the camera", and so on.) S
+HL
+(**/) S
+HL
+HL
+(/*") S
+HL
+(  Depending on the telescope we are using \(CT1 or MAGIC\), the) S
+HL
+(  information stored in the definition file is different.) S
+HL
+(  The variable |ct_Type| has the value 0 when we use) S
+HL
+(  CT1, and 1 when we use MAGIC.) S
+HL
+(**/) S
+HL
+HL
+(//@: Type of telescope: 0:CT1, 1:MAGIC) S
+HL
+(static int   ct_Type;       ) S
+HL
+HL
+(/*") S
+HL
+(  And this is the information about the whole telescope.) S
+HL
+(**/) S
+HL
+HL
+(// parameters of the CT \(from the CT definition file\)) S
+HL
+HL
+(//@: Focal distances [cm]) S
+EndPage
+EndDSCPage
+
+%%Page: 2 2
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 79 def
+/PageNumber 2 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(static float *ct_Focal;) S
+HL
+HL
+(//@: Mean Focal distances [cm]) S
+HL
+(static float ct_Focal_mean;) S
+HL
+HL
+(//@: STDev. Focal distances [cm]) S
+HL
+(static float ct_Focal_std;) S
+HL
+HL
+(//@: Mean Point Spread function [cm]) S
+HL
+(static float ct_PSpread_mean;) S
+HL
+HL
+(//@: STDev. Point Spread function [cm]) S
+HL
+(static float ct_PSpread_std;) S
+HL
+HL
+(//@: STDev. Adjustmente deviation [cm]) S
+HL
+(static float ct_Adjustment_std;) S
+HL
+HL
+(//@: Radius of the Black Spot in mirror [cm]) S
+HL
+(static float ct_BlackSpot_rad;) S
+HL
+HL
+(//@: Radius of one mirror [cm]) S
+HL
+(static float ct_RMirror;) S
+HL
+HL
+(//@: Camera width [cm]) S
+HL
+(static float ct_CameraWidth;) S
+HL
+HL
+(//@: Half of Camera width [cm]) S
+HL
+(static float ct_CameraWidth_2;) S
+HL
+HL
+(//@: Pixel width [cm]) S
+HL
+(static float ct_PixelWidth;) S
+HL
+HL
+(//@: ct_PixelWidth_corner_2_corner = ct_PixelWidth / cos\(60\)) S
+HL
+(static float ct_PixelWidth_corner_2_corner;) S
+HL
+HL
+(//@: ct_PixelWidth_corner_2_corner / 2) S
+HL
+(static float ct_PixelWidth_corner_2_corner_half;) S
+HL
+HL
+(//@: Number of mirrors) S
+HL
+(static int ct_NMirrors = 0;) S
+HL
+HL
+(//@: Number of rings of small pixels) S
+HL
+(static int ct_NRings_small;) S
+HL
+HL
+(//@: Number of rings of big pixels) S
+HL
+(static int ct_NRings_big;) S
+HL
+HL
+(//@: Number of small pixels) S
+HL
+(static int ct_NPixels_small;) S
+HL
+HL
+(//@: Number of gap pixels) S
+HL
+(static int ct_NPixels_gap;) S
+HL
+HL
+(//@: Number of big pixels) S
+HL
+(static int ct_NPixels_big;) S
+HL
+HL
+(//@: Number \(total\) of pixels) S
+HL
+(static int ct_NPixels;) S
+HL
+HL
+(//@: Number of big pixels in the first sector of first ring) S
+HL
+(static int ct_NBig1;) S
+HL
+HL
+(//@: ct_Apot = ct_PixelWidth / 2) S
+HL
+(static float ct_Apot;) S
+HL
+HL
+(//@: ct_2Apot = 2 * ct_Apot = ct_PixelWidth) S
+HL
+(static float ct_2Apot;) S
+HL
+HL
+(//@: name of the CT definition file to use) S
+HL
+(static char ct_filename[256];) S
+HL
+HL
+(/*") S
+HL
+(  The following double-pointer is a 2-dimensional table with information) S
+HL
+(  about each pixel. The routine |read_pixels\(\)| will read) S
+HL
+(  this information from the file |pixels.dat|.) S
+HL
+(**/) S
+HL
+HL
+(// Pointer to a tables/Arrays with information about the pixels) S
+EndPage
+EndDSCPage
+
+%%Page: 3 3
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 157 def
+/PageNumber 3 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(// and data stored on them with information about the pixels) S
+HL
+HL
+(//@: table for IJ\(K\) system) S
+HL
+(static int pixels[PIX_ARRAY_SIDE][PIX_ARRAY_SIDE];) S
+HL
+HL
+(//@: coordinates x,y for each pixel) S
+HL
+(static float **pixary;) S
+HL
+HL
+(//@: indexes of pixels neighbours of a given one) S
+HL
+(static int **pixneig;) S
+HL
+HL
+(//@: number of neighbours a pixel have) S
+HL
+(static int *npixneig;) S
+HL
+HL
+(//@: contents of the pixels \(ph.e.\)) S
+HL
+(static float *fnpix;) S
+HL
+HL
+(//@: contents of the pixels \(ph.e.\) after cleanning) S
+HL
+(static float *fnpixclean;) S
+HL
+HL
+(/*") S
+HL
+(  The following double-pointer is a 2-dimensional table with the) S
+HL
+(  Quantum Efficiency @$QE@$ of each pixel in the camera, as a function) S
+HL
+(  of the wavelength @$\\lambda@$. The routine |read_pixels\(\)| will read) S
+HL
+(  also this information from the file |qe.dat|.) S
+HL
+(**/) S
+HL
+HL
+(// Pointer to a table with QE, number of datapoints, and wavelengths) S
+HL
+HL
+(//@: table of QE) S
+HL
+(static float ***QE;) S
+HL
+HL
+(//@: number of datapoints for the QE curve) S
+HL
+(static int pointsQE;) S
+HL
+HL
+(//@: table of QE) S
+HL
+(static float *QElambda;) S
+HL
+HL
+(/*") S
+HL
+(  The following is a table of HARD-CODED efficiencies. This should be) S
+HL
+(  changed some how...) S
+HL
+(**/) S
+HL
+HL
+(//" HARD-CODED efficiencies) S
+HL
+HL
+(//@: Efficiency of transmision for the Plexiglas) S
+HL
+(static const float Eff_Plexiglas = 0.95;) S
+HL
+HL
+(//@: Efficiency of transmision for the Plexiglas) S
+HL
+(static const float Eff_LightGuides = 0.90;) S
+HL
+HL
+(//@: Efficiency of transmision for the Plexiglas) S
+HL
+(static const float Eff_1stDynode = 0.90;) S
+HL
+HL
+(//@: Efficiency of transmision for the Plexiglas) S
+HL
+(static const float overall_Efficiency = \( Eff_Plexiglas *) S
+HL
+(                                          Eff_LightGuides *) S
+HL
+(                                          Eff_1stDynode \);) S
+HL
+(/*") S
+HL
+(  The following double-pointer is a 2-dimensional table with information) S
+HL
+(  about each mirror in the dish. The routine |read_ct_file\(\)| will read) S
+HL
+(  this information from the CT definition file.) S
+HL
+(**/) S
+HL
+HL
+(// Pointer to a table with the following info.:) S
+HL
+HL
+(static float **ct_data;) S
+HL
+HL
+(/*) S
+HL
+( *  TYPE=0  \(CT1\)) S
+HL
+( *  i   s rho   theta   x   y   z   thetan  phin  xn   yn   zn) S
+HL
+( *) S
+HL
+( *     i : number of the mirror) S
+HL
+( *     s : arc length [cm]) S
+HL
+( *   rho : polar rho of the position of the center of the mirror [cm]) S
+HL
+( * theta : polar angle of the position of the center of the mirror [cm]) S
+HL
+( *     x : x coordinate of the center of the mirror [cm]) S
+HL
+( *     y : y coordinate of the center of the mirror [cm]) S
+EndPage
+EndDSCPage
+
+%%Page: 4 4
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 235 def
+/PageNumber 4 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+( *     z : z coordinate of the center of the mirror [cm]) S
+HL
+( *thetan : polar theta angle of the direction where the mirror points to) S
+HL
+( *  phin : polar phi angle of the direction where the mirror points to) S
+HL
+( *    xn : xn coordinate of the normal vector in the center \(normalized\)) S
+HL
+( *    yn : yn coordinate of the normal vector in the center \(normalized\)) S
+HL
+( *    zn : zn coordinate of the normal vector in the center \(normalized\)) S
+HL
+( *) S
+HL
+( *  TYPE=1  \(MAGIC\)) S
+HL
+( *  i  f   sx   sy   x   y   z   thetan  phin) S
+HL
+( *) S
+HL
+( *      i : number of the mirror) S
+HL
+( *      f : focal distance of that mirror) S
+HL
+( *     sx : curvilinear coordinate of mirror's center in X[cm]) S
+HL
+( *     sy : curvilinear coordinate of mirror's center in X[cm]) S
+HL
+( *      x : x coordinate of the center of the mirror [cm]) S
+HL
+( *      y : y coordinate of the center of the mirror [cm]) S
+HL
+( *      z : z coordinate of the center of the mirror [cm]) S
+HL
+( * thetan : polar theta angle of the direction where the mirror points to) S
+HL
+( *   phin : polar phi angle of the direction where the mirror points to) S
+HL
+( *     xn : xn coordinate of the normal vector in the center \(normalized\)) S
+HL
+( *     yn : yn coordinate of the normal vector in the center \(normalized\)) S
+HL
+( *     zn : zn coordinate of the normal vector in the center \(normalized\)) S
+HL
+( */) S
+HL
+HL
+(/*") S
+HL
+(  We define a table into where random numbers will be stored.) S
+HL
+(  The routines used for random number generation are provided by) S
+HL
+(  |RANLIB| \(taken from NETLIB, |www.netlib.org|\), and by) S
+HL
+(  the routine |double drand48\(void\)| \(prototype defined in) S
+HL
+(  |stdlib.h|\) through the macro |RandomNumber| defined in) S
+HL
+(  |camera.h|.) S
+HL
+(**/) S
+HL
+HL
+(//@: Table of random numbers) S
+HL
+(static double RandomNumbers[500];) S
+HL
+HL
+(/*") S
+HL
+(  Trigger variables to be used.) S
+HL
+(**/) S
+HL
+HL
+(//@: Trigger pattern ID to use in the run) S
+HL
+(static TriggerPattern_type trigger_pattern_id;) S
+HL
+HL
+(//@: Number of trigger patterns valid for that Trigger pattern ID) S
+HL
+(static int trigger_npatterns;) S
+HL
+HL
+(//@: Trigger patterns valid for that Trigger pattern ID) S
+HL
+(static int *trigger_patterns;) S
+HL
+HL
+(/*") S
+HL
+(  The following is a variable to count the number of Cphotons) S
+HL
+(  in the different steps of the simulation.) S
+HL
+(  The definition is as follows:) S
+HL
+(  @[) S
+HL
+(  \\mbox{CountCphotons}[ \\mbox{FILTER} ] \\equiv) S
+HL
+(  \\mbox{\\it Number of photons after the filter} \\mbox{FILTER}) S
+HL
+(  @]) S
+HL
+(  The filters are defined and can be found in the file |camera.h|.) S
+HL
+(**/) S
+HL
+HL
+(//@: vector to count photons at any given step of the simulation) S
+HL
+(static int CountCphotons[10];) S
+HL
+HL
+(/*") S
+HL
+(  The following are the set of parameters calculated for each image.) S
+HL
+(  The routines for their calculations are in |moments.cxx|.) S
+HL
+(**/) S
+HL
+HL
+(// parameters of the images) S
+HL
+(static float xmax, ymax, *maxs;) S
+HL
+(static int *nmaxs;) S
+HL
+(static float length, width, dist, xdist, azw, miss, alpha, *conc;) S
+HL
+(static float phiasym, asymx, asymy;) S
+HL
+(static float charge, smax;) S
+HL
+HL
+(//@: structure with info. about the image) S
+HL
+(static Moments_Info *moments_ptr;) S
+HL
+EndPage
+EndDSCPage
+
+%%Page: 5 5
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 313 def
+/PageNumber 5 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(//@: structure with info. about islands) S
+HL
+(static Islands_Info *islands_ptr;) S
+HL
+HL
+(//@: structure with info. about lenwid) S
+HL
+(static LenWid_Info  *lenwid_ptr;) S
+HL
+HL
+(//}) S
+HL
+HL
+(//=-----------------------------------------------------------) S
+HL
+(//## Main program.) S
+HL
+HL
+(//{) S
+HL
+HL
+(//++++++++++++++++++++++++++++++++++++++++) S
+HL
+(// MAIN PROGRAM) S
+HL
+(//----------------------------------------) S
+HL
+HL
+(int) S
+HL
+(main\(int argc, char **argv\)) S
+HL
+({) S
+HL
+HL
+(  //### Definition of variables.) S
+HL
+HL
+(  ifstream inputfile;         //@< stream for the input file) S
+HL
+(  ofstream outputfile;        //@< stream for the output file) S
+HL
+(  ofstream datafile;          //@< stream for the data file) S
+HL
+HL
+(  MCEventHeader mcevth;       //@< Event Header class \(MC\)) S
+HL
+(  MCCphoton     cphoton;      //@< Cherenkov Photon class \(MC\)) S
+HL
+HL
+(  char  pathname[256];        //@< source directory for input files) S
+HL
+(  char  cername[256];         //@< source cerXXXXXX file name) S
+HL
+(  char  staname[256];         //@< source datXXXXXX file name) S
+HL
+(  char  inname[256];          //@< input file name) S
+HL
+(  char  outname[256];         //@< output file name) S
+HL
+(  char  datname[256];         //@< data \(ASCII\) output file name) S
+HL
+(  char  hboname[256];         //@< HBOOK file name) S
+HL
+(  char  hbonamelnk[256];      //@< link to HBOOK file name) S
+HL
+(  char  hbookname[256];       //@< HBOOK file name) S
+HL
+(  char  parname[256];         //@< parameters file name) S
+HL
+(                           ) S
+HL
+(  char  dummy[256];           //@< dummy char. variable) S
+HL
+(  char  sign[20];             //@< initialize sign) S
+HL
+(  char  flag[40];             //@< flags in the .rfl file) S
+HL
+HL
+(  float thetaCT, phiCT, xiCT; //@< parameters of a given shower) S
+HL
+(  float thetashw, phishw;     //@< parameters of a given shower) S
+HL
+(  float coreD, coreX, coreY;  //@< core position and distance) S
+HL
+(  float impactD;              //@< impact parameter) S
+HL
+(  float u, v, w;              //@< auxiliary variables) S
+HL
+(  float l1, m1, n1;           //@< auxiliary variables) S
+HL
+(  float l2, m2, n2;           //@< auxiliary variables) S
+HL
+(  float num, den;             //@< auxiliary variables) S
+HL
+HL
+(  int   nshow=0;              //@< partial number of shower in a given run) S
+HL
+(  int   ntshow=0;             //@< total number of showers) S
+HL
+(  int   ncph=0;               //@< partial number of shower in a given run) S
+HL
+(  int   ntcph=0;              //@< total number of showers) S
+HL
+(                              ) S
+HL
+(  int   i, j, k, n, m;        //@< simple counters) S
+HL
+(  float x, y;                 //@< intermediate variables) S
+HL
+HL
+(  float t0, t1;               //@< initial and final times for the Cphotons) S
+HL
+(  float trange;               //@< time interval between first and last photon) S
+HL
+(  float t;                    //@< time for a single photon) S
+HL
+(  float phi;                  //@< phi angle of photon in the camera plane) S
+HL
+(  float cx, cy;               //@< coordinates in the XY system of the camera) S
+HL
+(  int   ki, kj, kk;           //@< coordinates of a pixel in the X'Y'Z' system) S
+HL
+HL
+(  int   nPMT;                 //@< number of pixel) S
+HL
+HL
+(  float wl, last_wl;          //@< wavelength of the photon) S
+HL
+(  float qe;                   //@< quantum efficiency) S
+HL
+(  float **qeptr = 0;          //@< quantum efficiency table) S
+HL
+HL
+(  int   whatIs;               //@< flag to identify datablocks in input file) S
+HL
+HL
+(  float muph, nph;            //@< mean and final value for the number of Cphs) S
+EndPage
+EndDSCPage
+
+%%Page: 6 6
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 391 def
+/PageNumber 6 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+HL
+(  float nNSB;                 //@< final value for the NSB) S
+HL
+(      ) S
+HL
+(  int   *Skip=0;              //@< list of showers to be skipped) S
+HL
+(  int   nSkip=0;              //@< number of showers to be skipped) S
+HL
+HL
+(  int   Data_From_STDIN = FALSE;  //@< flag: TRUE: data come from STDIN) S
+HL
+HL
+(  int   Read_Phe = FALSE;         //@< flag: TRUE: we are reading a PHE file) S
+HL
+(  int   Read_Phe_All = FALSE;     //@< flag: TRUE: read all data to file) S
+HL
+HL
+(  int   Write_All_Images = FALSE; //@< flag: TRUE: write all images to output) S
+HL
+(  int   Write_All_Data = FALSE;   //@< flag: TRUE: write all data to output) S
+HL
+HL
+(  int   Select_Energy = TRUE;        //@< flag: TRUE: selection on the energy) S
+HL
+(  float Select_Energy_le = 0.0;      //@< Lower edge energy range \(in GeV\)) S
+HL
+(  float Select_Energy_ue = 100000.0; //@< Upper edge of energy range \(GeV\)) S
+HL
+HL
+(  int   simulateNSB;          //@< will we simulate NSB?) S
+HL
+(  float meanNSB;              //@< NSB mean value \(per pixel and ns\)) S
+HL
+(  int   onlyNSB;              //@< simulate only NSB events) S
+HL
+(  int   eventsNSB;            //@< number of NSB events to simulate) S
+HL
+(  int   current_eventNSB;     //@< number of current NSB event) S
+HL
+(    ) S
+HL
+(  float qThreshold;           //@< Threshold value) S
+HL
+(  float qTailCut;             //@< Tail Cut value) S
+HL
+(  int   nIslandsCut;          //@< Islands Cut value) S
+HL
+(  int   countIslands;         //@< will we count the islands?) S
+HL
+HL
+(  int   anaPixels;            //@< number of pixels in analysis \(NOT WORKING!\)) S
+HL
+HL
+(  float fCorrection;          //@< Factor to apply to pixel values \(def. 1.\)) S
+HL
+HL
+(  float q0;                   //@< trigger threshold \( intermediate variable \)) S
+HL
+(  float maxcharge;            //@< maximum charge in pixels) S
+HL
+(  int   noverq0, novq0;       //@< number of pixels above threshold) S
+HL
+(  int   ngrpq0, mxgrp;        //@< number of pixels in a group) S
+HL
+(                              ) S
+HL
+(  int   trigger;              //@< trigger flag) S
+HL
+(  int   itrigger;             //@< index of pixel fired) S
+HL
+(  int   ntrigger = 0;         //@< number of triggers in the whole file) S
+HL
+(  int   triggerBits;          //@< byte for trigger condition check \(MAGIC\)) S
+HL
+(  int   bit;                  //@< intermediate variable) S
+HL
+HL
+(  float plateScale_cm2deg;    //@< plate scale \(deg/cm\)) S
+HL
+(  float degTriggerZone;       //@< trigger area in the camera \(radius, in deg.\)) S
+HL
+HL
+(  float dtheta, dphi;         //@< deviations of CT from shower axis) S
+HL
+HL
+(  int   still_in_loop = FALSE;    //@< boolean variable for flow control) S
+HL
+(  int   exit_from_switch = FALSE; //@< boolean variable for flow control) S
+HL
+HL
+(  int   nvar;                 //@< number of parameters saved for each image) S
+HL
+(  float * image_data;         //@< vector with data from the image) S
+HL
+HL
+(  char  htimename[200];       //@< name of the time histogram file) S
+HL
+(  char  Signature[20];        //@< signature of the camera program) S
+HL
+(  int   hidt=2;               //@< extended shower number) S
+HL
+(  int   nbins;                //@< number of bins of the timing histos.) S
+HL
+(  float binmin, binmax;       //@< limits for the timing histos.) S
+HL
+(  int   ntimebin;             //@< time bin where the trigger is found) S
+HL
+HL
+(  float * spsX=0;             //@< vector of X data from the Single Phe. Spec.) S
+HL
+(  float * spsY=0;             //@< vector of Y data from the Single Phe. Spec.) S
+HL
+(  float sps_Mean;             //@< mean of the Single Phe. Spec.) S
+HL
+(  float sps_FWHM;             //@< FWHM of a single ph.e signal) S
+HL
+(  float sps_Sigma;            //@< Sigma of a single ph.e signal) S
+HL
+HL
+(  float tmpdeviation;         //@< temporary variable for deviation) S
+HL
+HL
+(  //### Definition of HBOOK variables.) S
+HL
+HL
+(  const int iNTUPLE_PARS = 49;) S
+HL
+HL
+(#ifdef __HBOOK_FILES__) S
+HL
+HL
+(  // the order of variable names must macht the order) S
+HL
+(  // in the output ntuple below) S
+EndPage
+EndDSCPage
+
+%%Page: 7 7
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 469 def
+/PageNumber 7 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+HL
+(  char *cvarnam [iNTUPLE_PARS] = {) S
+HL
+(    "n", "primary", "energy", "cored", "impact", "xcore", "ycore",) S
+HL
+(      "theta", "phi", "dangle", "dtheta", "dphi", "trigger", "ncphs",) S
+HL
+(      "nphes", "nphes2", "length", "width", "dist", "xdist", "azw",) S
+HL
+(      "miss", "alpha", "conc2", "conc3", "conc4", "conc5", "conc6",) S
+HL
+(      "conc7", "conc8", "conc9", "xmax", "ymax", "xm", "ym", "beta",) S
+HL
+(      "m2xy", "asymx", "asymy", "phiasym", "l1", "l2", "w1", "w2",) S
+HL
+(      "twidth", "tpeak", "tfirst", "tlast", "trange"};) S
+HL
+(  ) S
+HL
+(  HBOOK_FILE ntupleFile;) S
+HL
+HL
+(#endif // __HBOOK_FILES__) S
+HL
+HL
+(  //### Definition of variables for |getopt\(\)|.) S
+HL
+HL
+(  int ch, errflg = 0;        //@< used by getopt) S
+HL
+HL
+(  /*"### Beginning of the program.) S
+HL
+HL
+(    We start with the main program. First we \(could\) make some) S
+HL
+(    presentation, and follows the reading of the parameters file \(now) S
+HL
+(    from the |stdin|\), the reading of the CT parameters file, and the) S
+HL
+(    creation of the output file, where the processed data will be) S
+HL
+(    stored.) S
+HL
+(  **/) S
+HL
+HL
+(  //++) S
+HL
+(  // START) S
+HL
+(  //--) S
+HL
+HL
+(  // make unbuffered output) S
+HL
+(  cout.setf \( ios::stdio \);) S
+HL
+HL
+(  //### Parameters files parsing.) S
+HL
+HL
+(  // parse command line options \(see reflector.h\)) S
+HL
+(  parname[0] = '\\0';) S
+HL
+(  optarg = NULL;) S
+HL
+(  while \( !errflg &&) S
+HL
+(          \(\(ch = getopt\(argc, argv, COMMAND_LINE_OPTIONS\)\) != -1\) \) {) S
+HL
+(    switch \(ch\) {) S
+HL
+(    case 'f':) S
+HL
+(      strcpy\(parname, optarg\);) S
+HL
+(      break;) S
+HL
+(    case 'h':) S
+HL
+(      usage\(\);) S
+HL
+(      break;) S
+HL
+(    default :) S
+HL
+(      errflg++;) S
+HL
+(    }) S
+HL
+(  }) S
+HL
+(  ) S
+HL
+(  // show help if error) S
+HL
+(  if \( errflg>0 \)) S
+HL
+(    usage\(\);) S
+HL
+HL
+(  // make some sort of presentation) S
+HL
+(  present\(\);) S
+HL
+HL
+(  // read parameters file) S
+HL
+(  if \( strlen\(parname\) < 1 \)) S
+HL
+(    readparam\(NULL\);) S
+HL
+(  else) S
+HL
+(    readparam\(parname\);) S
+HL
+HL
+(  //### Initialization of parameters, and CT and pixels data files.) S
+HL
+HL
+(  // read data from file or from STDIN?) S
+HL
+(  Data_From_STDIN = get_data_from_stdin\(\);) S
+HL
+HL
+(  // read PHE data?) S
+HL
+(  Read_Phe = get_read_phe\(\);) S
+HL
+HL
+(  // read PHE data, generated previously with write_all_images?) S
+HL
+(  Read_Phe_All = get_read_phe_all\(\);) S
+HL
+HL
+(  // write all images, even those without trigger?) S
+EndPage
+EndDSCPage
+
+%%Page: 8 8
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 547 def
+/PageNumber 8 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(  Write_All_Images = get_write_all_images\(\);) S
+HL
+HL
+(  // write all data \(i.e., ph.e.s in pixels\)?) S
+HL
+(  Write_All_Data = get_write_all_data\(\);) S
+HL
+HL
+(  // get filenames) S
+HL
+(  strcpy\( inname, get_input_filename\(\) \);) S
+HL
+(  strcpy\( outname, get_output_filename\(\) \);) S
+HL
+(  strcpy\( datname, get_data_filename\(\) \);) S
+HL
+(  strcpy\( hboname, get_hbook_filename\(\) \);) S
+HL
+(  strcpy\( ct_filename, get_ct_filename\(\) \);) S
+HL
+HL
+(  // get different parameters of the simulation) S
+HL
+(  qThreshold   = get_threshold\(\);) S
+HL
+(  qTailCut     = get_tail_cut\(\);) S
+HL
+(  simulateNSB  = get_nsb\( &meanNSB \);) S
+HL
+(  onlyNSB      = get_nsb_only\( &eventsNSB \);) S
+HL
+(  countIslands = get_islands_cut\( &nIslandsCut \);) S
+HL
+HL
+(  // establish conditions for only NSB events \(or not\)) S
+HL
+(  if \( onlyNSB == TRUE \)) S
+HL
+(    current_eventNSB = 0;) S
+HL
+(  else) S
+HL
+(    current_eventNSB = eventsNSB+1;) S
+HL
+HL
+(  // get trigger pattern to be used) S
+HL
+(  trigger_pattern_id = get_trigger_pattern_id\(\);) S
+HL
+(  trigger_npatterns  = get_trigger_npatterns\(\);) S
+HL
+(  trigger_patterns   = get_trigger_patterns\(\);) S
+HL
+HL
+(  // get selections on the parameters) S
+HL
+(  Select_Energy = get_select_energy\( &Select_Energy_le, &Select_Energy_ue\);) S
+HL
+HL
+(  // get Single Phe. Spectrum mean, and compute normalized curve) S
+HL
+(  get_sps_params\( sps_Mean, sps_FWHM, sps_Sigma \);) S
+HL
+HL
+(  // log filenames information) S
+HL
+(  log\(SIGNATURE,) S
+HL
+(      "%s:\\n\\t%20s:\\t%s\\n\\t%20s:\\t%s\\n\\t%20s:\\t%s\\n\\t%20s:\\t%s\\n\\t%20s:\\t%s\\n",) S
+HL
+(      "Filenames",) S
+HL
+(      "In", inname,) S
+HL
+(      "Out", outname,) S
+HL
+(      "Data", datname,) S
+HL
+(      "HBOOK", hboname,) S
+HL
+(      "CT", ct_filename\);) S
+HL
+HL
+(  // log flags information) S
+HL
+(  log\(SIGNATURE, "Flags:%20s: %s\\n",) S
+HL
+(      "Data_From_STDIN",   ONoff\(Data_From_STDIN\)\);) S
+HL
+(  log\(SIGNATURE, "Flags:%20s: %s\\n",) S
+HL
+(      "Read_Phe",          ONoff\(Read_Phe\)\);) S
+HL
+(  log\(SIGNATURE, "Flags:%20s: %s\\n",) S
+HL
+(      "Read_Phe_All",      ONoff\(Read_Phe_All\)\);) S
+HL
+(  log\(SIGNATURE, "Flags:%20s: %s\\n",) S
+HL
+(      "Write_All_Images",  ONoff\(Write_All_Images\)\);) S
+HL
+(  log\(SIGNATURE, "Flags:%20s: %s\\n",) S
+HL
+(      "Write_All_Data",    ONoff\(Write_All_Data\)\);) S
+HL
+HL
+(  // NSB flags/data information) S
+HL
+(  log\(SIGNATURE, "NSB:%20s: %10f %s\\n",) S
+HL
+(      "NSB \(phes/pixel\)", meanNSB, ONoff\(simulateNSB\)\);) S
+HL
+(  log\(SIGNATURE, "NSB:%20s: %10d %s\\n",) S
+HL
+(      "NSB-only events",  eventsNSB, ONoff\(onlyNSB\)\);) S
+HL
+HL
+(  // log parameters information) S
+HL
+(  log\(SIGNATURE, "Parameters:%20s: %f\\n",) S
+HL
+(      "q0 \(Threshold\)", qThreshold\);) S
+HL
+(  log\(SIGNATURE, "Parameters:%20s: %f\\n",) S
+HL
+(      "t0 \(Tail-cut\)", qTailCut\);) S
+HL
+(  log\(SIGNATURE, "Parameters:%20s: %f %s\\n",) S
+HL
+(      "i0 \(Islands-cut\)", \(float\)nIslandsCut, ONoff\(countIslands\)\);) S
+HL
+HL
+(  // log SPS parameters) S
+HL
+(  log\(SIGNATURE, "Single Phe. Spectrum:%20s: %f %s\\n",) S
+HL
+(      "sps_Mean", sps_Mean, "ph.e-"\);) S
+HL
+(  log\(SIGNATURE, "Single Phe. Spectrum:%20s: %f %s\\n",) S
+HL
+(      "sps_FWHM", sps_FWHM, "ph.e-"\);) S
+HL
+(  log\(SIGNATURE, "Single Phe. Spectrum:%20s: %f %s\\n",) S
+EndPage
+EndDSCPage
+
+%%Page: 9 9
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 625 def
+/PageNumber 9 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(      "sps_Sigma", sps_Sigma, "ph.e-"\);) S
+HL
+(  ) S
+HL
+(  // log selections) S
+HL
+(  log\(SIGNATURE, "Selections:%20s: %s \(%f:%f\)\\n", ) S
+HL
+(      "Energy", ONoff\(Select_Energy\), Select_Energy_le, Select_Energy_ue\);) S
+HL
+HL
+(  // log random seeds ) S
+HL
+(  log\(SIGNATURE, "Random Seeds: %ld %ld\\n", ) S
+HL
+(      get_seeds\(0\), get_seeds\(1\)\); ) S
+HL
+HL
+(  // set all random numbers seeds) S
+HL
+(  setall\( get_seeds\(0\), get_seeds\(1\) \);) S
+HL
+HL
+(  // get list of showers to evt. skip) S
+HL
+(  nSkip = get_nskip_showers\(\);) S
+HL
+HL
+(  if \(nSkip > 0\) {) S
+HL
+(    Skip = new int[ nSkip ];) S
+HL
+(    get_skip_showers\( Skip \);) S
+HL
+HL
+(    log\(SIGNATURE, "There are some showers to skip:\\n"\);) S
+HL
+(    for \(i=0; i<nSkip; ++i\)) S
+HL
+(      log\(SIGNATURE, "\\tshower # %d\\n", Skip[i]\);) S
+HL
+(  }) S
+HL
+HL
+(  // read parameters from the ct.def file) S
+HL
+(  read_ct_file\(\);) S
+HL
+HL
+(  // read pixels data) S
+HL
+(  read_pixels\(\);) S
+HL
+HL
+(  // create Single Phe. Spectrum normalized curve) S
+HL
+(  create_sps\( spsX, spsY, sps_Mean \);) S
+HL
+HL
+(#ifdef __DEBUG__) S
+HL
+(  // dump data) S
+HL
+(  for \(i=0; i<nSinglePheSpectrum; i++\)) S
+HL
+(    cerr << setw\(3\) << i) S
+HL
+(         << setw\(12\) << spsX[i] << setw\(12\) << spsY[i] << endl;) S
+HL
+(#endif // __DEBUG__) S
+HL
+HL
+(  // set plate scale \(deg/cm\) and trigger area \(deg\)) S
+HL
+(  // plateScale_cm2deg = \( ct_Type == 0 \) ? \(0.244/2.1\) : \(1.0/30.0\);) S
+HL
+(  plateScale_cm2deg = \( ct_Type == 0 \) ? \(0.244/2.1\) : 0.030952381;) S
+HL
+HL
+(  if \( ! get_trigger_radius\( &degTriggerZone \) \)) S
+HL
+(    degTriggerZone = \( ct_Type == 0 \) ? \(5.0\) : \(5.0\);) S
+HL
+HL
+(  // set up the vector with flags about pixels in/out of the trigger) S
+HL
+(  int * inTrigger = new int[ ct_NPixels ];) S
+HL
+(  for \( i=0; i<ct_NPixels; ++i \) {) S
+HL
+(    if \( \(sqrt\(SQR\(pixary[i][0]\) + SQR\(pixary[i][1]\)\)*plateScale_cm2deg\)) S
+HL
+(   > degTriggerZone \)) S
+HL
+(      inTrigger[i] = FALSE; // outside the trigger zone) S
+HL
+(    else) S
+HL
+(      inTrigger[i] = TRUE;  // inside the trigger zone) S
+HL
+(  }) S
+HL
+HL
+(  if \( ! get_correction\( &fCorrection \) \)) S
+HL
+(    fCorrection = -1.0;) S
+HL
+HL
+(  // number of pixels for parameters) S
+HL
+(  anaPixels = get_ana_pixels\(\);) S
+HL
+(  anaPixels = \(anaPixels == -1\) ? ct_NPixels : anaPixels;) S
+HL
+HL
+(  //### Definition of HBOOK parameters.) S
+HL
+HL
+(  // number of variables in n-tuple) S
+HL
+(  nvar = iNTUPLE_PARS;) S
+HL
+HL
+(#ifdef __HBOOK_FILES__) S
+HL
+HL
+(  // initialize hbook) S
+HL
+(  cts_vinit_hbook \(\);) S
+HL
+HL
+(  // open output ntuple) S
+HL
+(  ntupleFile.pname   = hboname;) S
+HL
+(  ntupleFile.pvarnam = cts_pget_varnam_str \(cvarnam, iNTUPLE_PARS\);) S
+EndPage
+EndDSCPage
+
+%%Page: 10 10
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 703 def
+/PageNumber 10 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(  ntupleFile.invar   = iNTUPLE_PARS;) S
+HL
+(  ntupleFile.ilrec   = 4096;) S
+HL
+(  ntupleFile.copt    = 'N';) S
+HL
+(  ntupleFile.ilun    = 20;) S
+HL
+(  ntupleFile.iid     = 1;) S
+HL
+HL
+(  cts_vopen_hbook_file \(&ntupleFile\);) S
+HL
+HL
+(  // set pointer for data) S
+HL
+(  image_data = ntupleFile.pevtdat;) S
+HL
+HL
+(#ifdef __PULSE_TIMING_PIXELS_FILES__) S
+HL
+HL
+(  HISTO pulseHisto;) S
+HL
+HL
+(#endif __PULSE_TIMING_PIXELS_FILES__) S
+HL
+HL
+(#else  // __HBOOK_FILES__) S
+HL
+HL
+(  // set pointer for data) S
+HL
+(  image_data = new float[iNTUPLE_PARS];) S
+HL
+HL
+(#endif // __HBOOK_FILES__) S
+HL
+HL
+(  float *imagepeaks = new float[ct_NPixels];) S
+HL
+HL
+(  //### Opening and creation of files.) S
+HL
+HL
+(  // open input file if we DO read data from a file) S
+HL
+(  if \(! Data_From_STDIN\) {) S
+HL
+(    log\( SIGNATURE, "Openning input \\"rfl\\" file %s\\n", inname \);) S
+HL
+(    inputfile.open\( inname \);) S
+HL
+(    if \( ! inputfile.good\(\) \)) S
+HL
+(      error\( SIGNATURE, "Cannot open input file: %s\\n", inname \);) S
+HL
+(  }) S
+HL
+HL
+(  // get signature, and check it) S
+HL
+(  if \( Read_Phe \)) S
+HL
+(    strcpy\(Signature, SIGNATURE\);) S
+HL
+(  else) S
+HL
+(    strcpy\(Signature, REFL_SIGNATURE\);) S
+HL
+HL
+(  strcpy\(sign, Signature\);) S
+HL
+HL
+(  read_bin_data\( \(char*\)sign, strlen\(Signature\), Data_From_STDIN, inputfile\);) S
+HL
+HL
+(  if \(strcmp\(sign, Signature\) != 0\) {) S
+HL
+(    cerr << "ERROR: Signature of .rfl file is not correct\\n";) S
+HL
+(    cerr << '"' << sign << '"' << '\\n';) S
+HL
+(    cerr << "should be: " << Signature << '\\n';) S
+HL
+(    exit\(1\);) S
+HL
+(  }) S
+HL
+HL
+(  read_bin_data\( \(char*\)sign, 1, Data_From_STDIN, inputfile\);) S
+HL
+HL
+(  // open output file) S
+HL
+(  log\( SIGNATURE, "Openning output \\"phe\\" file %s\\n", outname \);) S
+HL
+(  outputfile.open\( outname \);) S
+HL
+HL
+(  if \( ! outputfile.good\(\) \)) S
+HL
+(    error\( SIGNATURE, "Cannot open output file: %s\\n", outname \);) S
+HL
+HL
+(  // open data file) S
+HL
+(  log\( SIGNATURE, "Openning data \\"dat\\" file %s\\n", datname \);) S
+HL
+(  datafile.open\( datname \);) S
+HL
+HL
+(  if \( ! outputfile.good\(\) \)) S
+HL
+(    error\( SIGNATURE, "Cannot open output file: %s\\n", outname \);) S
+HL
+HL
+(  // write signature) S
+HL
+(  outputfile.write\( SIGNATURE, sizeof\(SIGNATURE\) \);) S
+HL
+HL
+(  // initializes flag) S
+HL
+(  strcpy\( flag, "                                        \\0" \);) S
+HL
+HL
+(  // allocate space for PMTs numbers of pixels) S
+HL
+(  fnpix      = new float [ ct_NPixels ];) S
+HL
+(  fnpixclean = new float [ ct_NPixels ];) S
+EndPage
+EndDSCPage
+
+%%Page: 11 11
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 781 def
+/PageNumber 11 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+HL
+(  moments_ptr = moments\( anaPixels, 0, 0, 0.0, 1, pixneig, npixneig \);) S
+HL
+HL
+(  //### Main loop.) S
+HL
+HL
+(  // loop all over the file) S
+HL
+(  still_in_loop = TRUE;) S
+HL
+HL
+(  while \() S
+HL
+(         \(\(! Data_From_STDIN\) && \(! inputfile.eof\(\)\)\)) S
+HL
+(         ||) S
+HL
+(         \(Data_From_STDIN && still_in_loop\)) S
+HL
+(         ||) S
+HL
+(         \(current_eventNSB <= eventsNSB\)) S
+HL
+(         \) {) S
+HL
+HL
+(    /*") S
+HL
+(      We can read the data from the RFL files \(standard behaviour\), or) S
+HL
+(      from PHE files, which would contain already data processed) S
+HL
+(      previously with camera.\\par) S
+HL
+HL
+(      In the later case, we only have to read the |mcevth|) S
+HL
+(      variable \(MC Event Header\) and the previously generated pixel) S
+HL
+(      image, i.e., we DO NOT need to re-map the photons into pixels) S
+HL
+(      \(we don't have to repeat the pixelization process\).) S
+HL
+(    **/) S
+HL
+HL
+(    if \( ! Read_Phe \) {) S
+HL
+HL
+(      if \( ! onlyNSB \) {) S
+HL
+(        ) S
+HL
+(        // reading .rfl files \(normal behaviour\)) S
+HL
+(        ) S
+HL
+(        // get flag, and calculate index) S
+HL
+(        read_bin_data\( flag, SIZE_OF_FLAGS, Data_From_STDIN, inputfile\);) S
+HL
+(        ) S
+HL
+(        whatIs = \(\( isA\( flag, FLAG_START_OF_EVENT \)    \) +) S
+HL
+(                  \( isA\( flag, FLAG_START_OF_RUN   \) << 1 \) +) S
+HL
+(                  \( isA\( flag, FLAG_END_OF_EVENT   \) << 2 \) +) S
+HL
+(                  \( isA\( flag, FLAG_END_OF_RUN     \) << 3 \) +) S
+HL
+(                  \( isA\( flag, FLAG_END_OF_FILE    \) << 4 \) \);) S
+HL
+(        ) S
+HL
+(#ifdef __DEBUG__) S
+HL
+(        cerr << flag << ':';) S
+HL
+(#endif // __DEBUG__) S
+HL
+(        ) S
+HL
+(      } else {) S
+HL
+(        ) S
+HL
+(        // generating artificial NSB only events) S
+HL
+(        current_eventNSB++;) S
+HL
+(        ) S
+HL
+(        if \( current_eventNSB <= eventsNSB \) {) S
+HL
+(          log\(SIGNATURE, "Simulating NSB event number %d of %d . . .\\n",) S
+HL
+(              current_eventNSB, eventsNSB\);) S
+HL
+(          whatIs = 1;    // FLAG_START_OF_EVENT;) S
+HL
+(        } else {) S
+HL
+(          break;) S
+HL
+(        }) S
+HL
+(        ) S
+HL
+(      }) S
+HL
+(      ) S
+HL
+(    } else {) S
+HL
+(      ) S
+HL
+(      // reading .phe files \(ab-normal behaviour\)) S
+HL
+(      whatIs = 1;     // FLAG_START_OF_EVENT;) S
+HL
+HL
+(    }) S
+HL
+(    ) S
+HL
+(#ifdef __DEBUG__) S
+HL
+(    cerr << whatIs << endl << flush;) S
+HL
+(#endif // __DEBUG__) S
+HL
+(    ) S
+HL
+(    // operate depending on the flag we read from the file) S
+HL
+(    ) S
+HL
+(    switch \( whatIs \) {) S
+HL
+(      ) S
+HL
+(    case 16:        // FLAG_END_OF_FILE) S
+HL
+(      ) S
+EndPage
+EndDSCPage
+
+%%Page: 12 12
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 859 def
+/PageNumber 12 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(      log\(SIGNATURE, "End of file . . .\\n"\);) S
+HL
+(      still_in_loop  = FALSE;) S
+HL
+(      ) S
+HL
+(      break;) S
+HL
+(      ) S
+HL
+(    case 8:         // FLAG_END_OF_RUN) S
+HL
+(      ) S
+HL
+(      ntshow += nshow;) S
+HL
+(      hidt = 0;) S
+HL
+(      ) S
+HL
+(      log\(SIGNATURE, "End of this run with %d events . . .\\n", nshow\);) S
+HL
+(      ) S
+HL
+(      break;) S
+HL
+(      ) S
+HL
+(    case 4:         // FLAG_END_OF_EVENT) S
+HL
+(      ) S
+HL
+(      log\(SIGNATURE, "End of this event: %d cphs\(+%d\). . .\\n",) S
+HL
+(          ncph, ntcph\);) S
+HL
+HL
+(      break;) S
+HL
+HL
+(    case 2:         // FLAG_START_OF_RUN) S
+HL
+HL
+(      nshow=0;) S
+HL
+HL
+(      break;) S
+HL
+HL
+(    case 1:         // FLAG_START_OF_EVENT) S
+HL
+HL
+(      /*") S
+HL
+(        For the case |whatIs == 1|, which means |FLAG_START_OF_EVENT|,) S
+HL
+(        we read each Cherenkov photon, and follow these steps:) S
+HL
+(        ) S
+HL
+(        @enumerate) S
+HL
+(        ) S
+HL
+(        @- Transform XY-coordinates to IJ-coordinates.) S
+HL
+(        ) S
+HL
+(        @- With this, we obtain the pixel where the photon hits.) S
+HL
+(        ) S
+HL
+(        @- Use the wavelength $\\lambda$ and the table of QE, and) S
+HL
+(        calculate the estimated \(third order interpolated\) quantum) S
+HL
+(        efficiency for that photon. The photon can be rejected.) S
+HL
+(        ) S
+HL
+(        @- Use the overall efficiencies of Plexiglas window, Light) S
+HL
+(        guides and Collection on the First Dynode. The photon can be) S
+HL
+(        rejected.) S
+HL
+(        ) S
+HL
+(        @- If accepted, then add it to the histogram of the pixel.) S
+HL
+(        ) S
+HL
+(        @endenumerate) S
+HL
+(        ) S
+HL
+(        If we are reading PHE files, we jump to the point where the) S
+HL
+(        pixelization process already has finished.) S
+HL
+(      **/) S
+HL
+(      ) S
+HL
+(      ++nshow;) S
+HL
+(      ) S
+HL
+(      if \( ! onlyNSB \) {) S
+HL
+HL
+(        // get MCEventHeader) S
+HL
+(        read_bin_data\( \(char*\)&mcevth, mcevth.mysize\(\),) S
+HL
+(                       Data_From_STDIN, inputfile\);) S
+HL
+HL
+(        // get times) S
+HL
+(        mcevth.get_times\( &t0, &t1 \);) S
+HL
+(        trange = 0.0;) S
+HL
+HL
+(        // get core position) S
+HL
+(        coreD = mcevth.get_core\(&coreX, &coreY\);) S
+HL
+HL
+(        cerr << "coreD=" << coreD << "     " << coreX << ',' << coreY << endl;) S
+HL
+HL
+(        // read the direction of the incoming shower) S
+HL
+(        thetashw = mcevth.get_theta\(\);) S
+HL
+(        phishw = mcevth.get_phi\(\);) S
+HL
+HL
+(        // read the deviation of the telescope with respect to the shower) S
+HL
+(        mcevth.get_deviations \( &thetaCT, &phiCT \);) S
+EndPage
+EndDSCPage
+
+%%Page: 13 13
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 937 def
+/PageNumber 13 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+HL
+(      } else {) S
+HL
+HL
+(        t0 = t1 = trange  = 0.;) S
+HL
+(        thetashw = phishw = 0.;) S
+HL
+(        thetaCT  = phiCT  = 0.;) S
+HL
+(        coreD     = 0.;) S
+HL
+HL
+(      }) S
+HL
+HL
+(      // calculate impact parameter \(shortest distance betwee the original) S
+HL
+(      // trajectory of the primary \(assumed shower-axis\) and the) S
+HL
+(      // direction where the telescope points to) S
+HL
+(      //) S
+HL
+(      // we use the following equation, given that the shower core position) S
+HL
+(      // is \(x1,y1,z1\)=\(x,y,0\),the  trajectory is given by \(l1,m1,n1\),) S
+HL
+(      // and the telescope position and orientation are \(x2,y2,z2\)=\(0,0,0\)) S
+HL
+(      // and \(l2,m2,n2\)) S
+HL
+(      //) S
+HL
+(      //         |         |) S
+HL
+(      //         | x1-x2  y1-y2  z1-z2 |) S
+HL
+(      //         |         |) S
+HL
+(      //       + |   l1   m1   n1  |) S
+HL
+(      //       - |         |) S
+HL
+(      //         |   l2   m2   n2  |) S
+HL
+(      //         |         |) S
+HL
+(      // dist = ------------------------------------      \( > 0 \)) S
+HL
+(      //  [ |l1 m1|2   |m1 n1|2 |n1 l1|2 ]1/2) S
+HL
+(      //  [ | |  + |     |  + |     |  ]) S
+HL
+(      //  [ |l2 m2|    |m2 n2|  |n2 l2|  ]) S
+HL
+(      //) S
+HL
+(      // playing a little bit, we get this reduced for in our case:) S
+HL
+(      //) S
+HL
+(      //) S
+HL
+(      // dist = \(- m2 n1 x + m1 n2 x + l2 n1 y - l1 n2 y - l2 m1 z + l1 m2 z\) /) S
+HL
+(      //   [\(l2^2 \(m1^2 + n1^2\) + \(m2 n1 - m1 n2\)^2 -) S
+HL
+(      //    2 l1 l2 \(m1 m2 + n1 n2\) + l1^2 \(m2^2 + n2^2\) ] ^\(1/2\)) S
+HL
+HL
+(      // calculate vector for shower) S
+HL
+(      l1 = sin\(thetashw\)*cos\(phishw\);) S
+HL
+(      m1 = sin\(thetashw\)*sin\(phishw\);) S
+HL
+(      n1 = cos\(thetashw\);) S
+HL
+HL
+(      if \( \(thetaCT == 0.\) && \(phiCT == 0.\) \) {) S
+HL
+HL
+(        // CT was looking to the source \(both lines are parallel\)) S
+HL
+(        // therefore, we calculate the impact parameter as the distance) S
+HL
+(        // between the CT axis and the core position) S
+HL
+(        impactD = dist_r_P\( 0., 0., 0., l1, m1, n1, coreX, coreY, 0. \);) S
+HL
+HL
+(      } else {) S
+HL
+HL
+(        // the shower comes off-axis) S
+HL
+(        ) S
+HL
+(        // obtain with this the final direction of the CT) S
+HL
+(        thetaCT += thetashw;) S
+HL
+(        phiCT += phishw;) S
+HL
+HL
+(        // calculate vector for telescope) S
+HL
+(        l2 = sin\(thetaCT\)*cos\(phiCT\);) S
+HL
+(        m2 = sin\(thetaCT\)*sin\(phiCT\);) S
+HL
+(        n2 = cos\(thetaCT\);) S
+HL
+HL
+(        // calculate smallest distance between the two trajectories) S
+HL
+(        // num = \(m1*n2*coreX - m2*n1*coreX + l2*n1*coreY - l1*n2*coreY\);) S
+HL
+(        // den = \(SQR\(l1*m2 - l2*m1\) +) S
+HL
+(        //    SQR\(m1*n2 - m2*n1\) +) S
+HL
+(        //    SQR\(n1*l2 - n2*l1\)\);) S
+HL
+(        // den = sqrt\(den\);) S
+HL
+(        // impactD = fabs\(num\)/den;) S
+HL
+HL
+(        // calculate smallest distance between the two trajectories) S
+HL
+(        u = \(l2*coreX + m2*coreY\) / \(l1*l2 + m1*m2 + n1*n2\);) S
+HL
+HL
+(        // calculate impact parameter) S
+HL
+(        impactD = sqrt\(SQR\(coreX-u*l1\) + SQR\(coreY-u*m1\) + SQR\(-u*n1\)\);) S
+HL
+HL
+(      }) S
+EndPage
+EndDSCPage
+
+%%Page: 14 14
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 1015 def
+/PageNumber 14 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+HL
+(      // store impact parameter in event header) S
+HL
+(      mcevth.put_impact\( impactD \);) S
+HL
+HL
+(      // set extended number of this shower) S
+HL
+(      // hidt = \(ntshow+nshow\)*10;) S
+HL
+(      hidt = \(ntshow+nshow\);) S
+HL
+(      ) S
+HL
+(      // clear camera) S
+HL
+(      for \( i=0; i<ct_NPixels; ++i \) ) S
+HL
+(        fnpix[i] = 0.0;) S
+HL
+HL
+(      // increment total counter of showers) S
+HL
+(      ntcph += ncph;) S
+HL
+HL
+(      // reset per-run counter of showers) S
+HL
+(      ncph = 0;) S
+HL
+HL
+(      /*------------------------------------------------------------*) S
+HL
+(       *  block to execute in case of normal operation \(! Read_Phe\) *) S
+HL
+(       *------------------------------------------------------------*/) S
+HL
+HL
+(      if \( \(! Read_Phe\) && \(! onlyNSB\) \) {) S
+HL
+HL
+(        //++++++++++++++++++++++++++++++++++++++++++++++++++) S
+HL
+(        // Read_Phe == FALSE) S
+HL
+(        //- - - - - - - - - - - - - - - - - - - - - - - - -) S
+HL
+(        // That means normal behaviour: read photons and) S
+HL
+(        // "map" them into the pixels) S
+HL
+(        //--------------------------------------------------) S
+HL
+HL
+(        // initialize CPhoton) S
+HL
+(        cphoton.fill\(0., 0., 0., 0., 0., 0., 0., 0.\);) S
+HL
+HL
+(        // read the photons data to the output file) S
+HL
+(        read_bin_data\( \(char*\)&cphoton, cphoton.mysize\(\),) S
+HL
+(                       Data_From_STDIN, inputfile\);) S
+HL
+HL
+(        // t0 = cphoton.get_t\(\);) S
+HL
+HL
+(        // loop over the photons) S
+HL
+HL
+(        while \( \(cphoton.isA\( FLAG_END_OF_EVENT \) != TRUE\) \) {) S
+HL
+HL
+(          // increase number of photons) S
+HL
+(          ++ncph;) S
+HL
+HL
+(          /*"### Pixelization.) S
+HL
+HL
+(            In order to calculate the coordinates, we use the change) S
+HL
+(            of system described \(should be described\) in this program) S
+HL
+(            further below.) S
+HL
+HL
+(          **/) S
+HL
+HL
+(          //+++) S
+HL
+(          // Pixelization) S
+HL
+(          //---) S
+HL
+HL
+(          // get wavelength) S
+HL
+(          last_wl = wl;) S
+HL
+(          wl = cphoton.get_wl\(\);) S
+HL
+HL
+(          if \( \(wl > 600.0\) || \(wl < 290.0\) \)) S
+HL
+(            break;) S
+HL
+HL
+(          //--------------------------------------------------) S
+HL
+(          // get pixel ID for this photon) S
+HL
+HL
+(          cx = cphoton.get_x\(\);) S
+HL
+(          cy = cphoton.get_y\(\);) S
+HL
+HL
+(          if \(isnan\(cx\) || isnan\(cy\)\)) S
+HL
+(            nPMT = -1;) S
+HL
+(          else) S
+HL
+(            nPMT = pixel_id\( cx, cy \);) S
+HL
+HL
+(          //--------------------------------------------------) S
+EndPage
+EndDSCPage
+
+%%Page: 15 15
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 1093 def
+/PageNumber 15 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+HL
+(          // check if outside the camera) S
+HL
+(          if \( \(nPMT < 0\) || \(nPMT >= ct_NPixels\) \) {) S
+HL
+HL
+(            // read next photon) S
+HL
+(            read_bin_data\( \(char*\)&cphoton, cphoton.mysize\(\),) S
+HL
+(                           Data_From_STDIN, inputfile\);) S
+HL
+HL
+(            // go to beginning of loop, the photon is lost) S
+HL
+(            continue;) S
+HL
+HL
+(          }) S
+HL
+HL
+(#ifdef __DEBUG__) S
+HL
+(          cout << "@#1 " << nshow << ' ') S
+HL
+(               << cx << ' ' << cy << ' ' << nPMT << endl;) S
+HL
+(#endif // __DEBUG__) S
+HL
+HL
+(#ifdef __QE__) S
+HL
+HL
+(          //### QE simulation.) S
+HL
+HL
+(          //+++) S
+HL
+(          // QE simulation) S
+HL
+(          //---) S
+HL
+HL
+(          // find data point to be used in Lagrange interpolation \(-> k\)) S
+HL
+(          qeptr = \(float **\)QE[nPMT];) S
+HL
+HL
+(          FindLagrange\(qeptr,k,wl\);) S
+HL
+HL
+(          // if random > quantum efficiency, reject it) S
+HL
+(          qe = Lagrange\(qeptr,k,wl\) / 100.0;) S
+HL
+HL
+(          if \( RandomNumber > qe \) {) S
+HL
+HL
+(            // read next photon) S
+HL
+(            read_bin_data\( \(char*\)&cphoton, cphoton.mysize\(\),) S
+HL
+(                           Data_From_STDIN, inputfile\);) S
+HL
+HL
+(            // go to beginning of loop) S
+HL
+(            continue;) S
+HL
+HL
+(          }) S
+HL
+HL
+(#endif // __QE__) S
+HL
+HL
+(#ifdef __EFFICIENCIES__) S
+HL
+HL
+(          //### Different efficiencies simulation.) S
+HL
+HL
+(          //+++) S
+HL
+(          // Different efficiencies simulation.) S
+HL
+(          //---) S
+HL
+HL
+(          if \( RandomNumber > overall_Efficiency \) {) S
+HL
+HL
+(            // read next photon) S
+HL
+(            read_bin_data\( \(char*\)&cphoton, cphoton.mysize\(\),) S
+HL
+(                           Data_From_STDIN, inputfile\);) S
+HL
+HL
+(            // go to beginning of loop) S
+HL
+(            continue;) S
+HL
+HL
+(          }) S
+HL
+HL
+(#endif // __EFFICIENCIES__) S
+HL
+HL
+HL
+(          //### Storing a photoelectron signal.) S
+HL
+HL
+(          //+++) S
+HL
+(          // Cphoton is accepted) S
+HL
+(          //---) S
+HL
+HL
+(#ifdef __DEBUG__) S
+HL
+(          cerr << "photon accepted\\n";) S
+HL
+(#endif // __DEBUG__) S
+EndPage
+EndDSCPage
+
+%%Page: 16 16
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 1171 def
+/PageNumber 16 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+HL
+(          if \( ! Read_Phe \) {) S
+HL
+HL
+(            // save the time of this photon into the time histogram) S
+HL
+(            t = cphoton.get_t\(\) - t0;) S
+HL
+HL
+(            // show error on negative time) S
+HL
+(            if \(t < 0.0\)) S
+HL
+(              cerr << "TIME: " << nshow << ' ' << t << endl << flush;) S
+HL
+HL
+(            // recalculate maximum time) S
+HL
+(            if \(t > trange\)) S
+HL
+(              trange = t;) S
+HL
+HL
+(#ifdef __DEBUG__) S
+HL
+(            cerr << "adding signal. . .\\n";) S
+HL
+(#endif // __DEBUG__) S
+HL
+HL
+(            // [NOTE htimes]:) S
+HL
+(            // we substitute the original store in htime\(htimeshower\) and) S
+HL
+(            // posterior convolution by) S
+HL
+(            // store in htime\(htimeshower\) a single value and) S
+HL
+(            // store in hpulse\(htimeshower_conv\) a ph.e. signal) S
+HL
+HL
+(            fnpix[ nPMT ] += 1.;) S
+HL
+(            ) S
+HL
+(          }) S
+HL
+(          ) S
+HL
+(          // read next photon) S
+HL
+(          read_bin_data\( \(char*\)&cphoton, cphoton.mysize\(\),) S
+HL
+(                         Data_From_STDIN, inputfile\);) S
+HL
+HL
+(        } // end-of-while there are still photons in this event) S
+HL
+HL
+(#ifdef __LINUX_INPUT__) S
+HL
+HL
+(        //** <warning> ***************************************************) S
+HL
+HL
+(        //****************************************) S
+HL
+(        // WARNING!!! this is a trick, to be used) S
+HL
+(        // only with input files coming from) S
+HL
+(        // Linux boxes and previous versions of) S
+HL
+(        // reflector files.) S
+HL
+(        // You should know that you are using) S
+HL
+(        // this at your own risk!!) S
+HL
+(        //****************************************) S
+HL
+HL
+(        read_bin_data\( \(char*\)&cphoton, 4, Data_From_STDIN, inputfile\);) S
+HL
+HL
+(        //** </warning> **************************************************) S
+HL
+HL
+(#endif // __LINUX_INPUT__) S
+HL
+HL
+(        // show number of photons) S
+HL
+(        log\(SIGNATURE, "Event %6d\(+%6d\) : %10d Ch.photons . . .\\n",) S
+HL
+(            nshow, ntshow, ncph\);) S
+HL
+HL
+(        // skip it ?) S
+HL
+(        for \( i=0; i<nSkip; ++i \) {) S
+HL
+(          if \(Skip[i] == \(nshow+ntshow\)\) {) S
+HL
+(            i = -1;) S
+HL
+(            break;) S
+HL
+(          }) S
+HL
+(        }) S
+HL
+HL
+(        // if after the previous loop, the exit value of i is -1 then) S
+HL
+(        // the shower number is in the list of showers to be skipped) S
+HL
+(        if \(i == -1\) {) S
+HL
+(          log\(SIGNATURE, "\\t\\tskipped!\\n"\);) S
+HL
+(          continue;) S
+HL
+(        }) S
+HL
+HL
+(        /*") S
+HL
+(          After reading all the Cherenkov photons for a given event,) S
+HL
+(          we have in the table of number of photons for each pixel) S
+HL
+(          only the 'raw' amount of Cherenkov photons @$n_p@$. Now, we) S
+HL
+(          should take this number as the mean value of the) S
+HL
+(          distribution of photons in that pixel @$p@$, following a) S
+EndPage
+EndDSCPage
+
+%%Page: 17 17
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 1249 def
+/PageNumber 17 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(          Poisson distribution.) S
+HL
+HL
+(          @[ n_p \\equiv \\mu_p @]) S
+HL
+HL
+(          and with this number the amount of light coming from the) S
+HL
+(          shower is calculated @$\\hat{n}_p@$.) S
+HL
+HL
+(          Then, we calculate the amount of Night Sky Background we) S
+HL
+(          must introduce in that pixel @$p@$. We calculate this using) S
+HL
+(          again a Poisson distribution with mean @$\\mu_\\mathrm{NSB}@$) S
+HL
+(          \(defined in the |camera.h| file\). The value of) S
+HL
+(          @$\\mu_\\mathrm{NSB}@$ is obtained from measurements. With) S
+HL
+(          this value, the amount of photons @$\\hat{n}_\\mathrm{NSB}@$) S
+HL
+(          coming from the Night Sky Background is calculated.) S
+HL
+HL
+(          Finally, the amount of photons for that pixels is:) S
+HL
+(          @[ \\hat{n}_p^\\mathrm{final} = \\hat{n}_p + \\hat{n}_\\mathrm{NSB} @]) S
+HL
+(        **/) S
+HL
+HL
+(        // after reading all the photons, our camera is filled) S
+HL
+(        if \( ! onlyNSB \) {) S
+HL
+(          if \( Select_Energy \) {) S
+HL
+(            if \(\( mcevth.get_energy\(\) < Select_Energy_le \) ||) S
+HL
+(                \( mcevth.get_energy\(\) > Select_Energy_ue \)\) {) S
+HL
+(              log\(SIGNATURE, "select_energy: shower rejected.\\n"\);) S
+HL
+(              continue;) S
+HL
+(            }) S
+HL
+(          }) S
+HL
+(        }) S
+HL
+HL
+(      } // if \(! Read_Phe\)) S
+HL
+HL
+(      /*------------------------------------------------------------*) S
+HL
+(       *  block to execute in case of reading PHE files       *) S
+HL
+(       *------------------------------------------------------------*/) S
+HL
+HL
+(      else if \(! onlyNSB\) { // code to execute if Read_Phe == TRUE) S
+HL
+HL
+(        //++++++++++++++++++++++++++++++++++++++++++++++++++) S
+HL
+(        // Read_Phe == TRUE) S
+HL
+(        //- - - - - - - - - - - - - - - - - - - - - - - - -) S
+HL
+(        // That means only read the image from) S
+HL
+(        // the input file \(or STDIN\)) S
+HL
+(        //--------------------------------------------------) S
+HL
+HL
+(        // if this shower gave trigger, there will be an) S
+HL
+(        // image of the shower in the file) S
+HL
+(        // otherwise, we just write this header to the) S
+HL
+(        // output file and go) S
+HL
+(        // there will be also an image, if the input .phe file) S
+HL
+(        // was generated with the option "write_all_images") S
+HL
+HL
+(        if \( \(mcevth.get_trigger\(\) == TRUE\) || \(Read_Phe_All == TRUE\) \) {) S
+HL
+HL
+(          // read image of the shower from the PHE file) S
+HL
+(          log\(SIGNATURE, "Reading image...\\n"\);) S
+HL
+HL
+(          for \(int mm=0; mm<ct_NPixels; mm++\)) S
+HL
+(            cerr << fnpix[mm] << ' ';) S
+HL
+(          cerr << endl;) S
+HL
+(          ) S
+HL
+(          // read next photon) S
+HL
+(          read_bin_data\( \(char*\)fnpix, ct_NPixels * sizeof\( float \),) S
+HL
+(                         Data_From_STDIN, inputfile\);) S
+HL
+HL
+(          for \(int mm=0; mm<ct_NPixels; mm++\)) S
+HL
+(            cerr << fnpix[mm] << ' ';) S
+HL
+(          cerr << endl;) S
+HL
+(          ) S
+HL
+(          if \( Select_Energy \) {) S
+HL
+(            if \(\( mcevth.get_energy\(\) < Select_Energy_le \) ||) S
+HL
+(                \( mcevth.get_energy\(\) > Select_Energy_ue \)\) {) S
+HL
+(              log\(SIGNATURE, "select_energy: shower rejected.\\n"\);) S
+HL
+(              continue;) S
+HL
+(            }) S
+HL
+(          }) S
+HL
+HL
+(        } else {) S
+EndPage
+EndDSCPage
+
+%%Page: 18 18
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 1327 def
+/PageNumber 18 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+HL
+(          if \( Select_Energy \) {) S
+HL
+(            if \(\( mcevth.get_energy\(\) < Select_Energy_le \) ||) S
+HL
+(                \( mcevth.get_energy\(\) > Select_Energy_ue \)\) {) S
+HL
+(              log\(SIGNATURE, "select_energy: shower rejected.\\n"\);) S
+HL
+(              continue;) S
+HL
+(            }) S
+HL
+(          }) S
+HL
+HL
+(          // write MCEventHeader to output file) S
+HL
+(          outputfile.write\( \(char *\)&mcevth, mcevth.mysize\(\) \);) S
+HL
+HL
+(          continue;) S
+HL
+HL
+(        }) S
+HL
+HL
+(        ntshow++;) S
+HL
+HL
+(      } // end code to execute if Read_Phe == TRUE) S
+HL
+HL
+(      /*"### NSB \(Night Sky Background\) simulation.) S
+HL
+(        ) S
+HL
+(        Here we add the so called LONS \(Light Of Night Sky\) or) S
+HL
+(        NSB \(Night-Sky Background\) noise. The measured value is) S
+HL
+(        $F \\approx 2  \\times 10^{12}$ ph/m$^2$ s sr.) S
+HL
+(        ) S
+HL
+(        The number used in the input parameters file should be the) S
+HL
+(        mean number of expected ph.e.s per pixel and ns!!!) S
+HL
+(        ) S
+HL
+(        The estimated values are:) S
+HL
+(        ) S
+HL
+(        @itemize) S
+HL
+(        ) S
+HL
+(        @- |CT1|: ???) S
+HL
+(        ) S
+HL
+(        @- |MAGIC|: {\\bf NSB = 0.11 ph.e.s/pixel/ns}.) S
+HL
+(        ) S
+HL
+(        @enditemize) S
+HL
+(      **/) S
+HL
+HL
+(#ifdef __NSB__) S
+HL
+HL
+(      //+++) S
+HL
+(      // NSB simulation) S
+HL
+(      //---) S
+HL
+HL
+(      if \( simulateNSB \) {) S
+HL
+HL
+(#ifdef __DEBUG__) S
+HL
+(        cerr << "NSB simulation\\n";) S
+HL
+(#endif // __DEBUG__) S
+HL
+HL
+(        // first we fill the central and gap pixels) S
+HL
+(        float nsb_added;) S
+HL
+HL
+(        for \( i=0; i<ct_NPixels_small+ct_NPixels_gap; ++i \) {) S
+HL
+HL
+(          nsb_added = static_cast<float>\( ignpoi\( meanNSB \) \);) S
+HL
+(          ) S
+HL
+(          if \(nsb_added > 0.0\) {) S
+HL
+(            fnpix[i] += nsb_added;) S
+HL
+(          }) S
+HL
+(            ) S
+HL
+(        }) S
+HL
+HL
+(        // then the big ones \(area = 4 x area_small_pixels\)) S
+HL
+HL
+(        for \( i=ct_NPixels_small+ct_NPixels_gap; i<ct_NPixels; ++i \) {) S
+HL
+HL
+(          nsb_added = static_cast<float>\( ignpoi\( meanNSB * 4 \) \);) S
+HL
+HL
+(          if \(nsb_added > 0.0\) {) S
+HL
+(            fnpix[i] += nsb_added;) S
+HL
+(          }) S
+HL
+(          ) S
+HL
+(        }) S
+HL
+(        ) S
+HL
+(      }) S
+EndPage
+EndDSCPage
+
+%%Page: 19 19
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 1405 def
+/PageNumber 19 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+HL
+(#endif // __NSB__) S
+HL
+HL
+(      // if we want apply any kind of correction, we do it here.) S
+HL
+HL
+(#ifdef __DEBUG__) S
+HL
+(      cerr << "Correction\\n";) S
+HL
+(#endif // __DEBUG__) S
+HL
+HL
+(      if \( fCorrection > 0. \) {) S
+HL
+(        for \( i=0; i<ct_NPixels; ++i \) {) S
+HL
+(          fnpix[i] *= fCorrection;) S
+HL
+(        }) S
+HL
+(      }) S
+HL
+(      ) S
+HL
+(#ifdef __TRIGGER__) S
+HL
+(      ) S
+HL
+(      /*"### Trigger logic simulation.) S
+HL
+(        ) S
+HL
+(        In the following block we look at the pixel contents, looking) S
+HL
+(        for pixels fulfilling the trigger condition. This condition,) S
+HL
+(        in this current version of the program, is the following:) S
+HL
+(        ) S
+HL
+(        @itemize) S
+HL
+(        ) S
+HL
+(        @- |CT1|: Two neighbour pixels with charge above the threshold) S
+HL
+(        @$q_0@$. For the old CT1 data, however, the trigger condition) S
+HL
+(        was 'any two pixels with charge above the threshold @$q_0@$'.) S
+HL
+(        ) S
+HL
+(        @- |MAGIC|: A 'closed-packet' of four neighbour pixels, each) S
+HL
+(        of them with charge above the threshold @$q_0@$.) S
+HL
+(        ) S
+HL
+(        @enditemize) S
+HL
+(        ) S
+HL
+(        In the following figure you can find a sort of description) S
+HL
+(        about the meanning of 'closed-packet', for 4 pixels.) S
+HL
+(        ) S
+HL
+(        This was the usual trigger used. Nevertheless, this program is) S
+HL
+(        able to use any trigger pattern pre-defined by the user.) S
+HL
+(        ) S
+HL
+(        @F) S
+HL
+(        ) S
+HL
+(        \\begin{figure}[htbp]) S
+HL
+(        \\begin{center}) S
+HL
+(        \\includegraphics{closepck.eps}) S
+HL
+(        \\caption{Meanning of the expression ``{\\it close-packet}''}) S
+HL
+(        \\label{fig:closepacket}) S
+HL
+(        \\end{center}) S
+HL
+(        \\end{figure}) S
+HL
+(        ) S
+HL
+(        @F) S
+HL
+(        ) S
+HL
+(      **/) S
+HL
+HL
+(      /*) S
+HL
+(      for \( i=0 ; i<ct_NPixels ; ++i \) ) S
+HL
+(        cerr << i << ':' << fnpix[i] << '\\t';) S
+HL
+(      cerr << endl;) S
+HL
+(      */) S
+HL
+(      ) S
+HL
+(      //++) S
+HL
+(      // TRIGGER LOGIC) S
+HL
+(      //--) S
+HL
+(      ) S
+HL
+(      // is there trigger?) S
+HL
+HL
+(      noverq0 = 0;) S
+HL
+(      q0 = qThreshold;) S
+HL
+(      trigger = FALSE;) S
+HL
+(      mxgrp = 0;) S
+HL
+(      maxcharge = 0.0;) S
+HL
+HL
+(      // Warning! NOT all the camera is able to give trigger) S
+HL
+(      // only up to 'degTrigger' degrees ) S
+HL
+(      ) S
+HL
+(      for \( i=0 ; \(i<ct_NPixels\) && \(trigger==FALSE\) ; ++i \) {) S
+HL
+HL
+(        // calculate absolute maximum) S
+EndPage
+EndDSCPage
+
+%%Page: 20 20
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 1483 def
+/PageNumber 20 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+HL
+(        maxcharge = MAX\(fnpix[i], maxcharge\); ) S
+HL
+HL
+(        // is this pixel above threshold ?) S
+HL
+HL
+(        if \( fnpix[i] < q0 \) ) S
+HL
+(          continue;) S
+HL
+HL
+(        // it is: increment the number of pixels above threshold) S
+HL
+(        ) S
+HL
+(        ++noverq0;) S
+HL
+(        ) S
+HL
+(        // if the trigger already fired, just count the pixels ) S
+HL
+(        // above threshold ) S
+HL
+HL
+(        if \( trigger == TRUE \)    ) S
+HL
+(          continue;) S
+HL
+(                ) S
+HL
+(        // is this pixel inside the trigger zone in the camera ?) S
+HL
+(        ) S
+HL
+(        if \( \(sqrt\(SQR\(pixary[i][0]\) + ) S
+HL
+(                   SQR\(pixary[i][1]\)\)*plateScale_cm2deg\) > degTriggerZone\) ) S
+HL
+(          continue;) S
+HL
+(        ) S
+HL
+(        // 'ngrpq0' is the number of neighbours of pixel i with q > q0) S
+HL
+HL
+(        ngrpq0 = 0;) S
+HL
+(          ) S
+HL
+(        // look at each pixel in the neighborhood, and count) S
+HL
+(        // those above threshold q0) S
+HL
+HL
+(        for \( j=0 ; j<npixneig[i] && pixneig[i][j]>-1 ; ++j \)) S
+HL
+(          if \( fnpix[pixneig[i][j]] >= q0 \)) S
+HL
+(            ++ngrpq0;) S
+HL
+HL
+(        // check whether we have trigger) S
+HL
+HL
+(        if \( ct_Type == 0 \) {) S
+HL
+HL
+(          //++ >>>>> CT1 <<<<<) S
+HL
+(          ) S
+HL
+(#ifdef __CT1_NO_NEIGHBOURS__) S
+HL
+HL
+(          if \( noverq0 > 1 \) trigger = TRUE;) S
+HL
+HL
+(#else) S
+HL
+HL
+(          if \( ngrpq0 > 0 \) trigger = TRUE;) S
+HL
+HL
+(#endif) S
+HL
+(       ) S
+HL
+(          //-- >>>>> CT1 <<<<<) S
+HL
+HL
+(        } else {) S
+HL
+HL
+(          //++ >>>>> MAGIC <<<<<) S
+HL
+(          ) S
+HL
+(          triggerBits = pixel_bit_mask\(i, q0\);) S
+HL
+(          /*) S
+HL
+(          for \( int p=0 ; p<npixneig[i] && pixneig[i][p]>-1; ++p \)) S
+HL
+(            cerr << ' ' << pixneig[i][p] << ':' << fnpix[pixneig[i][p]];) S
+HL
+(          cerr << "  -> " << triggerBits <<endl << flush;) S
+HL
+(          ) S
+HL
+(          cout <<"TRIGGER bits::  " << triggerBits << endl << flush;) S
+HL
+(          */) S
+HL
+(          for \( j=0; j<trigger_npatterns; j++ \) {) S
+HL
+HL
+(            // if inside the triggerBits we find one of) S
+HL
+(            // the allowed trigger patterns => TRIGGER!!!) S
+HL
+(            /*) S
+HL
+(            cerr << "comparing " << triggerBits) S
+HL
+(                 << "  and  " << trigger_patterns[j] << endl << flush;) S
+HL
+(            */) S
+HL
+(            if \( \(triggerBits & trigger_patterns[j]\) == trigger_patterns[j]\) {) S
+HL
+(              /*) S
+HL
+(              cerr << "triggerBits=" << triggerBits) S
+HL
+(                   << "  COINCIDES with trigger_patterns[" << j) S
+HL
+(                   << "]=" << trigger_patterns[j] << endl << flush;) S
+EndPage
+EndDSCPage
+
+%%Page: 21 21
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 1561 def
+/PageNumber 21 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(              */) S
+HL
+(              trigger = TRUE;) S
+HL
+HL
+(              break;) S
+HL
+(              ) S
+HL
+(            }) S
+HL
+HL
+(          }) S
+HL
+(          /*) S
+HL
+(          cerr << "- - - - - - -" << endl << flush;) S
+HL
+(          */) S
+HL
+(          // mxgrp = MAX\(ngrpq0,mxgrp\);) S
+HL
+(            ) S
+HL
+(        } // ct_Type) S
+HL
+HL
+(      } // for each pixel i) S
+HL
+HL
+(      novq0 = noverq0;) S
+HL
+HL
+(      tmpdeviation = mcevth.get_deviations \(&dtheta, &dphi\);) S
+HL
+(      tmpdeviation = isnan\( tmpdeviation \) ? 0. : tmpdeviation;) S
+HL
+(        ) S
+HL
+(      // we sum all the charge, in the interval) S
+HL
+(      // [ntimebin-nBefIntegBin, ntimebin+nAftIntegBin]) S
+HL
+HL
+(      if \( trigger == TRUE \) {) S
+HL
+HL
+(#ifdef __DEBUG__) S
+HL
+(        cerr << "TRIGGER:     TRIGGER!!!\\n";) S
+HL
+(#endif // __DEBUG__) S
+HL
+HL
+(        itrigger = i;) S
+HL
+(        ++ntrigger;) S
+HL
+HL
+(        memcpy\( fnpixclean, fnpix, sizeof\(float\) * ct_NPixels \);) S
+HL
+HL
+(#ifdef __TAILCUT__) S
+HL
+HL
+(        //### Tail-cut condition.) S
+HL
+HL
+(#ifdef __DEBUG__) S
+HL
+(        cerr << "Tail-cut\\n";) S
+HL
+(#endif // __DEBUG__) S
+HL
+HL
+(        //++) S
+HL
+(        // tail-cut) S
+HL
+(        //--) S
+HL
+HL
+(        // Tail-Cut = 0   : No Tail-Cut) S
+HL
+(        // Tail-Cut > 0   : Make Tail-Cut) S
+HL
+(        // Tail-Cut < 0   : Make Tail-Cut with t_0 = Sqrt[ maximum ]) S
+HL
+HL
+(        if \(qTailCut > 0.0\) {) S
+HL
+HL
+(          for \( i=0; i<ct_NPixels; ++i \)) S
+HL
+(            if \( fnpixclean[i] < qTailCut \)) S
+HL
+(              fnpixclean[i] = 0.0;) S
+HL
+HL
+(        } else if \(qTailCut < 0.0\) {) S
+HL
+HL
+(          maxcharge = sqrt\(maxcharge\);) S
+HL
+HL
+(          for \( i=0; i<ct_NPixels; ++i \)) S
+HL
+(            if \( fnpixclean[i] < maxcharge \)) S
+HL
+(              fnpixclean[i] = 0.0;) S
+HL
+HL
+(        }) S
+HL
+HL
+(#endif // __TAILCUT__) S
+HL
+HL
+(#ifdef __ISLANDS__) S
+HL
+HL
+(        //### Islands algorithm.) S
+HL
+HL
+(        //++) S
+HL
+(        // islands counting, and cleanning) S
+HL
+(        //--) S
+HL
+EndPage
+EndDSCPage
+
+%%Page: 22 22
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 1639 def
+/PageNumber 22 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(#ifdef __DEBUG__) S
+HL
+(        cerr << "Islands\\n";) S
+HL
+(#endif // __DEBUG__) S
+HL
+HL
+(        if \( countIslands \) {) S
+HL
+(          islands_ptr = islands\( ct_NPixels_small, fnpixclean, pixneig,) S
+HL
+(                                 npixneig, countIslands, nIslandsCut\);) S
+HL
+(        }) S
+HL
+HL
+(#endif // __ISLANDS__) S
+HL
+HL
+(#ifdef __MOMENTS__) S
+HL
+HL
+(        //### Calculation of parameters of the image.) S
+HL
+HL
+(        //++) S
+HL
+(        // moments calculation) S
+HL
+(        //--) S
+HL
+HL
+(#ifdef __DEBUG__) S
+HL
+(        cerr << "Moments \(anaPixels=" << anaPixels << endl;) S
+HL
+(#endif // __DEBUG__) S
+HL
+HL
+(        // calculate moments and other things) S
+HL
+HL
+(        moments_ptr = moments\( anaPixels, fnpixclean, pixary,) S
+HL
+(                               plateScale_cm2deg, 0,) S
+HL
+(                               pixneig, npixneig \);) S
+HL
+HL
+(        charge = moments_ptr->charge ;) S
+HL
+(        smax   = moments_ptr->smax   ;) S
+HL
+(        maxs   = moments_ptr->maxs   ;) S
+HL
+(        nmaxs  = moments_ptr->nmaxs  ;) S
+HL
+(        length = moments_ptr->length ;) S
+HL
+(        width  = moments_ptr->width  ;) S
+HL
+(        dist   = moments_ptr->dist   ;) S
+HL
+(        xdist  = moments_ptr->xdist  ;) S
+HL
+(        azw    = moments_ptr->azw    ;) S
+HL
+(        miss   = moments_ptr->miss   ;) S
+HL
+(        alpha  = moments_ptr->alpha  ;) S
+HL
+(        conc   = moments_ptr->conc   ;) S
+HL
+(        asymx  = moments_ptr->asymx  ;) S
+HL
+(        asymx  = moments_ptr->asymx  ;) S
+HL
+(        phiasym= moments_ptr->phi;) S
+HL
+HL
+(        lenwid_ptr = lenwid\( anaPixels, fnpixclean, pixary,) S
+HL
+(                             plateScale_cm2deg,) S
+HL
+(                             ct_PixelWidth_corner_2_corner_half\);) S
+HL
+HL
+(        // be aware: here we use the side effect of ++) S
+HL
+(        // there are two possibilities of using the operator ++:) S
+HL
+(        // 1\) a = ++i  : first increments i, then evaluates expresion) S
+HL
+(        // 2\) a = i++  : first evaluates expresion, then increments i) S
+HL
+(        // we INTENTIONALLY use the second form) S
+HL
+HL
+(        i=0;) S
+HL
+(        image_data[i++] = hidt/10;) S
+HL
+(        image_data[i++] = mcevth.get_primary\(\);) S
+HL
+(        image_data[i++] = mcevth.get_energy\(\);) S
+HL
+(        image_data[i++] = coreD;) S
+HL
+(        image_data[i++] = impactD;) S
+HL
+(        image_data[i++] = coreX;) S
+HL
+(        image_data[i++] = coreY;) S
+HL
+(        image_data[i++] = mcevth.get_theta\(\);) S
+HL
+(        image_data[i++] = mcevth.get_phi\(\);) S
+HL
+(        image_data[i++] = tmpdeviation;) S
+HL
+(        image_data[i++] = dtheta;) S
+HL
+(        image_data[i++] = dphi;) S
+HL
+(        image_data[i++] = trigger;) S
+HL
+(        image_data[i++] = ncph;) S
+HL
+(        image_data[i++] = charge;) S
+HL
+(        image_data[i++] = smax;) S
+HL
+(        image_data[i++] = length;) S
+HL
+(        image_data[i++] = width;) S
+HL
+(        image_data[i++] = dist;) S
+HL
+(        image_data[i++] = xdist;) S
+HL
+(        image_data[i++] = azw;) S
+HL
+(        image_data[i++] = miss;) S
+EndPage
+EndDSCPage
+
+%%Page: 23 23
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 1717 def
+/PageNumber 23 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(        image_data[i++] = alpha;) S
+HL
+(        image_data[i++] = conc[0];) S
+HL
+(        image_data[i++] = conc[1];) S
+HL
+(        image_data[i++] = conc[2];) S
+HL
+(        image_data[i++] = conc[3];) S
+HL
+(        image_data[i++] = conc[4];) S
+HL
+(        image_data[i++] = conc[5];) S
+HL
+(        image_data[i++] = conc[6];) S
+HL
+(        image_data[i++] = conc[7];) S
+HL
+(        image_data[i++] = moments_ptr->xmax   ;) S
+HL
+(        image_data[i++] = moments_ptr->ymax   ;) S
+HL
+(        image_data[i++] = moments_ptr->m1x    ;) S
+HL
+(        image_data[i++] = moments_ptr->m1y    ;) S
+HL
+(        image_data[i++] = moments_ptr->beta   ;) S
+HL
+(        image_data[i++] = moments_ptr->m2xy   ;) S
+HL
+(        image_data[i++] = asymx;) S
+HL
+(        image_data[i++] = asymy;) S
+HL
+(        image_data[i++] = phiasym;) S
+HL
+HL
+(        image_data[i++] = lenwid_ptr->length1;) S
+HL
+(        image_data[i++] = lenwid_ptr->length2;) S
+HL
+(        image_data[i++] = lenwid_ptr->width1;) S
+HL
+(        image_data[i++] = lenwid_ptr->width2;) S
+HL
+HL
+(        image_data[i++] = 0.;                           // twidth) S
+HL
+(        image_data[i++] = 0.;                           // tpeak) S
+HL
+(        image_data[i++] = t0;                           // tfirst) S
+HL
+(        image_data[i++] = t1;                           // tlast) S
+HL
+(        image_data[i++] = trange;                       // trange) S
+HL
+HL
+(        // there should be "nvar" variables) S
+HL
+(        if \( i != nvar \)) S
+HL
+(          error\( SIGNATURE, "Wrong entry length for Ntuple \(%d => %d\).\\n",) S
+HL
+(                 i, nvar\);) S
+HL
+HL
+(#ifdef __HBOOK_FILES__) S
+HL
+HL
+(        // put data on to the n-tuple) S
+HL
+(        cts_hfn \( &ntupleFile \);) S
+HL
+HL
+(#endif // __HBOOK_FILES__) S
+HL
+HL
+(#endif // __MOMENTS__) S
+HL
+HL
+(        // put this information in the data file,) S
+HL
+(        if \( Write_All_Data \) {) S
+HL
+HL
+(          datafile << ntrigger;) S
+HL
+(          for \( i=0; i<nvar; ++i \)) S
+HL
+(            datafile << ' ' << image_data[i];) S
+HL
+HL
+(          datafile << endl << -9999;) S
+HL
+(          for \( i=0; i<ct_NPixels; ++i \)) S
+HL
+(            datafile << ' ' << fnpixclean[i];) S
+HL
+HL
+(          datafile << endl << -9998;) S
+HL
+(          ) S
+HL
+(        }) S
+HL
+HL
+(        datafile << endl;) S
+HL
+HL
+(        mcevth.set_trigger\( TRUE \);) S
+HL
+HL
+(      } else { // \( trigger == FALSE \)) S
+HL
+HL
+(        memcpy\( fnpixclean, fnpix, sizeof\(float\) * ct_NPixels \);) S
+HL
+HL
+(        i=0;) S
+HL
+(        image_data[i++] = hidt / 10;) S
+HL
+(        image_data[i++] = mcevth.get_primary\(\);) S
+HL
+(        image_data[i++] = mcevth.get_energy\(\);) S
+HL
+(        image_data[i++] = coreD;) S
+HL
+(        image_data[i++] = impactD;) S
+HL
+(        image_data[i++] = coreX;) S
+HL
+(        image_data[i++] = coreY;) S
+HL
+(        image_data[i++] = mcevth.get_theta\(\);) S
+HL
+(        image_data[i++] = mcevth.get_phi\(\);) S
+HL
+(        image_data[i++] = tmpdeviation;) S
+EndPage
+EndDSCPage
+
+%%Page: 24 24
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 1795 def
+/PageNumber 24 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(        image_data[i++] = dtheta;) S
+HL
+(        image_data[i++] = dphi;) S
+HL
+(        image_data[i++] = trigger;) S
+HL
+(        image_data[i++] = ncph;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+(        image_data[i++] = -1.;) S
+HL
+HL
+(        // there should be "nvar" variables) S
+HL
+(        if \( i != nvar \)) S
+HL
+(          error\( SIGNATURE, "Wrong entry length for Ntuple \(%d => %d\).\\n",) S
+HL
+(                 i, nvar\);) S
+HL
+HL
+(#ifdef  __HBOOK_FILES__) S
+HL
+HL
+(        // put data on to the n-tuple) S
+HL
+(        cts_hfn \( &ntupleFile \);) S
+HL
+HL
+(#endif // __HBOOK_FILES__) S
+HL
+HL
+(        // put this information in the data file,) S
+HL
+(        if \( Write_All_Data \) {) S
+HL
+(          ) S
+HL
+(          datafile << ntrigger;) S
+HL
+(          for \( i=0; i<nvar; ++i \)) S
+HL
+(            datafile << ' ' << image_data[i];) S
+HL
+(          ) S
+HL
+(          datafile << '\\n' << -9999;) S
+HL
+(          for \( i=0; i<ct_NPixels; ++i \)) S
+HL
+(            datafile << ' ' << fnpixclean[i];) S
+HL
+HL
+(          datafile << endl << -9998;) S
+HL
+HL
+(        }) S
+HL
+(        ) S
+HL
+(        datafile << endl;) S
+HL
+(        ) S
+HL
+(        mcevth.set_trigger\( FALSE \);) S
+HL
+(        ) S
+HL
+(      } // trigger == FALSE) S
+HL
+(      ) S
+HL
+(#endif // __TRIGGER__) S
+HL
+(      ) S
+HL
+(      //### Save data.) S
+EndPage
+EndDSCPage
+
+%%Page: 25 25
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 1873 def
+/PageNumber 25 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(      ) S
+HL
+(      //++++++++++++++++++++++++++++++++++++++++++++++++++) S
+HL
+(      // we already have all information we want) S
+HL
+(      // the only thing we must do now is writing it to) S
+HL
+(      // the output file) S
+HL
+(      //--------------------------------------------------) S
+HL
+(      ) S
+HL
+(      //++) S
+HL
+(      // save the image to the file) S
+HL
+(      //--) S
+HL
+(      ) S
+HL
+(      // write MCEventHeader to output file) S
+HL
+(      outputfile.write\( \(char *\)&mcevth, mcevth.mysize\(\) \);) S
+HL
+HL
+(#ifdef __TRIGGER__) S
+HL
+HL
+(      // save the image) S
+HL
+(      if \( \(trigger == TRUE\) || \(Write_All_Images == TRUE\) \)) S
+HL
+(        outputfile.write\( \(char *\) fnpix, ct_NPixels * sizeof\( float \) \);) S
+HL
+HL
+(#else) S
+HL
+HL
+(      // save the image) S
+HL
+(      outputfile.write\( \(char *\) fnpix, ct_NPixels * sizeof\( float \) \);) S
+HL
+HL
+(#endif // __TRIGGER__) S
+HL
+HL
+(      break;) S
+HL
+HL
+(    } // switch \( whatIs \)) S
+HL
+HL
+(  } // still data left) S
+HL
+HL
+(  //### End of program.) S
+HL
+HL
+(  // close remarks) S
+HL
+(  ntcph += ncph;) S
+HL
+(  ) S
+HL
+(  log\( SIGNATURE, "%d event\(s\), with a total of %d C.photons\\n",) S
+HL
+(       ntshow, ntcph \);) S
+HL
+(  log\( SIGNATURE, "Fraction of triggers: %5.1f%% \(%d out of %d\)\\n",) S
+HL
+(       \(\(float\)ntrigger\) / \(\(float\)ntshow\) * 100.0, ntrigger, ntshow\);) S
+HL
+HL
+(  // close files) S
+HL
+(  log\( SIGNATURE, "Closing files\\n" \);) S
+HL
+HL
+(  inputfile.close\(\);) S
+HL
+(  outputfile.close\(\);) S
+HL
+(  datafile.close\(\);) S
+HL
+HL
+(#ifdef __HBOOK_FILES__) S
+HL
+HL
+(  // write n-tuple to file & close it) S
+HL
+HL
+(  cts_hrout \(0, ntupleFile.ilun, &ntupleFile.copt\);) S
+HL
+(  cts_hrend \(&ntupleFile\);) S
+HL
+HL
+(#endif // __HBOOK_FILES__) S
+HL
+HL
+(  // clean memory) S
+HL
+(  delete [] Skip;) S
+HL
+(  Skip = 0;) S
+HL
+HL
+(  delete [] image_data;) S
+HL
+(  image_data = 0;) S
+HL
+HL
+(  delete [] imagepeaks;) S
+HL
+(  imagepeaks = 0;) S
+HL
+HL
+(  delete [] fnpix;) S
+HL
+(  fnpix = 0;) S
+HL
+HL
+(  delete [] fnpixclean;) S
+HL
+(  fnpix = 0;) S
+HL
+HL
+(  // program finished) S
+HL
+(  log\( SIGNATURE, "Done.\\n"\);) S
+HL
+EndPage
+EndDSCPage
+
+%%Page: 26 26
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 1951 def
+/PageNumber 26 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(  return 0;) S
+HL
+(}) S
+HL
+(//}) S
+HL
+HL
+(// @T \\newpage) S
+HL
+HL
+(//## Functions definition.) S
+HL
+HL
+(//!-----------------------------------------------------------) S
+HL
+(// @name present) S
+HL
+(//) S
+HL
+(// @desc Make some presentation) S
+HL
+(//) S
+HL
+(// @date Sat Jun 27 05:58:56 MET DST 1998) S
+HL
+(//------------------------------------------------------------) S
+HL
+(// @function) S
+HL
+HL
+(//{) S
+HL
+(void) S
+HL
+(present\(void\)) S
+HL
+({) S
+HL
+(  cout << "##################################################\\n") S
+HL
+(       <<  SIGNATURE << '\\n' << '\\n') S
+HL
+(       << "Processor of the reflector output\\n") S
+HL
+(       << "Kopyleft \(K\) 1998,1999,2000 J C Gonzalez\\n") S
+HL
+(       << "##################################################\\n\\n") S
+HL
+(       << flush ;) S
+HL
+(}) S
+HL
+(//}) S
+HL
+HL
+HL
+(//!-----------------------------------------------------------) S
+HL
+(// @name usage) S
+HL
+(//) S
+HL
+(// @desc show help) S
+HL
+(//) S
+HL
+(// @date Tue Dec 15 16:23:30 MET 1998) S
+HL
+(//------------------------------------------------------------) S
+HL
+(// @function) S
+HL
+HL
+(//{) S
+HL
+(void) S
+HL
+(usage\(void\)) S
+HL
+({) S
+HL
+(  present\(\);) S
+HL
+(  cout << "\\nusage ::\\n\\n") S
+HL
+(       << "\\t camera ") S
+HL
+(       << " [ -f paramfile ] ") S
+HL
+(       << " [ -h ] ") S
+HL
+(       << "\\n\\n or \\n\\n") S
+HL
+(       << "\\t camera < paramfile") S
+HL
+(       << "\\n\\n";) S
+HL
+(  exit\(0\);) S
+HL
+(}) S
+HL
+(//}) S
+HL
+HL
+HL
+(//!-----------------------------------------------------------) S
+HL
+(// @name log) S
+HL
+(//) S
+HL
+(// @desc function to send log information) S
+HL
+(//) S
+HL
+(// @var    funct  Name of the caller function) S
+HL
+(// @var    fmt    Format to be used \(message\)) S
+HL
+(// @var    ...    Other information to be shown) S
+HL
+(//) S
+HL
+(// @date Sat Jun 27 05:58:56 MET DST 1998) S
+HL
+(//------------------------------------------------------------) S
+HL
+(// @function) S
+HL
+HL
+(//{) S
+HL
+(void) S
+HL
+(log\(const char *funct, char *fmt, ...\)) S
+HL
+({) S
+HL
+(  va_list args;) S
+HL
+HL
+(  //  Display the name of the function that called error) S
+HL
+(  printf\("[%s]: ", funct\);) S
+EndPage
+EndDSCPage
+
+%%Page: 27 27
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 2029 def
+/PageNumber 27 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+HL
+(  // Display the remainder of the message) S
+HL
+(  va_start\(args, fmt\);) S
+HL
+(  vprintf\(fmt, args\);) S
+HL
+(  va_end\(args\);) S
+HL
+(}) S
+HL
+(//}) S
+HL
+HL
+HL
+(//!-----------------------------------------------------------) S
+HL
+(// @name error) S
+HL
+(//) S
+HL
+(// @desc function to send an error message, and abort the program) S
+HL
+(//) S
+HL
+(// @var    funct  Name of the caller function) S
+HL
+(// @var    fmt    Format to be used \(message\)) S
+HL
+(// @var    ...    Other information to be shown) S
+HL
+(//) S
+HL
+(// @date Sat Jun 27 05:58:56 MET DST 1998) S
+HL
+(//------------------------------------------------------------) S
+HL
+(// @function) S
+HL
+HL
+(//{) S
+HL
+(void) S
+HL
+(error\(const char *funct, char *fmt, ...\)) S
+HL
+({) S
+HL
+(  va_list args;) S
+HL
+HL
+(  //  Display the name of the function that called error) S
+HL
+(  fprintf\(stderr, "ERROR in %s: ", funct\);) S
+HL
+HL
+(  // Display the remainder of the message) S
+HL
+(  va_start\(args, fmt\);) S
+HL
+(  vfprintf\(stderr, fmt, args\);) S
+HL
+(  va_end\(args\);) S
+HL
+HL
+(  perror\(funct\);) S
+HL
+HL
+(  abort\(\);) S
+HL
+(}) S
+HL
+(//}) S
+HL
+HL
+HL
+(//!-----------------------------------------------------------) S
+HL
+(// @name isA) S
+HL
+(//) S
+HL
+(// @desc returns TRUE\(FALSE\), if the flag is\(is not\) the given) S
+HL
+(//) S
+HL
+(// @var    s1   String to be searched) S
+HL
+(// @var    flag   Flag to compare with string s1) S
+HL
+(// @return TRUE: both strings match; FALSE: oth.) S
+HL
+(//) S
+HL
+(// @date Wed Jul  8 15:25:39 MET DST 1998) S
+HL
+(//------------------------------------------------------------) S
+HL
+(// @function) S
+HL
+HL
+(//{) S
+HL
+(int) S
+HL
+(isA\( char * s1, const char * flag \) {) S
+HL
+(  return \( \(strncmp\(\(char *\)s1, flag, 8\)==0\) ? TRUE : FALSE \);) S
+HL
+(}) S
+HL
+(//}) S
+HL
+HL
+HL
+(//!-----------------------------------------------------------) S
+HL
+(// @name read_ct_file) S
+HL
+(//) S
+HL
+(// @desc read CT definition file) S
+HL
+(//) S
+HL
+(// @date Sat Jun 27 05:58:56 MET DST 1998) S
+HL
+(//------------------------------------------------------------) S
+HL
+(// @function) S
+HL
+HL
+(//{) S
+HL
+(void) S
+HL
+(read_ct_file\(void\)) S
+HL
+({) S
+HL
+(  char line[LINE_MAX_LENGTH];  //@< line to get from the ctin) S
+EndPage
+EndDSCPage
+
+%%Page: 28 28
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 2107 def
+/PageNumber 28 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(  char token[ITEM_MAX_LENGTH];   //@< a single token) S
+HL
+(  int i, j;      //@< dummy counters) S
+HL
+HL
+(  // variables for check purposes) S
+HL
+(  int ct_npixels_small;    //@< number of small pixels) S
+HL
+(  int ct_npixels_gap;    //@< number of gap pixels) S
+HL
+(  int ct_npixels_big;    //@< number of big pixels) S
+HL
+(  int ct_npixels;    //@< total number of pixels) S
+HL
+HL
+(  log\( "read_ct_file", "start.\\n" \);) S
+HL
+HL
+(  ifstream ctin \( ct_filename \);) S
+HL
+HL
+(  if \( ! ctin.good\(\) \)) S
+HL
+(    error\( "read_ct_file",) S
+HL
+(           "Cannot open CT def. file: %s\\n", ct_filename \);) S
+HL
+HL
+(  // loop till the "end" directive is reached) S
+HL
+HL
+(  int is_end = FALSE;) S
+HL
+(  while \(!ctin.eof\(\)\) {) S
+HL
+HL
+(    // get line from stdin) S
+HL
+HL
+(    ctin.getline\(line, LINE_MAX_LENGTH\);) S
+HL
+HL
+(    // look for each item at the beginning of the line) S
+HL
+HL
+(    for \(i=0; i<=define_mirrors; i++\)) S
+HL
+(      if \(strstr\(line, CT_ITEM_NAMES[i]\) == line\)) S
+HL
+(        break;) S
+HL
+HL
+(    // if it is not a valid line, just ignore it) S
+HL
+HL
+(    if \(i == define_mirrors+1\)) S
+HL
+(      continue;) S
+HL
+HL
+(    // case block for each directive) S
+HL
+HL
+(    switch \( i \) {) S
+HL
+HL
+(    case type:          // <type of telescope> \(0:CT1 ) S
+/f0 F
+(\246) S
+/f0 F
+( 1:MAGIC\)) S
+HL
+HL
+(      // get focal distance) S
+HL
+HL
+(      sscanf\(line, "%s %d", token, &ct_Type\);) S
+HL
+HL
+(      log\( "read_ct_file", "<Type of Telescope>: %s\\n",) S
+HL
+(           \(\(ct_Type==0\) ? "CT1" : "MAGIC"\) \);) S
+HL
+HL
+(      break;) S
+HL
+HL
+(    case focal_distance:      // <focal distance> [cm]) S
+HL
+HL
+(      // get focal distance) S
+HL
+HL
+(      sscanf\(line, "%s %f", token, &ct_Focal_mean\);) S
+HL
+HL
+(      log\( "read_ct_file", "<Focal distance>: %f cm\\n", ct_Focal_mean \);) S
+HL
+HL
+(      break;) S
+HL
+HL
+(    case focal_std:       // s\(focal distance\) [cm]) S
+HL
+HL
+(      // get focal distance) S
+HL
+HL
+(      sscanf\(line, "%s %f", token, &ct_Focal_std\);) S
+HL
+HL
+(      log\( "read_ct_file", "s\(Focal distance\): %f cm\\n", ct_Focal_std \);) S
+HL
+HL
+(      break;) S
+HL
+HL
+(    case point_spread:        // <point spread> [cm]) S
+HL
+HL
+(      // get point spread) S
+HL
+HL
+(      sscanf\(line, "%s %f", token, &ct_PSpread_mean\);) S
+HL
+EndPage
+EndDSCPage
+
+%%Page: 29 29
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 2185 def
+/PageNumber 29 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(      log\( "read_ct_file", "<Point spread>: %f cm\\n", ct_PSpread_mean \);) S
+HL
+HL
+(      break;) S
+HL
+HL
+(    case point_std:       // s\(point spread\) [cm]) S
+HL
+HL
+(      // get point spread) S
+HL
+HL
+(      sscanf\(line, "%s %f", token, &ct_PSpread_std\);) S
+HL
+HL
+(      log\( "read_ct_file", "s\(Point spread\): %f cm\\n", ct_PSpread_std \);) S
+HL
+HL
+(      break;) S
+HL
+HL
+(    case adjustment_dev:      // s\(adjustment_dev\) [cm]) S
+HL
+HL
+(      // get point spread) S
+HL
+HL
+(      sscanf\(line, "%s %f", token, &ct_Adjustment_std\);) S
+HL
+HL
+(      log\( "read_ct_file", "s\(Adjustment\): %f cm\\n", ct_Adjustment_std \);) S
+HL
+HL
+(      break;) S
+HL
+HL
+(    case black_spot:        // radius of the black spot in the center [cm]) S
+HL
+HL
+(      // get black spot radius) S
+HL
+HL
+(      sscanf\(line, "%s %f", token, &ct_BlackSpot_rad\);) S
+HL
+HL
+(      log\( "read_ct_file", "Radius of the black spots: %f cm\\n",) S
+HL
+(           ct_BlackSpot_rad\);) S
+HL
+HL
+(      break;) S
+HL
+HL
+(    case r_mirror:        // radius of the mirrors [cm]) S
+HL
+HL
+(      // get radius of mirror) S
+HL
+HL
+(      sscanf\(line, "%s %f", token, &ct_RMirror\);) S
+HL
+HL
+(      log\( "read_ct_file", "Radii of the mirrors: %f cm\\n", ct_RMirror \);) S
+HL
+HL
+(      break;) S
+HL
+HL
+(    case n_mirrors:       // number of mirrors) S
+HL
+HL
+(      // get the name of the output_file from the line) S
+HL
+HL
+(      sscanf\(line, "%s %d", token, &ct_NMirrors\);) S
+HL
+HL
+(      log\( "read_ct_file", "Number of mirrors: %d\\n", ct_NMirrors \);) S
+HL
+HL
+(      break;) S
+HL
+HL
+(    case camera_width:        // camera width [cm]) S
+HL
+HL
+(      // get the name of the ct_file from the line) S
+HL
+HL
+(      sscanf\(line, "%s %f", token, &ct_CameraWidth\);) S
+HL
+(      ct_CameraWidth_2 = ct_CameraWidth / 2.0;) S
+HL
+HL
+(      log\( "read_ct_file", "Camera width: %f cm\\n", ct_CameraWidth \);) S
+HL
+HL
+(      break;) S
+HL
+HL
+(    case n_rings:      // number of rings) S
+HL
+HL
+(      // get the name of the output_file from the line) S
+HL
+HL
+(      sscanf\(line, "%s %d %d", token, &ct_NRings_small, &ct_NRings_big\);) S
+HL
+HL
+(      ct_NPixels_small = SumNumPixelInRings\( ct_NRings_small \);) S
+HL
+HL
+(      ct_NPixels_gap = \(ct_NRings_big>0\) ? \(\(ct_NRings_big-1\)*6\) : 0;) S
+HL
+HL
+(      ct_NBig1 = \(ct_NRings_small + 1\) / 2;) S
+HL
+EndPage
+EndDSCPage
+
+%%Page: 30 30
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 2263 def
+/PageNumber 30 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(      ct_NPixels_big = \(ct_NBig1 + \(ct_NBig1 + ct_NRings_big - 1\)\)) S
+HL
+(        * ct_NRings_big / 2 * 6;) S
+HL
+HL
+(      ct_NPixels = ct_NPixels_small + ct_NPixels_gap + ct_NPixels_big;) S
+HL
+HL
+(      log\("read_ct_file", "Number of rings: %d \(small\) %d \(big\)\\n",) S
+HL
+(          ct_NRings_small, ct_NRings_big\);) S
+HL
+HL
+(      break;) S
+HL
+HL
+(    case n_pixels:       // number of pixels) S
+HL
+HL
+(      // get the name of the output_file from the line) S
+HL
+HL
+(      sscanf\(line, "%s %d %d %d", token,) S
+HL
+(             &ct_npixels_small, &ct_npixels_gap, &ct_npixels_big\);) S
+HL
+HL
+(      ct_npixels = ct_npixels_small + ct_npixels_gap + ct_npixels_big;) S
+HL
+HL
+(      log\("read_ct_file", "Number of pixels: %d+%d+%d = %d\\n",) S
+HL
+(          ct_npixels_small, ct_npixels_gap, ct_npixels_big, ct_npixels \);) S
+HL
+HL
+(      break;) S
+HL
+HL
+(    case pixel_width:       // pixel width [cm]) S
+HL
+HL
+(      // get the name of the ct_file from the line) S
+HL
+HL
+(      sscanf\(line, "%s %f", token, &ct_PixelWidth\);) S
+HL
+HL
+(      ct_PixelWidth_corner_2_corner = ct_PixelWidth / cos\(RAD\(30.0\)\);) S
+HL
+(      ct_PixelWidth_corner_2_corner_half =) S
+HL
+(        ct_PixelWidth_corner_2_corner * 0.50;) S
+HL
+(      ct_Apot = ct_PixelWidth / 2;) S
+HL
+(      ct_2Apot = ct_Apot * 2.0;) S
+HL
+HL
+(      log\( "read_ct_file", "Pixel width: %f cm\\n", ct_PixelWidth \);) S
+HL
+HL
+(      break;) S
+HL
+HL
+(    case define_mirrors:      // read table with the parameters of the mirrors) S
+HL
+HL
+(      log\( "read_ct_file", "Table of mirrors data:\\n" \);) S
+HL
+HL
+(      // check whether the number of mirrors was already set) S
+HL
+HL
+(      if \( ct_NMirrors == 0 \)) S
+HL
+(        error\( "read_ct_file", "NMirrors was not set.\\n" \);) S
+HL
+HL
+(      // allocate memory for paths list) S
+HL
+HL
+(      log\( "read_ct_file", "Allocating memory for ct_data\\n" \);) S
+HL
+HL
+(      ct_data = new float*[ct_NMirrors];) S
+HL
+HL
+(      for \(i=0; i<ct_NMirrors; i++\)) S
+HL
+(        ct_data[i] = new float[CT_NDATA];) S
+HL
+HL
+(      // read data) S
+HL
+HL
+(      log\( "read_ct_file", "Reading mirrors data...\\n" \);) S
+HL
+HL
+(      for \(i=0; i<ct_NMirrors; i++\)) S
+HL
+(        for \(j=0; j<CT_NDATA; j++\)) S
+HL
+(          ctin >> ct_data[i][j];) S
+HL
+HL
+(      break;) S
+HL
+HL
+(    } // switch \( i \)) S
+HL
+HL
+(  } // while \(! is_end\)) S
+HL
+HL
+(  // end) S
+HL
+HL
+(  // check number of pixels) S
+HL
+(  if \(ct_NPixels != ct_npixels\) {) S
+HL
+(    log\("read_ct_file",) S
+HL
+(        "Inconsistency found: number of pixels wrong!\\n"\);) S
+EndPage
+EndDSCPage
+
+%%Page: 31 31
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 2341 def
+/PageNumber 31 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(    error\("read_ct_file",) S
+HL
+(          "Check your CT definition file.\\n"\);) S
+HL
+(  }) S
+HL
+HL
+(  log\( "read_ct_file", "done.\\n" \);) S
+HL
+HL
+(  return;) S
+HL
+(}) S
+HL
+(//}) S
+HL
+HL
+HL
+(//!-----------------------------------------------------------) S
+HL
+(// @name dist_r_P) S
+HL
+(//) S
+HL
+(// @desc distance straight line r - point P) S
+HL
+(//) S
+HL
+(// @var a   Coord.X of point in straight line) S
+HL
+(// @var b   Coord.Y of point in straight line) S
+HL
+(// @var c   Coord.Z of point in straight line) S
+HL
+(// @var l   Dir.cos. in X axis) S
+HL
+(// @var m   Dir.cos. in Y axis) S
+HL
+(// @var n   Dir.cos. in Z axis) S
+HL
+(// @var x   Coord.X of problem point) S
+HL
+(// @var y   Coord.Y of problem point) S
+HL
+(// @var z   Coord.Z of problem point) S
+HL
+(// @return    Distance straight line r -- point P) S
+HL
+(//) S
+HL
+(// @date Sat Jun 27 05:58:56 MET DST 1998) S
+HL
+(//------------------------------------------------------------) S
+HL
+(// @function) S
+HL
+HL
+(//{) S
+HL
+(static float) S
+HL
+(dist_r_P\(float a, float b, float c,) S
+HL
+(         float l, float m, float n,) S
+HL
+(         float x, float y, float z\)) S
+HL
+({) S
+HL
+(  return \() S
+HL
+(          sqrt\(\(SQR\(\(a-x\)*m-\(b-y\)*l\) +) S
+HL
+(                SQR\(\(b-y\)*n-\(c-z\)*m\) +) S
+HL
+(                SQR\(\(c-z\)*l-\(a-x\)*n\)\)/) S
+HL
+(               \(SQR\(l\)+SQR\(m\)+SQR\(n\)\)) S
+HL
+(               \)) S
+HL
+(          \);) S
+HL
+(}) S
+HL
+(//}) S
+HL
+HL
+HL
+(//## Read/create the file |pixels.dat|.) S
+HL
+HL
+HL
+(//!-----------------------------------------------------------) S
+HL
+(// @name read_pixels) S
+HL
+(//) S
+HL
+(// @desc read pixels data) S
+HL
+(//) S
+HL
+(// @date Fri Mar 12 16:33:34 MET 1999) S
+HL
+(//------------------------------------------------------------) S
+HL
+(// @function) S
+HL
+HL
+(//{) S
+HL
+(void) S
+HL
+(read_pixels\(void\)) S
+HL
+({) S
+HL
+(  ifstream pixfile, qefile;) S
+HL
+(  char line[LINE_MAX_LENGTH];) S
+HL
+(  int n, i, j, k;) S
+HL
+(  float x, y, qe;) S
+HL
+HL
+(  //------------------------------------------------------------) S
+HL
+(  // first, pixels' coordinates) S
+HL
+HL
+(  // initialize pixel numbers) S
+HL
+(  for \( i=0; i<PIX_ARRAY_SIDE; ++i \)) S
+HL
+(    for \( j=0; j<PIX_ARRAY_SIDE; ++j \)) S
+HL
+(      pixels[i][j] = -1;) S
+HL
+HL
+(  pixary = new float* [2*ct_NPixels];) S
+EndPage
+EndDSCPage
+
+%%Page: 32 32
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 2419 def
+/PageNumber 32 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(  for \( i=0; i<2*ct_NPixels; ++i \)) S
+HL
+(    pixary[i] = new float[2];) S
+HL
+HL
+(  pixneig = new int* [ct_NPixels_small];) S
+HL
+(  for \( i=0; i<ct_NPixels_small; ++i \) {) S
+HL
+(    pixneig[i] = new int[6];) S
+HL
+(    for \( j=0; j<6; ++j \)) S
+HL
+(      pixneig[i][j] = -1;) S
+HL
+(  }) S
+HL
+HL
+(  npixneig = new int[ct_NPixels_small];) S
+HL
+(  for \( i=0; i<ct_NPixels_small; ++i \)) S
+HL
+(    npixneig[i] = 0;) S
+HL
+HL
+(  // try to open the file) S
+HL
+(  log\("read_pixels", "Openning the file \\"%s\\" . . .\\n", PIXELS_FILE\);) S
+HL
+HL
+(  pixfile.open\( PIXELS_FILE \);) S
+HL
+HL
+(  // if it is wrong or does not exist, go away) S
+HL
+(  if \( ! pixfile.good\(\) \) {) S
+HL
+HL
+(    log\("read_pixels", "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\\n"\);) S
+HL
+(    log\("read_pixels", "Cannot open \\"%s\\"\\n", PIXELS_FILE\);) S
+HL
+(    log\("read_pixels", "Trying to create it, and get the data. . .\\n"\);) S
+HL
+HL
+(    pixfile.close\(\);) S
+HL
+HL
+(    create_pixels\(\);) S
+HL
+HL
+(    log\("read_pixels", "Succeded.\\n"\);) S
+HL
+(    log\("read_pixels", "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\\n"\);) S
+HL
+HL
+(    // correct coordinates: scale to real pixel size) S
+HL
+HL
+(    for \(i=0; i<ct_NPixels; i++\) {) S
+HL
+(      pixary[i][0] *= ct_PixelWidth;) S
+HL
+(      pixary[i][1] *= ct_PixelWidth;) S
+HL
+(    }) S
+HL
+HL
+(  } else {) S
+HL
+HL
+(    // read file) S
+HL
+(    log\("read_pixels", "Reading data . . .\\n"\);) S
+HL
+HL
+(    n=0;) S
+HL
+(    while \( ! pixfile.eof\(\) \) {) S
+HL
+HL
+(      // get line from the file) S
+HL
+(      pixfile.getline\(line, LINE_MAX_LENGTH\);) S
+HL
+HL
+(      // skip if comment) S
+HL
+(      if \( *line == '#' \)) S
+HL
+(        continue;) S
+HL
+HL
+(      // get the value \(dx, dy\)) S
+HL
+(      sscanf\(line, "%ld %d %d %d %f %f", &n, &i, &j, &k, &x, &y\);) S
+HL
+HL
+(      if \(n<0\) break;) S
+HL
+HL
+(      // we read the coordinates \(i,j,k\), but the 'k' is thrown away) S
+HL
+(      // \(the three coord. are not independent, i+j+k=0\)) S
+HL
+HL
+(      // WARNING!! The pixel coordinates are normalized to a) S
+HL
+(      // hypothetical camera with Pixel Diameter = 1) S
+HL
+(      // In order to use the right coordinates, we must multiply them) S
+HL
+(      // by ct_PixelWidth) S
+HL
+HL
+(      x *= ct_PixelWidth;) S
+HL
+(      y *= ct_PixelWidth;) S
+HL
+HL
+(      if \(n<1000\) {) S
+HL
+HL
+(        // save the values to the array) S
+HL
+(        pixels[i+PIX_ARRAY_HALF_SIDE][j+PIX_ARRAY_HALF_SIDE] = n-1;) S
+HL
+(        pixary[n-1][0] = x;) S
+HL
+(        pixary[n-1][1] = y;) S
+HL
+EndPage
+EndDSCPage
+
+%%Page: 33 33
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 2497 def
+/PageNumber 33 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(      } else {) S
+HL
+HL
+(        // save the values to the array) S
+HL
+(        pixels[i+PIX_ARRAY_HALF_SIDE][j+PIX_ARRAY_HALF_SIDE] = n;) S
+HL
+HL
+(      }) S
+HL
+HL
+(#ifdef __DEBUG__) S
+HL
+(      cout << "Read " << n << ' ' << i << ' ' << j << ' ' << k << ' ') S
+HL
+(           << x << ' ' << y << endl;) S
+HL
+(#endif) S
+HL
+HL
+(    }) S
+HL
+HL
+(    // close file) S
+HL
+(    pixfile.close\(\);) S
+HL
+HL
+(  }) S
+HL
+HL
+(#ifdef __DEBUG__) S
+HL
+HL
+(  for \(i=0; i<ct_NPixels; i++\)) S
+HL
+(    printf\("%4d %10g %10g\\n", i, pixary[i][0], pixary[i][1]\);) S
+HL
+HL
+(  for \(i=0; i<PIX_ARRAY_SIDE; i++\) {) S
+HL
+(    printf\("## "\);) S
+HL
+(    for \(j=0; j<PIX_ARRAY_SIDE; j++\)) S
+HL
+(      printf\(" %10d", pixels[i][j]\);) S
+HL
+(    printf\("\\n"\);) S
+HL
+(  }) S
+HL
+HL
+(#endif) S
+HL
+HL
+(  // calculate tables of neighbours) S
+HL
+(  for \( n=0 ; n<ct_NPixels_small ; ++n \) {) S
+HL
+(#ifdef __DEBUG__) S
+HL
+(    cout << "Para el pixel " << n << ": ";) S
+HL
+(#endif // ! __DEBUG__) S
+HL
+(    for \( i=n+1 ; \(i<ct_NPixels_small\)&&\(npixneig[n]<6\) ; ++i\) {) S
+HL
+(      if \( pixels_are_neig\(n,i\) \) {) S
+HL
+(        pixneig[n][npixneig[n]] = i;) S
+HL
+(        pixneig[i][npixneig[i]] = n;) S
+HL
+(#ifdef __DEBUG__) S
+HL
+(        cout << i << ' ';) S
+HL
+(#endif // ! __DEBUG__) S
+HL
+(        ++npixneig[n];) S
+HL
+(        ++npixneig[i];) S
+HL
+(      }) S
+HL
+(    }) S
+HL
+(#ifdef __DEBUG__) S
+HL
+(    cout << endl << flush;) S
+HL
+(#endif // ! __DEBUG__) S
+HL
+(  }) S
+HL
+HL
+(#ifdef __DEBUG__) S
+HL
+(  for \( n=0 ; n<ct_NPixels_small ; ++n \) {) S
+HL
+(    cout << n << ':';) S
+HL
+(    for \( j=0; j<npixneig[n]; ++j\)) S
+HL
+(      cout << ' ' << pixneig[n][j];) S
+HL
+(    cout << endl << flush;) S
+HL
+(  }) S
+HL
+(#endif // __DEBUG__) S
+HL
+HL
+(  //------------------------------------------------------------) S
+HL
+(  // second, pixels' QE) S
+HL
+HL
+(  // try to open the file) S
+HL
+(  log\("read_pixels", "Openning the file \\"%s\\" . . .\\n", QE_FILE\);) S
+HL
+HL
+(  qefile.open\( QE_FILE \);) S
+HL
+HL
+(  // if it is wrong or does not exist, go away) S
+HL
+(  if \( ! qefile.good\(\) \)) S
+HL
+(    error\( "read_pixels", "Cannot open \\"%s\\". Exiting.\\n", QE_FILE \);) S
+HL
+HL
+(  // read file) S
+HL
+(  log\("read_pixels", "Reading QE data . . .\\n"\);) S
+HL
+EndPage
+EndDSCPage
+
+%%Page: 34 34
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 2575 def
+/PageNumber 34 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(  i=-1;) S
+HL
+HL
+(  while \( ! qefile.eof\(\) \) {) S
+HL
+HL
+(    // get line from the file) S
+HL
+(    qefile.getline\(line, LINE_MAX_LENGTH\);) S
+HL
+HL
+(    // skip if comment) S
+HL
+(    if \( *line == '#' \)) S
+HL
+(      continue;) S
+HL
+HL
+(    // if it is the first valid value, it is the number of QE data points) S
+HL
+(    if \( i < 0 \) {) S
+HL
+HL
+(      // get the number of datapoints) S
+HL
+(      sscanf\(line, "%d", &pointsQE\);) S
+HL
+HL
+(      // allocate memory for the table of QEs) S
+HL
+(      QE = new float ** [ct_NPixels];) S
+HL
+HL
+(      for \( i=0; i<ct_NPixels; ++i \) {) S
+HL
+(        QE[i] = new float * [2];) S
+HL
+(        QE[i][0] = new float[pointsQE];) S
+HL
+(        QE[i][1] = new float[pointsQE];) S
+HL
+(      }) S
+HL
+HL
+(      QElambda = new float [pointsQE];) S
+HL
+HL
+(      for \( i=0; i<pointsQE; ++i \) {) S
+HL
+(        qefile.getline\(line, LINE_MAX_LENGTH\);) S
+HL
+(        sscanf\(line, "%f", &QElambda[i]\);) S
+HL
+(      }) S
+HL
+HL
+(      i=0;) S
+HL
+HL
+(      continue;) S
+HL
+(    }) S
+HL
+HL
+(    // get the values \(num-pixel, num-datapoint, QE-value\)) S
+HL
+(    sscanf\(line, "%d %d %f", &i, &j, &qe\);) S
+HL
+HL
+(    if \( \(\(i-1\) < ct_NPixels\) && \(\(i-1\) > -1\) &&) S
+HL
+(         \(\(j-1\) < pointsQE\)   && \(\(j-1\) > -1\) \) {) S
+HL
+(      QE[i-1][0][j-1] = QElambda[j-1];) S
+HL
+(      QE[i-1][1][j-1] = qe;) S
+HL
+(    }) S
+HL
+HL
+(  }) S
+HL
+HL
+(  // close file) S
+HL
+(  qefile.close\(\);) S
+HL
+HL
+(  // end) S
+HL
+(  log\("read_pixels", "Done.\\n"\);) S
+HL
+HL
+(}) S
+HL
+(//}) S
+HL
+HL
+HL
+(//!-----------------------------------------------------------) S
+HL
+(// @name create_pixels) S
+HL
+(//) S
+HL
+(// @desc create pixels data file) S
+HL
+(//) S
+HL
+(// @date Fri Mar 12 16:33:34 MET 1999) S
+HL
+(//------------------------------------------------------------) S
+HL
+(// @function) S
+HL
+HL
+(//{) S
+HL
+(void) S
+HL
+(create_pixels\(void\)) S
+HL
+({) S
+HL
+HL
+(  // look: shorcuts are defined in file camera.h) S
+HL
+HL
+(  // we create the file PIXELS_FILE assuming a pixel edge-to-edge size of 1.0) S
+HL
+HL
+(  const float ct_local_PixelWidth = 1.0;) S
+EndPage
+EndDSCPage
+
+%%Page: 35 35
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 2653 def
+/PageNumber 35 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(  const float ct_local_PixelWidth_corner_2_corner = ct_local_PixelWidth/COS30;) S
+HL
+(  const float ct_local_PixelWidth_corner_2_corner_half =) S
+HL
+(    ct_local_PixelWidth_corner_2_corner/2;) S
+HL
+(  const float ct_local_Apot = ct_local_PixelWidth/2;) S
+HL
+(  // const float ct_local_2Apot = 2.0*ct_local_Apot;) S
+HL
+HL
+(  int i, j, k;) S
+HL
+(  int ki, kj, kk, kstatic;) S
+HL
+HL
+(  float x, y, dx, dy;) S
+HL
+(  int ntot, nhalf;) S
+HL
+HL
+(  float fi, fj, fk;) S
+HL
+(  float nx, ny;) S
+HL
+HL
+(  float  d1 = ct_local_PixelWidth_corner_2_corner_half;) S
+HL
+(  float cd1 = d1 * COS30;) S
+HL
+(  float sd1 = d1 * SIN30;) S
+HL
+HL
+(  float  d2 = 1.2*ct_local_PixelWidth_corner_2_corner_half;) S
+HL
+(  float cd2 = d2 * COS30;) S
+HL
+(  float sd2 = d2 * SIN30;) S
+HL
+HL
+(  int n=0;) S
+HL
+HL
+(  float pki[ ct_NPixels ];) S
+HL
+(  float pkj[ ct_NPixels ];) S
+HL
+(  float pkk[ ct_NPixels ];) S
+HL
+(  float px [ ct_NPixels ];) S
+HL
+(  float py [ ct_NPixels ];) S
+HL
+HL
+(  ofstream pixfile\( "pixels-real.dat" \);) S
+HL
+HL
+(  //------------------------------------------------------------) S
+HL
+HL
+(  for \(i=0; i<PIX_ARRAY_SIDE; i++\)) S
+HL
+(    for \(j=0; j<PIX_ARRAY_SIDE; j++\)) S
+HL
+(      pixels[i][j] = -1;) S
+HL
+HL
+(  // open new file) S
+HL
+(  log\("create_pixels", "Creating the file \\"%s\\" . . .\\n", PIXELS_FILE\);) S
+HL
+HL
+(  // pixfile.open\( "pixels-real.dat" \);) S
+HL
+HL
+(  pixfile << "#--------------------------------------------------\\n";) S
+HL
+(  pixfile << "# " << PIXELS_FILE << " -- pixels IDs + coordinates\\n";) S
+HL
+(  pixfile << "#\\n";) S
+HL
+(  pixfile << "# Kopyleft \(K\) 2000 J C Gonzalez\\n";) S
+HL
+(  pixfile << "# Automatically generated by camera program\\n";) S
+HL
+(  pixfile << "#--------------------------------------------------\\n#\\n";) S
+HL
+HL
+(  // \(i\) generate coordinates of small, central pixels) S
+HL
+(  //------------------------------------------------------------) S
+HL
+HL
+(  log\("create_pixels", "Creating %d small pixels . . .\\n", ct_NPixels_small\);) S
+HL
+HL
+(  pixfile << "#-- small pixels ----------------------------------\\n";) S
+HL
+HL
+(  Make_Pixel\(0, 0., 0., 0, 0, 0\);) S
+HL
+(  Map_Pixel\(0, 0, 0\);) S
+HL
+HL
+(  pixfile << setw\(4\) << 1) S
+HL
+(          << setw\(4\) << 0 << setw\(4\) << 0 << setw\(4\) << 0) S
+HL
+(          << setw\(12\) << 0. << setw\(12\) << 0. << endl;) S
+HL
+HL
+(  dx = ct_local_PixelWidth / 2.0;) S
+HL
+(  dy = ct_local_PixelWidth_corner_2_corner_half * 1.5;) S
+HL
+HL
+(  n++;) S
+HL
+(  for \( int iring=1; iring<ct_NRings_small+1; iring++ \) {) S
+HL
+HL
+(    if \( n != FirstInRing\(iring\) \)) S
+HL
+(      error\("create_pixels",) S
+HL
+(            "Variable n must be first pixel in %d ring, but is %d\\n",) S
+HL
+(            FirstInRing\(iring\), n\);) S
+HL
+HL
+(    ntot  = NumPixelsInRing\(iring\);) S
+HL
+(    nhalf = ntot/2;) S
+EndPage
+EndDSCPage
+
+%%Page: 36 36
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 2731 def
+/PageNumber 36 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+HL
+(    ki = iring;) S
+HL
+(    kj = -ki;) S
+HL
+(    kk = 0;) S
+HL
+(    kstatic = 0;) S
+HL
+HL
+(    int * iki = new int [ ntot ];) S
+HL
+(    int * ikj = new int [ ntot ];) S
+HL
+(    int * ikk = new int [ ntot ];) S
+HL
+HL
+(    for \(k=0; k<nhalf; k++\) {) S
+HL
+HL
+(      if \( kstatic > iring \) ki--;) S
+HL
+HL
+(      kstatic++;) S
+HL
+HL
+(      iki[k] = ki;) S
+HL
+HL
+(      iki[k+nhalf]  = -iki[k];) S
+HL
+(    }) S
+HL
+HL
+(    for \(k=1; k<ntot; k++\) {) S
+HL
+(      ikj[ntot-k] = -iki[k];) S
+HL
+(    }) S
+HL
+(    ikj[0] = -iki[0];) S
+HL
+HL
+(    for \(k=0; k<ntot; k++\) {) S
+HL
+(      ikk[k] = -\(iki[k]+ikj[k]\);) S
+HL
+(    }) S
+HL
+HL
+(    for \(k=0; k<ntot; k++\) {) S
+HL
+HL
+(      ki = iki[k];) S
+HL
+(      kj = ikj[k];) S
+HL
+(      kk = ikk[k];) S
+HL
+HL
+(      hex2coord\(ki, kj, kk, x, y, ct_local_PixelWidth_corner_2_corner_half\);) S
+HL
+HL
+(      pixfile << setw\(4\) << n+1) S
+HL
+(              << setw\(4\) << ki << setw\(4\) << kj << setw\(4\) << kk) S
+HL
+(              << setw\(12\) << x << setw\(12\) << y << endl;) S
+HL
+HL
+(      Make_Pixel\( n, x, y, ki, kj, kk\);) S
+HL
+(      Map_Pixel\(ki, kj, n\);) S
+HL
+HL
+(      n++;) S
+HL
+(    }) S
+HL
+HL
+(    delete [] iki;) S
+HL
+(    delete [] ikj;) S
+HL
+(    delete [] ikk;) S
+HL
+HL
+(  }) S
+HL
+HL
+(  // \(ii\) generate coordinates for gap pixels) S
+HL
+(  //------------------------------------------------------------) S
+HL
+HL
+(  log\("create_pixels", "Creating %d gap pixels . . .\\n", ct_NPixels_gap\);) S
+HL
+HL
+(  pixfile << "#-- gap pixels ------------------------------------\\n";) S
+HL
+HL
+(  // loop on number of gap pixels each corner) S
+HL
+(  for \(i=1; i<ct_NRings_big; i++\) {) S
+HL
+HL
+(    int inc = i*2;) S
+HL
+HL
+(    k = FirstInRingSector\(ct_NRings_small,0\);) S
+HL
+(    pki[n] = pki[k] + inc;) S
+HL
+(    pkj[n] = pkj[k] - inc;) S
+HL
+(    pkk[n] = pkk[k];) S
+HL
+HL
+(    n++;) S
+HL
+HL
+(    k = FirstInRingSector\(ct_NRings_small,1\);) S
+HL
+(    pki[n] = pki[k] + inc;) S
+HL
+(    pkj[n] = pkj[k];) S
+HL
+(    pkk[n] = pkk[k] - inc;) S
+HL
+EndPage
+EndDSCPage
+
+%%Page: 37 37
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 2809 def
+/PageNumber 37 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(    n++;) S
+HL
+HL
+(    k = FirstInRingSector\(ct_NRings_small,2\);) S
+HL
+(    pki[n] = pki[k];) S
+HL
+(    pkj[n] = pkj[k] + inc;) S
+HL
+(    pkk[n] = pkk[k] - inc;) S
+HL
+HL
+(    n++;) S
+HL
+HL
+(    for \(j=0; j<3; j++\) {) S
+HL
+(      pki[n] = -pki[n-3];) S
+HL
+(      pkj[n] = -pkj[n-3];) S
+HL
+(      pkk[n] = -pkk[n-3];) S
+HL
+(      n++;) S
+HL
+(    }) S
+HL
+HL
+(  }) S
+HL
+HL
+(  for \(k=0; k<ct_NPixels_gap; k++\) {) S
+HL
+HL
+(    n = ct_NPixels_small + k;) S
+HL
+(    ki = int\( pki[n] \);) S
+HL
+(    kj = int\( pkj[n] \);) S
+HL
+(    kk = int\( pkk[n] \);) S
+HL
+HL
+(    hex2coord\(ki, kj, kk, x, y, ct_local_PixelWidth_corner_2_corner_half\);) S
+HL
+HL
+(    px[n] = x;) S
+HL
+(    py[n] = y;) S
+HL
+HL
+(    pixfile << setw\(4\) << n+1) S
+HL
+(            << setw\(4\) << ki << setw\(4\) << kj << setw\(4\) << kk) S
+HL
+(            << setw\(12\) << x << setw\(12\) << y << endl;) S
+HL
+HL
+(    Map_Pixel\(ki, kj, n\);) S
+HL
+HL
+HL
+(  }) S
+HL
+HL
+(  // \(iii\) generate big pixels coordinates) S
+HL
+(  //------------------------------------------------------------) S
+HL
+HL
+(  log\("create_pixels", "Creating %d big pixels . . .\\n", ct_NPixels_big\);) S
+HL
+HL
+(  pixfile << "#-- big pixels ------------------------------------\\n";) S
+HL
+HL
+(  fi = fj = fk = 0.;) S
+HL
+(  n = ct_NPixels_small+ct_NPixels_gap;) S
+HL
+HL
+(  k = FirstInRingSector\(ct_NRings_small,0\);) S
+HL
+HL
+(  // loop on ring of big pixels) S
+HL
+(  for \(i=0; i<ct_NRings_big; i++\) {) S
+HL
+HL
+(    x = px[k] + 2 * \(i+1\) * ct_local_PixelWidth;) S
+HL
+(    y = py[k] - ct_local_PixelWidth_corner_2_corner_half;) S
+HL
+HL
+(    for \(j=0; j<\(ct_NBig1+i\); j++\) {) S
+HL
+HL
+(      x -= ct_local_PixelWidth;) S
+HL
+(      y += 3. * ct_local_PixelWidth_corner_2_corner_half;) S
+HL
+HL
+(      xy2ijk\( x, y, fi, fj, fk, 1.5*ct_local_PixelWidth_corner_2_corner_half\);) S
+HL
+(      Make_Pixel\( n,         x,  y, fi, fj, fk \);) S
+HL
+HL
+(      ijk2xy\(-fj,-fk,-fi, nx, ny, ct_local_PixelWidth_corner_2_corner_half\);) S
+HL
+(      Make_Pixel\( n+  \(ct_NBig1+i\), nx, ny,-fj,-fk,-fi \);) S
+HL
+HL
+(      ijk2xy\( fk, fi, fj, nx, ny, ct_local_PixelWidth_corner_2_corner_half\);) S
+HL
+(      Make_Pixel\( n+2*\(ct_NBig1+i\), nx, ny, fk, fi, fj \);) S
+HL
+HL
+(      ijk2xy\(-fi,-fj,-fk, nx, ny, ct_local_PixelWidth_corner_2_corner_half\);) S
+HL
+(      Make_Pixel\( n+3*\(ct_NBig1+i\), nx, ny,-fi,-fj,-fk \);) S
+HL
+HL
+(      ijk2xy\( fj, fk, fi, nx, ny, ct_local_PixelWidth_corner_2_corner_half\);) S
+HL
+(      Make_Pixel\( n+4*\(ct_NBig1+i\), nx, ny, fj, fk, fi \);) S
+HL
+HL
+(      ijk2xy\(-fk,-fi,-fj, nx, ny, ct_local_PixelWidth_corner_2_corner_half\);) S
+EndPage
+EndDSCPage
+
+%%Page: 38 38
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 2887 def
+/PageNumber 38 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(      Make_Pixel\( n+5*\(ct_NBig1+i\), nx, ny,-fk,-fi,-fj \);) S
+HL
+HL
+(      n++;) S
+HL
+HL
+(    }) S
+HL
+HL
+(    n+=5*\(ct_NBig1+i\);) S
+HL
+HL
+(  }) S
+HL
+HL
+(  k=0;) S
+HL
+HL
+(  n = ct_NPixels_small+ct_NPixels_gap;) S
+HL
+HL
+(  for \(i=0; i<ct_NRings_big; i++\) {) S
+HL
+HL
+(    for \(j=0; j<6*\(ct_NBig1+i\); j++\) {) S
+HL
+HL
+(      fi = pki[n];) S
+HL
+(      fj = pkj[n];) S
+HL
+(      fk = pkk[n];) S
+HL
+(      x  = px[n];) S
+HL
+(      y  = py[n];) S
+HL
+HL
+(      if \(\(j/\(ct_NBig1+i\)\)%2 == 0\) {) S
+HL
+HL
+(        // map also the three small hexagons inside the big one) S
+HL
+HL
+(        coord2hex\( x  , y+d1 , ki, kj, kk,) S
+HL
+(                   1.5*ct_local_PixelWidth_corner_2_corner_half\);) S
+HL
+(        Map_Pixel\(ki, kj, n\);) S
+HL
+(        pixfile << setw\(4\) << n+1) S
+HL
+(                << setw\(4\) << ki << setw\(4\) << kj << setw\(4\) << kk) S
+HL
+(                << setw\(12\) << x << setw\(12\) << y << endl;) S
+HL
+HL
+(        coord2hex\( x-cd1, y-sd1, ki, kj, kk,) S
+HL
+(                   1.5*ct_local_PixelWidth_corner_2_corner_half\);) S
+HL
+(        Map_Pixel\(ki, kj, n\);) S
+HL
+(        pixfile << setw\(4\) << n+1) S
+HL
+(                << setw\(4\) << ki << setw\(4\) << kj << setw\(4\) << kk) S
+HL
+(                << setw\(12\) << x << setw\(12\) << y << endl;) S
+HL
+HL
+(        coord2hex\( x+cd1, y-sd1, ki, kj, kk,) S
+HL
+(                   1.5*ct_local_PixelWidth_corner_2_corner_half\);) S
+HL
+(        Map_Pixel\(ki, kj, n\);) S
+HL
+(        pixfile << setw\(4\) << n+1) S
+HL
+(                << setw\(4\) << ki << setw\(4\) << kj << setw\(4\) << kk) S
+HL
+(                << setw\(12\) << x << setw\(12\) << y << endl;) S
+HL
+HL
+(        // map then the pieces of small hexagons shared between big ones) S
+HL
+HL
+(        coord2hex\( x  , y-d2 , ki, kj, kk,) S
+HL
+(                   1.5*ct_local_PixelWidth_corner_2_corner_half\);) S
+HL
+(        Map_Multiple_Pixel\(ki, kj, n\);) S
+HL
+HL
+(        coord2hex\( x+cd2, y+sd2, ki, kj, kk,) S
+HL
+(                   1.5*ct_local_PixelWidth_corner_2_corner_half\);) S
+HL
+(        Map_Multiple_Pixel\(ki, kj, n\);) S
+HL
+HL
+(        coord2hex\( x-cd2, y+sd2, ki, kj, kk,) S
+HL
+(                   1.5*ct_local_PixelWidth_corner_2_corner_half\);) S
+HL
+(        Map_Multiple_Pixel\(ki, kj, n\);) S
+HL
+HL
+(      } else {) S
+HL
+HL
+(        // map also the three small hexagons inside the big one) S
+HL
+HL
+(        coord2hex\( x  , y-d1 , ki, kj, kk,) S
+HL
+(                   1.5*ct_local_PixelWidth_corner_2_corner_half\);) S
+HL
+(        Map_Pixel\(ki, kj, n\);) S
+HL
+(        pixfile << setw\(4\) << n+1) S
+HL
+(                << setw\(4\) << ki << setw\(4\) << kj << setw\(4\) << kk) S
+HL
+(                << setw\(12\) << x << setw\(12\) << y << endl;) S
+HL
+HL
+(        coord2hex\( x+cd1, y+sd1, ki, kj, kk,) S
+HL
+(                   1.5*ct_local_PixelWidth_corner_2_corner_half\);) S
+HL
+(        Map_Pixel\(ki, kj, n\);) S
+HL
+(        pixfile << setw\(4\) << n+1) S
+EndPage
+EndDSCPage
+
+%%Page: 39 39
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 2965 def
+/PageNumber 39 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(                << setw\(4\) << ki << setw\(4\) << kj << setw\(4\) << kk) S
+HL
+(                << setw\(12\) << x << setw\(12\) << y << endl;) S
+HL
+HL
+(        coord2hex\( x-cd1, y+sd1, ki, kj, kk,) S
+HL
+(                   1.5*ct_local_PixelWidth_corner_2_corner_half\);) S
+HL
+(        Map_Pixel\(ki, kj, n\);) S
+HL
+(        pixfile << setw\(4\) << n+1) S
+HL
+(                << setw\(4\) << ki << setw\(4\) << kj << setw\(4\) << kk) S
+HL
+(                << setw\(12\) << x << setw\(12\) << y << endl;) S
+HL
+HL
+(        // map then the pieces of small hexagons shared between big ones) S
+HL
+HL
+(        coord2hex\( x  , y+d2 , ki, kj, kk,) S
+HL
+(                   1.5*ct_local_PixelWidth_corner_2_corner_half\);) S
+HL
+(        Map_Multiple_Pixel\(ki, kj, n\);) S
+HL
+HL
+(        coord2hex\( x-cd2, y-sd2, ki, kj, kk,) S
+HL
+(                   1.5*ct_local_PixelWidth_corner_2_corner_half\);) S
+HL
+(        Map_Multiple_Pixel\(ki, kj, n\);) S
+HL
+HL
+(        coord2hex\( x+cd2, y-sd2, ki, kj, kk,) S
+HL
+(                   1.5*ct_local_PixelWidth_corner_2_corner_half\);) S
+HL
+(        Map_Multiple_Pixel\(ki, kj, n\);) S
+HL
+HL
+(      }) S
+HL
+HL
+(      n++;) S
+HL
+HL
+(    }) S
+HL
+HL
+(  }) S
+HL
+HL
+(  // \(iv\) maping shared hexagons) S
+HL
+(  //------------------------------------------------------------) S
+HL
+HL
+(  log\("create_pixels", "Maping shared hexagons . . .\\n"\);) S
+HL
+HL
+(  pixfile << "#-- shared hexagons section -----------------------\\n";) S
+HL
+HL
+(  for \(i=0; i<PIX_ARRAY_SIDE; i++\) {) S
+HL
+(    for \(j=0; j<PIX_ARRAY_SIDE; j++\) {) S
+HL
+(      n = pixels[i][j];) S
+HL
+(      if \(n<0\)) S
+HL
+(        continue;) S
+HL
+(      if \(n>1000\) {) S
+HL
+(        ki = i-PIX_ARRAY_HALF_SIDE;) S
+HL
+(        kj = j-PIX_ARRAY_HALF_SIDE;) S
+HL
+(        kk = -ki-kj;) S
+HL
+(        pixfile << setw\(10\) << n) S
+HL
+(                << setw\(4\) << ki << setw\(4\) << kj << setw\(4\) << kk) S
+HL
+(                << setw\(2\) << 0. << setw\(2\) << 0. << endl;) S
+HL
+(      } else {) S
+HL
+(        pixary[n][0] = px[n];) S
+HL
+(        pixary[n][1] = py[n];) S
+HL
+(      }) S
+HL
+(    }) S
+HL
+(  }) S
+HL
+HL
+(  pixfile << -1 << "\\n# EOF\\n" << flush;) S
+HL
+HL
+(  pixfile.close\(\);) S
+HL
+HL
+(  log\("create_pixels", "Done.\\n"\);) S
+HL
+(}) S
+HL
+(//}) S
+HL
+HL
+HL
+(//## Direct \(almost\) identification of a pixel.) S
+HL
+HL
+HL
+(//!-----------------------------------------------------------) S
+HL
+(// @name pixel_id) S
+HL
+(//) S
+HL
+(// @desc returns the pixel number \(ID\) of pixel from any point inside) S
+HL
+(//) S
+HL
+(// @var x   Coord.X of point in the camera) S
+HL
+(// @var y   Coord.Y of point in the camera) S
+HL
+(// @return    pixel ID) S
+EndPage
+EndDSCPage
+
+%%Page: 40 40
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 3043 def
+/PageNumber 40 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(//) S
+HL
+(// @date Fri Mar 31 16:32:48 MET DST 2000) S
+HL
+(//------------------------------------------------------------) S
+HL
+(// @function) S
+HL
+HL
+(//{) S
+HL
+(int) S
+HL
+(pixel_id \(float x, float y\)) S
+HL
+({) S
+HL
+(  static int ki, kj, kk;) S
+HL
+(  static int n;) S
+HL
+(  static int j;) S
+HL
+(  static int p[3];) S
+HL
+HL
+(  static float a = ct_PixelWidth_corner_2_corner;) S
+HL
+(  static float b = ct_PixelWidth;) S
+HL
+(  static float c = 1. - 1./sqrt\(3.\);) S
+HL
+(  static float xx, yy;) S
+HL
+(  static float unit=1.5*ct_PixelWidth_corner_2_corner_half;) S
+HL
+HL
+(  coord2hex\( x, y, ki, kj, kk, unit \);) S
+HL
+HL
+(  n = -1;) S
+HL
+HL
+(  ki += PIX_ARRAY_HALF_SIDE;) S
+HL
+(  kj += PIX_ARRAY_HALF_SIDE;) S
+HL
+HL
+(  if \(\(ki<0\) || \(ki>=PIX_ARRAY_SIDE\) ||) S
+HL
+(      \(kj<0\) || \(kj>=PIX_ARRAY_SIDE\)\)) S
+HL
+(    return n; // -1) S
+HL
+HL
+(  n = pixels[ki][kj];) S
+HL
+HL
+(  // we can have now 3 cases:) S
+HL
+(  // a\) n==1) S
+HL
+(  //  the position \(x,y\) is outside any pixel) S
+HL
+(  //  the identification is direct) S
+HL
+(  // b\) n in [0,max_num_pixel\)) S
+HL
+(  //  the position \(x,y\) belongs to pixel n;) S
+HL
+(  //  the identification is direct) S
+HL
+(  // c\) n > 1000) S
+HL
+(  //  the number n is in the form AAABBBCCC, where AAA, BBB) S
+HL
+(  //  and CCC are pixel IDs; we must test these three pixels) S
+HL
+(  //  the identification is more difficult) S
+HL
+(  //  this happens \(under assumption of uniform light in the) S
+HL
+(  //  camera\) about 10% of the times.) S
+HL
+HL
+(  // if n>1000  ==> this small hexagon belongs to more than) S
+HL
+(  //        one pixel \(at least to one big pixel\)) S
+HL
+(  if \(n > 1000\) {) S
+HL
+HL
+(    // identify the pixels where to look at) S
+HL
+(    p[2] = n % 1000;) S
+HL
+(    n /=1000;) S
+HL
+(    p[1] = n % 1000;) S
+HL
+(    n /=1000;) S
+HL
+(    p[0] = n;) S
+HL
+HL
+(    // look at each of those pixels) S
+HL
+(    n = -1;) S
+HL
+(    for \(j=0; j<3; j++\) {) S
+HL
+HL
+(      if \(p[j] > 0\) {) S
+HL
+(        xx = x - pixary[ p[j] ][0];) S
+HL
+(        yy = y - pixary[ p[j] ][1];) S
+HL
+HL
+(        // look whether position \(xx,yy\) is inside a big hexagon) S
+HL
+(        if \(\(\(-b <= xx\) && \(xx <= 0.\)) S
+HL
+(             && \(\(-c * xx - a\) <= yy\) && \(yy <= \( c * xx + a\)\)\) ||) S
+HL
+(            \(\(0. <  xx\) && \(xx <= b \)) S
+HL
+(             && \(\( c * xx - a\) <= yy\) && \(yy <= \(-c * xx + a\)\)\) \) {) S
+HL
+(          n = p[j];) S
+HL
+(          break;) S
+HL
+(        }) S
+HL
+HL
+(      }) S
+HL
+HL
+(    }) S
+EndPage
+EndDSCPage
+
+%%Page: 41 41
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 3121 def
+/PageNumber 41 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+HL
+(  }) S
+HL
+HL
+(  return n;  // if n==-1  ==> outside any pixel) S
+HL
+(}) S
+HL
+(//}) S
+HL
+HL
+HL
+(//## Utility functions.) S
+HL
+HL
+HL
+(//!-----------------------------------------------------------) S
+HL
+(// @name pixels_are_neig) S
+HL
+(//) S
+HL
+(// @desc check whether two pixels are neighbours) S
+HL
+(//) S
+HL
+(// @var pix1    Number of the first pixel) S
+HL
+(// @var pix2    Number of the second pixel) S
+HL
+(// @return    TRUE: both pixels are neighbours; FALSE: oth.) S
+HL
+(//) S
+HL
+(// @date Wed Sep  9 17:58:37 MET DST 1998) S
+HL
+(//------------------------------------------------------------) S
+HL
+(// @function) S
+HL
+HL
+(//{) S
+HL
+(static bool) S
+HL
+(pixels_are_neig\(int pix1, int pix2\)) S
+HL
+({) S
+HL
+(  if \( sqrt\(sqr\( pixary[pix1][0] - pixary[pix2][0] \) +) S
+HL
+(            sqr\( pixary[pix1][1] - pixary[pix2][1] \) \)) S
+HL
+(       > ct_PixelWidth_corner_2_corner \)) S
+HL
+(    return \( false \);) S
+HL
+(  else) S
+HL
+(    return \( true \);) S
+HL
+(}) S
+HL
+(//}) S
+HL
+HL
+HL
+(//!-----------------------------------------------------------) S
+HL
+(// @name pixel_bit_mask) S
+HL
+(//) S
+HL
+(// @desc calculates the bit mask for a given pixel) S
+HL
+(//) S
+HL
+(// @var i     Number of the pixel) S
+HL
+(// @var q0    Threshold in num.ph.e-s per pixel) S
+HL
+(// @var d     Pointer to the array of discriminator histograms) S
+HL
+(// @var b     Bin in time where we look for coincidences) S
+HL
+(//) S
+HL
+(// @return    Bit mask in the form of an integer) S
+HL
+(//) S
+HL
+(// @date Wed Jan 19 14:06:52 MET 2000) S
+HL
+(//------------------------------------------------------------) S
+HL
+(// @function) S
+HL
+HL
+(//{) S
+HL
+(static int) S
+HL
+(pixel_bit_mask\(int i, float q0\)) S
+HL
+({) S
+HL
+(  static int triggerBits;) S
+HL
+(  static int bit;) S
+HL
+HL
+(  register int j;) S
+HL
+HL
+(  triggerBits = \(fnpix[i] >= q0\) ? 1 : 0;) S
+HL
+(  ) S
+HL
+(  for \( j=0 ; j<npixneig[i] && pixneig[i][j]>-1; ++j \) {) S
+HL
+(    ) S
+HL
+(    if \( fnpix[pixneig[i][j]] >= q0 \) {) S
+HL
+(      ) S
+HL
+(      if \( pixary[pixneig[i][j]][0] > pixary[i][0] \) {) S
+HL
+(        ) S
+HL
+(        if \( nint\(pixary[pixneig[i][j]][1]*10.0\) >) S
+HL
+(             nint\(pixary[i][1]*10.0\) \)) S
+HL
+(          bit = 2;) S
+HL
+(        else if \( nint\(pixary[pixneig[i][j]][1]*10.0\) <) S
+HL
+(                  nint\(pixary[i][1]*10.0\) \)) S
+HL
+(          bit = 6;) S
+HL
+(        else ) S
+EndPage
+EndDSCPage
+
+%%Page: 42 42
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 3199 def
+/PageNumber 42 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(          bit = 1;) S
+HL
+(        ) S
+HL
+(      } else {) S
+HL
+(        ) S
+HL
+(        if \( nint\(pixary[pixneig[i][j]][1]*10.0\) >) S
+HL
+(             nint\(pixary[i][1]*10.0\) \)) S
+HL
+(          bit = 3;) S
+HL
+(        else if \( nint\(pixary[pixneig[i][j]][1]*10.0\) <) S
+HL
+(                  nint\(pixary[i][1]*10.0\) \)) S
+HL
+(          bit = 5;) S
+HL
+(        else ) S
+HL
+(          bit = 4;) S
+HL
+(        ) S
+HL
+(      }) S
+HL
+(      ) S
+HL
+(      triggerBits |= \(1<<bit\);) S
+HL
+(      ) S
+HL
+(    }) S
+HL
+(    ) S
+HL
+(  }) S
+HL
+HL
+(  return triggerBits;) S
+HL
+(}) S
+HL
+(//}) S
+HL
+HL
+HL
+(//!-----------------------------------------------------------) S
+HL
+(// @name coord2hex) S
+HL
+(//) S
+HL
+(// @desc returns the coordinates \(i,j,k\) of pixel for point \(cx,cy\)) S
+HL
+(//) S
+HL
+(// @var cx    Coord.X of point in the camera) S
+HL
+(// @var cy    Coord.Y of point in the camera) S
+HL
+(// @var ki    Reference to the x' coordinate i) S
+HL
+(// @var kj    Reference to the y' coordinate j) S
+HL
+(// @var kk    Reference to the z' coordinate k) S
+HL
+(//) S
+HL
+(// @date Fri Mar 31 16:18:33 MET DST 2000) S
+HL
+(//------------------------------------------------------------) S
+HL
+(// @function) S
+HL
+HL
+(//{) S
+HL
+(static void) S
+HL
+(coord2hex \(float cx, float cy, int &ki, int &kj, int &kk,) S
+HL
+(           float unit=1.5*ct_PixelWidth_corner_2_corner_half\)) S
+HL
+({) S
+HL
+(  float dx, dy, dz;) S
+HL
+(  float rx, ry, rz;) S
+HL
+(  float ax, ay, az;) S
+HL
+(  int s;) S
+HL
+HL
+(  xy2ijk \(cx, cy, dx, dy, dz, unit\);) S
+HL
+HL
+(  rx = frint\(dx\);) S
+HL
+(  ry = frint\(dy\);) S
+HL
+(  rz = frint\(dz\);) S
+HL
+HL
+(  ki = int\(rx\);) S
+HL
+(  kj = int\(ry\);) S
+HL
+(  kk = int\(rz\);) S
+HL
+HL
+(  s = ki + kj + kk;) S
+HL
+(  if \(s\) {) S
+HL
+(    ax = fabs\(rx-dx\);) S
+HL
+(    ay = fabs\(ry-dy\);) S
+HL
+(    az = fabs\(rz-dz\);) S
+HL
+HL
+(    if \(\(ax >= ay\) && \(ax >= az\)\) { ki -= s; }) S
+HL
+(    else if \(\(ay >= ax\) && \(ay >= az\)\) { kj -= s; }) S
+HL
+(    else { kk -= s; }) S
+HL
+(  }) S
+HL
+(}) S
+HL
+(//}) S
+HL
+HL
+HL
+(//!-----------------------------------------------------------) S
+HL
+(// @name hex2coord) S
+HL
+(//) S
+EndPage
+EndDSCPage
+
+%%Page: 43 43
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 3277 def
+/PageNumber 43 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(// @desc returns the coordinates \(x,y\) of the center of a pixel \(i,j,k\)) S
+HL
+(//) S
+HL
+(// @var ki    Coord.X' of pixel in the camera) S
+HL
+(// @var kj    Coord.Y' of pixel in the camera) S
+HL
+(// @var kk    Coord.Z' of pixel in the camera) S
+HL
+(// @var cx    Reference to the x coordinate) S
+HL
+(// @var cy    Reference to the y coordinate) S
+HL
+(//) S
+HL
+(// @date Fri Mar 31 16:18:33 MET DST 2000) S
+HL
+(//------------------------------------------------------------) S
+HL
+(// @function) S
+HL
+HL
+(//{) S
+HL
+(static void) S
+HL
+(hex2coord \(int ki, int kj, int kk, float &x, float &y,) S
+HL
+(           float unit = ct_PixelWidth_corner_2_corner_half\)) S
+HL
+({) S
+HL
+(  x = \(ki*COS30 - kj*COS30\) * unit;) S
+HL
+(  y = \(\(ki+kj\)*SIN30 - kk\) * unit;) S
+HL
+(}) S
+HL
+(//}) S
+HL
+HL
+HL
+(//!-----------------------------------------------------------) S
+HL
+(// @name ijk2xy) S
+HL
+(//) S
+HL
+(// @desc returns the coordinates \(x,y\) corresponding to any \(i,j,k\)) S
+HL
+(//) S
+HL
+(// @var ki    Coord.X' of pixel in the camera) S
+HL
+(// @var kj    Coord.Y' of pixel in the camera) S
+HL
+(// @var kk    Coord.Z' of pixel in the camera) S
+HL
+(// @var cx    Reference to the x coordinate) S
+HL
+(// @var cy    Reference to the y coordinate) S
+HL
+(//) S
+HL
+(// @date Fri Mar 31 16:18:33 MET DST 2000) S
+HL
+(//------------------------------------------------------------) S
+HL
+(// @function) S
+HL
+HL
+(//{) S
+HL
+(static void) S
+HL
+(ijk2xy \(float ki, float kj, float kk, float &x, float &y,) S
+HL
+(        float unit = ct_PixelWidth_corner_2_corner_half\)) S
+HL
+({) S
+HL
+(  x = \(ki*COS30 - kj*COS30\) * unit;) S
+HL
+(  y = \(\(ki+kj\)*SIN30 - kk\) * unit;) S
+HL
+(}) S
+HL
+(//}) S
+HL
+HL
+HL
+(//!-----------------------------------------------------------) S
+HL
+(// @name xy2ijk) S
+HL
+(//) S
+HL
+(// @desc returns the coordinates \(x,y\) corresponding to any \(x,y\)) S
+HL
+(//) S
+HL
+(// @var cx    Coord.X of point in the camera) S
+HL
+(// @var cy    Coord.Y of point in the camera) S
+HL
+(// @var di    Reference to the x' coordinate i) S
+HL
+(// @var dj    Reference to the y' coordinate j) S
+HL
+(// @var dk    Reference to the z' coordinate k) S
+HL
+(//) S
+HL
+(// @date Fri Mar 31 16:18:33 MET DST 2000) S
+HL
+(//------------------------------------------------------------) S
+HL
+(// @function) S
+HL
+HL
+(//{) S
+HL
+(static void) S
+HL
+(xy2ijk \(float cx, float cy, float &di, float &dj, float &dk,) S
+HL
+(        float unit = 1.5*ct_PixelWidth_corner_2_corner_half\)) S
+HL
+({) S
+HL
+(  float x, y;) S
+HL
+HL
+(  x = \(  cx*COS30 + cy*SIN30\);) S
+HL
+(  y = \(- cx*SIN30 + cy*COS30\);) S
+HL
+HL
+(  di = x / unit;) S
+HL
+(  dj = \(- x*SIN30 + y*COS30\) / unit;) S
+HL
+(  dk = \(- x*SIN30 - y*COS30\) / unit;) S
+HL
+(}) S
+EndPage
+EndDSCPage
+
+%%Page: 44 44
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 3355 def
+/PageNumber 44 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(//}) S
+HL
+HL
+HL
+(//!-----------------------------------------------------------) S
+HL
+(// @name create_sps) S
+HL
+(//) S
+HL
+(// @desc creates Single Photoelectron Spectrum curve to use) S
+HL
+(//) S
+HL
+(// @var x  Reference to vector of X of the curve) S
+HL
+(// @var y  Reference to vector of Y of the curve) S
+HL
+(//) S
+HL
+(// @date Fri Mar 31 16:18:33 MET DST 2000) S
+HL
+(//------------------------------------------------------------) S
+HL
+(// @function) S
+HL
+HL
+(//{) S
+HL
+(void) S
+HL
+(create_sps \(float* & x, float* & y, float mymean\)) S
+HL
+({) S
+HL
+(  int i;) S
+HL
+(  float mx;) S
+HL
+(  float ssps = 0.;  // sum of original Single Phe Spectrum data) S
+HL
+(  float sspsx = 0.; // sum of X times original Single Phe Spectrum data) S
+HL
+HL
+(  log\("create_sps", "Creating Single Photoelectron Spectrum. . .\\n"\);) S
+HL
+HL
+(  x = new float [ nSinglePheSpectrum ];) S
+HL
+(  y = new float [ nSinglePheSpectrum ];) S
+HL
+HL
+(  // calculate mean in X value) S
+HL
+(  ssps = sspsx = 0.;) S
+HL
+(  for \(i=0; i<nSinglePheSpectrum; i++\) {) S
+HL
+(    x[i] = \(i+0.5\);) S
+HL
+(    ssps  += SinglePheSpectrum[i];) S
+HL
+(    sspsx += SinglePheSpectrum[i] * x[i];) S
+HL
+(  }) S
+HL
+HL
+(  mx = sspsx / ssps;) S
+HL
+HL
+(  // correct X values to require user provided mean sps_Mean) S
+HL
+(  sspsx = 0.;) S
+HL
+(  for \(i=0; i<nSinglePheSpectrum; i++\) {) S
+HL
+(    x[i] = x[i] * mymean / mx;) S
+HL
+(    sspsx += SinglePheSpectrum[i] * x[i];) S
+HL
+(  }) S
+HL
+HL
+(  mx = sspsx / ssps;) S
+HL
+HL
+(  if \(fabs\(1.0-mymean/mx\)>1.0e-4\)) S
+HL
+(    error\("create_sps", "Required sps_Mean \(%f\) != calculated one \(%f\).\\n",) S
+HL
+(          mymean, mx\);) S
+HL
+HL
+(  // normalize histogram to have probabilities \(integral == 1\)) S
+HL
+(  for \(i=0; i<nSinglePheSpectrum; i++\) {) S
+HL
+(    y[i] = SinglePheSpectrum[i] / ssps;) S
+HL
+(  }) S
+HL
+HL
+(  // dump everything to a file) S
+HL
+(  log\("create_sps", "Creating the file \\"%s\\" . . .\\n", SINGLE_PHE_SPEC_FILE\);) S
+HL
+HL
+(  // open new file) S
+HL
+(  ofstream spsfile;) S
+HL
+(  spsfile.open\( SINGLE_PHE_SPEC_FILE \);) S
+HL
+HL
+(  // write header) S
+HL
+(  spsfile << "#--------------------------------------------------\\n";) S
+HL
+(  spsfile << "# " << SINGLE_PHE_SPEC_FILE) S
+HL
+(          << " -- single photoelectron spectrum file\\n";) S
+HL
+(  spsfile << "#\\n";) S
+HL
+(  spsfile << "# Kopyleft \(K\) 2000 J C Gonzalez\\n";) S
+HL
+(  spsfile << "# Automatically generated by camera program\\n";) S
+HL
+(  spsfile << "#--------------------------------------------------\\n#\\n";) S
+HL
+HL
+(  // dump data) S
+HL
+(  for \(i=0; i<nSinglePheSpectrum; i++\)) S
+HL
+(    spsfile << setw\(12\) << x[i] << setw\(12\) << y[i] << endl;) S
+HL
+HL
+(  // close file) S
+EndPage
+EndDSCPage
+
+%%Page: 45 45
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 3433 def
+/PageNumber 45 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(  spsfile.close\(\);) S
+HL
+HL
+(  log\("create_sps", "Done.\\n"\);) S
+HL
+(}) S
+HL
+(//}) S
+HL
+HL
+HL
+(//!-----------------------------------------------------------) S
+HL
+(// @name add_phe_signal) S
+HL
+(//) S
+HL
+(// @desc adds single ph.e. signal to time histograms) S
+HL
+(//) S
+HL
+(// @var t  time of this ph.e. \(center of the signal\)) S
+HL
+(// @var h  pointer to histogram) S
+HL
+(// @var htot   pointer to histogram of the whole shower) S
+HL
+(// @var sX   vector of X in single ph.e. spectrum) S
+HL
+(// @var sY   vector of Y in single ph.e. spectrum) S
+HL
+(//) S
+HL
+(// @date Fri Mar 31 16:18:33 MET DST 2000) S
+HL
+(//------------------------------------------------------------) S
+HL
+(// @function) S
+HL
+HL
+(//{) S
+HL
+(static float) S
+HL
+(add_phe_signal \(float *sX, float *sY, float sigma, float amplitude_factor\)) S
+HL
+({) S
+HL
+(  static bool first = true;) S
+HL
+(  static const int number_of_sigmas = 4;) S
+HL
+(  static float *x;) S
+HL
+(  static float *y;) S
+HL
+(  static int nbins;) S
+HL
+(  static float *xtot;) S
+HL
+(  static float *ytot;) S
+HL
+(  static int nbinstot;) S
+HL
+(  static float maxY;) S
+HL
+(  static float aX;) S
+HL
+(  static float bX;) S
+HL
+(  static float binX;) S
+HL
+HL
+(  static float amplitude;  // amplitude of the signal) S
+HL
+HL
+(  register int i;) S
+HL
+HL
+(  // if this is the first time, create arrays) S
+HL
+(  if \( first \) {) S
+HL
+HL
+(    float binsize = .5;) S
+HL
+(    nbins = int\(ceil\(sigma * number_of_sigmas / binsize\)\);) S
+HL
+(    x = new float [ 2 * nbins + 1 ];) S
+HL
+(    y = new float [ 2 * nbins + 1 ];) S
+HL
+HL
+(    float binsizetot = .2;) S
+HL
+(    nbinstot = int\(ceil\(sigma * number_of_sigmas / binsizetot\)\);) S
+HL
+(    xtot = new float [ 2 * nbinstot + 1 ];) S
+HL
+(    ytot = new float [ 2 * nbinstot + 1 ];) S
+HL
+HL
+(    for \(i=-nbins; i<=nbins; i++\)) S
+HL
+(      x[i+nbins] = i*binsize;) S
+HL
+HL
+(    for \(i=-nbinstot; i<=nbinstot; i++\)) S
+HL
+(      xtot[i+nbins] = i*binsizetot;) S
+HL
+HL
+(    for \(i=0; i<2*nbins+1; i++\)) S
+HL
+(      y[i] = exp\(-sqr\(x[i]\)/\(2*sqr\(sigma\)\)\)/\(sqrt\(2.*M_PI\)*sigma\);) S
+HL
+HL
+(    for \(i=0; i<2*nbinstot+1; i++\)) S
+HL
+(      ytot[i] = exp\(-sqr\(xtot[i]\)/\(2*sqr\(sigma\)\)\)/\(sqrt\(2.*M_PI\)*sigma\);) S
+HL
+HL
+(    maxY = 0.;) S
+HL
+(    for \(i=0; i<nSinglePheSpectrum; i++\)) S
+HL
+(      if \(sY[i] > maxY\) maxY = sY[i];) S
+HL
+HL
+(    binX = \(\(sX[nSinglePheSpectrum-1] - sX[0]\) /) S
+HL
+(            float\(nSinglePheSpectrum - 1\)\);) S
+HL
+(    aX = sX[0] - binX*0.5;) S
+HL
+(    bX = sX[nSinglePheSpectrum-1] + binX*0.5;) S
+HL
+HL
+(    first = false;) S
+EndPage
+EndDSCPage
+
+%%Page: 46 46
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 3511 def
+/PageNumber 46 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(  }) S
+HL
+HL
+(#ifdef __DEBUG__) S
+HL
+(  cerr << aX << ' ' << bX << ' ' << binX << endl;) S
+HL
+(#endif // __DEBUG__) S
+HL
+HL
+(  // get amplitude) S
+HL
+(  amplitude = random_von_neumann\( sX, sY, nSinglePheSpectrum,) S
+HL
+(                                  maxY, aX, bX \);) S
+HL
+(  amplitude *= amplitude_factor;) S
+HL
+HL
+(#ifdef __DEBUG__) S
+HL
+(  cerr << "amplitude of phe signal = " << amplitude << endl;) S
+HL
+(#endif // __DEBUG__) S
+HL
+HL
+(  return \( amplitude \);) S
+HL
+(}) S
+HL
+(//}) S
+HL
+HL
+HL
+(//!-----------------------------------------------------------) S
+HL
+(// @name random_von_neumann) S
+HL
+(//) S
+HL
+(// @desc gets a random value out of a frequency histogram) S
+HL
+(//) S
+HL
+(// @var x      x coordinates of the histogram \(center of bin\)) S
+HL
+(// @var y      x coordinates of the histogram \(frequency\)) S
+HL
+(// @var n      number of bins) S
+HL
+(// @var maxy   precalculated maximum of the y values) S
+HL
+(// @var a      lower edge for x values) S
+HL
+(// @var b      upper edge for x values) S
+HL
+(//) S
+HL
+(// @date Fri Mar 31 16:18:33 MET DST 2000) S
+HL
+(//------------------------------------------------------------) S
+HL
+(// @function) S
+HL
+HL
+(//{) S
+HL
+(static float) S
+HL
+(random_von_neumann\( float *x, float *y, int n,) S
+HL
+(                    float maxy, float a, float b \)) S
+HL
+({) S
+HL
+(  static float rx;) S
+HL
+(  static float ry;) S
+HL
+(  static int   ri;) S
+HL
+(  static float rbin;) S
+HL
+HL
+(#ifdef __DEBUG__) S
+HL
+(  cerr << "random_von_neumann: ") S
+HL
+(       << n << ' ' << maxy << ' ' << a << ' ' << b << endl;) S
+HL
+(#endif // __DEBUG__) S
+HL
+HL
+(  rbin = \(b-a\)/n;) S
+HL
+HL
+(  // simplified algorithm \(check!!\)) S
+HL
+(  do {) S
+HL
+(    // generate random values) S
+HL
+(    rx = RandomNumber * \(b-a\) + a;   // random value for x) S
+HL
+(    ry = RandomNumber * maxy;      // random value for y) S
+HL
+(    ri = int\(rx/rbin\);) S
+HL
+(#ifdef __DEBUG__) S
+HL
+(    cerr << "loop: " << rx << ' ' << ry << ' ' << ri << endl;) S
+HL
+(#endif // __DEBUG__) S
+HL
+(  } while \(ry > y[ri]\);) S
+HL
+HL
+(#ifdef __DEBUG__) S
+HL
+(  cerr << ri << ' ' << rx << ' ' << ry << endl;) S
+HL
+(#endif // __DEBUG__) S
+HL
+HL
+(  return rx;) S
+HL
+(}) S
+HL
+(//}) S
+HL
+HL
+HL
+(//!-----------------------------------------------------------) S
+HL
+(// @name read_bin_data) S
+HL
+(//) S
+HL
+(// @desc read binary data from stream) S
+HL
+(//) S
+EndPage
+EndDSCPage
+
+%%Page: 47 47
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 3589 def
+/PageNumber 47 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(// @var pdata  pointer to data) S
+HL
+(// @var bytes  number of bytes to read) S
+HL
+(// @var source   flag to get data from STDIN of from file) S
+HL
+(// @var file   input file stream) S
+HL
+(//) S
+HL
+(// @date Fri Mar 31 16:18:33 MET DST 2000) S
+HL
+(//------------------------------------------------------------) S
+HL
+(// @function) S
+HL
+HL
+(//{) S
+HL
+(static void) S
+HL
+(read_bin_data\( char *pdata, int bytes, int source, ifstream &file \)) S
+HL
+({) S
+HL
+(  if \( source \)) S
+HL
+(    cin.read\( pdata, bytes \);) S
+HL
+(  else) S
+HL
+(    file.read\( pdata, bytes \);) S
+HL
+(}) S
+HL
+(//}) S
+HL
+HL
+HL
+(//=------------------------------------------------------------) S
+HL
+(//## Log of this file.) S
+HL
+HL
+(//{) S
+HL
+(//) S
+HL
+(// $Log$) S
+HL
+(// Revision 1.1.1.1  2000/06/07 21:03:49  gonzalez) S
+HL
+(// camera-simple created from camera-complex) S
+HL
+(//) S
+HL
+(// Revision 1.39  2000/06/06  15:25:22  gonzalez) S
+HL
+(// *** empty log message ***) S
+HL
+(//) S
+HL
+(// Revision 1.38  2000/05/29  16:01:26  gonzalez) S
+HL
+(// *** empty log message ***) S
+HL
+(//) S
+HL
+(// Revision 1.37  2000/03/22  14:15:56  gonzalez) S
+HL
+(// *** empty log message ***) S
+HL
+(//) S
+HL
+(// Revision 1.36  2000/02/20  11:38:38  gonzalez) S
+HL
+(// *** empty log message ***) S
+HL
+(//) S
+HL
+(// Revision 1.35  2000/02/15  10:29:51  gonzalez) S
+HL
+(// *** empty log message ***) S
+HL
+(//) S
+HL
+(// Revision 1.34  2000/02/14  07:58:45  gonzalez) S
+HL
+(// *** empty log message ***) S
+HL
+(//) S
+HL
+(// Revision 1.33  2000/02/12  14:25:54  gonzalez) S
+HL
+(// *** empty log message ***) S
+HL
+(//) S
+HL
+(// Revision 1.32  2000/02/11  19:36:07  gonzalez) S
+HL
+(// *** empty log message ***) S
+HL
+(//) S
+HL
+(// Revision 1.31  2000/02/11  06:47:48  gonzalez) S
+HL
+(// Real camera for MAGIC: test 1) S
+HL
+(//) S
+HL
+(// Revision 1.30  2000/02/10  08:57:42  gonzalez) S
+HL
+(// *** empty log message ***) S
+HL
+(//) S
+HL
+(// Revision 1.29  2000/02/01  16:08:10  gonzalez) S
+HL
+(// Implementation of new pixelization routine.) S
+HL
+(// Tests are still on the way.) S
+HL
+(//) S
+HL
+(// Revision 1.28  2000/01/30  08:13:20  gonzalez) S
+HL
+(// *** empty log message ***) S
+HL
+(//) S
+HL
+(// Revision 1.27  2000/01/28  06:40:21  gonzalez) S
+HL
+(// Time in trigger + trigger patterns working ...) S
+HL
+(//) S
+HL
+(// Revision 1.26  2000/01/27  10:48:50  gonzalez) S
+HL
+(// Trigger patterns + timing seem to work) S
+HL
+(//) S
+HL
+(// Revision 1.25  1999/12/13  14:57:28  gonzalez) S
+HL
+(// pre-navidades 2000) S
+HL
+(//) S
+HL
+(// Revision 1.24  1999/12/03  17:18:08  gonzalez) S
+HL
+(// *** empty log message ***) S
+EndPage
+EndDSCPage
+
+%%Page: 48 48
+/Lines 3708 def
+/PageCount 48 def
+BeginDSCPage
+/LineNumber 3667 def
+/PageNumber 48 def
+/HeaderLinesLeft [
+  [ /h0 (camera.cxx) ]
+  [ /h1 (/usr/users/gonzalez/src/detector/camera-simple/) ]
+] def
+/HeaderLinesRight [
+  [ /h0 /pagenumberstring load ]
+  [ /h1 (Oct 24 2000) ]
+] def
+2 SetHeaderLines
+BeginPage
+/f0 F
+false BG
+0.000 0.000 0.000 FG
+(//) S
+HL
+(// Revision 1.23  1999/11/25  16:41:42  gonzalez) S
+HL
+(// *** empty log message ***) S
+HL
+(//) S
+HL
+(// Revision 1.22  1999/11/25  07:48:15  gonzalez) S
+HL
+(// *** empty log message ***) S
+HL
+(//) S
+HL
+(// Revision 1.21  1999/11/24  18:13:55  gonzalez) S
+HL
+(// *** empty log message ***) S
+HL
+(//) S
+HL
+(// Revision 1.20  1999/11/24  15:59:16  gonzalez) S
+HL
+(// *** empty log message ***) S
+HL
+(//) S
+HL
+(// Revision 1.19  1999/11/24  15:36:19  gonzalez) S
+HL
+(// *** empty log message ***) S
+HL
+(//) S
+HL
+(// Revision 1.18  1999/11/22  21:02:11  gonzalez) S
+HL
+(// *** empty log message ***) S
+HL
+(//) S
+HL
+(// Revision 1.17  1999/11/19  20:52:24  gonzalez) S
+HL
+(// *** empty log message ***) S
+HL
+(//) S
+HL
+(// Revision 1.16  1999/11/17  13:32:04  gonzalez) S
+HL
+(// Nov.1999) S
+HL
+(//) S
+HL
+(// Revision 1.15  1999/10/08  08:00:01  gonzalez) S
+HL
+(// Bug in ISLANDS algorithm fixed) S
+HL
+(//) S
+HL
+(// Revision 1.14  1999/10/05  11:42:34  gonzalez) S
+HL
+(// Sep. 1999) S
+HL
+(//) S
+HL
+(// Revision 1.13  1999/03/15  14:59:05  gonzalez) S
+HL
+(// camera-1_1) S
+HL
+(//) S
+HL
+(// Revision 1.12  1999/03/02  09:56:10  gonzalez) S
+HL
+(// *** empty log message ***) S
+HL
+(//) S
+HL
+(//) S
+HL
+(//}) S
+HL
+HL
+(//=EOF) S
+HL
+EndPage
+EndDSCPage
+
+%%Trailer
+%%Pages: 48
+
+EndDoc
+
+%%EOF

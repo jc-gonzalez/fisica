@@ -1,0 +1,188 @@
+##################################################################
+##
+## Makefile
+##
+## @file        Makefile
+## @title       Simulation of the Reflector & Process of data
+## @author      J C Gonz\'alez
+## @email       gonzalez@mppmu.mpg.de
+##
+## @maintitle
+##_______________________________________________________________
+##
+##  Created: Thu May  7 16:24:22 1998
+##  Author:  Jose Carlos Gonzales
+##  Purpose: Makefile for the compilation of the simulation programs
+##  Notes:   
+##    
+##---------------------------------------------------------------
+## $RCSfile$
+## $Revision$
+## $Author$ 
+## $Date$
+##################################################################
+
+# @T \newpage
+
+# @ code    # this block is not used right now
+#CERNDIR=CERN
+#
+#ROOTLIBS      = -L$(ROOTSYS)/lib -lNew -lBase -lCint -lClib -lCont -lFunc \
+#	-lGraf -lGraf3d -lHist -lHtml -lMatrix -lMeta -lMinuit -lNet \
+#	-lPostscript -lProof -lTree -lUnix -lZip
+#
+#ROOTGLIBS     = -lGpad -lGui -lGX11 -lX3d
+# @ endcode
+
+# @code
+
+MAKEFILE = make-corfilter
+
+INCLUDES      = -I../include \
+		-I../include-util \
+		-I../include-COR \
+		-I../include-MC
+
+# Alpha/OSF with cxx
+
+CXX      = cxx
+#CXX      = g++
+F77      = f77
+
+WARNINGS = -w0
+
+CXXFLAGS = -D__osf__ -D__alpha ${INCLUDES} ${WARNINGS} -g3
+#CXXFLAGS = -D__osf__ -D__alpha -I/usr/include/cxx ${INCLUDES} -Wall -g3
+#CXXFLAGS = -D__osf__ -D__alpha -I/${CERNDIR}/cfortran -g3
+#CXXFLAGS = -D__osf__ -D__alpha -I$(ROOTSYS)/include -g3
+
+FFLAGS   = $(CXXFLAGS)
+
+LD       = cxx
+LDFLAGS  = 
+SOFLAGS  = -Wl,-expect_unresolved,* -call_shared
+
+GLIBS    = $(ROOTLIBS) $(ROOTGLIBS) -lXpm -lX11 -lm -lPW
+FORLIBS = -lUfor -lfor -lutil -lots -lm 
+PAWLIBS = -L/${CERNDIR}/pro/lib/ \
+	-lgraflib -lgrafX11 -lpacklib -lkernlib -lpawlib
+
+LIBS     = -L../lib -lranlib -lm
+#LIBS     = $(ROOTLIBS) -L../lib -L./ -lranlib -lm
+
+DOCUM = ../sus/sus
+
+#------------------------------------------------------------------------------
+
+.SILENT:
+
+.SUFFIXES: .c .cxx .C .c++ .h .hxx .H .h++ .o .so .f
+
+SRCS = \
+	../include-COR/COREventHeader.cxx \
+	../include-COR/CORParticle.cxx \
+	../include-COR/CORStatfile.cxx \
+	corfilter.cxx      
+
+HEADERS = \
+	COREventHeader.hxx \
+	CORParticle.hxx \
+	CORStatfile.hxx \
+	corfilter.h
+
+OBJS = \
+	../include-COR/COREventHeader.o \
+	../include-COR/CORParticle.o \
+	../include-COR/CORStatfile.o \
+	corfilter.o      
+
+############################################################
+
+all: corfilter
+
+depend:
+	@makedepend $(SRCS) -f$(MAKEFILE) 2> /dev/null
+
+corfilter-doc: 
+	@echo "Generating documentation for corfilter . . . "
+	$(DOCUM) \
+	corfilter.cxx corfilter.h \
+	../include-COR/COREventHeader.hxx ../include-COR/COREventHeader.cxx \
+	../include-COR/CORParticle.hxx    ../include-COR/CORParticle.cxx  \
+	../include-COR/CORStatfile.hxx    ../include-COR/CORStatfile.cxx  \
+	../include-util/jcmacros.h ../include-util/jcdebug.h > corfilter.tex
+	latex corfilter.tex && latex corfilter.tex
+	@echo "Files corfilter.tex and corfilter.dvi generated."
+
+corfilter: $(OBJS)
+	@echo "Linking..." $(OBJS) 
+	$(CXX) $(CXXFLAGS) $(OBJS) $(LIBS) -o $@
+	@echo "done."
+
+.cxx.o:	
+	@echo "Compiling " $<
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+.f.o:	
+	@echo "Compiling " $<
+	$(F77) $(FFLAGS) -c $< -o $@
+
+lclean:
+	@echo "Cleanning..."
+	@rm -f *.o core 
+
+clean:
+	@echo "Cleanning..."
+	@rm -f $(OBJS) core 
+
+mrproper: clean
+	@echo "Mr.Proper in action . . ."
+	@rm -f $(PROGRAM)
+
+ctags:
+	@echo "Creating CTAGS file . . ."
+	@ctags -txw $(SRCS) $(HEADERS) > CTAGS
+
+etags:
+	@echo "Creating TAGS file . . ."
+	@/usr/local/bin/etags -C $(SRCS) $(HEADERS)
+
+listsrc:
+	@ls -m $(SRCS) $(HEADERS) | sed 's/,//g'
+
+redo: clean all
+
+# @endcode
+
+# DO NOT DELETE THIS LINE -- make depend depends on it.
+
+../include-COR/COREventHeader.o: ../include-COR/COREventHeader.hxx
+../include-COR/COREventHeader.o: /usr/include/stdlib.h
+../include-COR/COREventHeader.o: /usr/include/standards.h
+../include-COR/COREventHeader.o: /usr/include/getopt.h
+../include-COR/COREventHeader.o: /usr/include/sys/types.h
+../include-COR/COREventHeader.o: /usr/include/mach/machine/vm_types.h
+../include-COR/COREventHeader.o: /usr/include/sys/select.h
+../include-COR/COREventHeader.o: /usr/include/math.h
+../include-COR/CORParticle.o: ../include-COR/CORParticle.hxx
+../include-COR/CORParticle.o: /usr/include/stdlib.h /usr/include/standards.h
+../include-COR/CORParticle.o: /usr/include/getopt.h /usr/include/sys/types.h
+../include-COR/CORParticle.o: /usr/include/mach/machine/vm_types.h
+../include-COR/CORParticle.o: /usr/include/sys/select.h /usr/include/math.h
+../include-COR/CORStatfile.o: ../include-COR/CORStatfile.hxx
+../include-COR/CORStatfile.o: /usr/include/stdlib.h /usr/include/standards.h
+../include-COR/CORStatfile.o: /usr/include/getopt.h /usr/include/sys/types.h
+../include-COR/CORStatfile.o: /usr/include/mach/machine/vm_types.h
+../include-COR/CORStatfile.o: /usr/include/sys/select.h /usr/include/math.h
+corfilter.o: corfilter.h /usr/include/stdlib.h /usr/include/standards.h
+corfilter.o: /usr/include/getopt.h /usr/include/sys/types.h
+corfilter.o: /usr/include/mach/machine/vm_types.h /usr/include/sys/select.h
+corfilter.o: /usr/include/stdio.h /usr/include/sys/seek.h
+corfilter.o: /usr/include/va_list.h /usr/include/sys/limits.h
+corfilter.o: /usr/include/sys/machine/machlimits.h
+corfilter.o: /usr/include/sys/syslimits.h /usr/include/sys/machine/machtime.h
+corfilter.o: /usr/include/sys/rt_limits.h /usr/include/string.h
+corfilter.o: /usr/include/strings.h /usr/include/stdarg.h /usr/include/math.h
+corfilter.o: /usr/include/unistd.h /usr/include/sys/access.h
+corfilter.o: ../include-COR/COREventHeader.hxx ../include-COR/CORParticle.hxx
+corfilter.o: ../include-COR/CORStatfile.hxx

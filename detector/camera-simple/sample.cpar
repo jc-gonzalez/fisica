@@ -1,0 +1,41 @@
+camera 0.2                        
+#
+input_file    ./test/had-run350-test.rfl
+output_file   ./test/had-run350-test.phe
+data_file     ./test/had-run350-test.dat
+hbook_file    ./test/had-run350-test.hbook
+#
+#read_phe
+#read_phe_all
+#
+ct_file       magic.definition
+#
+ana_pixels    595
+#
+#nsb_mean      1.01
+#nsb_on
+nsb_off
+#
+islands_off
+#
+write_all_images
+write_all_data
+#
+seeds   10324 4324
+#
+threshold          7.0   # q0 = X phe / dt_phisto 
+#
+tail_cut           0
+#
+trigger_radius     0.8
+trigger_pattern   4pix_NN
+#
+sps_mean     1.0  # mean = 1.0 phe
+sps_fwhm     1.0  # fwhm = 1.0 phe
+#
+end_file
+#
+# Local Variables:
+# mode:sh
+# End:
+#EOF

@@ -1,0 +1,17 @@
+
+NEWS 
+=====
+
+This package still uses HBOOK (from the CERNLIB library) for
+its banking data output. There is a version in preparation for
+using ROOT as native output format.
+
+Since the last version 1.0 there has been minor improvements. 
+Nevertheless, they are a lot. I have really not time to write it 
+down here now, but one of these days I will try to write a full 
+documented list of the changes, upgrades, ...
+
+May be some others should do it. May be some others are doing 
+it now. Good luck!
+
+J C Gonzalez

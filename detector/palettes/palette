@@ -1,0 +1,5 @@
+#!/bin/sh
+file=$1
+file2=`basename $1 .zeb`.pal
+awk -f ./palette.awk $file > $file2
+echo "$file2 created."

@@ -1,0 +1,12 @@
+#!/bin/sh
+
+pth="../include-COR"
+for i in EventHeader Particle Statfile; do
+    lista="$lista -H $pth/COR$i.hxx -C++ $pth/COR$i.cxx"
+done
+ 
+lista="$lista -I../include-util -I../include"
+ 
+/usr/local/cint/makecint -mk makecint \
+$lista \
+-o splitter-cint

@@ -1,0 +1,1547 @@
+#!/usr/bin/perl -w
+#######################################################################
+#
+# SuS
+#
+# Program to generated a commented, LaTeX version of 
+# a source code.
+#
+# Copyright (C) 1998 J C Gonzalez
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+#
+#----------------------------------------------------------------------
+#
+#  Created: Thu May  7 16:24:22 1998
+#  Author:  Jose Carlos Gonzalez
+#  Purpose: Perl program to get documentation out of comments
+#           in source codes
+#  Notes:   Generates a commented, LaTeX version of the code
+#    
+#----------------------------------------------------------------------
+# $RCSfile$
+# $Revision$
+# $Author$ 
+# $Date$
+
+#######################################################################
+#
+# Notes:  Documentation still to come...
+#
+#######################################################################
+
+#######################################################################
+# 
+# SuS version 0.52
+# Copyleft [c] 1998, 1999  J.C. Gonzalez <gonzalez@mppmu.mpg.de>
+# Max-Planck-Institut fuer Physik, Munchen
+# All rights reserved
+# 
+# Simple script to get pretty-printed or online documented source code
+#
+#
+#######################################################################
+
+require 5.003;
+
+$Program = "SuS";
+$Version = "0.87";
+
+$latex = 1;
+$verbose = 0;
+$extra_verbose = 0;
+
+$disclaimer = '';
+$copyright = '';
+
+$output = 'output.';
+$chgoutput = 0;
+
+while ($_ = $ARGV[0], /^-/) {
+    shift;
+    last if /^--$/;
+    if (/^-latex$/) { $latex = 1; }
+    if (/^-html$/)  { $latex = 0; }
+    if (/^-o$/)     { $output = $ARGV[0]; 
+                      $chgoutput = 1; 
+                      shift; }
+    if (/^-d$/)     { $disclaimer = $ARGV[0];
+                      shift; }
+    if (/^-c$/)     { $copyright = $ARGV[0];
+                      shift; }
+    if (/^-V$/)     { $verbose = 1; $extra_verbose = 1; }
+    if (/^-v$/)     { $verbose = 1; }
+    if (/^-[hH]$/)  { print << "eoh";
+--------------------------------------------------------------
+$Program version $Version
+Kopyleft (K) 1998,1999,2000  J C Gonzalez <gonzalez\@mppmu.mpg.de>
+Max Planck Institute for Physics, Munich
+--------------------------------------------------------------
+Usage::
+
+ $0  [ $_ ] [ -v ] [ -latex | -html ] 
+     [ -o output_file ] [ -d disclaimer_file ] [ -c copyright_file ]
+     file(s) . . .
+
+eoh
+    exit 0;
+}
+
+}
+
+$html = ! $latex;
+
+if ( ! $chgoutput ) {
+    if ( $latex ) { 
+        $output .= 'tex';
+    } else {
+        $output .= 'html';
+    }
+}
+
+#$types  = 'extern|auto|register|static|typedef|struct';
+#$types .= '|union|enum|signed|unsigned|short|long';
+#$types .= '|int|char|float|double|void|volatile|const';
+#$types .= '|inline|friend|bool|virtual|complex';
+#$types .= '|namespace|using';
+#$types .= '|explicit|mutable';
+#$types .= '|export';
+#$types .= '|\*|\*\*|\*\*\*|\*\*\*\*';
+
+$types  = 'extern|auto|register|static|typedef|struct';
+$types .= '|union|enum|signed|unsigned|short|long';
+$types .= '|int|char|float|double|void|volatile|const';
+$types .= '|inline|friend|bool|virtual|complex';
+$types .= '|\*|\*\*|\*\*\*|\*\*\*\*';
+$types .= '|ifstream|ofstream';
+
+$eol = "\n";
+
+$secA = '';
+$secZ = '';
+
+$ssecA = '';
+$ssecZ = '';
+
+$sssecA = '';
+$sssecZ = '';
+
+$ssssecA = '';
+$ssssecZ = '';
+
+$ttA = '';
+$ttZ = '';
+
+$codeA = '';
+$codeZ = '';
+
+$parA = '';
+$parZ = '';
+
+$commA = '';
+$commZ = '';
+
+$clineA = '';
+$clineZ = '';
+
+$eqA = '';
+$eqZ = '';
+
+$eqqA = '';
+$eqqZ = '';
+
+$listiA = '';
+$listiZ = '';
+
+$listeA = '';
+$listeZ = '';
+
+$itemA = '';
+$itemZ = '';
+
+$boldA = '';
+$boldZ = '';
+
+$emphA = '';
+$emphZ = '';
+
+$title = '';
+$author = '';
+$date = '';
+$desc = '';
+$email = '';
+$file = '';
+$app = '';
+
+%DEFS = ();
+%DEFSCOMM = ();
+$ndefs = 0;
+
+%FN = ();
+%FNCOMM = ();
+%FNVAR = ();
+$nfn = 0;
+$fnvar = '';
+
+%VAR = ();
+%VARCOMM = ();
+$return = '';
+$nvar = 0;
+
+$uptitle = 0;
+$cover = 1;
+$typetitle = $uptitle;
+
+%IDXVAR = ();
+%IDXVARTYPE = ();
+%IDXVARKIND = ();
+%IDXVARLINE = ();
+%IDXVARFILE = ();
+$nidxvar = 0;
+
+$thisfilename = '';
+
+$tableofcontents = 0;
+$listoftables = 0;
+$listoffigures = 0;
+
+$floating_around_context = 0;
+$text_context = 1;
+$comment_context = 2;
+$code_context = 3;
+$section_context = 4;
+
+$context = $floating_around_context;
+$chunk_counter = 0;
+$chunk = '';
+%CHUNKS=();
+%CHUNKFILE = ();
+%CONTEXT_STACK=();
+$CONTEXT_COUNTER=0;
+$CONTEXT_CHARS="ft#cs";
+%CONTEXTS=();
+%LINES=();
+$line = 1;
+$i = 0;
+
+$CONTEXT_STACK{$CONTEXT_COUNTER}=$floating_around_context;
+
+$neq = 0;
+$nfloat = 0;
+
+## open the output file
+
+open OUTPUT, "> $output";
+if ( $verbose ) {    
+  print STDERR "-> $output\n";
+}
+
+## First, divide the input in chunks
+
+while (<>) {
+  
+  if (eof) { 
+    close(ARGV); 
+  }
+  
+  $thisfilename = $ARGV;
+  
+  # print STDERR ".o";
+  
+  if ( /^[ ]*\/\/\=(.*?)\n/ ) { 
+    next; 
+  }
+  
+  if ( /(.*)\/\*\"(\#[\#]*(.*))/ ) { # text + heading block starting
+    
+    $chunk .= $1;
+    &save_chunk($chunk_counter, $chunk, $context);
+    
+    $chunk_counter++;
+    &save_chunk($chunk_counter, $2, $section_context);
+
+    &push_context_stack( $text_context );
+    
+    $context = &get_context_stack();
+    
+    $chunk = "";
+    $chunk_counter++;
+    $line = $.;
+    
+  } elsif ( /(.*)\/\*\"(.*)/ ) { # text block starting
+    
+    $chunk .= $1;
+    &save_chunk($chunk_counter, $chunk, $context);
+    
+    &push_context_stack( $text_context );
+    
+    $context = &get_context_stack();
+    
+    $chunk = $2;
+    $chunk_counter++;
+    $line = $.;
+    
+  } elsif ( /(.*)\/\*\'(\#[\#]*(.*))/ ) { # comment + heading block starting
+    
+    $chunk .= $1;
+    &save_chunk($chunk_counter, $chunk, $context);
+    
+    $chunk_counter++;
+    &save_chunk($chunk_counter, $2, $section_context);
+
+    &push_context_stack( $comment_context );
+    
+    $context = &get_context_stack();
+    
+    $chunk = "";
+    $chunk_counter++;
+    $line = $.;
+    
+  } elsif ( /(.*)\/\*\'(.*)/ ) { # comment block starting
+    
+    $chunk .= $1;
+    &save_chunk($chunk_counter, $chunk, $context);
+    
+    &push_context_stack( $comment_context );
+    
+    $context = &get_context_stack();
+    
+    $chunk = $2;
+    $chunk_counter++;
+    $line = $.;
+    
+  } elsif ( /(.*)\/\/\{(.*)/ ) { # code block starting
+    
+    $chunk .= $1;
+    &save_chunk($chunk_counter, $chunk, $context);
+    
+    &push_context_stack( $code_context );
+
+    $context = &get_context_stack();
+
+    $chunk = "";
+    $chunk_counter++;
+    $line = $.;
+    
+  } elsif ( /(.*)\*\*\/(.*)/ ) { # end block
+    
+    $chunk .= $1;
+    &save_chunk($chunk_counter, $chunk, $context);
+    
+    $context = &pop_context_stack();
+
+    $chunk = $2;
+    $chunk_counter++;
+    $line = $.;
+    
+  } elsif ( /(.*)\/\/}(.*)/ ) { # end code block
+  
+    $chunk .= $1;
+    &save_chunk($chunk_counter, $chunk, $context);
+  
+    $context = &pop_context_stack();
+  
+    $chunk = $2;
+    $chunk_counter++;
+    $line = $.;
+  
+  } elsif ( /(.*)\/\/[\"\'] (.*)/ ) { # one-line text
+    
+    $chunk .= $1;
+    &save_chunk($chunk_counter, $chunk, $context);
+    
+    $chunk_counter++;
+    &save_chunk($chunk_counter, $2, $text_context);
+
+    $chunk = "";
+    $chunk_counter++;
+    $line = $.;
+    
+  } elsif ( /(.*)\/\/(\#[\#]* (.*))/ ) { # sectioning commands
+    
+    $chunk .= $1;
+    &save_chunk($chunk_counter, $chunk, $context);
+    
+    $chunk_counter++;
+    &save_chunk($chunk_counter, $2, $section_context);
+
+    $chunk = "";
+    $chunk_counter++;
+    $line = $.;
+    
+  } else { # current context continues
+    
+    $chunk .= $_;
+    
+  }
+
+  if ($verbose) {
+    printf STDERR "%2d (%1s) %10s | %s", $context, 
+                  substr($CONTEXT_CHARS, $context, 1),
+                  "# " x ($CONTEXT_COUNTER + 1), $_;
+  }
+
+}
+
+if ($verbose) {
+  print STDERR "\n\n";
+}
+
+&save_chunk($chunk_counter, $chunk, $context);
+
+## Parse each chunk, and print it 
+
+if ( $html == 1 ) {
+    &declare_HTML;
+} else {
+    &declare_LaTeX;
+}
+
+&prolog;
+
+foreach $i (0..$chunk_counter) {
+  
+  $_ = $CHUNKS{$i};
+  $context = $CONTEXTS{$i};
+  $thisfilename = $CHUNKFILE{$i};
+
+  if ($verbose) {
+    print STDERR "Parsing chunk \# $i . . . " . 
+      "[context=$context " . substr($CONTEXT_CHARS, $context, 1) . "]: \n";
+    print STDERR "(" . $_ . ")\n";
+  }
+
+  next if ( length($_) < 10 ); # kick out spurious/empty chunks
+    
+  if ( $context == $text_context ) {
+    
+    &process_text;
+    
+  } elsif ( $context == $comment_context ) {
+    
+    $line = $LINES{$i} ;
+    &process_text;
+    
+  } elsif ( $context == $code_context ) {
+    
+    $line = $LINES{$i} ;
+    &process_code;
+    
+  } elsif ( $context == $section_context ) {
+    
+    &process_section;
+    
+  } else {
+    
+    &process_floating;
+    
+  }
+
+  print OUTPUT $_;
+
+  if ($verbose) {
+    print STDERR " done.\n";
+  }
+
+}
+
+&do_listavar;
+
+&epilog;
+
+if ( $verbose ) {
+  foreach $i (1..$nidxvar) {
+    print STDERR "[" . $IDXVARTYPE{$i} . "] \t" . $IDXVAR{$i} . $eol;
+  }
+}
+
+## close the output file and exit
+
+close OUTPUT;
+exit 0;
+
+############################################################
+## SUBROUTINES
+############################################################
+
+sub save_chunk {
+  my ($chn, $ch, $cont) = @_;
+  $CHUNKS{$chn} = $ch;
+  $CHUNKFILE{$chn} = $thisfilename;
+  $CONTEXTS{$chn} = $cont;
+  $LINES{$chn} = $line + 1;
+  if ($extra_verbose) {
+    print STDERR "%% chunk $chn\[$cont\] " . '%' x 40 . $eol;
+    print STDERR $ch;
+    print STDERR "%% end of chunk $chn\[$cont\] " . '%' x 33 . $eol;
+  }
+}
+
+sub push_context_stack {
+  my ($cont) = @_;
+  $CONTEXT_COUNTER++;
+  $CONTEXT_STACK{$CONTEXT_COUNTER} = $cont;
+}
+
+sub pop_context_stack {
+  $CONTEXT_COUNTER--;
+  $cont = $CONTEXT_STACK{$CONTEXT_COUNTER};
+  return $cont 
+}
+
+sub get_context_stack {
+  $cont = $CONTEXT_STACK{$CONTEXT_COUNTER};
+  return $cont 
+}
+
+sub process_text {
+
+    &special_chars if ( $context == $text_context );
+    &special_chars if ( $context == $comment_context );
+
+    &lists if ( /\@(itemize|enumerate)/s );
+
+    if ( $context == $comment_context ) {
+      $_ = $commA . $_ . $commZ;
+    } else {
+      $_ = $parA . $_ . $parZ;
+    }
+
+    s/\|(.*?)\|/$ttA$1$ttZ/gs;
+    s/\|(.*?)\|/$ttA$1$ttZ/gs;
+    s/\bB\@(.*?)\@/$boldA$1$boldZ/gs;
+    s/\bE\@(.*?)\@/$emphA$1$emphZ/gs;
+
+    if ($latex) {
+        s/\@\((.*?)\@\)/\\footnote\{$1\}/gs;
+    }
+
+    if ( $latex ) {
+        while ( $_ =~ /\@\$(.*?)\@\$/s ) {
+            $eq = $1;
+ 
+            $bak = $_;
+            $_ = $eq;
+            &special_chars_rev;
+            $eq = $_;
+            $_ = $bak;
+
+            $_ =~ s/\@\$(.*?)\@\$/$eqA $eq $eqZ/s;
+        }
+        while ( $_ =~ /\@\[(.*?)\@\]/s ) {
+            $eqq = $1;
+ 
+            $bak = $_;
+            $_ = $eqq;
+            &special_chars_rev;
+            $eqq = $_;
+            $_ = $bak;
+
+            $_ =~ s/\@\[(.*?)\@\]/$eqA $eqq $eqZ/s;
+        }
+        while ( $_ =~ /\@\F(.*?)\@\F/s ) {
+            $float = $1;
+
+            $bak = $_;
+            $_ = $float;
+            &special_chars_rev;
+            $float = $_;
+            $_ = $bak;
+
+            $_ =~ s/\@\F(.*?)\@\F/$float/s;
+        }
+    } else {
+        $b = $_;
+        while ( $b =~ /\@\$(.*?)\@\$/s ) {
+            $eq = $1;
+            $blk = $&;
+            $meq = &makeHTMLeq;
+            $b =~ s/\@\$(.*?)\@\$/$eqA $meq $eqZ/s;
+        }
+        while ( $b =~ /\@\[(.*?)\@\]/s ) {
+            $eq = $1;
+            $blk = $&;
+            $meq = &makeHTMLeq;
+            $b =~ s/\@\[(.*?)\@\]/$eqqA $meq $eqqZ/s;
+        }
+        while ( $b =~ /\@\F(.*?)\@\F/s ) {
+            $float = $1;
+            $blk = $&;
+            $mfloat = &makeHTMLfloat;
+            $b =~ s/\@\F(.*?)\@\F/$eqqA $mfloat $eqqZ/s;
+        }
+        $_ = $b;
+    }
+
+    # ignored blocks in text
+    
+    if ( $latex ) {
+        s/\@ignoreHTML//gs;
+        s/\@endignoreHTML//gs;
+    } else {
+        s/\@ignoreHTML(.*?)\@endignoreHTML//gs;
+    }
+
+    $_;
+}
+
+sub process_code {
+
+    &special_chars;
+    &comments;
+    &lists if ( /\@(itemize|enumerate)/s );
+    &getvars;
+
+    if ( $html ) {
+        $_ = $codeA . $_ . $codeZ;
+    } else {
+        $_ = $codeA . ",firstnumber=" . $line . "]\n" . $_ . $codeZ;
+    }
+    if ( $html ) {
+        s/(\#include\s+)\<(.*)\>/$1&lt;$2&gt;/g;
+    }
+    
+    s/\@\((.*?)\@\)/\\footnote\{$1\}/gs;
+    s/\@\$(.*?)\@\$/$eqA $1 $eqZ/gs;
+    s/\@\[(.*?)\@\]/$eqqA $1 $eqqZ/gs;
+
+    $_;
+}
+
+sub process_section {
+    if ($verbose) {
+      print STDERR $_ . "\n";
+    }
+    &special_chars;
+    s/(\#\#\#\#|\@paragraph)\s+(.*)/\n$ssssecA$2$ssssecZ/g;
+    s/(\#\#\#|\@subsubsection)\s+(.*)/\n$sssecA$2$sssecZ/g;
+    s/(\#\#|\@subsection)\s+(.*)/\n$ssecA$2$ssecZ/g;
+    s/(\#|\@section)\s(.*)/\n$secA$2$secZ/g;
+}    
+
+sub process_floating {  
+
+    $conv = "";
+    &special_chars;
+
+    s/\|(.*?)\|/$ttA$1$ttZ/gs;
+
+    if ( $latex ) {
+        if ( /\@T|\@L/s ) { 
+            $c = $&;
+            s/\n(.*?)$c(.*?)\n/$2\n/g;
+        }        
+        if ( /\@H/s ) { 
+            $c = $&;
+            s/\n(.*?)$c(.*?)\n/\n/g;
+        }        
+    } else {
+        if ( /\@T|\@L/s ) { 
+            $c = $&;
+            s/\n(.*?)$c(.*?)\n/\n/g;
+        }        
+        if ( /\@H/s ) { 
+            $c = $&;
+            s/\n(.*?)$c(.*?)\n/$2\n/g;
+        }        
+    }
+        
+    if ( /\@tableofcontents/s ) { $tableofcontents = 1; }
+    if ( /\@listoftables/s )    { $listoftables = 1; }
+    if ( /\@listoffigures/s )   { $listoffigures = 1; }
+
+    if ( /\@file\s+(.*)\n/ )   { $file = $1 }
+    if ( /\@app\s+(.*)\n/ )    { $app = $1 }
+    if ( /\@title\s+(.*)\n/ )  { $title = $1 }
+    if ( /\@desc\s+(.*)\n/ )   { $desc = $1 }
+    if ( /\@author\s+(.*)\n/ ) { $author = $1 }
+    if ( /\@email\s+(.*)\n/ )  { $email = $1 }
+    if ( /\@name\s+(.*)\n/ )   { $name = $1 }
+    if ( /\@date\s+(.*)\n/ )   { $date = $1 }
+
+    &clear_varlist;
+
+    while ( /\@var[ ]+(\S+)[ ]+(.*)\n/ ) {
+        $nvar++;
+        $VAR{$nvar} = $1;
+        $VARCOMM{$nvar} = $2;
+        s/\@var(.*)\n//;
+    }
+
+    if ( /\@return\s+(.*)\n/ ) { $return = $1; }
+
+    if ( /\@maintitle/ ) {
+        $typetitle = $uptitle;
+        $conv = &do_maintitle;       
+        # print "[[[" . $_ . "]]]";
+        s/(\/\*\!|\/\/\!)(.*)\@maintitle/$conv/sg;
+    }
+
+    if ( /\@coverpage/ ) {
+        $typetitle = $cover;
+        $conv = &do_maintitle;
+        s/(\/\*\!|\/\/\!)(.*)\@coverpage/$conv/sg;
+    }
+
+    if ( /\@function/ ) {
+        $conv = &do_function;
+        s/(\/\*\!|\/\/\!)(.*)\@function/$conv/sg;
+    }
+
+    $_;
+}
+
+sub special_chars {
+    if ( $html == 1) {
+      s/\&/\&amp;/g;
+      s/\</\&lt;/g;
+      s/\>/\&gt;/g;
+    } elsif ( $context != $code_context ) {
+      s/\|(.*?)\|/$ttA$1$ttZ/gs;
+      s/\|/\\\|/g;
+      s/\_/\\\_/g;
+      s/\&/\\\&/g;
+      s/\</\$<\$/g;
+      s/\>/\$>\$/g;
+    }
+}
+
+sub special_chars_rev {
+    if ( $html == 1) {
+      s/\&amp;/\&/g;
+      s/\&lt;/\</g;
+      s/\&gt;/\>/g;
+    } elsif ( $context != $code_context ) {
+      s/\|(.*?)\|/$ttA$1$ttZ/gs;
+      s/\\\_/\_/g;
+      s/\\\&/\&/g;
+      s/\$<\$/\</g;
+      s/\$>\$/\>/g;
+    }
+}
+
+sub comments {
+
+    $str = $_;
+    $newstr = "";
+    
+    while ( $str =~ /(\/\*|\/\/)\![ ]*\@\'(.*?)(\*\/|\/\/[ ]*\@\')/s ) {
+        
+        $matched = $&;
+        $comment = $2;
+        $newstr .= $`;
+        $str = $';
+        
+        $_ = $comment;
+        
+        $comment = &process_text;
+        
+        # print STDERR 'ZZZZ' . $comment . 'ZZZZ' . $eol;
+        
+        $l = ($matched =~ s/\n/\n/g) + 1;
+        # print STDERR "{" . $l . "}\n";
+
+        if ($latex ) {
+            $newstr .= "$codeZ$parA$comment$parZ";
+            $newstr .= "\\addtocounter\{FancyVerbLine\}\{$l\}\n";
+            $newstr .= "$codeA\,firstnumber=last\]";
+        } else {
+            $newstr .= "$codeZ$commA$comment$commZ$codeA";
+        }
+               
+    }
+    
+    if ( $newstr ) {
+        $_ = $newstr . $str;
+    }
+    
+    # commenting preceding code in same line
+    if ( $latex ) {
+        s/(\/\*|\/\/)[ ]*?\@\<(.*?)(\*\/\n|\n)/$clineA$2$clineZ\n/g;
+    } else {
+        s/(\/\*|\/\/)[ ]*?\@\&lt\;(.*?)(\*\/\n|\n)/$clineA$2$clineZ\n/g;
+    }
+
+    $blk = $_;
+
+    while ($blk =~ /(?:\/\*|\/\/)(.*?)(\@\:[ ]*)(.*?)(?:\*\/\n|\n)(.*?)\n/s) {
+        $ndefs++;
+        $DEFS{$ndefs} = $4;
+        $DEFSCOMM{$ndefs} = $3;
+        if ( $verbose ) {
+            print STDERR "DEFS:: $ndefs, $DEFS{$ndefs}, $DEFSCOMM{$ndefs}\n";
+        }
+        $blk = $';
+    }
+
+    $_;
+}
+
+sub getvars {
+
+    $oldstr = $_;
+    $str = $_;
+    $newstr = "";
+
+    while ( $str =~ /\b($types)\b\s+/s ) {
+
+        $vt = $1;
+        $str = $';
+        $newstr .= $` . $&;
+
+        while ( $str =~ /^\b($types)\b\s+/s) {
+            $vt .= " " . $1;
+            $str = $';
+            $newstr .= $&;
+        }
+
+        # print STDERR ">>> $str"; 
+
+        while ( $str =~ /^(?!$types)\b(\w+)\b(.*?)[ ,;\(]+/ ) {
+
+            $v = $1;
+            $str = $';
+            $matched = $&;
+
+            if ( $verbose ) {
+                print STDERR $vt . ' => ' . $v . $eol;
+            }
+
+            if ( $oldstr =~ /\b$v\s*\((.*?)\)/ ) {
+                $t = "f";
+            } else {
+                $t = "v";
+            }
+
+            $l = ($newstr =~ s/\n/\n/g);
+
+            $nidxvar++;
+
+            $IDXVAR{$nidxvar} = $v;
+            if ( $latex ) {
+                $IDXVARTYPE{$nidxvar} = $vt;
+                $IDXVARTYPE{$nidxvar} =~ s/\*/\\\*/g;
+            } else {
+                $IDXVARTYPE{$nidxvar} = $vt;
+            }
+            $IDXVARKIND{$nidxvar} = $t;
+            $IDXVARLINE{$nidxvar} = $line + $l;
+            $IDXVARFILE{$nidxvar} = $thisfilename;
+
+            if ( $latex ) {
+                $v =~ s/_/\\_/g;;
+                $vt =~ s/_/\\_/g;;
+                $newstr .= $matched . "\index\$v\@$v ($vt:$t$l)";
+            } else {
+                $newstr .= "<A name=var$nidxvar>$matched</a>";
+            }
+
+            # print STDERR ">>> $str"; 
+        }
+        
+
+    }
+
+    $_ = $newstr . $str;
+    #$_;
+
+}
+
+
+sub lists {
+    
+#     $input = $_;
+#     $output = '';
+    
+#     while ( $input =~ /\@(itemize|enumerate)(.*?)\@end(itemize|enumerate)/s ) {
+        
+#         $output .= $`;
+#         $input = $';
+        
+#         $listcls = $1;
+#         $listblk = $2 . '@-';
+        
+#         $outblk = '';
+        
+#         while ( $listblk =~ /\@\-(.*?)\@\-/s ) {
+#             $listblk = '@-' . $';
+#             $outblk .= $itemA . $1 . $itemZ;
+# #            print STDERR "YYY> $1\n";
+#         }
+        
+#         if ( $listcls =~ /itemize/ ) {
+#             $output .= $listiA . $outblk . $listiZ;
+#         } else {
+#             $output .= $listeA . $outblk . $listeZ;
+#         }
+#     }
+    
+#     # print STDERR '{{{{' . $input . '}}}}' . $eol;
+
+#     $_ = $output . $input;
+    
+    /\@(itemize|enumerate)/s;
+    $prelists = $`;
+    /\@(itemize|enumerate)(.*)\@end(itemize|enumerate)/s;
+    $postlists = $';
+    
+    $l = $& . '@-';;
+    
+    $l =~ s/\@itemize/$listiA/gs;
+    $l =~ s/\@enumerate/$listeA/gs;
+    $l =~ s/\@enditemize/$listiZ/gs;
+    $l =~ s/\@endenumerate/$listeZ/gs;
+      
+    while ( $l =~ s/\@-(.*?)\@-/$itemA$1$itemZ\@-/gs ) {};
+
+    chop $l;
+    chop $l;
+
+    $_ = $prelists . $l . $postlists;
+
+}
+
+
+sub prolog {
+
+    if ( $html == 1 ) {
+        
+        print OUTPUT << "eom";
+
+<HTML>
+
+<HEAD>
+<TITLE>Hola</TITLE>
+<LINK REL=STYLESHEET HREF="style.css">
+</HEAD>
+
+<BODY>
+
+eom
+ 
+    } else {
+        
+        print OUTPUT << "eom";
+
+\\documentclass{article}	
+
+\\usepackage{a4wide}
+\\usepackage{fancyvrb}
+\\usepackage{makeidx}
+\\usepackage{amsmath}
+\\usepackage{amssymb}
+\\usepackage{graphicx}
+
+\\makeindex
+\\listfiles
+\\setlength{\\parindent}{0pt}
+
+\\begin{document}
+
+eom
+ 
+    }
+
+}
+
+sub do_maintitle {
+    $mainauthor = $author;
+    $mainemail = $email;
+
+    if ( $html == 1 ) {
+        &do_maintitle_HTML;
+    } else {
+        &do_maintitle_LaTeX;
+    }
+}        
+    
+sub do_maintitle_LaTeX {
+    if ( $typetitle == $cover ) {
+
+        print STDERR "Cover title\n" if ( $verbose );
+        $conv = "
+
+\\thispagestyle{empty}
+
+\\mbox{}
+\\vskip 2cm \\hskip -1.5cm
+\\parbox[c]{15cm}{
+  {\\Huge \\bfseries $title \\\\}
+%
+  \\rule{15cm}{3pt}
+%
+  \\flushright{$desc\\par}
+  \\vskip 13cm
+  \\flushleft{\\Large
+    $author\\\\
+    Last update: $date\\par}
+  \\rule{15cm}{2pt}
+}
+ 
+\\newpage
+\\thispagestyle{empty}
+\\mbox{}
+";
+
+        if ( $disclaimer ne '' ) { 
+            $conv .= "\\input{$disclaimer}";
+        }
+
+        if ( $copyright ne '' ) { 
+            $conv .= "\\vfill\\input{$copyright}";
+        } else {
+            $conv .= "
+\\vfill\\noindent%
+Copyright \$\\copyright\$ $mainauthor (\{\\tt $mainemail\})\\\\
+Last update: $date\\\\
+Printed: \\today\\\\
+\\\\";
+        }
+
+        $conv .= "
+Generated using $Program version $Version 
+(Copyright \$\\copyright\$ 1998, 1999 J.~C.~Gonz\\'alez 
+\{\\tt gonzalez\@mppmu.mpg.de\})
+
+\\newpage
+
+\\title{$title}
+\\author{$author\\\\E-mail: {\\tt $email}}
+\\date{$date}
+\\maketitle
+
+";
+    } else {
+
+        print STDERR "Up-title\n" if ( $verbose );
+        $conv = "
+
+\\thispagestyle{empty}
+
+\\title{$title}
+\\author{$author\\\\E-mail: {\\tt $email}}
+\\date{$date}
+\\maketitle
+
+";
+    }
+}
+
+sub do_maintitle_HTML {
+    $conv = "
+
+<CENTER>
+<P>
+<BR>
+<FONT SIZE=+4>
+<STRONG>$title</STRONG>
+</FONT>
+<BR>
+$author
+<BR>
+ E-mail: <code>$email</code>
+<BR><BR>
+$date
+</P>
+</CENTER>
+
+";
+    if ( $disclaimer ne '' ) { 
+        open DISCLAIMER, "<$disclaimer";
+        undef $/;
+        $conv .= <DISCLAIMER>;         
+        close DISCLAIMER;
+        $/ = "\n";
+    }
+
+    $conv;
+}
+
+sub do_function {
+    if ( $html == 1 ) {
+        &do_function_HTML;
+    } else {
+        &do_function_LaTeX;
+    }
+    &clear_varlist;
+    $nfn++;
+    $FN{$nfn} = $name;
+    $FNCOMM{$nfn} = $desc;
+    $FNVAR{$nfn} = $fnvar;
+    $conv;
+}        
+    
+sub do_function_LaTeX {
+#    $name =~ s/_/\\_/g;
+    $conv = "\n\n\\subsubsection{$name}\n";
+    $conv .= "\\begin\{tabular\}\{\|ll\|\}\n\\hline\n";
+    
+    if ( $name ) { $conv .= "Name:&\\emph\{ $name \}\\\\\n"; }
+    if ( $author ) { $conv .= "Author:& $author \\\\\n"; }
+    if ( $date ) { $conv .= "Date:& $date \\\\\n"; }
+    if ( $desc ) { $conv .= "Description:& $desc \\\\\n"; }
+    if ( $nvar > 0 ) {
+        $fnvar = ' ';
+        $conv .= "Variables:&~\\\\\n"; 
+        foreach $i (1..$nvar) {
+            $v = $VAR{ $i };
+            $vc = $VARCOMM{ $i };
+            $conv .= "\\hfil\\tt $v& $vc\\\\\n";
+            $fnvar .= " $v,"; 
+        }
+        chop $fnvar;
+    }
+    
+    if ( $return ) { $conv .= "Return:& $return\\\\\n"; }
+    $conv .= "\\hline\n\\end\{tabular\}\n\\\\";
+}
+
+sub do_function_HTML {
+    $n = $nfn+1;
+    $conv = "\n<a name=\"fn$n\">";
+    $conv .= "\n<HR>\n<H4>$name</H4>\n<P><BLOCKQUOTE><TABLE BORDER=1>\n";
+    if ( $name ) {$conv .= "<TR><TD>Name:</TD><TD><STRONG>$name</STRONG></TD></TR>\n";}
+    if ( $author ) {$conv .= "<TR><TD>Author:</TD><TD>$author</TD></TR>\n";}
+    if ( $date ) {$conv .= "<TR><TD>Date:</TD><TD>$date</TD></TR>\n";}
+    if ( $desc ) {$conv .= "<TR><TD>Description:</TD><TD>$desc</TD></TR>\n";}
+    if ( $nvar > 0 ) {
+        $fnvar = ' ';
+        $conv .= "<TR VALIGN=TOP><TD>Variables:</TD>\n<TD>\n<DL COMPACT>\n";
+        foreach $i (1..$nvar) {
+            $v = $VAR{ $i };
+            $vc = $VARCOMM{ $i };
+            $conv .= "<DT><code> $v </code></DT><DD> $vc </DD>\n";
+            $fnvar .= " $v,"; 
+        }
+        $conv .= "</DL>\n</TD></TR>";
+        chop $fnvar;
+    }
+    if( $return ) {$conv .= "<TR><TD>Return:</TD><TD>$return</TD></TR>\n"};
+    $conv .= "</TABLE></BLOCKQUOTE></P>\n\n";
+}
+
+sub do_listavar {
+    if ( $html == 1 ) {
+        &do_listavar_HTML;
+    } else {
+        &do_listavar_LaTeX;
+    }
+}
+
+
+sub do_listavar_HTML {}
+sub do_listavar_LaTeX {}
+
+sub clear_fnvar {
+    $title = "";
+    $author = "";
+    $date = "";
+    $desc = "";
+    $email = "";
+    $file = "";
+    $app = "";
+    &clear_varlist;
+}
+
+sub clear_varlist {
+    %VAR = ();
+    %VARCOMM = ();
+    $return = "";
+    $nvar = 0;
+}
+
+sub epilog {
+
+    if ( $html == 1 ) {
+    
+        if ( $nidxvar > 0 ) {
+            print OUTPUT << "eom";
+<HR SIZE=5><H1>List of defined variables &amp; functions</H1>
+<P>
+This list is simply sorted in order of appearance.
+</P>
+<CENTER>
+<TABLE WIDTH=60% BORDER=1>
+eom
+            foreach $i (1..$nidxvar) {
+                print OUTPUT << "eom";
+<TR>
+
+<TD>$IDXVARKIND{$i}:$IDXVARLINE{$i}</TD>
+<TD>\&lt;$IDXVARTYPE{$i}\&gt;</TD>
+<TD><A href="#var$i">$IDXVAR{$i}</A></TD>
+</TR>
+eom
+            }
+            print OUTPUT << "eom";
+</TABLE>
+</CENTER>
+eom
+        }
+
+        $epi = '';
+
+        # list of definitions
+
+        if ( $ndefs > 0 ) {
+            
+            $epi .= '<HR SIZE=5><H1>List of explicit definitions</H1>' . $eol;
+
+            $epi .= '<blockquote><dl>' . $eol;
+            foreach $i (1..$ndefs) {
+                if ( $verbose ) {
+                    print STDERR $DEFS{$i} . ": " . $DEFSCOMM{$i} . $eol;
+                }      
+                $v = $DEFS{$i};
+                $vc = $DEFSCOMM{$i};
+                $epi .= "<dt>$v\n</dt>";
+                $epi .= "<dd>$vc\n</dd>";
+            }
+            $epi .= '</dl></blockquote>' . $eol;
+
+        }
+
+        # list of functions
+        
+        if ( $nfn > 0 ) {
+
+            $epi .= '<HR SIZE=5><H1>List of functions</H1>' . $eol;
+
+            $epi .= '<blockquote><dl>' . $eol;
+            foreach $i (1..$nfn) {
+                if ( $verbose ) {
+                    print STDERR $FN{$i} . ": " . $FNCOMM{$i} . $eol;
+                }
+                $v = $FN{$i};
+                $w = $FNVAR{$i};
+                $epi .= "<dt><a href=\"\#fn$i\">$v<\/a> ($w )\n</dt>";
+                $epi .= "<dd>$FNCOMM{$i}\n</dd>";
+            }
+            $epi .= '</dl></blockquote>' . $eol;
+            
+        }
+
+        # closing
+
+        print OUTPUT << "eom";
+$epi
+
+<HR SIZE=5>
+
+</ADDRESS>
+Copyright \&copy; $mainauthor \&lt;$mainemail\&gt;<BR>
+Last update: $date<BR>
+<font size=-1>Generated using $Program version $Version<br> 
+(Copyright \&copy; 1998, 1999  J. C. Gonz&aacute;lez 
+&lt;gonzalez\@mppmu.mpg.de&gt;)
+</font>
+</ADDRESS>
+
+</BODY>
+
+</HTML>
+
+eom
+ 
+    } else {
+
+        $epi = "";
+ 
+        # list of variables
+
+        if ( $nidxvar > 0 ) {
+
+            $epi .= '\newpage' . $eol;
+            $epi .= '\section{List of defined variables \& functions}' . $eol;
+            $epi .= 'Sorted in order of definition.\par' . $eol;
+            
+            $epi .= "\\begin{tabbing}" . $eol;
+            $epi .= "\\hspace{6cm} \\= \\hspace{3cm} \\= \\kill" . $eol;
+#            foreach $i (1..$nidxvar) {
+            foreach $i (sort { $IDXVAR{$a} cmp $IDXVAR{$b} } keys %IDXVAR) {
+                $v = $IDXVAR{$i};
+                $v =~ s/_/\\_/g;
+                $vt = $IDXVARTYPE{$i};
+                $vt =~ s/_/\\_/g;
+                $epi .= "$v ";
+                $epi .= "\\\> \$\\langle\${\\it $vt}\$\\rangle\$ ";
+                $epi .= "\\\> \\hfill\\rm{[$IDXVARKIND{$i}; ";
+                $epi .= "$IDXVARFILE{$i} - $IDXVARLINE{$i}]}\\\\";
+                $epi .= $eol;
+            }
+            $epi .= "\\end{tabbing}" . $eol . $eol;
+
+#            $epi .= '\begin{description}' . $eol;
+#            foreach $i (1..$nidxvar) {
+#                $v = $IDXVAR{$i};
+#                $v =~ s/_/\\_/g;
+#                $vt = $IDXVARTYPE{$i};
+#                $vt =~ s/_/\\_/g;
+#                $epi .= "\\item[\$\\langle\$$vt\$\\rangle\$";
+#                $epi .= "\\rm{[$IDXVARKIND{$i}; ";
+#                $epi .= "$IDXVARFILE{$i}:$IDXVARLINE{$i}]}] ";
+#                $epi .= "\\qquad $v \n";
+#            }
+#            $epi .= '\end{description}' . $eol . $eol;
+
+        }
+
+        # list of definitions
+
+        if ( $ndefs > 0 ) {
+            
+            $epi .= '\newpage' . $eol;
+            $epi .= '\section{List of explicit definitions}' . $eol;
+
+            $epi .= '\begin{description}' . $eol;
+#            foreach $i (1..$ndefs) {
+            foreach $i (sort { $DEFS{$a} cmp $DEFS{$b} } keys %DEFS) {
+                if ( $verbose ) {
+                    print STDERR $DEFS{$i} . ": " . $DEFSCOMM{$i} . $eol;
+                }      
+                $v = $DEFS{$i};
+                $vc = $DEFSCOMM{$i};
+                $v =~ s/\_/\\\_/g;
+                $vc =~ s/\_/\\\_/g;
+                $epi .= "\\item[\\texttt\{$v\}]~\\\\$vc";
+                $epi .= $eol;
+            }
+            $epi .= '\end{description}' . $eol;
+
+        }
+
+        # list of functions
+        
+        if ( $nfn > 0 ) {
+
+            $epi .= '\newpage' . $eol;
+            $epi .= '\section{List of functions}' . $eol;
+
+            $epi .= '\begin{description}' . $eol;
+            foreach $i (1..$nfn) {
+                if ( $verbose ) {
+                    print STDERR $FN{$i} . ": " . $FNCOMM{$i} . $eol;
+                }
+                $v = $FN{$i};
+#                $v =~ s/\_/\\\_/g;
+                $w = $FNVAR{$i};
+#                $w =~ s/\_/\\\_/g;
+                $epi .= "\\item[\\texttt\{$v($w )\}]";
+                $epi .= "\\index\{$v\}~\\\\" . $eol;
+                $epi .= "$FNCOMM{$i}" . $eol;
+            }
+            $epi .= '\end{description}' . $eol;
+
+        }
+
+        # others
+
+        if ($tableofcontents) { $epi .= "\\tableofcontents\n"; }
+        if ($listoffigures) { $epi .= "\\listoffigures\n"; }
+        if ($listoftables) { $epi .= "\\listoftables\n"; }
+
+        if ( $nidxvar > 0 ) {
+            $epi .= "\\printindex\n";
+        }
+
+        print OUTPUT "$epi\n\\end{document}\n"
+ 
+    }
+
+}
+
+sub makeHTMLeq {
+
+    $neq++;
+
+    $bak = $_;
+    $_ = $eq;
+    &special_chars_rev;
+    $eq = $_;
+    $_ = $bak;
+
+    $eq =~ s/\n/ /gs;
+
+    open EQUATION, ">eq$neq.tex";
+
+    print EQUATION << 'eoe';
+\documentclass{article}
+\usepackage{amsmath}
+
+\pagestyle{empty}
+
+\begin{document}
+\begin{displaymath}
+eoe
+    print EQUATION $eq;
+    print EQUATION << 'eoe';
+\end{displaymath}
+\end{document}
+eoe
+    close EQUATION;
+
+    system "latex \'\\nonstopmode\\input\{eq$neq.tex\}\'";
+    system "dvips -D 300 -x 2000 -E -o eq$neq.ps eq$neq.dvi";
+    system "pstogif -depth 1 -out eq$neq.gif eq$neq.ps";
+
+    $eq = '';
+
+    "\<img src=\"eq$neq.gif\"\>";
+
+}
+
+sub makeHTMLfloat {
+
+    $nfloat++;
+
+    $bak = $_;
+    $_ = $float;
+    &special_chars_rev;
+    $float = $_;
+    $_ = $bak;
+
+    $float =~ s/\n/ /gs;
+
+    open FLOAT, ">f$nfloat.tex";
+
+    print FLOAT << 'eof';
+\documentclass{article}
+\usepackage{graphicx}
+
+\pagestyle{empty}
+
+\begin{document}
+eof
+    print FLOAT $float;
+    print FLOAT << 'eof';
+\end{document}
+eof
+    close FLOAT;
+
+    system "latex \'\\nonstopmode\\input\{f$nfloat.tex\}\'";
+    system "dvips -D 300 -x 1000 -E -o f$nfloat.ps f$nfloat.dvi";
+    system "pstogif -depth 8 -out f$nfloat.gif f$nfloat.ps";
+
+    $float = '';
+
+    "\<img src=\"f$nfloat.gif\"\>";
+
+}
+
+
+sub declare_LaTeX {
+    $secA = '\section{';
+    $secZ = '}' . $eol;
+
+    $ssecA = '\subsection{';
+    $ssecZ = '}' . $eol;
+
+    $sssecA = '\subsubsection{';
+    $sssecZ = '}' . $eol;
+
+    $ssssecA = '\paragraph{';    
+    $ssssecZ = '}';
+
+    $ttA = '{\tt ';
+    $ttZ = '}';
+
+    $parA = $eol;
+    $parZ = '\par' . $eol;
+
+    $commA = '\begin{quote}\slshape' . $eol;
+    $commZ = '\end{quote}' . $eol;
+
+    $clineA = "\\(\leftarrow\\)\textrm\";
+    $clineZ = "\";
+
+    $codeA = '\begin{Verbatim}[commandchars=\\\,' . 
+        'numbers=left,numbersep=2pt,frame=lines,framerule=1pt';
+    $codeZ = '\end{Verbatim}' . $eol;
+
+    $eqA = "\$";
+    $eqZ = "\$";
+    
+    $eqqA = '\[';
+    $eqqZ = '\]';
+
+    $listiA = '\begin{itemize}' . $eol;
+    $listiZ = '\end{itemize}';
+
+    $listeA = '\begin{enumerate}' . $eol;
+    $listeZ = '\end{enumerate}';
+
+    $itemA = '\item ';
+    $itemZ = $eol;
+
+    $boldA = '\textbf{';
+    $boldZ = '}';
+
+    $emphA = '\emph{';
+    $emphZ = '}';
+
+}
+    
+sub declare_HTML {
+    $secA = '<BR><HR SIZE=5><H1>';
+    $secZ = '</H1>' . $eol;
+
+    $ssecA = '<HR><H2>';
+    $ssecZ = '</H2>' . $eol;
+
+    $sssecA = '<H3>';
+    $sssecZ = '</H3>' . $eol;
+
+    $ssssecA = '<H4>';
+    $ssssecZ = '</H4>' . $eol;
+
+    $ttA = '<code>';
+    $ttZ = '</code>';
+
+    $parA = '<p>';
+    $parZ = '</p>' . $eol;
+
+    $commA = '<p><blockquote>' . $eol;
+    $commZ = '</blockquote></p>' . $eol;
+
+    $clineA = '<b>';
+    $clineZ = '</b>';
+
+    $codeA = '<P><blockquote class=table><pre>' . $eol;
+    $codeZ = '</pre></blockquote></P>';
+
+    $eqA = '';
+    $eqZ = '';
+    
+    $eqqA = '</p><center><p>';
+    $eqqZ = '</p></center><p>';
+
+    $listiA = '<ul>' . $eol;
+    $listiZ = '</ul>';
+
+    $listeA = '<ol>' . $eol;
+    $listeZ = '</ol>';
+
+    $itemA = '<li> ';
+    $itemZ = '</li>';
+
+    $boldA = '<strong>';
+    $boldZ = '</strong>';
+
+    $emphA = '<em>';
+    $emphZ = '</em>';
+
+}
+
+##EOF

@@ -1,0 +1,159 @@
+##################################################-*-makefile-*-##
+##
+## Makefile
+##
+## @file        Makefile
+## @title       Simulation of the Reflector & Process of data
+## @author      J C Gonz\'alez
+## @email       gonzalez@mppmu.mpg.de
+##
+## @maintitle
+##_______________________________________________________________
+##
+##  Created: Thu May  7 16:24:22 1998
+##  Author:  Jose Carlos Gonzales
+##  Purpose: Makefile for the compilation of the simulation programs
+##  Notes:   
+##    
+##---------------------------------------------------------------
+## $RCSfile$
+## $Revision$
+## $Author$ 
+## $Date$
+##################################################################
+
+# @T \newpage
+
+# @ code    # this block is not used right now
+#CERNDIR=CERN
+#
+#ROOTLIBS      = -L$(ROOTSYS)/lib -lNew -lBase -lCint -lClib -lCont -lFunc \
+#	-lGraf -lGraf3d -lHist -lHtml -lMatrix -lMeta -lMinuit -lNet \
+#	-lPostscript -lProof -lTree -lUnix -lZip
+#
+#ROOTGLIBS     = -lGpad -lGui -lGX11 -lX3d
+# @ endcode
+
+# @code
+
+MAKEFILE = make-period
+
+INCLUDES      = -I../include \
+		-I../include-util \
+		-I../include-COR \
+		-I../include-MC
+
+# Alpha/OSF with cxx
+
+#CXX      = cxx
+CXX      = g++
+F77      = f77
+
+WARNINGS = -Wall
+
+CXXFLAGS = ${INCLUDES} ${WARNINGS} -g3
+#CXXFLAGS = -D__osf__ -D__alpha ${INCLUDES} ${WARNINGS} -arch host -ieee
+#CXXFLAGS = -D__osf__ -D__alpha -I/usr/include/cxx ${INCLUDES} -Wall -g3
+#CXXFLAGS = -D__osf__ -D__alpha -I/${CERNDIR}/cfortran -g3
+#CXXFLAGS = -D__osf__ -D__alpha -I$(ROOTSYS)/include -g3
+
+FFLAGS   = $(CXXFLAGS)
+
+LD       = cxx
+LDFLAGS  = -g3
+SOFLAGS  = -Wl,-expect_unresolved,* -call_shared
+
+GLIBS    = $(ROOTLIBS) $(ROOTGLIBS) -lXpm -lX11 -lm -lPW
+FORLIBS = -lUfor -lfor -lutil -lots -lm 
+PAWLIBS = -L/${CERNDIR}/pro/lib/ \
+	-lgraflib -lgrafX11 -lpacklib -lkernlib -lpawlib
+
+LIBS     = -L../lib -lranlib -lm
+#LIBS     = $(ROOTLIBS) -L../lib -L./ -lranlib -lm
+
+DOCUM = ../sus/sus
+
+#------------------------------------------------------------
+
+#.SILENT:
+
+.SUFFIXES: .c .cxx .C .c++ .h .hxx .H .h++ .o .so .f
+
+SRCS = \
+	period.cxx  
+
+HEADERS = \
+	period.h  
+
+OBJS = \
+	period.o  
+
+############################################################
+
+all: period
+
+depend:
+	@makedepend $(SRCS) -f$(MAKEFILE) 2> /dev/null
+
+period-doc: 
+	@echo "Generating documentation for period . . . "
+	$(DOCUM) \
+	period.cxx period.h \
+	../include-util/jcmacros.h ../include-util/jcdebug.h > period.tex
+	latex period.tex && latex period.tex
+	@echo "Files period.tex and period.dvi generated."
+
+period: $(OBJS)
+	@echo "Linking..." $(OBJS) 
+	$(CXX) $(CXXFLAGS) $(OBJS) $(LIBS) -o $@
+	@echo "done."
+
+.cxx.o:	
+	@echo "Compiling " $<
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+.f.o:	
+	@echo "Compiling " $<
+	$(F77) $(FFLAGS) -c $< -o $@
+
+lclean:
+	@echo "Cleanning..."
+	@rm -f *.o core 
+
+clean:
+	@echo "Cleanning..."
+	@rm -f $(OBJS) core 
+
+mrproper: clean
+	@echo "Mr.Proper in action . . ."
+	@rm -f $(PROGRAM)
+
+ctags:
+	@echo "Creating CTAGS file . . ."
+	@ctags -txw $(SRCS) $(HEADERS) > CTAGS
+
+etags:
+	@echo "Creating TAGS file . . ."
+	@/usr/local/bin/etags -C $(SRCS) $(HEADERS)
+
+listsrc:
+	@ls -m $(SRCS) $(HEADERS) | sed 's/,//g'
+
+redo: clean all
+
+# @endcode
+
+# DO NOT DELETE THIS LINE -- make depend depends on it.
+
+period.o: period.h /usr/include/stdlib.h /usr/include/features.h
+period.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+period.o: /usr/lib/gcc-lib/i486-linux/2.7.2.3/include/stddef.h
+period.o: /usr/include/sys/types.h /usr/include/gnu/types.h
+period.o: /usr/include/time.h /usr/include/endian.h /usr/include/bytesex.h
+period.o: /usr/include/sys/select.h /usr/include/selectbits.h
+period.o: /usr/include/alloca.h /usr/include/stdio.h /usr/include/libio.h
+period.o: /usr/include/_G_config.h
+period.o: /usr/lib/gcc-lib/i486-linux/2.7.2.3/include/stdarg.h
+period.o: /usr/include/stdio_lim.h /usr/include/string.h /usr/include/math.h
+period.o: /usr/include/huge_val.h /usr/include/mathcalls.h
+period.o: /usr/lib/gcc-lib/i486-linux/2.7.2.3/include/float.h

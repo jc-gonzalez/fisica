@@ -1,0 +1,239 @@
+
+\documentclass{article}	
+
+\usepackage{a4wide}
+\usepackage{fancyvrb}
+\usepackage{makeidx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+\makeindex
+\listfiles
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+##################################################################
+#
+# makefile
+#
+# @file        makefile 
+# @title       Simulation of the camera and trigger logic
+# @author      J C Gonz\'alez
+# @email       gonzalez@mppmu.mpg.de
+# @date        Fri Mar 12 11:51:11 MET 1999
+#
+#\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+#
+# Created: Fri Mar 12 11:51:11 MET 1999
+# Author:  Jose Carlos Gonzalez
+# Purpose: Makefile for the compilation of the camera program
+# Notes:   
+#    
+#---------------------------------------------------------------
+#
+# $RCSfile$
+# $Revision$
+# $Author$ 
+# $Date$
+#
+##################################################################
+# @maintitle
+
+# @code
+
+#----------------------------------------
+# NEEDS GNUMake !!!
+#----------------------------------------
+
+INCLUDEMK = config.mk
+include ${INCLUDEMK}
+
+# @endcode
+
+# @code 
+
+## CERN libraries flag ----------------------------------------
+ifeq ($(USE\_CERNLIB),yes)
+CERNLIBDIR = ${CERNDIR}/pro/lib/
+CERNLIB = -L${CERNLIBDIR} -lmathlib -lpacklib -lkernlib 
+CTSLIB = -L$(CTSLIB\_PATH) $(addprefix -lcts,$(CTSLIB\_USE))
+else
+CERNLIBDIR = 
+CERNLIB = 
+CTSLIB = 
+endif
+
+## common flags -----------------------------------------------
+INCLUDES := $(addprefix -I,$(INCLUDE\_PATHS))
+
+## other libraries --------------------------------------------
+RANLIB  = -L${RANLIB\_PATH} -lranlib
+
+## generic Fortran flags (if needed) --------------------------
+# special flags (FORTRAN)
+osf\_FORLIBS = -lUfor -lfor -lutil -lots -lm
+linux\_FORLIBS = -lnsl  -lg2c -lm
+#linux\_FORLIBS = -lm -lc 
+generic\_FORLIBS = -lm 
+
+FORLIBS = ${${SYSTEM}\_FORLIBS}
+
+# compilation and linking flags
+
+CXXFLAGS  = -D\_\_${SYSTEM}\_\_ ${INCLUDES} ${OPTIM} ${DEBUG}
+CFLAGS    = ${CXXFLAGS}
+FFLAGS    = ${CXXFLAGS}
+LIBS      = $(CERNLIB) ${CTSLIB} ${RANLIB} ${FORLIBS}
+
+#------------------------------------------------------------------------------
+
+#.SILENT:
+
+.SUFFIXES: .c .cxx .C .c++ .h .hxx .H .h++ .o .so .f
+
+SRCS = \
+	${INCLUDE\_MC}/MCEventHeader.cxx \
+	${INCLUDE\_MC}/MCCphoton.cxx \
+	moments.cxx \
+	creadparam.cxx \
+	camera.cxx   
+
+HEADERS = \
+	MCEventHeader.hxx \
+	MCCphoton.hxx \
+	Histogram.h \
+	lagrange.h \
+	atm.h \
+	moments.h \
+	creadparam.h \
+	camera.h
+
+OBJS = \
+	${INCLUDE\_MC}/MCEventHeader.o \
+	${INCLUDE\_MC}/MCCphoton.o \
+	moments.o \
+	creadparam.o \
+	camera.o      
+
+############################################################
+
+all: ${PROGRAM}
+
+depend:
+	@makedepend $(SRCS) -fMakefile 2$>$ /dev/null
+
+doc: camera-doc
+
+camera-doc: 
+	@echo "Generating documentation for camera . . . "
+	$(DOCUMAPP) -latex -o camera.tex camera.cxx camera.h \
+	creadparam.cxx creadparam.h \
+	moments.cxx moments.h \
+	${INCLUDE}/Histogram.h 
+	TEXINPUTS=${TEXINPUTS}:${DOCUMDIR} \
+	latex "\nonstopmode\input{camera.tex}" \&\& \
+	makeindex camera \&\& \
+	TEXINPUTS=${TEXINPUTS}:${DOCUMDIR} \
+	latex "\nonstopmode\input{camera.tex}" \&\& \
+	TEXINPUTS=${TEXINPUTS}:${DOCUMDIR} \
+	latex "\nonstopmode\input{camera.tex}"
+	@echo "Files camera.tex and camera.dvi generated."
+
+${PROGRAM}: $(OBJS)
+	@echo "Linking..." 
+	echo `ls -m $(OBJS){\tt sed 's/,/ +/g' `" + libraries =$>$ " $@
+	$(CXX) $(CXXFLAGS) $(OBJS) $(LIBS) -o $@
+	@echo "done."
+
+.cxx.o:	
+	@echo "Compiling " $$<$
+	$(CXX) $(CXXFLAGS) -c $$<$ -o $@
+
+.c.o:	
+	@echo "Compiling " $$<$
+	$(CC) $(CFLAGS) -c $$<$ -o $@
+
+.f.o:	
+	@echo "Compiling " $$<$
+	$(F77) $(FFLAGS) -c $$<$ -o $@
+
+lclean:
+	@echo "Cleanning..."
+	@rm -f *.o core 
+
+clean:
+	@echo "Cleanning..."
+	@rm -f $(OBJS) core 
+
+mrproper: clean
+	@echo "Mr.Proper in action . . ."
+	@rm -f *~ $(PROGRAM)
+
+ctags:
+	@echo "Creating CTAGS file . . ."
+	@ctags -txw $(SRCS) $(HEADERS) $>$ CTAGS
+
+etags:
+	@echo "Creating TAGS file . . ."
+	@etags -C $(SRCS) $(HEADERS)
+
+listsrc:
+	@ls -m $(SRCS) $(HEADERS) } sed 's/,//g'
+
+redo: clean all
+
+cflags: 
+	@echo $(INCLUDES) $(CXXFLAGS)
+
+# @endcode
+
+# DO NOT DELETE THIS LINE -- make depend depends on it.
+
+../include-MC/MCEventHeader.o: ../include-MC/MCEventHeader.hxx
+../include-MC/MCEventHeader.o: /usr/include/stdlib.h /usr/include/standards.h
+../include-MC/MCEventHeader.o: /usr/include/getopt.h /usr/include/sys/types.h
+../include-MC/MCEventHeader.o: /usr/include/mach/machine/vm\_types.h
+../include-MC/MCEventHeader.o: /usr/include/sys/select.h /usr/include/math.h
+../include-MC/MCCphoton.o: ../include-MC/MCCphoton.hxx /usr/include/stdlib.h
+../include-MC/MCCphoton.o: /usr/include/standards.h /usr/include/getopt.h
+../include-MC/MCCphoton.o: /usr/include/sys/types.h
+../include-MC/MCCphoton.o: /usr/include/mach/machine/vm\_types.h
+../include-MC/MCCphoton.o: /usr/include/sys/select.h /usr/include/string.h
+../include-MC/MCCphoton.o: /usr/include/strings.h /usr/include/math.h
+moments.o: moments.h /usr/include/stdlib.h /usr/include/standards.h
+moments.o: /usr/include/getopt.h /usr/include/sys/types.h
+moments.o: /usr/include/mach/machine/vm\_types.h /usr/include/sys/select.h
+moments.o: /usr/include/stdio.h /usr/include/sys/seek.h
+moments.o: /usr/include/va\_list.h /usr/include/sys/limits.h
+moments.o: /usr/include/sys/machine/machlimits.h /usr/include/sys/syslimits.h
+moments.o: /usr/include/sys/machine/machtime.h /usr/include/sys/rt\_limits.h
+moments.o: /usr/include/string.h /usr/include/strings.h /usr/include/math.h
+moments.o: /usr/include/float.h /usr/include/fp\_class.h camera-v.h
+creadparam.o: creadparam.h /usr/include/stdlib.h /usr/include/standards.h
+creadparam.o: /usr/include/getopt.h /usr/include/sys/types.h
+creadparam.o: /usr/include/mach/machine/vm\_types.h /usr/include/sys/select.h
+creadparam.o: /usr/include/stdio.h /usr/include/sys/seek.h
+creadparam.o: /usr/include/va\_list.h /usr/include/sys/limits.h
+creadparam.o: /usr/include/sys/machine/machlimits.h
+creadparam.o: /usr/include/sys/syslimits.h
+creadparam.o: /usr/include/sys/machine/machtime.h
+creadparam.o: /usr/include/sys/rt\_limits.h /usr/include/string.h
+creadparam.o: /usr/include/strings.h /usr/include/math.h /usr/include/float.h
+creadparam.o: /usr/include/fp\_class.h camera-v.h trigpatt.h
+camera.o: camera.h /usr/include/stdlib.h /usr/include/standards.h
+camera.o: /usr/include/getopt.h /usr/include/sys/types.h
+camera.o: /usr/include/mach/machine/vm\_types.h /usr/include/sys/select.h
+camera.o: /usr/include/stdio.h /usr/include/sys/seek.h /usr/include/va\_list.h
+camera.o: /usr/include/sys/limits.h /usr/include/sys/machine/machlimits.h
+camera.o: /usr/include/sys/syslimits.h /usr/include/sys/machine/machtime.h
+camera.o: /usr/include/sys/rt\_limits.h /usr/include/string.h
+camera.o: /usr/include/strings.h /usr/include/stdarg.h /usr/include/math.h
+camera.o: /usr/include/dirent.h /usr/include/unistd.h
+camera.o: /usr/include/sys/access.h /usr/include/libgen.h camera-v.h
+camera.o: creadparam.h /usr/include/float.h /usr/include/fp\_class.h moments.h
+camera.o: ../include-MC/MCEventHeader.hxx ../include-MC/MCCphoton.hxx
+camera.o: /usr/include/ranlib.h /usr/include/ar.h
+
+\end{document}

@@ -1,0 +1,84 @@
+
+MAKE=gnumake
+
+CC=gcc
+F77=g77
+GTKCONFIG=/hd20/gonzalez/gtk/bin/gtk-config
+GTK_CFLAGS := $(shell ${GTKCONFIG} --cflags)
+GTK_LIBS := $(shell ${GTKCONFIG} --libs)
+
+CFLAGS=${GTK_CFLAGS} -I. -I../include-util -g3
+LIBS=${GTK_LIBS} -g3
+
+PROGRAM=ctv
+
+SRCS = ctv.c menuf.c evt.c mcevh.c analysis.c
+OBJS := $(subst .c,.o,${SRCS})
+HEADERS := $(subst .c,.h,${SRCS}) pixelsinfo.h jcmacros.h
+
+all: ${PROGRAM}
+
+${PROGRAM}: ${OBJS}
+	$(CC) ${OBJS} ${CFLAGS} ${LIBS} -o $@ 
+
+.c.o:
+	$(CC) -c $< ${CFLAGS} -o $@ 
+
+redo: cleaner all
+
+cleaner: clean
+	-rm ${PROGRAM}
+
+clean:
+	-rm ${OBJS} core
+
+list:
+	@echo "SRCS: " ${SRCS}
+	@echo "OBJS: " ${OBJS}
+	@echo "HEADERS: " ${HEADERS}
+
+depend:
+	makedepend $(SRCS) -fMakefile 2> /dev/null
+
+#------------------------------------------------------------
+
+# DO NOT DELETE THIS LINE -- make depend depends on it.
+
+ctv.o: /usr/include/stdio.h /usr/include/standards.h /usr/include/sys/seek.h
+ctv.o: /usr/include/va_list.h /usr/include/sys/types.h
+ctv.o: /usr/include/mach/machine/vm_types.h /usr/include/sys/select.h
+ctv.o: /usr/include/getopt.h /usr/include/sys/limits.h
+ctv.o: /usr/include/sys/machine/machlimits.h /usr/include/sys/syslimits.h
+ctv.o: /usr/include/sys/machine/machtime.h /usr/include/sys/rt_limits.h
+ctv.o: /usr/include/string.h /usr/include/strings.h menuf.h ctv.h evt.h
+ctv.o: mcevh.h /usr/include/stdlib.h /usr/include/math.h pixelsinfo.h
+ctv.o: hexsmall.xpm hexbig.xpm palette.xpm arrow_up.xpm arrow_down.xpm
+menuf.o: /usr/include/strings.h /usr/include/standards.h
+menuf.o: /usr/include/sys/types.h /usr/include/mach/machine/vm_types.h
+menuf.o: /usr/include/sys/select.h /usr/include/string.h ctv.h
+evt.o: /usr/include/stdio.h /usr/include/standards.h /usr/include/sys/seek.h
+evt.o: /usr/include/va_list.h /usr/include/sys/types.h
+evt.o: /usr/include/mach/machine/vm_types.h /usr/include/sys/select.h
+evt.o: /usr/include/getopt.h /usr/include/sys/limits.h
+evt.o: /usr/include/sys/machine/machlimits.h /usr/include/sys/syslimits.h
+evt.o: /usr/include/sys/machine/machtime.h /usr/include/sys/rt_limits.h
+evt.o: /usr/include/stdlib.h /usr/include/string.h /usr/include/strings.h
+evt.o: evt.h mcevh.h /usr/include/math.h
+mcevh.o: mcevh.h /usr/include/stdio.h /usr/include/standards.h
+mcevh.o: /usr/include/sys/seek.h /usr/include/va_list.h
+mcevh.o: /usr/include/sys/types.h /usr/include/mach/machine/vm_types.h
+mcevh.o: /usr/include/sys/select.h /usr/include/getopt.h
+mcevh.o: /usr/include/sys/limits.h /usr/include/sys/machine/machlimits.h
+mcevh.o: /usr/include/sys/syslimits.h /usr/include/sys/machine/machtime.h
+mcevh.o: /usr/include/sys/rt_limits.h /usr/include/stdlib.h
+mcevh.o: /usr/include/math.h
+analysis.o: analysis.h /usr/include/stdlib.h /usr/include/standards.h
+analysis.o: /usr/include/getopt.h /usr/include/sys/types.h
+analysis.o: /usr/include/mach/machine/vm_types.h /usr/include/sys/select.h
+analysis.o: /usr/include/stdio.h /usr/include/sys/seek.h
+analysis.o: /usr/include/va_list.h /usr/include/sys/limits.h
+analysis.o: /usr/include/sys/machine/machlimits.h
+analysis.o: /usr/include/sys/syslimits.h /usr/include/sys/machine/machtime.h
+analysis.o: /usr/include/sys/rt_limits.h /usr/include/string.h
+analysis.o: /usr/include/strings.h /usr/include/math.h /usr/include/float.h
+analysis.o: /usr/include/fp_class.h

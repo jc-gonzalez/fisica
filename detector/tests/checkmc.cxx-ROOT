@@ -1,0 +1,943 @@
+//////////////////////////////////////////////////////////////////
+//
+// checkmc                  
+//
+// @file        checkmc.cxx
+// @title       Check of the MC generated data
+// @author      J C Gonz\'alez
+// @email       gonzalez@mppmu.mpg.de
+//
+// @maintitle
+//_______________________________________________________________
+//
+//  Created: Thu May  7 16:24:22 1998
+//  Author:  Jose Carlos Gonzales
+//  Purpose: Check of the MC generated data
+//  Notes:   
+//    
+//    
+//_______________________________________________________________
+// $Header$
+//---------------------------------------------------------------
+// $RCSfile$
+// $Revision$
+// $Author$ 
+// $Date$
+//////////////////////////////////////////////////////////////////
+
+// Below you can find a sort of, incomplete for sure, documentation 
+// concerning this program. Please, do not hesiate to contact the 
+// author in case of problems.
+
+// @T \newpage
+
+// @section Source code of {\tt reflector.cxx}
+
+/* @text
+In this section we show the (commented) code of the program 
+for for the check of the MC generated data, in the current version.
+@endtext */
+
+// @subsection Includes and Global variables definition
+
+/* @text 
+All the defines are located in the file {\tt reflector.h}.
+@endtext */
+ 
+// @code
+#include "checkmc.h"
+
+#include "TROOT.h"
+#include "TFile.h"
+#include "TH1.h"
+#include "TH2.h"
+#include "TProfile.h"
+#include "TNtuple.h"
+#include "TRandom.h"
+// @endcode
+
+// @subsubsection Definition of global variables.
+
+/* @text
+Here we define the global variables where the values from
+the parameters file are stored. See the section
+\ref{paramdesc} in page \pageref{paramdesc} for a more 
+complete description of the available commands in the 
+parameters file.
+@endtext */
+
+// @code
+static char **Paths_list;     // list of paths to get data from
+static int Num_of_paths = 1;  // number of paths
+static char Output_filename[PATH_MAX_LENGTH]; // output filename
+static char CT_filename[PATH_MAX_LENGTH]; // name of the CT def. file
+static VerboseLevel verbose = VERBOSE_DEFAULT; // verboseness
+static float fixed_Theta;      // fixed target theta and phi
+static float fixed_Phi;
+static float low_Ecut = 0.0, high_Ecut = 100000.0;
+static int is_Fixed_Target = FALSE; // are we using fixed target?
+static int max_Events = SINFINITY; // maximum number of events to read
+// @endcode
+
+/* @text
+Earth's radius (in cm).
+@endtext */
+
+// @code
+static const float REarth = 6348.0e5;
+// @endcode
+
+// @subsection Main program
+
+/* @text
+Let's start!
+@endtext */
+
+// @code
+//++++++++++++++++++++++++++++++++++++++++
+// MAIN PROGRAM 
+//----------------------------------------
+                   
+void
+main(int argc, char **argv) 
+{
+
+  FILE *f;
+  DIR *directory;             // directory of data
+  struct dirent *de;          // directory entry
+
+  char pathname[256];         // directory and file names
+  char cername[256];
+  char staname[256];
+  char outname[256];
+  char name[256];
+
+  ifstream cerfile;
+  ofstream outputfile;
+
+  COREventHeader evth;        // Event Header class (from CORSIKA)
+  CORParticle photon;         // Particle (photon) class (from CORSIKA)
+  CORStatfile stat;           // Statistics file class (from CORSIKA)
+
+  float thetaCT, phiCT, xiCT; // parameters of a given shower
+  float coreD, coreX, coreY;  // core position and distance
+
+  float a, b, c, t, tt;       // intermediate variables
+
+  float mind, d;              // minimum distance trayectory-mirror center
+
+  float wl;                   // wavelength of the Cphoton
+  float reflec;               // reflectivity for a Cphoton
+
+  int ncer;                   // number of the shower;
+  int np, nf;                 // number of path, number of cer-file
+  int i, j, k, n;             // simple counters
+  int i_mirror=-1;            // number of a given mirror
+
+  int nCphotons;              // number of a Cphotons written on output file
+
+  float TR;                   // atmospheric transmitance
+  int nbeforeTR, nafterTR;    // number of Cph. before and after transmission
+  int num_cer_files;          // number of cer files;
+  int max_num_cer_files;      // maximum number of cer files to read
+
+  float t1, t2;               // first and last time
+
+  float x0, xa, xb, v;        // variables for the 
+  float vmax, vmaxa, vmaxb;   // estimation of Xmax
+  float xmax;
+
+  int ntotfiles;
+  int kbin;
+
+  // @endcode
+
+  // @text
+  // Variables for the ROOT N-Tuple
+  // @endtext
+
+  // @code
+  int hid,istat=0,icycle=0;
+  const int nvar=14;
+  char chTags[nvar * 10];
+  float rec[nvar];
+  int record_size=4096;
+  // @endcode
+
+  // @text
+  // We start in the main program. First we (could) make some presentation, 
+  // and follows the reading of the parameters file (now from the {\tt stdin}), 
+  // the reading of the CT parameters file, and the creation of the 
+  // output file, where the processed data will be stored.
+  // @endtext
+  // @code
+
+  //++
+  //  START
+  //--
+
+  // make unbuffered output
+
+  cout.setf ( ios::stdio );
+
+  // HBOOK core memory
+
+  TROOT CheckMC("CheckMC","Check MC generated data");
+
+  strcpy( chTags, "primary:" );
+  strcat( chTags, "energy:" );
+  strcat( chTags, "cored:" );
+  strcat( chTags, "theta:" );
+  strcat( chTags, "phi:" );
+  strcat( chTags, "thick:" );
+  strcat( chTags, "height:" );
+  strcat( chTags, "target1:" );
+  strcat( chTags, "px:" );
+  strcat( chTags, "py:" );
+  strcat( chTags, "pz:" );
+  strcat( chTags, "tfirst:" );
+  strcat( chTags, "tlast:" );
+  strcat( chTags, "xmax" );
+
+  // make some sort of presentation
+
+  present();
+  
+  // read parameters from the stdin
+
+  readparam();
+
+  // get name of the output file
+  
+  strcpy( outname, get_output_filename() );
+
+  // open HBOOK file
+
+  if ( verbose >= VERBOSE_MINIMAL ) 
+    log( SIGNATURE, "Openning N-Tuple file %s\n", outname );
+
+  TFile hfile(outname,"RECREATE","Check MC generated data");
+
+  // HROPEN(1, "CHECKMC", outname, "N", record_size, istat);
+
+  // profile (final) histograms
+
+  TH1F *htime  = new TH1F("htime", "htime", 60, 0., 60.);
+  TH1F *helec  = new TH1F("helec", "helec", 79, 0., 790.);
+  TH1F *hlight = new TH1F("hlight", "hlight", 79, 0., 790.);
+
+  double fstime[18][60], fs2time[18][60];
+
+  double ftstime[18][60], fts2time[18][60];
+  double ftselec[18][79], fts2elec[18][60];
+  double ftslight[18][79], fts2light[18][60];
+
+  for (i=0; i<60; ++i)
+    for (k=0; k<18; ++k)
+      ftstime[k][i] = fts2time[k][i] = 0.0;
+
+  for (i=0; i<79; ++i)
+    for (k=0; k<18; ++k)
+      ftselec[k][i] = fts2elec[k][i] = 
+	ftslight[k][i] = fts2light[k][i] = 0.0;
+
+  // @endcode 
+  // @text
+  // After reading the parameters file (from {\tt stdin}, and the 
+  // CT definition file, we start the analysis. Basically, there are  
+  // three loops. The outermost loop is a loop in the {\it data directories\/} 
+  // we introduced in the parameters file; the middle loop follows each 
+  // {\tt cer*} file in the directory; and the innermost loop gets 
+  // each Cherenkov from these files.
+  // @endtext 
+  // @code
+
+  TNtuple *ntuple = new TNtuple("ntuple","Check MC data", chTags);
+
+  ntotfiles = 0;
+
+  // for each path of data files
+  
+  for (np=0; np<get_num_of_paths(); np++) {
+    
+    strcpy(pathname, get_path_name(np));
+    
+    // open directory 
+
+    if ( verbose >= VERBOSE_MINIMAL )
+      log( SIGNATURE, "Openning directory %s\n", pathname );
+    if ( (directory = opendir(pathname)) == NULL ) 
+      error( SIGNATURE, 
+             "Cannot open directory %s\n", pathname );
+    
+    // trace the number of events (cer* files) 
+    
+    num_cer_files = 0;
+
+    // book n-tuple for this directory
+
+    //  hid = np+1;
+
+    //  if ( verbose >= VERBOSE_MINIMAL ) 
+    //    log( SIGNATURE, "Create N-Tuple #%d for path %s . . .\n", 
+    //             hid, pathname );
+        
+    // HBOOKN(hid, pathname, nvar, " ", 4096, chTags);
+        
+    max_num_cer_files = get_max_events();
+
+    // for each directory entry (files)
+
+    while ( ( (de = readdir( directory )) != NULL) &&
+            (num_cer_files < max_num_cer_files)
+            ) {
+
+      // skip removed files
+          
+      if ( de->d_ino == 0)
+        continue;
+
+      // keep only cer* files
+
+      if ( strstr(de->d_name, "cer") != de->d_name )
+        continue;
+
+      // it is a real cer* file
+
+      ++num_cer_files;
+
+      if ( verbose >= VERBOSE_NORMAL )
+        log( SIGNATURE, "cerfile: %s\n", de->d_name );
+
+      // get cer* file number (number of the shower)
+
+      // increments the pointer in 3 to calculate the number
+
+      ncer = atoi(de->d_name + 3);  
+      
+      // full names of the input files cer* and sta*
+
+      sprintf(cername, "%s/cer%06d", pathname, ncer);
+      sprintf(staname, "%s/sta%06d", pathname, ncer);
+
+      // try to open cer* file
+
+      if ( verbose >= VERBOSE_MAXIMAL )
+        log( SIGNATURE, "Openning %s\n", cername );
+
+      cerfile.open( cername );
+
+      if ( cerfile.bad() ) 
+        error( SIGNATURE, 
+               "Cannot open input file: %s\n", cername );
+
+      // @endcode
+      // @text
+      // Each shower has associated three files: {\em Cherenkov-photons file\/}
+      // ({\tt cer*}), {\em Particles file} ({\tt dat*}) and
+      // {\em Statistics file} ({\tt sta*}). First we read the data from
+      // this last file, which is explained below, and then we read the 
+      // {\em Event-Header} block from the {\tt cer*} file.
+      // @endtext
+      // @code
+
+      // try to open the statistics file
+
+      if ( verbose >= VERBOSE_MAXIMAL )
+        log( SIGNATURE, "Openning %s\n", staname );
+
+      stat.openfile ( staname );
+
+      // reading data from this sta* file
+
+      if ( verbose >= VERBOSE_MAXIMAL )
+        log( SIGNATURE, "Reading %s\n", staname );
+
+      stat.read();
+
+      // read the Event Header from the cer* file
+
+      evth.read( cerfile );
+
+      // set bin for theta/energy
+      
+      kbin = ((int)floor(evth.get_theta()/10.)*6 + 
+	    (int)floor(log10(evth.get_energy())));
+
+      // get core distance and position
+
+      coreD = evth.get_core(&coreX, &coreY);
+          
+      t1 = SINFINITY;
+      t2 = 0.0;
+
+      ++ntotfiles;
+
+      // initialize time-histogram
+
+      for (i=0; i<60; ++i)
+	fstime[kbin][i] = 0.0;
+
+      // read each and every single photon (particle) from cer* file
+
+      while ( ! cerfile.eof() ) {
+
+        // read photon data from the file
+
+        photon.read( cerfile );
+
+        wl = photon.get_wl();
+
+        if ( wl < 1.0 )
+          break;
+        
+	// fill times
+
+	t = photon.get_t() - stat.get_tfirst();
+	
+	if ( (t>0.0) && (t<60.0)) {
+	  i = (int)t/1.;
+	  ++fstime[kbin][i];
+	}	  
+	
+	// hdmytime->Fill(t);
+	
+        // increase number of Cphotons written
+
+        ++nCphotons;
+	
+      } // while still there are photons left
+      
+      // calculate errors for time distribution
+      
+      for (i=0;i<60;++i)
+	fs2time[kbin][i] = sqrt(fstime[kbin][i]);
+
+      // save intermediate vectors in final vector
+
+      for (i=0;i<60;++i) {
+	ftstime[kbin][i] += fstime[kbin][i];
+	fts2time[kbin][i] += fs2time[kbin][i];
+      }
+    
+      for (i=0;i<79;++i) {
+	ftselec[kbin][i] += (stat.plong[2][i] + stat.plong[1][i]);
+	fts2elec[kbin][i] += sqrt(stat.plong[2][i] + stat.plong[1][i]);
+	ftslight[kbin][i] += stat.plong[8][i];
+	fts2light[kbin][i] += sqrt(stat.plong[8][i]);
+      }    
+
+      // estimate position of Xmax
+
+      vmax = -1.0;
+      for (i=0; i<79; ++i) {
+	v = (stat.plong[2][i] + stat.plong[1][i]);  // e- & e+
+	if (v > vmax) {
+	  vmax = v;
+	  j = i;
+	}
+      }
+
+      // to calculate a rough estimate of Xmax, we make a weigthed mean
+      // of the values at maximum, and the previous and next bins
+
+      x0 = j*10. + 5.;
+      xa = (j-1)*10. + 5.;
+      xb = (j+1)*10. + 5.;
+      vmaxa = (stat.plong[2][j-1] + stat.plong[1][j-1]); // e- & e+
+      vmaxb = (stat.plong[2][j+1] + stat.plong[1][j+1]); // e- & e+
+      
+      xmax = (xa*vmaxa + x0*vmax + xb*vmaxb) / (vmaxa + vmax + vmaxb);
+
+      // fill N-Tuple record
+
+      rec[0]  = evth.PrimaryID;
+      rec[1]  = evth.Etotal;   
+      rec[2]  = coreD;
+      rec[3]  = evth.Theta; 
+      rec[4]  = evth.Phi; 
+      rec[5]  = thick(evth.zFirstInt, evth.Theta);   
+      rec[6]  = evth.zFirstInt;
+      rec[7]  = evth.FirstTarget;
+      rec[8]  = evth.p[0];     
+      rec[9]  = evth.p[1];     
+      rec[10] = evth.p[2];     
+      rec[11] = stat.get_tfirst();
+      rec[12] = stat.get_tlast();
+      rec[13] = xmax;
+
+      // write record to the file
+
+      // HFN(hid,rec);
+
+      ntuple->Fill( rec );
+          
+      // close files
+          
+      cerfile.close();
+      stat.closefile();
+          
+      // show how many photons were written
+          
+      if ( verbose >= VERBOSE_MAXIMAL )
+        log( SIGNATURE, "%d C-photons written.\n", nCphotons );
+
+      
+    } // while there are still directory entries left
+    
+  } // for each data directory
+
+  // store contents of temporary 1D histograms to profiles
+
+  Int_t bin;
+  Stat_t value;
+
+  for (kbin=0; kbin<18; ++kbin) {
+
+    for (i=0; i<60; ++i) {
+      ftstime[kbin][i] /= ntotfiles;
+      fts2time[kbin][i] = sqrt(fts2time[kbin][i]/ntotfiles - 
+			       SQR(ftstime[kbin][i]));
+      bin=i+1, value=ftstime[kbin][i];
+      cout << bin << ' ' << value << endl << flush;
+      htime->SetBinContent( bin, value );
+      htime->SetBinError( i+1, fts2time[kbin][i] );
+    }
+    
+    for (i=0; i<79; ++i) {
+      ftselec[kbin][i] /= ntotfiles;
+      fts2elec[kbin][i] = sqrt(fts2elec[kbin][i]/ntotfiles - 
+			       SQR(ftselec[kbin][i]));
+      helec->SetBinContent( i+1, ftselec[kbin][i] );
+      helec->SetBinError( i+1, fts2elec[kbin][i] );
+    }
+
+    for (i=0; i<79; ++i) {
+      ftslight[kbin][i] /= ntotfiles;
+      fts2light[kbin][i] = sqrt(fts2light[kbin][i]/ntotfiles - 
+				SQR(ftslight[kbin][i]));
+      hlight->SetBinContent( i+1, ftslight[kbin][i] );
+      hlight->SetBinError( i+1, fts2light[kbin][i] );
+    }
+
+    TH1F h1;
+    TH1F h2;
+    TH1F h3;
+
+    htime->Copy( h1 );
+    helec->Copy( h2 );
+    hlight->Copy( h3 );
+
+    hfile.Write();
+  }
+
+  // close output file
+
+  if ( verbose >= VERBOSE_MINIMAL ) 
+    log( SIGNATURE, "Closing N-Tuple file %s\n", outname );
+  
+  hfile.Write();
+  hfile.Close();
+
+  // HROUT(0,icycle," ");
+  // HREND("CHECKMC");
+
+  // program finished
+
+  if ( verbose >= VERBOSE_MINIMAL ) 
+    log( SIGNATURE, "Done.\n");
+
+  return;
+}
+// @endcode
+
+// @T \newpage
+
+// @subsection Functions definition
+
+//------------------------------------------------------------
+// @name present
+//
+// @desc Make some presentation
+//
+// @date Sat Jun 27 05:58:56 MET DST 1998
+// @function @code 
+//------------------------------------------------------------
+// present
+//
+// make some presentation
+//------------------------------------------------------------
+
+void 
+present(void)
+{
+  cout << "##################################################\n"
+       <<  SIGNATURE << '\n' << '\n'
+       << "Check of the MC generated data\n"
+       << "J C Gonzalez, Jun 1998\n"
+       << "##################################################\n\n";
+}
+// @endcode
+
+//------------------------------------------------------------
+// @name log                             
+//                                   
+// @desc function to send log information
+//
+// @date Sat Jun 27 05:58:56 MET DST 1998
+// @function @code 
+//------------------------------------------------------------
+// log
+//
+// function to send log information
+//------------------------------------------------------------
+
+void
+log(const char *funct, char *fmt, ...)
+{
+  va_list args;
+  
+  //  Display the name of the function that called error
+  printf("[%s]: ", funct);
+  
+  // Display the remainder of the message
+  va_start(args, fmt);
+  vprintf(fmt, args);
+  va_end(args);
+}
+// @endcode
+
+//------------------------------------------------------------
+// @name error                                                    
+//                                                           
+// @desc function to send an error message, and abort the program
+//
+// @date Sat Jun 27 05:58:56 MET DST 1998
+// @function @code 
+//------------------------------------------------------------
+// error
+//
+// function to send an error message, and abort the program
+//------------------------------------------------------------
+
+void
+error(const char *funct, char *fmt, ...)
+{
+  va_list args;
+
+  //  Display the name of the function that called error
+  fprintf(stderr, "ERROR in %s: ", funct);
+
+  // Display the remainder of the message
+  va_start(args, fmt);
+  vfprintf(stderr, fmt, args);
+  va_end(args);
+
+  abort();
+}
+// @endcode
+
+
+//------------------------------------------------------------
+// @name readparam                                        
+//                                                    
+// @desc function to read the parameters of the check
+//
+// @date Sat Jun 27 05:58:56 MET DST 1998
+// @function @code 
+//------------------------------------------------------------
+// readparam
+//
+// function to read the parameters of the check
+//------------------------------------------------------------
+
+void 
+readparam(void)
+{
+  char sign[] = GLUE_postp( PROGRAM, VERSION ); // initialize sign
+  char line[LINE_MAX_LENGTH];    // line to get from the stdin
+  char token[ITEM_MAX_LENGTH];   // a single token
+  int i, j;                      // dummy counters
+
+  // get signature
+  cin.getline(sign, strlen(SIGNATURE) + 1);
+  cin.getline(line, LINE_MAX_LENGTH);
+  if (strcmp(sign, SIGNATURE) != 0) {
+    cerr << "ERROR: Signature of parameters file is not correct\n";
+    cerr << '"' << sign << '"' << '\n';
+    cerr << "should be: " << SIGNATURE << '\n';
+    exit(1);
+  }
+
+  // loop till the "end" directive is reached
+  int is_end = FALSE;
+  while (! is_end) {          
+
+    // get line from stdin
+    cin.getline(line, LINE_MAX_LENGTH);
+
+    // look for each item at the beginning of the line
+    for (i=0; i<=end_file; i++) 
+      if (strstr(line, PAR_ITEM_NAMES[i]) == line)
+        break;
+        
+    // if it is not a valid line, just ignore it
+    if (i == end_file+1) {
+      cerr << "Skipping unknown token in [" << line << "]\n";
+      continue;
+    }
+
+    // case block for each directive
+    switch ( i ) {
+
+    case data_paths:          // beginning of the list of valid paths
+          
+      //get number of paths to read
+      sscanf(line, "%s %d", token, &Num_of_paths);
+
+      if ( verbose == TRUE )
+        cout << Num_of_paths << " path(s) will be used.\n";
+
+      // allocate memory for paths list
+      Paths_list = (char**)malloc(Num_of_paths * sizeof(char*));
+      for (i=0; i<Num_of_paths; i++) 
+        Paths_list[i] = (char*)malloc(PATH_MAX_LENGTH * sizeof(char));
+
+      // read each single path
+      for (i=0; i<Num_of_paths; i++) {
+
+        cin.getline(Paths_list[i], PATH_MAX_LENGTH);
+
+        // remove empty spaces at the end
+        for (j=0; j<strlen(Paths_list[i]); j++) {
+          if (Paths_list[i][j] == ' ') {
+            Paths_list[i][j] = '\0';
+            break;
+          }                     
+        }
+
+        // show the path
+        if ( verbose == TRUE )
+          cout << '[' << Paths_list[i] << ']' << '\n';
+      }
+
+      break;
+
+    case output_file:         // name of the output file
+          
+      // get the name of the output_file from the line
+      sscanf(line, "%s %s", token, Output_filename);
+
+      break;
+
+    case verbose_level:      // verbose level 0-4
+          
+      // get the verbose level
+      sscanf(line, "%s %d", token, &verbose);
+          
+      break;
+
+    case max_events:          // maximum number of events
+          
+      // get the number of events
+      sscanf(line, "%s %d", token, &max_Events);
+          
+      break;
+
+    case end_file:            // end of the parameters file
+
+      // show a short message
+      is_end = TRUE;
+
+      break;
+
+    } // switch ( i ) 
+
+  } // while (! is_end)
+
+  // after the loop is finished, return to the main function
+  return;
+}
+// @endcode
+
+
+//------------------------------------------------------------
+// @name get_num_of_paths                 
+//                                                
+// @desc get number of defined paths
+//
+// @date Sat Jun 27 05:58:56 MET DST 1998
+// @function @code 
+//--------------------------------------------------
+// get_num_of_paths
+//
+// get number of defined paths
+//--------------------------------------------------
+int
+get_num_of_paths(void)
+{
+  return (Num_of_paths);
+}
+// @endcode
+
+
+//------------------------------------------------------------
+// @name get_path_name
+//                                                
+// @desc get path name number "i" from the list of paths
+//
+// @date Sat Jun 27 05:58:56 MET DST 1998
+// @function @code 
+//--------------------------------------------------
+// get_path_name
+//
+// get path name number "i" from the list of paths
+//--------------------------------------------------
+char *
+get_path_name(int i)
+{
+  return (Paths_list[i]);
+}
+// @endcode
+
+
+//------------------------------------------------------------
+// @name get_output_filename
+//                                                
+// @desc get name of the output file
+//
+// @date Sat Jun 27 05:58:56 MET DST 1998
+// @function @code 
+//--------------------------------------------------
+// get_output_filename
+//
+// get name of the output file
+//--------------------------------------------------
+char *
+get_output_filename(void)
+{
+  return (Output_filename);
+}
+// @endcode
+
+
+//------------------------------------------------------------
+// @name get_verbose
+//                                                
+// @desc get the "verbose" status
+//
+// @date Sat Jun 27 05:58:56 MET DST 1998
+// @function @code 
+//--------------------------------------------------
+// get_verbose
+//
+// get the "verbose" status
+//--------------------------------------------------
+int
+get_verbose(void)
+{
+  return (verbose);
+}
+// @endcode
+
+
+//------------------------------------------------------------
+// @name get_max_event              
+//                                          
+// @desc get max events number
+//
+// @date Sat Jun 27 05:58:56 MET DST 1998
+// @function @code 
+//--------------------------------------------------
+// get_max_event
+//
+// get max events number
+//--------------------------------------------------
+int 
+get_max_events(void)
+{
+  return( max_Events );
+}
+// @endcode
+
+
+//------------------------------------------------------------
+// @name thick       
+//                                          
+// @desc converts height [cm] -> thickness [g cm-2]
+//
+// @date Sat Jun 27 05:58:56 MET DST 1998
+// @function @code 
+//--------------------------------------------------
+// thick
+//
+// converts height [cm] -> thickness [g cm-2]
+//--------------------------------------------------
+
+float 
+thick( float height, float theta )
+{
+  float h, thk;
+
+  // Ibarra's modification
+  h = sqrt( SQR(REarth) + 
+            SQR(height/cos(theta)) + 
+            (2.0*REarth*height)) - REarth;
+
+  if     ( h < 4.e5 ) {
+    thk = AATM[0] + BATM[0] * exp ( -h * DATM[0] );
+  } else if ( h < 1.e6 ) {
+    thk = AATM[1] + BATM[1] * exp ( -h * DATM[1] );
+  } else if ( h < 4.e6 ) {
+    thk = AATM[2] + BATM[2] * exp ( -h * DATM[2] );
+  } else if ( h < 1.e7 ) {
+    thk = AATM[3] + BATM[3] * exp ( -h * DATM[3] );
+  } else {
+    thk = AATM[4] - h * CATM[4];
+  }
+
+  return ( thk );
+
+}
+// @endcode
+
+//------------------------------------------------------------
+// @name height   
+//                                          
+// @desc converts thickness [g cm-2] -> height [cm]
+//
+// @date Sat Jun 27 05:58:56 MET DST 1998
+// @function @code 
+//--------------------------------------------------
+// height
+//
+// converts thickness [g cm-2] -> height [cm]
+//--------------------------------------------------
+
+float 
+height( float thk, float theta )
+{
+  float h, height;
+
+  if     ( thk > 631.1e0 ) {
+    h = CATM[0] * log ( BATM[0] / (thk - AATM[0]) );
+  } else if ( thk > 271.7e0 ) {
+    h = CATM[1] * log ( BATM[1] / (thk - AATM[1]) );
+  } else if ( thk > 3.0395e0 ) {
+    h = CATM[2] * log ( BATM[2] / (thk - AATM[2]) );
+  } else if ( thk > 0.00128292e0 ) {
+    h = CATM[3] * log ( BATM[3] / (thk - AATM[3]) );
+  } else {
+    h = (AATM[4] - thk) * DATM[4];
+  }
+  
+  // Ibarra's modification
+  height = SQR(cos(theta)) * 
+    (-REarth + sqrt(SQR(REarth) + 
+                    (SQR(h + (2.0*REarth*h))/SQR(cos(theta)))));
+
+  return ( height );
+
+}
+// @endcode
+ 

@@ -1,0 +1,18 @@
+macro doit read=0
+
+if ([read].eq.1) then
+n/cre 1 ''  11 ! ! trig qe q0 rings npix time lons ncomb prob rate atr
+n/read 1 atr.out
+endif
+ 
+opt logy
+
+null 0 8 1e-3 1e6
+
+cut $1 rings=6.and.time=10.and.trig=-4 
+
+set dmod 1;n/pl 1.atr%q0 $1.and.qe=17 ! ! ! ls
+set dmod 2;n/pl 1.atr%q0 $1.and.qe=45 ! ! ! ls
+set dmod 3;n/pl 1.atr%q0 $1.and.qe=80 ! ! ! ls
+
+return

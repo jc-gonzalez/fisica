@@ -1,0 +1,29 @@
+# style <name> [= <name>]
+# {
+#   <option>
+# }
+#
+# widget <widget_set> style <style_name>
+# widget_class <widget_class_set> style <style_name>
+
+pixmap_path "/usr/users/gonzalez/detector/tests/"
+
+style "ruler"
+{
+  font = "-adobe-helvetica-medium-r-normal--*-80-*-*-*-*-*-*"
+}
+
+style "default"
+{
+  font = "-adobe-times-medium-r-normal-*-14-*-*-*-*-*-*-*"
+}
+
+style "nice"
+{
+  bg_pixmap[NORMAL] = "bg.xpm"
+  font = "-adobe-times-medium-r-normal-*-14-*-*-*-*-*-*-*"
+}
+
+widget_class "*Ruler*" style "ruler"
+widget_class "*" style "default"
+

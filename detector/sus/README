@@ -1,0 +1,21 @@
+
+SuS v 1.0 - Simple source files documentation system
+
+
+REQUIREMENTS
+************
+ - Perl 5.003 or above
+
+INSTALL
+*******
+ - Change in the first line the directory where Perl will be
+   found.
+ - Copy it to, for example /usr/local/bin
+
+HOW TO CONTACT THE AUTHOR
+*************************
+ For suggestions, contributions, bug reports (aka undocumented features),
+ happy users reports:
+ e-mail: gonzalez@mppmu.mpg.de
+ WWW:    http://hegra1.mppmu.mpg.de:8000/~gonzalez
+

@@ -1,0 +1,218 @@
+BODY {
+    background-color: white; 
+}
+
+H1 {
+    text-align: center;
+    font-family: sans-serif; 
+    font-weight: bold;
+    }
+
+H2 {
+    margin-left: 0.5cm; 
+    margin-right: 0.5cm;
+    color: white; 
+    font-family: helvetica; 
+    font-weight: bold;
+    background-color: darkblue; 
+    border: single;
+    padding: 2px 50% 2px 2px;
+    } 
+
+H3 {
+    margin-left: 0.7cm; 
+    margin-right: 0.5cm;
+    font-family: times;
+    font-style: italic; 
+    color: navy; 
+    background-color: silver; 
+    background-image: none; 
+    border: single;
+    }
+
+h4, h5, h6, th { 
+    font-family:	sans-serif; 
+    margin-left:        1cm; 
+}
+
+HR {
+    margin-left: 1cm; margin-right: 1cm;
+    }
+
+HR.small {
+          margin-left: 4cm; margin-right: 4cm; color: blue;
+          }
+
+P {
+   margin-left: 1cm; margin-right: 1cm;
+   }
+ 
+BLOCKQUOTE {
+            margin-left: 0.2cm; margin-right: 0.2cm;
+            } 
+
+.table {
+         margin-left: 0.5cm; 
+         margin-right: 0.2cm;
+         background-color: #AAA
+//         border: dashed 1px;
+//         padding: 4px;
+         } 
+
+P.table {
+         text-align: center;
+         margin-left: 1.2cm; 
+         margin-right: 1.2cm;
+         border: dashed 1px;
+         padding: 4px;
+         } 
+
+P, DIV, UL, DL, DD, PRE, OL, LI, ADDRESS	{
+	color: black;
+	}
+
+DT {
+   color: blue;
+}
+
+.blue {
+       color: blue;
+       }
+
+.red {
+      color: red;
+      }
+
+.green {
+        color: olive;
+        }
+
+.purple {
+         color: purple;
+         }
+
+ADDRESS.myaddress {
+                  margin-left: 0.5cm;
+		  font-family: sans-serif; 
+		  font-size: small;
+                  color: black; 
+                  } 
+
+A, ADDRESS, BLOCKQUOTE, BODY, CITE, CODE, DD, DEL, DFN, DIV,
+DL, DT, EM, FORM, H4, H5, H6, IFRAME, IMG, KBD,
+LI, OBJECT, OL, P, Q, SAMP, SMALL, SPAN, STRONG, SUB, SUP,
+UL, VAR, APPLET, BIG, CENTER, DIR, FONT, HR, MENU, PRE,
+ABBR, ACRONYM, BDO, BUTTON, FIELDSET, INS, LABEL, LEGEND {
+      word-spacing: normal; 
+      letter-spacing: normal;
+      text-transform: none; 
+      text-decoration: none; 
+      border-color: #999; 
+      border-style: none; }
+
+BODY	{	
+	color:	black;
+	}	
+
+STRONG	{	
+	font-style:	normal;
+	font-weight:	bold;
+	color:	black;
+	}	
+		
+EM	{	
+	font-style:	italic;
+	font-weight:	bold;
+	color:	black;
+	}	
+		
+EM STRONG, STRONG EM	{	
+	text-transform:	uppercase;
+	font-style:	normal;
+	font-weight:	bolder;
+	color:	black;
+	}	
+		
+B	{
+	font-weight:	bold;
+	}
+	
+I	{
+	font-style:	italic;
+	}
+		
+.warning	{	
+	text-transform:	none;
+	font-style:	normal;
+	font-weight:	bolder;
+	background:	#FF0;
+	color:	red;
+	}	
+		
+.explain	{	
+    margin-left: 1.2cm; 
+    margin-right: 1.0cm;
+    border: dashed 1px;
+    padding: 4px;
+	background:	#CDF;
+	}	
+		
+DEL	{	
+	text-decoration:	line-through;
+	background:	#FC6;
+	}	
+		
+INS	{	
+	text-decoration:	none;
+	background:	9F3;
+	}	
+		
+VAR, CITE, DFN, .note	{	
+	font-style:	italic;
+	}	
+		
+ADDRESS	{	
+	font-style:	normal;
+	letter-spacing:	.1em;
+	}	
+		
+ACRONYM	{	
+	font-variant:	small-caps;
+	letter-spacing:	0.1em;
+	}	
+		
+H4, H5, H6, LEGEND, CAPTION, TH, THEAD, TFOOT	{	
+	color:	#242;
+	}	
+
+A:link	{	
+	text-decoration:	none;
+	font-weight:	bold; 
+	color:	#E42;
+	}	
+		
+A:visited	{	
+	text-decoration:	none;
+	font-weight:	bold;
+	color:	#338;
+	}	
+		
+A:active	{	
+	text-decoration:	none;
+	font-weight:	bold;
+	color:	black;
+	background:	#CCF;
+	}	
+		
+A:hover	{	
+	text-decoration:	none;
+	color:	#FFFFF5;
+	background:	#CCF;
+	}	
+		
+A.offsite	{	
+	text-decoration:	none;
+	font-weight:	normal;
+	color:	#33F;
+	}	
+		

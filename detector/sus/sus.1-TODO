@@ -1,0 +1,145 @@
+.ds RP Release 1.0 Patchlevel 00
+.rn '' }`
+''' $RCSfile$$Revision$$Date$
+''' 
+''' $Log$
+# Revision 1.2  1997/06/20  13:41:39  gonzalez
+# *** empty log message ***
+#
+''' Revision 1.1  1997/06/20 11:39:28  gonzalez
+''' Initial revision
+'''
+.de Sh
+.br
+.ne 5
+.PP
+\fB\\$1\fR
+.PP
+..
+.de Sp
+.if t .sp .5v
+.if n .sp
+..
+.de Ip
+.br
+.ie \\n.$>=3 .ne \\$3
+.el .ne 3
+.IP "\\$1" \\$2
+..
+'''
+'''     Set up \*(-- to give an unbreakable dash;
+'''     string Tr holds user defined translation string.
+'''     Bell System Logo is used as a dummy character.
+'''
+.tr \(*W-|\(bv\*(Tr
+.ie n \{\
+.ds -- \(*W-
+.if (\n(.H=4u)&(1m=24u) .ds -- \(*W\h'-12u'\(*W\h'-12u'-\" diablo 10 pitch
+.if (\n(.H=4u)&(1m=20u) .ds -- \(*W\h'-12u'\(*W\h'-8u'-\" diablo 12 pitch
+.ds L" ""
+.ds R" ""
+.ds L' '
+.ds R' '
+'br\}
+.el\{\
+.ds -- \(em\|
+.tr \*(Tr
+.ds L" ``
+.ds R" ''
+.ds L' `
+.ds R' '
+'br\}
+.TH ATOMFAX 1 LOCAL
+.SH NAME
+atomfax - Generador de portadas de Fax para el Dpto. Fisica Atomica
+.SH SINOPSIS
+.B atomfax [options]
+.SH DESCRIPCION
+.I Atomfax
+genera portadas para ser utilizadas en envios de fax cuyo remitente
+pertenezca al Departamento de Fisica Atomica, Molecular y Nuclear
+de la Facultad de CC. Fisicas de la Universidad Complutense de Madrid.
+.PP
+.I Atomfax
+puede ser utilizado de manera interactiva con el usuario, o a traves
+de opciones en la linea de comandos.
+.Sh "Opciones"
+Las opciones disponibles son:
+.TP 5
+.B \-h 
+muestra la lista de comandos disponibles.
+.TP 5
+.B \-d <nombre-remitente>
+nombre de la persona que envia el fax.
+.TP 5
+.B \-d <nombre-destinatario>
+nombre de la persona a la que va dirigido el fax.
+.TP 5
+.B \-p <num.total-paginas>
+especifica el numero total de paginas a enviar, incluida la portada.
+.TP 5
+.B \-a <cadena-asunto1> <cadena-asunto2>
+especifica el asunto al que se refiere el contenido del fax. Han de
+incluirse dos cadenas de no mas de 40 caracteres cada una. Si el
+.I asunto 
+es suficientemente corto como para ponerlo en una sola cadena, debe
+especificarse la segunda cadena como una cadena vacia:
+.sp 
+atomfax -r 'Yo' -d 'El' -a 'Asunto' '' -p 2 -t textofax.txt -f myfax
+.TP 5
+.B \-t <fichero-texto>
+fichero con el texto a enviar en el cuerpo de la portada, describiendo
+brevemente el contenido del envio.
+.TP 5
+.B \-f <fichero-salida-sin-extension>
+nombre del fichero (sin extension) que servira de base para los
+nombres completos de los ficheros generados. Si el se especifica, por
+ejemplo, 
+.I \-f myfax
+, los ficheros generados seran,
+.I myfax.tex
+, 
+.I myfax.dvi
+y
+.I myfax.ps.
+.Sh "Consideraciones"
+.I Atomfax 
+no inspecciona las longitudes de las cadenas que el usuario
+proporciona, por lo que si cualquiera de ellas sobrepasa los 40
+caracteres, los resultados pueden ser inesperado.
+.PP
+En el fichero con el texto que formara en cuerpo de la portada, se
+aconseja que tenga el siguiente formato
+
+.br
+          [- - - linea en blanco - - -]
+.br
+     Estimado amigo
+.br
+          [- - - linea en blanco - - -]
+.br
+     Adjunto le remito la informacion que usted me pidio en su carta de
+     fecha tal, y tal...
+
+.br
+     etc...
+
+.br
+     Fulanito de Tal
+.PP
+Es decir, justo antes y despues del saludo es 
+.I muy
+conveniente insertar una linea en blanco.
+.Sh "Ejemplo"
+.sp
+# atomfax -r 'Yo' -d 'El' -a 'Asunto' '' -p 2 -t textofax.txt -f myfax
+.SH ENTORNO
+.I Atomfax
+no utiliza por el momento variales de entorno.
+.SH AUTOR
+J.C.Gonzalez <gonzalez@gae.ucm.es>
+.SH FICHEROS
+.SH VER TAMBIEN
+.SH DIAGNOSTICOS
+.SH BUGS
+.rn }` ''

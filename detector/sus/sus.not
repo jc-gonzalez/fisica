@@ -1,0 +1,288 @@
+Content-Type: text/enriched
+Text-Width: 70
+
+#####################################################-*-enriched-*-####
+# sus.not                                             
+# J C Gonzalez
+#######################################################################
+
+
+List of SuS commands:
+
+
+Almost all the SuS commands must be in a special block (comment
+starting with /*! or //!).
+
+
+<x-color><param>Blue</param>* Header commands</x-color>
+
+
+<x-color><param>DarkGoldenrod</param>** File/applications commands</x-color>
+
+<x-color><param>Purple</param>*** Name of the file</x-color>
+
+<x-color><param>Orchid</param>****    @file filename</x-color>
+
+<x-color><param>Purple</param>*** Name of the application</x-color>
+
+<x-color><param>Orchid</param>****    @app appname</x-color>
+
+<x-color><param>Purple</param>*** Title of the document</x-color>
+
+<x-color><param>Orchid</param>****    @title title</x-color>
+
+<x-color><param>Purple</param>*** Short description</x-color>
+
+<x-color><param>Orchid</param>****    @desc description</x-color>
+
+<x-color><param>Purple</param>*** Name of the author</x-color>
+
+<x-color><param>Orchid</param>****    @author authorname</x-color>
+
+<x-color><param>Purple</param>*** E-mail address</x-color>
+
+<x-color><param>Orchid</param>****    @email authorname</x-color>
+
+<x-color><param>Purple</param>*** Date</x-color>
+
+<x-color><param>Orchid</param>****    @date date</x-color>
+
+<x-color><param>Purple</param>*** Execution of main title</x-color>
+
+<x-color><param>Orchid</param>****    @maintitle</x-color>
+
+<x-color><param>Purple</param>*** ... with cover page</x-color>
+
+<x-color><param>Orchid</param>****    @coverpage</x-color>
+
+
+<x-color><param>DarkGoldenrod</param>** Function commands</x-color>
+
+<x-color><param>Purple</param>*** Declaration of a function</x-color>
+
+<x-color><param>Orchid</param>****    @fn name</x-color>
+
+<x-color><param>Purple</param>*** Short description</x-color>
+
+<x-color><param>Orchid</param>****    @desc description</x-color>
+
+<x-color><param>Purple</param>*** Declaration of arguments</x-color>
+
+<x-color><param>Orchid</param>****    @arg name description</x-color>
+
+<x-color><param>Purple</param>*** Returning value</x-color>
+
+<x-color><param>Orchid</param>****    @return value description</x-color>
+
+<x-color><param>Purple</param>*** Author name</x-color>
+
+<x-color><param>Orchid</param>****    @author name</x-color>
+
+<x-color><param>Purple</param>*** Date</x-color>
+
+<x-color><param>Orchid</param>****    @date date</x-color>
+
+
+<x-color><param>Blue</param>* Sectioning commands</x-color>
+
+ 
+
+<x-color><param>DarkGoldenrod</param>** Start section</x-color>
+
+<x-color><param>Purple</param>*** Short form</x-color>
+
+<x-color><param>Orchid</param>****    @> ... .</x-color>
+
+<x-color><param>Purple</param>*** Long form:</x-color>
+
+<x-color><param>Orchid</param>****    @section ... .</x-color>
+
+
+<x-color><param>DarkGoldenrod</param>** Start subsection</x-color>
+
+<x-color><param>Purple</param>*** Short form</x-color>
+
+<x-color><param>Orchid</param>****    @>> ... .</x-color>
+
+<x-color><param>Purple</param>*** Long form:</x-color>
+
+<x-color><param>Orchid</param>****    @subsection ... .</x-color>
+
+
+<x-color><param>DarkGoldenrod</param>** Start subsubsection</x-color>
+
+<x-color><param>Purple</param>*** Short form</x-color>
+
+<x-color><param>Orchid</param>****    @>>> ... .</x-color>
+
+<x-color><param>Purple</param>*** Long form:</x-color>
+
+<x-color><param>Orchid</param>****    @subsubsection ... .</x-color>
+
+
+<x-color><param>DarkGoldenrod</param>** Start paragraph</x-color>
+
+<x-color><param>Purple</param>*** Short form</x-color>
+
+<x-color><param>Orchid</param>****    @>>>> ... .</x-color>
+
+<x-color><param>Purple</param>*** Long form:</x-color>
+
+<x-color><param>Orchid</param>****    @paragraph ... .</x-color>
+
+
+
+<x-color><param>Blue</param>* Text, paragraphs</x-color>
+
+
+<x-color><param>DarkGoldenrod</param>** Text block</x-color>
+
+<x-color><param>Purple</param>*** Short form</x-color>
+
+<x-color><param>Orchid</param>****    /*! @" ... @" */</x-color>
+
+<x-color><param>Orchid</param>****    //! @"  and // @"</x-color>
+
+<x-color><param>Purple</param>*** Long form:</x-color>
+
+<x-color><param>Orchid</param>****    /*! @text ... @endtext */</x-color>
+
+<x-color><param>Orchid</param>****    //! @text  and // @endtext</x-color>
+
+
+<x-color><param>DarkGoldenrod</param>** Text inside a code block</x-color>
+
+<x-color><param>Purple</param>*** Short form</x-color>
+
+<x-color><param>Orchid</param>****    @' and @'</x-color>
+
+<x-color><param>Purple</param>*** Long form:</x-color>
+
+<x-color><param>Orchid</param>****    @comment and @endcomment</x-color>
+
+
+<x-color><param>DarkGoldenrod</param>** Commenting preceding declaration/member (in same line)</x-color>
+
+<x-color><param>Purple</param>*** Short form</x-color>
+
+<x-color><param>Orchid</param>****    /*! @<< ... */</x-color>
+
+<x-color><param>Orchid</param>****    //! @<< ...</x-color>
+
+
+<x-color><param>DarkGoldenrod</param>** Commenting next declaration/member (just one line)</x-color>
+
+<x-color><param>Purple</param>*** Short form</x-color>
+
+<x-color><param>Orchid</param>****    /*! @: ... */</x-color>
+
+<x-color><param>Orchid</param>****    //! @: ...</x-color>
+
+
+<x-color><param>DarkGoldenrod</param>** Footnotes</x-color>
+
+<x-color><param>Purple</param>*** Short form</x-color>
+
+<x-color><param>Orchid</param>****    @# ... @#</x-color>
+
+<x-color><param>Purple</param>*** Long form:</x-color>
+
+<x-color><param>Orchid</param>****    @footnote ... @endfootnote</x-color>
+
+
+<x-color><param>DarkGoldenrod</param>** Equations</x-color>
+
+<x-color><param>Purple</param>*** Small equation</x-color>
+
+<x-color><param>Orchid</param>****    @$ ... @$</x-color>
+
+<x-color><param>Purple</param>*** Long equation</x-color>
+
+<x-color><param>Orchid</param>****    @[ ... @]</x-color>
+
+
+<x-color><param>Blue</param>* Code blocks</x-color>
+
+
+<x-color><param>DarkGoldenrod</param>** Small elements of code inside a text block</x-color>
+
+<x-color><param>Purple</param>*** Short form</x-color>
+
+<x-color><param>Orchid</param>****    |...|</x-color>
+
+
+<x-color><param>DarkGoldenrod</param>** Long blocks of code inside text blocks </x-color>
+
+<x-color><param>Purple</param>*** Short form</x-color>
+
+<x-color><param>Orchid</param>****    @% ... @%</x-color>
+
+<x-color><param>Purple</param>*** Long form</x-color>
+
+<x-color><param>Orchid</param>****    @tcode ... @endtcode</x-color>
+
+
+<x-color><param>DarkGoldenrod</param>** Code outside text blocks</x-color>
+
+<x-color><param>Purple</param>*** Short form</x-color>
+
+<x-color><param>Orchid</param>****    /*! @{ ... @} */</x-color>
+
+<x-color><param>Orchid</param>****    //! @{ and // @}</x-color>
+
+<x-color><param>Purple</param>*** Long form:</x-color>
+
+<x-color><param>Orchid</param>****    /*! @code ... @endcode */</x-color>
+
+<x-color><param>Orchid</param>****    //! @code and // @endcode</x-color>
+
+
+<x-color><param>Blue</param>* Miscelaneous commands</x-color>
+
+
+<x-color><param>DarkGoldenrod</param>** Tables of contents, of figures, ...</x-color>
+
+<x-color><param>Purple</param>*** Table of contents</x-color>
+
+<x-color><param>Orchid</param>****    @tableofcontents</x-color>
+
+<x-color><param>Purple</param>*** List of tables</x-color>
+
+<x-color><param>Orchid</param>****    @list of tables</x-color>
+
+<x-color><param>Purple</param>*** List of figures</x-color>
+
+<x-color><param>Orchid</param>****    @listoffigures</x-color>
+
+
+<x-color><param>DarkGoldenrod</param>** Specials</x-color>
+
+<x-color><param>Purple</param>*** TeX/LaTeX specials</x-color>
+
+<x-color><param>Orchid</param>****    @T ... @T</x-color>
+
+<x-color><param>Purple</param>*** HTML Specials</x-color>
+
+<x-color><param>Orchid</param>****    @H ... @H</x-color>
+
+<x-color><param>Purple</param>*** Include external files</x-color>
+
+<x-color><param>Orchid</param>****    @include</x-color>
+
+
+
+
+
+
+<x-color><param>Blue</param>*  Local variables</x-color>
+
+
+# Local Variables: #
+# mode: outline #
+# mode: enriched #
+# comment-column:0 #
+# comment-start:"#"  #
+# comment-end:"#" #
+# End: #
+
+

@@ -1,0 +1,135 @@
+macro chk load=1
+
+if ([load].eq.1) then
+
+n/cre 1 '' 6 ! ! w h tr trr trm tro
+n/read 1 chk-global.out
+2d 10 'Total Absorption' 31 290 600 60 2. 62.
+h/copy 10 11 'Rayleigh Scattering'
+h/copy 10 12 'Mie (Aerosol) Absorption'
+h/copy 10 13 'Ozone Absorption'
+h/copy 10 20
+h/copy 11 21
+h/copy 12 22
+h/copy 13 23
+
+endif
+
+h/op/reset 10,11,12,13,20,21,22,23
+
+n/proj 10 1.h/100000%w tr
+n/proj 11 1.h/100000%w trr
+n/proj 12 1.h/100000%w trm
+n/proj 13 1.h/100000%w tro
+n/proj 20 1.h/100000%w (1.-tr)
+n/proj 21 1.h/100000%w (1.-trr)
+n/proj 22 1.h/100000%w (1.-trm)
+n/proj 23 1.h/100000%w (1.-tro)
+
+set mtyp 1
+
+exe pson
+
+*============================================================
+angle 20 105
+*============================================================
+*--------------------
+exe newpage 'CHECK: Rayleigh Scattering : Transmission'
+exe simpleon;n/pl 1.trr%h/100000 ! ! ! ! s;exe simpleoff 10
+exe dozcol 11
+exe dosurf 11 
+*--------------------
+exe newpage 'CHECK: Mie (Aerosol) Absorption : Transmission'
+exe simpleon;n/pl 1.trm%h/100000 ! ! ! ! s;exe simpleoff 10
+exe dozcol 12
+exe dosurf 12
+*--------------------
+exe newpage 'CHECK: Ozone Absorption : Transmission'
+exe simpleon;n/pl 1.tro%h/100000 ! ! ! ! s;exe simpleoff 10
+exe dozcol 13
+exe dosurf 13
+*--------------------
+exe newpage 'CHECK: TOTAL ABSORPTION : Transmission'
+exe simpleon;n/pl 1.tr%h/100000 ! ! ! ! s;exe simpleoff 10
+exe dozcol 10
+exe dosurf 10
+*--------------------
+*============================================================
+angle 35 -20
+*============================================================
+*--------------------
+exe newpage 'CHECK: Rayleigh Scattering : Absorption'
+exe simpleon;n/pl 1.(1-trr)%h/100000 ! ! ! ! s;exe simpleoff 20
+exe dozcol 21
+exe dosurf 21 -20
+*--------------------
+exe newpage 'CHECK: Mie (Aerosol) Absorption : Absorption'
+exe simpleon;n/pl 1.(1-trm)%h/100000 ! ! ! ! s;exe simpleoff 20
+exe dozcol 22
+exe dosurf 22 -20
+*--------------------
+exe newpage 'CHECK: Ozone Absorption : Absorption'
+exe simpleon;n/pl 1.(1-tro)%h/100000 ! ! ! ! s;exe simpleoff 20
+exe dozcol 23
+exe dosurf 23 -20
+*--------------------
+exe newpage 'CHECK: TOTAL ABSORPTION : Absorption'
+exe simpleon;n/pl 1.(1-tr)%h/100000 ! ! ! ! s;exe simpleoff 20
+exe dozcol 20
+exe dosurf 20 -20
+*--------------------
+*============================================================
+
+
+exe psoff
+
+return
+
+
+
+
+macro newpage tit
+size 23 30
+zone 2 3 1
+title [tit]
+return
+
+macro simpleon
+null 1 70 0. 1.
+set dmod 1
+set lwid 5
+set plci 4
+return
+
+macro simpleoff id
+set dmod 2
+set lwid 1
+set plci 2
+dline 2.2 2.2 0 1
+if ([id].lt.15) then
+atitle 'Height (km)' 'Transmission'
+else   
+atitle 'Height (km)' 'Absorption'
+endif
+return
+
+macro dosurf id 
+zone 1 2 2 s
+set dmod 1
+set lwid 0
+h/pl [id] surf
+if ([id].lt.15) then
+atitle 'Wavelength (nm)' 'Height (km)' 'Transmission'
+else
+atitle 'Wavelength (nm)' 'Height (km)' 'Absorption'
+endif
+return
+
+macro dozcol id 
+h/pl [id] zcol
+if ([id].lt.15) then
+atitle 'Wavelength (nm)' 'Height (km)' 'Transmission'
+else
+atitle 'Wavelength (nm)' 'Height (km)' 'Absorption'
+endif
+return

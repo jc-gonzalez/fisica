@@ -1,0 +1,189 @@
+camera v1.1 - Program for the simulation of the camera of CT1/MAGIC
+Copyright (C) 1998, 1999 J.C.Gonzalez <gonzalez@mppmu.mpg.de>
+======================================================================
+
+This is the README file from the distribution of the program 
+camera v1.1.
+
+Please read the files NOTE, NEWS and TO-DO. 
+
+In principle, you should not have big problems to compile this
+program. If you have all you need, you just have to write 
+
+# make depend
+
+and then
+
+# make
+
+and that's it.
+
+
+DISCLAIMER
+===========
+
+This program is free software; you can redistribute, copy, modify, use
+it and its documentation for any purpose, provided that the above
+copyright notice appear in all copies and that both that copyright
+notice and this permission notice appear in supporting documentation.
+
+This piece of code is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of FITNESS
+FOR A PARTICULAR PURPOSE.
+
+
+FILES
+======
+
+This is the list of files included in this distribution. The first
+block of files is sorted in order of preference for reading.
+
+
+README            - This file
+NOTE              - Short file with some more information
+INSTALL           - Installation guidelines
+NEWS              - Short file with some information
+TO-DO             - Short list of things to do
+VERSION           - Version of this program
+AUTHORS           - List of authors
+
+Makefile          - Makefile for the compilation of the package
+config.mk         
+
+camera-v.h        - Version number for input/output files
+camera.cxx        - Source code file
+camera.h          - Source code file
+creadparam.cxx    - Source code file
+creadparam.h      - Source code file
+moments.cxx       - Source code file
+moments.h         - Source code file
+
+input.cpar        - Sample input parameters file
+
+
+REQUIREMENTS
+=============
+
+  - You will need the set of files in the package
+    'includes-1.1.tar.gz'.
+
+  - You will need the package 'reflector-1.1.tar.gz'.
+
+  - For the generation of the documentation out of the source code,
+    you will need the package 'sus-1.0.tar.gz'
+
+  - The CERN libraries (for the moment)
+
+  - The library RANLIB.C (RANLIB for C). RANLIB.C can be obtained from
+    statlib.  Send mail whose message is 'send ranlib.c.shar from
+    general' to statlib@lib.stat.cmu.edu. RANLIB.C can also be
+    obtained by anonymous ftp to odin.mda.uth.tmc.edu (129.106.3.17)
+    where is is available as /pub/unix/ranlib.c.tar.Z . 
+
+The suggested structure for the different directories, corresponding
+to these packages, is the following:
+
+        detector
+           |---- reflector
+           |---- camera
+           |---- data
+           |---- include
+           |---- include-COR
+           |---- include-MC
+           `---- include-util
+
+This is the structure used when building the source.
+
+
+DOCUMENTATION
+==============
+
+The documentation is still missing. Moreover, the available
+documentation extracted from the code is still imcomplete. Don't
+hesitate to contact the author for any doubt, but you should not
+expect, generally speaking, any kind of offline or online support.
+
+This piece of code comply with the SuS v0.52 system of source code
+self-documentation (you can find a copy of this document at
+http://hegra1.mppmu.mpg.de:8000/~gonzalez/cdoc/susdoc/susdoc.html).
+But it *does not* comply (yet) with the recommendations given in the
+document "Recommendations on writing self-documented source code" (you
+can find a copy of this document or browse it online at
+http://hegra1.mppmu.mpg.de:8000/~gonzalez/cdoc.html)
+
+
+COMPILATION
+============
+
+Read the file INSTALL for information about compiling the code.
+
+
+RUNNING THE PROGRAM
+====================
+
+In order to run the program you will need a parameters file. Then, you
+can do either:
+
+# camera < input.cpar
+
+or 
+
+# camera -@ input.cpar
+
+See the file input.cpar for an example of parameters file.
+
+
+FEATURES
+=========
+
+The following is a non-exhaustive list of features of camera v1.1: 
+
+o  Reads as input files *both* .rfl files (from reflector 1.x) and
+   .phe files (from camera itself), produced in previous runs of
+   camera.
+
+o  Produces as output files the following files:
+
+   - A .phe file (binary format) with information about the 
+     images produces in the camera.
+
+   - A .dat file (ASCII format) with more or less the same
+     information.
+
+   - A .hbook files (HBOOK, machine-independent binary format) with
+     information about the images obtained.
+
+   - Text output in the terminal.
+
+   - There is a primitive attempt of producing ASCII files with 
+     information about the timing of the Cherenkov photons in the
+     detection devices.
+
+o  Simulation of the NSB (can be disabled).
+
+o  Simulation of trigger logic (can be disabled).
+
+o  Simulation of tail-cut conditions (can be disabled).
+
+o  Image analysis using standard Hillas parameters, and others.
+
+o  Analysis of islands structure of the image.
+
+o  Possibility of reading data from disk files or from standard input.
+
+o  Possibility of writing output data to disk file or to standard output.
+
+o  Possibility of reading parameters from standard input or from
+   file selected in the command line through the command line option
+   '-@'
+
+o  Selection of different random numbers seeds
+
+o  Possibility of selecting an energy range for the input showers.
+
+o  Possibility of skipping pre-selected showers.
+
+o  Possibility of writing to output *all* the showers, no matter the
+   trigger condition imposed.
+
+

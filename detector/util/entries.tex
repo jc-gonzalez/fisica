@@ -1,0 +1,39 @@
+\usepackage{calc}
+\usepackage{ifthen}
+
+\newcommand{\enhance}[1]{{\scshape #1}}
+
+
+\newcommand{\entrylabel}[1]{\mbox{\enhance{#1:}}\hfil}
+\newenvironment{entry}%
+    {\begin{list}{}%
+        {\renewcommand{\makelabel}{\entrylabel}%
+        \setlength{\leftmargin}{\labelwidth+\labelsep}}}%
+    {\end{list}}
+
+\newenvironment{Ventry}[1]%
+    {\begin{list}{}{\renewcommand{\makelabel}[1]{\enhance{##1:}\hfil}%
+        \settowidth{\labelwidth}{\enhance{#1:}}%
+        \setlength{\leftmargin}{\labelwidth+\labelsep}}}%
+    {\end{list}}
+
+\newenvironment{Wentry}[1]%
+    {\begin{list}{}{\renewcommand{\makelabel}[1]{\enhance{##1:}\hfil}%
+        \setlength{\labelwidth}{#1}%
+        \setlength{\leftmargin}{\labelwidth+\labelsep}}}%
+    {\end{list}}
+
+\newlength{\Ulength}
+\newcommand{\Uentrylabel}[1]{%
+    \settowidth{\Ulength}{\enhance{#1:}}%
+    \ifthenelse{\lengthtest{\Ulength > \labelwidth}}%
+        {\parbox[b]{\labelwidth}%  term > labelwidth
+            {\makebox[0pt][l]{\enhance{#1:}}\\}}%
+        {\enhance{#1:}}%            term < labelwidth
+    \hfil\relax}
+\newenvironment{Uentry}[1]%
+    {\renewcommand{\entrylabel}{\Uentrylabel}%
+    \begin{entry}}%
+    {\end{entry}}
+
+\endinput

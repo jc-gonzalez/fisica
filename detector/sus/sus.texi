@@ -1,0 +1,612 @@
+\input epsf
+\input texinfo  @c -*-texinfo-*-
+
+@c %**start of header
+
+@c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@c SuS v 1.0 Documentation
+@c Copyright (c) 1998, J C Gonzalez
+@c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+@c ----- global variables ---------------------
+
+@set PROGRAM SuS
+@set VERSION 1.0
+@set DOCNAME    @value{PROGRAM}
+@set STATUS     1st draft
+@set LASTUPDATE September 1998
+@set TITLE      @value{PROGRAM} v @value{VERSION}
+@set SUBTITLE   Simple system for source code documentation
+@set AUTHOR     J C Gonzalez
+@set EMAIL      <gonzalez@@mppmu.mpg.de>
+@set COMPANY    Max-Planck-Institut for Physics, Munich
+@set ADDRESS1   Foehringer Ring 6
+@set ADDRESS2   D-80805 Munich, Germany
+
+@setfilename    sus.info
+@settitle       SuS v 1.0
+
+@c ----- Formatting ---------------------
+
+@iftex
+@afourpaper
+@end iftex
+
+@ifinfo
+@paragraphindent 0
+@end ifinfo
+
+@iftex
+@finalout
+@parindent=0pt
+@message{*** parskip changed ***}
+@parskip=5pt
+
+@c ----- Indexes ---------------------
+@c Define new indexes here with @defcodeindex or @defindex
+
+@defindex lf
+
+@c %**end of header
+
+@c --------------------------------------------
+@c - Title page 1: Title, Subtitle, Author(s) -
+@c -------------------------------------------- 
+
+@titlepage
+
+@title @value{TITLE}
+@subtitle @value{PROGRAM} v @value{VERSION}
+@subtitle @value{SUBTITLE}
+@subtitle Last update: @value{LASTUPDATE}
+@author @value{AUTHOR}
+@value{COMPANY}
+
+@c @iftex
+@c @tex
+@c \epsfbox{mpi-logo.eps}
+@c @end tex
+@c @end iftex 
+
+@c -------------------------------------------------------------------------
+@c - Title page 2: Keywords, Abstract, Author, Copyright, Acknowledgments -
+@c -------------------------------------------------------------------------
+
+@page
+@vskip 0pt plus 1filll
+
+
+@c - Keywords -
+
+@strong{Keywords:}@*
+@i{@value{PROGRAM}}@*
+@i{Documentation}@*
+@i{Source code}@*
+[{@value{DOCNAME} Documentation, @value{STATUS}, 
+Last update @value{LASTUPDATE}}, Printed @today{}]
+
+@c - Abstract - also appears on @top node!  Don't forget update there too!
+
+@sp 5
+@center @strong{Abstract}
+@quotation
+This is a short (incomplete) documentation for the program @value{PROGRAM}
+v. @value{VERSION}. Updates of this documentation, together with the program, 
+will be periodically available. Just send an e-mail to his author, to the 
+address @value{EMAIL}.
+@end quotation
+
+@c - Author(s) -
+
+@sp 2
+Author: @b{@value{AUTHOR}}@*
+@value{COMPANY} @*
+@value{ADDRESS1} @*
+@value{ADDRESS2} 
+
+@c - Copyright -
+
+@sp 1
+Copyright @copyright{} 1998 by @value{AUTHOR}. All Rights Reserved.
+
+@c - Acknowledgments -
+
+@b{Acknowledgments}:
+@c Thank you for that!
+
+@c Motif is a trademark of the Open Software Foundation, Inc.
+Unix is a registered trademark of AT&T.
+
+@end titlepage
+
+
+@c ------------
+@c - Headings -
+@c ------------
+
+@iftex
+@headings double
+@end iftex
+
+@c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+@c --------------------------------------
+@c - TOP: Beginning of body of document -
+@c --------------------------------------
+
+@ifinfo
+
+@node Top, Preface, (dir), (dir)
+@c    this, next, prev, up
+
+@top Sus version 1.0
+
+Copyright @copyright{} 1998 by J C Gonzalez. 
+All Rights Reserved.
+
+@center @strong{Abstract}
+@quotation
+This is a short (incomplete) documentation for the program
+Sus 1.0. Updates of this
+documentation, together with the program, will be
+periodically available. Just send an e-mail to his author,
+to the address <gonzalez@@mppmu.mpg.de>.
+@end quotation
+
+@menu
+* Preface::           What is and what is NOT SuS?
+* List of commands::  List of commands supported by SuS v 1.0
+* Sample files::      Examples in C++ and Fortran
+@end menu
+
+@end ifinfo
+
+@c --------------------
+@c - Preface
+@c --------------------
+
+@node Preface, List of commands, Top, Top
+@unnumbered Preface
+
+@c --------------------
+@c - What is SuS?
+@c --------------------
+
+@unnumberedsec What is SuS?
+@cindex What is SuS?
+
+What is SuS? SuS is a Perl script that takes commands inside
+the comments of your source files, interpret them, and write
+a LaTeX output file. Afterwards, you can compile this file
+in order to get the final documentation of your source code
+in @samp{.dvi} (and @samp{.ps}) format. 
+
+In this way, you can get easily a documented version of
+your source code. In the output files, you have normal text
+(that you wrote inside comments in your source files) and
+the actual code. The source code itself is a well documented 
+source file: SuS only put your comments in a nice way.
+
+In a near future, this program will work for almost any
+language, but in this version only C and C++ are fully
+supported. Fortran is also supported, provided that comment
+lines DO START start with the characters @samp{#} or @samp{@@}.
+
+@c --------------------
+@c - What is NOT?
+@c --------------------
+
+@unnumberedsec What is NOT?
+@cindex What is NOT?
+
+SuS is NOT a @strong{Literate Programming} Tool. For this
+purpose, you can have a look into @samp{Web}, @samp{noweb},
+@samp{fweb}, and many others. For further information, just
+look for the string '@code{web}' or '@code{literate
+programming}' in your favorite WWW finder.
+
+@c --------------------
+@c - Is there any sample file?
+@c --------------------
+
+@unnumberedsec Is there any sample file?
+@cindex Samples
+
+Yes, there are. At the end of this document you will find
+two simple source files, one in C++ and the other in
+Fortran. Both are really simple programs, but show you how
+to use the commands of SuS.
+
+
+@c -----------
+@c - SECTION I
+@c -----------
+
+@node List of commands, Sample files, Preface, Top
+@unnumbered List of commands supported by SuS
+@cindex Commands
+
+The following list of commands is updated for
+@value{PROGRAM} version @value{VERSION}.
+
+@table @code
+
+@item @@title <main_title>
+The rest of the line will be taken as the title of the
+document.
+
+@item @@desc <description>
+Defines a short description of what the program actually
+does.
+
+@item @@file <filename>
+Set the name of the current file.
+
+@item @@author <author(s)_name>
+Set the name of the author(s).
+
+@item @@email <author@@email.address>
+Set the e-mail address of the main author.
+
+@item @@date <date>
+Set the date.
+
+@item @@maintitle
+Generates the LaTeX header. In the printed version this
+implies the first two pages, one with the title of the
+program, and another with the copyright and the author name.
+The @emph{title}, @emph{author name}, @emph{e-mail address}
+and @emph{date} must be defined.
+
+@item @@header
+Short version of header for the file. It writes (centered)
+the @emph{title} and the @emph{author name}. Both must be
+already defined.
+
+@item @@pagestitle <title>
+Set the header for the pages.
+
+@item @@section <sec_name>
+Defines a section in the documentation.
+
+@item @@subsection <sub_sec_name>
+Defines a sub-section in the documentation.
+
+@item @@subsubsection <sub_sub_sec_name>
+Defines a sub-sub-section in the documentation.
+
+@item @@T <line>
+The line @code{<line>} is directly written to the LaTeX file.
+
+@item @@code @* ... @* @@endcode
+Defines a region of real code, which will be written in
+@code{fixed font} in the output file.
+
+@item @@text @* ... @* @@endtext
+Defines a region of text (outside any block @code{@@code
+... @@endcode}, which will be written in normal font.
+
+@item @@comment @* ... @* @@endcomment
+Defines a region of text, @strong{inside} a block
+@code{@@code ... @@endcode}, which will be written in normal
+font. (See Note 2 below).
+
+@item @@name 
+Defines the name of a function.
+
+@item @@function 
+Uses the values defined by @code{@@name}, @code{@@desc} and
+@code{@@date} and generated a header for this function in
+the output file. (See example in C++).
+
+@item @@tableofcontents
+Flag to print, at the end of the documentation, the Table of
+Contents, with the sections, sub-sections, defined
+functions, etc.
+                
+@item @@listoffigures
+Flag to print, at the end of the documentation, the List of
+Figures eventually defined in blocks @code{@@text ... @@endtext}.
+
+@item @@listoftables
+Flag to print, at the end of the documentation, the List of
+Tables eventually defined in blocks @code{@@text ... @@endtext}.
+
+@item @@bye
+Determines the end of the document. @strong{Mandatory}.
+
+@end table
+
+@*@*
+
+@b{Note 1}: All the commands must be included in
+@emph{comments}.
+
+@b{Note 2}: In a previous version of SuS, a block of text
+in the middle of a block of code had to be written in the
+following form:
+
+@example
+/* @@endcode
+   @@text
+   \paragraph@{My comment@}
+   This is the comment I wanted to put right here. This
+   block of text will be written in the output file as
+   normal text, in \it@{roman@} font. I can include here
+   a figure, if I want, or even equations, tables, ...
+   whatever!
+   @@endtext
+   @@code */   
+@end example
+
+In the current version, this can be done using a block 
+@code{@@comment ... @@endcomment}. This produces
+@strong{exactly} the same result:
+
+@example
+/* @@comment
+   \paragraph@{My comment@}
+   This is the comment I wanted to put right here. This
+   block of text will be written in the output file as
+   normal text, in \it@{roman@} font. I can include here
+   a figure, if I want, or even equations, tables, ...
+   whatever!
+   @@endcomment */   
+@end example
+
+@b{Note 3}: If you want to include page breaks in the output
+(documentation) file, use something like this:
+@example
+// @@T \newpage
+@end example
+
+@c -----------
+@c - SECTION II
+@c -----------
+
+@node Sample files, , List of commands, Top
+@unnumbered Sample files, in C++ and Fortran
+@cindex Samples
+
+@c --------------------
+@c - Samples : C++
+@c --------------------
+
+@unnumberedsec Sample source file in C++
+@cindex Sample C++
+@cindex C++
+
+Suppose you have a C++ file (@code{sample.cc}), with the following:
+
+@example
+////////////////////////////////////////////////////////////
+//
+// sample
+//
+// @@file        sample.cc
+// @@title       Sample source file
+// @@author      J C Gonzalez
+// @@email       gonzalez@@mppmu.mpg.de
+//
+// @@maintitle
+////////////////////////////////////////////////////////////
+//
+// @@tableofcontents
+
+// @@section About this program
+
+/* @@text
+
+   This program just writes the first @{\tt N@} integer
+   numbers, starting from 1, and their @{\tt k@}-power.
+   The syntax of this program is:\par
+   \centerline@{\tt sample <N> <k>@}
+   
+@@endtext */
+
+// @@section The code
+
+// @@subsection Included header files
+
+// @@code
+#include <iostream.hxx>
+#include <stdlib.h>
+// @@endcode
+
+// @@subsection Prototypes 
+
+// @@code
+int powk(int n, int k);
+// @@endcode
+
+
+// @@subsection Main program
+
+// @@code
+int
+main (int argc, char **argv)
+@{
+
+  // local variables 
+
+  register int i, j;
+  int n, k;
+
+  /* @@comment
+     This is a comment in the middle of the code. It could
+     be have written here, for example, to clarify some
+     special and/or tricky thing in the core of the code.
+     @@endcomment */
+
+  // check command line
+
+  if (argc<3) @{
+    cerr << "Syntax::  sample <n> <k>\n\n";
+    exit(1);
+  @}
+
+  // get input values
+
+  n = atoi(argv[1]);
+  k = atoi(argv[2]);
+  
+  // list the result
+
+  for ( i=1; i<=n; ++i )
+    cout << i << '\t' << powk(i,k) << '\n';
+
+  exit(0);
+@}
+// @@endcode
+
+// @@subsection Functions
+
+//------------------------------------------------------------
+// @@name powk
+//
+// @@desc Returns the power k of an integer number n
+//
+// @@date Wed Jul  8 15:25:39 MET DST 1998
+// @@function @@code -------------------------------------------
+int 
+powk(int n, int k)
+@{
+  register int j;
+  int m;
+
+  for ( j=1,m=n; j<k; j++,m*=n );
+
+  return (m);
+@}
+// @@endcode
+@end example
+
+(To be an example, it's a file rather long, isn't it? ;)
+
+You can see inside the code, in the comments, some
+TeXinfo-like commands (those starting with @@). These
+commands are use by SuS to give the format to your final
+documented source code. These commands do not interfere with
+your program: they are in the comments!
+
+To get the @samp{.tex}, @samp{.dvi} and @samp{.ps} files,
+the following sequence of commands is needed:
+
+@example
+# sus.pl sample.cc > sample.tex 
+# latex sample.tex
+# dvips sample.dvi -o sample.ps
+@end example
+
+and that's all!!
+
+@b{Note}: SuS take the files from the standard input. Then,
+you can construct a single documentation file for a group of
+source files.
+
+@example
+# sus.pl < main.c module1.c module2.c miheader.h > miprogram.tex 
+# latex miprogram.tex
+# dvips miprogram.dvi -o miprogram.ps
+@end example
+
+
+@c --------------------
+@c - Samples : Fortran
+@c --------------------
+
+@unnumberedsec Sample source file in Fortran
+@cindex Sample Fortran
+@cindex Fortran
+
+The following Fortran file will be also correctly parsed by
+SuS.
+
+@example
+@@============================================================
+@@
+@@ sample
+@@
+@@ @@file        sample.f
+@@ @@title       Sample source file (Fortran)
+@@ @@desc        Sample source file, coded in Fortran.
+@@ @@author      J C Gonzalez
+@@ @@email       gonzalez@@mppmu.mpg.de
+@@
+@@ @@maintitle
+@@============================================================
+@@
+@@ @@tableofcontents
+
+@@ @@section About this program
+
+@@ @@text
+@@
+@@   This program is just a stupid loop, and it's only 
+@@   to show you that also Fortran files can be parsed 
+@@   by \SuS\ v 1.0
+@@
+@@ @@endtext 
+
+@@ @@section The code
+
+@@ @@subsection Main program
+
+@@ @@code
+
+      program main
+
+      integer i
+      real x
+
+      x=2
+
+@@ @@comment
+@@
+@@     This is a comment in the middle of the code. It could
+@@     be have written here, for example, to clarify some
+@@     special and/or tricky thing in the core of the code.
+@@
+@@ @@endcomment
+
+      do 10 i=1,10
+        x=x*i
+        print *, i, x
+ 10   continue
+
+      end
+
+@@ @@endcode
+
+@end example
+
+I agree, it's not very interesting, but it shows you the
+possibility of using SuS also in Fortran files.
+
+@c ---------------------
+@c - Table of contents -
+@c ---------------------
+
+@c @summarycontents
+@contents
+
+@bye
+
+@c ----------------------------------------------------------------------
+@c END OF FILE
+@c ----------------------------------------------------------------------
+
+@c Local Variables:
+@c texinfo-tex-command: "tex"
+@c texinfo-start-of-header: "%**start"
+@c texinfo-end-of-header: "%**end"
+@c fill-column: 60
+@c End:
+
+
+
+
+
+
+
+

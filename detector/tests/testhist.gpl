@@ -1,0 +1,37 @@
+#! /usr/local/bin/gnuplot
+
+set term postscript
+set output "testhist.ps"
+
+set grid
+
+plot "original.oc" title "Original" with steps
+
+pause -1
+
+plot "pulse.oc" title "Pulse response" with lines
+
+pause -1
+
+plot "convolution.oc" title "Convoluted response" with lines
+
+pause -1
+
+set logscale y
+
+plot "original.oc" title "Original" with steps, \
+     "pulse.oc" title "Pulse response" with lines, \
+     "convolution.oc" title "Convoluted response" with lines
+
+pause -1
+
+set output 
+set term x11
+
+
+
+#--------------------
+# Local variables:
+# mode: sh
+# End:
+#--------------------

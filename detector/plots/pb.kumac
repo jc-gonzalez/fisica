@@ -1,0 +1,90 @@
+macro pb print file=o x1=0.8 x2=1.3 y1=-0.25 y2=0.25
+
+n/cre 1 '' 3 ! ! x y p
+n/read 1 [file]
+
+if ([print]) then
+exe pson [file].ps
+endif
+
+size 30 30
+zone 2 2
+set *wid 1
+set mtyp 1
+
+null [x1] [x2] [y1] [y2]
+
+n/pl 1.x%y ! ! ! ! s
+atitle 'x (cm)' 'y (cm)'
+
+null [x1] [x2] [y1] [y2]
+
+2d 10 '' 31 [x1] [x2] 31 [y1] [y2] 
+set dmod 1
+n/pl 1.x%y ! ! ! ! 'sbox' 10
+atitle 'x (cm)' 'y (cm)'
+
+h/pl 10 surf3
+atitle 'x (cm)' 'y (cm)' 'Intensity'
+
+h/cre/sliy 10 31
+h/proj 10
+h/pl 10.sliy.16
+atitle 'y (cm)'
+
+v/cre cc(961) r
+h/get/cont 10 cc
+v/write cc [file].dat '(F12.6)'
+
+if ([print]) then
+exe psoff
+endif
+
+return
+
+macro all print=0 wait=0
+
+opt utit
+
+title 'MAGIC: Image of a Point Like Source at 100 km a.d.l'
+title 'No deviations taken into account' 'u'
+exe pb [print]  pb-100km-1-0-nodev -7 7 27 41
+
+if ([wait]) then
+wait
+endif
+
+title 'With deviations + imperfections' 'u'
+exe pb [print]  pb-100km-1-0-dev -7 7 27 41
+
+if ([wait]) then
+wait
+endif
+
+title 'MAGIC: Image of a Point Like Source at 10 km a.d.l'
+title 'No deviations taken into account' 'u'
+exe pb [print]  pb-10km-1-0-nodev -8.5 8.5 26 43
+
+if ([wait]) then
+wait
+endif
+
+title 'With deviations + imperfections' 'u'
+exe pb [print]  pb-10km-1-0-dev -8.5 8.5 26 43
+
+if ([wait]) then
+wait
+endif
+
+title 'MAGIC: Image of a Point Like Source at 1 km a.d.l'
+title 'No deviations taken into account' 'u'
+exe pb [print]  pb-1km-1-0-nodev -25 25 10 60
+
+if ([wait]) then
+wait
+endif
+
+title 'With deviations + imperfections' 'u'
+exe pb [print]  pb-1km-1-0-dev -25 25 10 60
+
+return

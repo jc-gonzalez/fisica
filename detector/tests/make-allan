@@ -1,0 +1,154 @@
+##################################################-*-makefile-*-##
+##
+## Makefile
+##
+## @file        Makefile
+## @title       Simulation of the Reflector & Process of data
+## @author      J C Gonz\'alez
+## @email       gonzalez@mppmu.mpg.de
+##
+## @maintitle
+##_______________________________________________________________
+##
+##  Created: Thu May  7 16:24:22 1998
+##  Author:  Jose Carlos Gonzales
+##  Purpose: Makefile for the compilation of the simulation programs
+##  Notes:   
+##    
+##---------------------------------------------------------------
+## $RCSfile$
+## $Revision$
+## $Author$ 
+## $Date$
+##################################################################
+
+# @T \newpage
+
+# @ code    # this block is not used right now
+#CERNDIR=CERN
+#
+#ROOTLIBS      = -L$(ROOTSYS)/lib -lNew -lBase -lCint -lClib -lCont -lFunc \
+#	-lGraf -lGraf3d -lHist -lHtml -lMatrix -lMeta -lMinuit -lNet \
+#	-lPostscript -lProof -lTree -lUnix -lZip
+#
+#ROOTGLIBS     = -lGpad -lGui -lGX11 -lX3d
+# @ endcode
+
+# @code
+
+MAKEFILE = make-allan
+
+INCLUDES      = -I../include \
+		-I../include-util \
+		-I../include-COR \
+		-I../include-MC
+
+# Alpha/OSF with cxx
+
+CXX      = cxx
+#CXX      = g++
+F77      = f77
+
+WARNINGS = -w0
+
+CXXFLAGS = -D__osf__ -D__alpha ${INCLUDES} ${WARNINGS} -arch host -ieee
+#CXXFLAGS = -D__osf__ -D__alpha -I/usr/include/cxx ${INCLUDES} -Wall -g3
+#CXXFLAGS = -D__osf__ -D__alpha -I/${CERNDIR}/cfortran -g3
+#CXXFLAGS = -D__osf__ -D__alpha -I$(ROOTSYS)/include -g3
+
+FFLAGS   = $(CXXFLAGS)
+
+LD       = cxx
+LDFLAGS  = -g3
+SOFLAGS  = -Wl,-expect_unresolved,* -call_shared
+
+GLIBS    = $(ROOTLIBS) $(ROOTGLIBS) -lXpm -lX11 -lm -lPW
+FORLIBS = -lUfor -lfor -lutil -lots -lm 
+PAWLIBS = -L/${CERNDIR}/pro/lib/ \
+	-lgraflib -lgrafX11 -lpacklib -lkernlib -lpawlib
+
+LIBS     = -L../lib -lranlib -lm
+#LIBS     = $(ROOTLIBS) -L../lib -L./ -lranlib -lm
+
+DOCUM = ../sus/sus
+
+#------------------------------------------------------------
+
+.SILENT:
+
+.SUFFIXES: .c .cxx .C .c++ .h .hxx .H .h++ .o .so .f
+
+SRCS = \
+	allan.cxx  
+
+HEADERS = \
+	allan.h  
+
+OBJS = \
+	allan.o  
+
+############################################################
+
+all: allan
+
+depend:
+	@makedepend $(SRCS) -f$(MAKEFILE) 2> /dev/null
+
+allan-doc: 
+	@echo "Generating documentation for allan . . . "
+	$(DOCUM) \
+	allan.cxx allan.h \
+	../include-util/jcmacros.h ../include-util/jcdebug.h > allan.tex
+	latex allan.tex && latex allan.tex
+	@echo "Files allan.tex and allan.dvi generated."
+
+allan: $(OBJS)
+	@echo "Linking..." $(OBJS) 
+	$(CXX) $(CXXFLAGS) $(OBJS) $(LIBS) -o $@
+	@echo "done."
+
+.cxx.o:	
+	@echo "Compiling " $<
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+.f.o:	
+	@echo "Compiling " $<
+	$(F77) $(FFLAGS) -c $< -o $@
+
+lclean:
+	@echo "Cleanning..."
+	@rm -f *.o core 
+
+clean:
+	@echo "Cleanning..."
+	@rm -f $(OBJS) core 
+
+mrproper: clean
+	@echo "Mr.Proper in action . . ."
+	@rm -f $(PROGRAM)
+
+ctags:
+	@echo "Creating CTAGS file . . ."
+	@ctags -txw $(SRCS) $(HEADERS) > CTAGS
+
+etags:
+	@echo "Creating TAGS file . . ."
+	@/usr/local/bin/etags -C $(SRCS) $(HEADERS)
+
+listsrc:
+	@ls -m $(SRCS) $(HEADERS) | sed 's/,//g'
+
+redo: clean all
+
+# @endcode
+
+# DO NOT DELETE THIS LINE -- make depend depends on it.
+
+allan.o: allan.h /usr/include/stdlib.h /usr/include/standards.h
+allan.o: /usr/include/getopt.h /usr/include/sys/types.h
+allan.o: /usr/include/mach/machine/vm_types.h /usr/include/sys/select.h
+allan.o: /usr/include/stdio.h /usr/include/sys/seek.h /usr/include/va_list.h
+allan.o: /usr/include/sys/limits.h /usr/include/sys/machine/machlimits.h
+allan.o: /usr/include/sys/syslimits.h /usr/include/sys/machine/machtime.h
+allan.o: /usr/include/sys/rt_limits.h /usr/include/string.h
+allan.o: /usr/include/strings.h /usr/include/stdarg.h /usr/include/math.h

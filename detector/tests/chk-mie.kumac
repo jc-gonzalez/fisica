@@ -1,0 +1,49 @@
+n/cre 1 '' 3 ! ! w h tr
+n/read 1 chk.out
+set mtyp 1
+
+exe pson
+
+size 23 30
+zone 2 3 1
+
+title 'CHECK: TOTAL ABSORPTION'
+
+null 1 70 0. 1.
+set dmod 1
+set lwid 5
+set plci 4
+n/pl 1.tr%h/100000 ! ! ! ! s
+set dmod 2
+set lwid 1
+set plci 2
+dline 2.2 2.2 0 1
+atitle 'Height (km)' 'Transmision'
+
+opt logx
+
+null 1 70 0. 1.
+set dmod 1
+set lwid 5 
+set plci 4
+n/pl 1.tr%h/100000 ! ! ! ! s
+set dmod 2
+set lwid 1
+set plci 2
+dline 2.2 2.2 0 1
+atitle 'Height (km)' 'Transmision'
+
+opt linx
+
+zone 1 2 2 s
+set dmod 1
+set lwid 0
+2d 10 '' 31 290 600 60 2. 62.
+n/proj 10 1.h/100000%w tr
+angle 35 106
+h/pl 10 surf
+atitle 'Wavelength (nm)' 'Height (km)' 'Transmision'
+
+exe psoff
+
+

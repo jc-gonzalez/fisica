@@ -1,0 +1,45 @@
+camera 0.2                        
+#
+input_file    ./g1TeV/g1TeV.rfl
+output_file   ./nsb-complex.phe
+data_file     ./nsb-complex.dat
+hbook_file    ./nsb-complex.hbook
+#
+ct_file       magic.definition
+#
+ana_pixels    595
+#
+nsb_mean      0.101    # nsb = X phe / dt_phisto 
+nsb_on
+nsb_only      10
+#nsb_off
+#
+islands_off
+#
+write_all_images
+write_all_data
+#
+seeds   10324 4324
+#
+threshold          0.2   # q0 = X phe / dt_phisto 
+#
+tail_cut           0
+#
+trigger_radius     0.8
+trigger_pattern   4pix_NN
+#
+time_histo         100   50.0 150.0
+time_phisto        100   50.0 150.0    #   dt_phisto = 1 ns
+time_dischisto    1000   50.0 150.0    #   dt = 0.1 ns
+#
+trigger_bins        50   10    40      # gate = nG x dt = 50 x 0.1 = 5 ns
+#
+sps_mean     1.0  # mean = 1.0 phe
+sps_fwhm     1.0  # fwhm = 1.0 phe
+#
+end_file
+#
+# Local Variables:
+# mode:sh
+# End:
+#EOF

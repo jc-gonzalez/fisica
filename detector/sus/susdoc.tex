@@ -1,0 +1,84 @@
+\documentclass[a4paper,10pt]{article}
+
+\input{mypapers}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% BEGIN
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%% title %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{On the policies for submission of new revisions of source code
+  files}
+
+\author{J.C.Gonz\'alez\\
+Max-Planck-Institut f\"ur Physik, Munich\\
+{\tt <gonzalez@mppmu.mpg.de>}}
+
+\date{8/3/99}
+
+\maketitle
+
+\begin{abstract}
+  In this document we make a review of different, possible committing
+  policies related with source code files. The source code revisions
+  management is crucial in a big project, and therefore it has to be
+  defined when and how the new revisions of the various modules of the
+  projects have to be done. We will also talk about the releases
+  policies, which is even more important, since each release of an
+  application is meant to be (hopefully) a working version for some time.
+\end{abstract}
+
+%% body %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%------------------------------------------------------------
+\section{Introduction}
+
+It is clear for everybody that the use of any kind of version control
+system (hereafter VCS) is very important for any project involving
+either a large amount of separated modules (source code files,
+libraries, documentation, ... ) or a group of people working together,
+or both. It is even more important when all these people are working
+in different places, and an easy way to follow in order not to run
+into troubles is to use a VCS (plus fluid comunication between the
+members of the project).
+
+Typical tasks realized with the help of a VCS tool are: getting a
+given set of files in order to use (compile), update, check, modify
+and/or correct them; getting a previous release of a set of files in
+order to compare it with a later version; develope a different
+\emph{branch} in the source code versions tree, perhaps to test
+improvements in algorithms, or to correct bugs; perform periodical
+upgrades of the logging files, in order to have a clear idea of how
+the development is going on; produce fixed releases of a whole
+application, without interrupting the \emph{development process} in
+another branch of the project; and, finally, allow users to work
+without mayor difficulties all together in the same piece of code,
+with a minimal risk of collision.
+
+We first should have a clear idea of what a VCS is, and get familiar
+with the usual nomenclature used.
+
+%------------------------------------------------------------
+\section{Versions, revisions, releases}
+
+
+%------------------------------------------------------------
+\section{Revisions policies}
+
+\subsection{Conservative approach}
+
+\subsection{Liberal approach}
+
+%------------------------------------------------------------
+\section{Releases policies}
+
+%------------------------------------------------------------
+\section{Conclusions}
+
+
+\tableofcontents
+
+\end{document}

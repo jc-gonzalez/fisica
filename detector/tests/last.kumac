@@ -1,0 +1,54 @@
+*** Begin of history file: Mon Feb 14 16:18:46 2000
+n/cre 2 '' 2 ! ! x y;n/cre 1 '' 1 ! ! v;n/read 1 cerr;n/read 2 cout
+size 18 16
+n/pl 1.v
+n/pl 1.x
+opt stat
+n/pl 1.x
+n/pl 1.v
+1d 51 '' 50 0 50;1d 52 '' 50 0 50
+1d 51 '' 50 0 50; 1d 52 '' 50 0 50
+opt stat;n/pl 1.v ! ! ! ! ! 52
+1d 51 '' 50 0 50
+1d 52 '' 50 0 50
+opt stat;n/pl 1.v ! ! ! ! ! 52
+opt stat;n/pl 1.v
+opt stat;n/pl 1.y%x
+opt stat;n/pl 2.y%x
+opt stat;n/pl 2.x y
+opt stat;n/pl 2.y%x
+opt stat;n/pl 2.x y
+opt stat;n/pl 2.x%y
+opt stat;n/pl 2.y%x
+1d 52 '' 100 0 100
+1d 51 '' 100 0 100
+opt stat;n/pl 2.x y ! ! ! ! 51
+1d 51 '' 100 0 50
+opt stat;n/pl 2.x y ! ! ! ! 51
+1d 52 '' 100 0 100
+1d 52 '' 100 0 50
+opt stat;n/pl 2.y ! ! ! ! ! 51
+opt stat;n/pl 1.v ! ! ! ! ! 51
+sh
+n/cre 2 '' 2 ! ! x y;n/cre 1 '' 1 ! ! v;n/read 1 cerr;n/read 2 cout
+opt stat;n/pl 2.x y ! ! ! ! 51
+opt stat;n/pl 1.v ! ! ! ! ! 52
+sh
+n/cre 2 '' 2 ! ! x y;n/cre 1 '' 1 ! ! v;n/read 1 cerr;n/read 2 cout
+n/pl 2.x y ! ! ! ! 51;n/pl 1.v ! ! ! ! ! 52
+1d 52 '' 50 0 50
+n/pl 1.v ! ! ! ! ! 52
+h/fit 51 p0
+h/fit 52 p0
+1d 51 '' 50 0 50
+n/pl 1.x y ! ! ! ! 52
+n/pl 2.x y ! ! ! ! 51
+h/fit 51 p0
+sub 51 52 53 1 .00026963629961265657 e
+h/pl 53
+v/cre difs(50) r
+h/get/cont 53 difs
+v/pl 53
+v/pl difs
+q
+*** End   of history file: Mon Feb 14 16:37:12 2000

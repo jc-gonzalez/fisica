@@ -1,0 +1,150 @@
+############################################################
+# Automatically created makefile for splitter-cint
+############################################################
+
+# Copying $CINTSYSDIR/MAKEINFO #############################
+
+############################################################
+# platform/alpha_cxx
+#  Platform dependent information for DEC ALPHA OSF
+############################################################
+
+# Tools
+RM	    = rm -f
+CP	    = cp
+AR	    = ar
+AROPT       = clq
+KRCC        = cc
+CC          = cc
+CPP         = cxx 
+LD          = cxx 
+CPREP       = cxx -E
+CPPPREP     = cxx -E
+
+# Compiler and linker option
+CCDLLOPT    = -shared -call_shared -preempt_module -preempt_symbol
+LDDLLOPT    = -shared -call_shared
+OPTIMIZE    = -O
+LDOPT       = -lm -ltermcap -lbsd
+SYSMACRO    = -DG__REGEXP -DG__SHAREDLIB -DG__OSFDLL
+OTHMACRO    = -DG__REDIRECTIO -DG__64BIT -DG__DECCXX -DG__ROOT
+SYSIPATH    =
+
+# libraries
+MAINO	    = $(CINTSYSDIR)/main/G__cppmain.o
+CINTLIB     = $(CINTSYSDIR)/src/G__ci.a
+READLINEA   = 
+APIO	    = Api.o Class.o BaseCls.o Type.o DataMbr.o Method.o MethodAr.o CallFunc.o Typedf.o Apiif.o Token.o
+RANLIB	    = /usr/bin/ranlib
+STDLIBS     = libstrm.o stdstrct.o
+PLATFORM    =
+
+# source code postfix
+CSRCPOST    = .c
+CHDRPOST    = .h
+CPPSRCPOST  = .C
+CPPHDRPOST  = .h
+OBJPOST     = .o
+DLLPOST     = .dl
+
+
+
+
+# End of $CINTSYSDIR/MAKEINFO ##############################
+
+# Set variables ############################################
+IPATH      = $(SYSIPATH) \
+		-I../include-util \
+		-I../include 
+MACRO      = $(SYSMACRO)
+CINTSYSDIR = /usr/local/cint
+CINTIPATH  = -I$(CINTSYSDIR)
+OBJECT     = splitter-cint
+OPTION     =
+DLLSPEC    =
+LINKSPEC   = -DG__CPPLINK_ON
+
+# Set File names ###########################################
+CIFC       =
+CIFH       =
+CIFO       =
+CPPIFC     = G__cpp_splitter-cint.C
+CPPIFH     = G__cpp_splitter-cint.h
+CPPIFO     = G__cpp_splitter-cint.o
+
+LIBS       = 
+
+CCOPT      = 
+
+CINTOPT      = 
+
+COFILES    = 
+
+RMCOFILES  = 
+
+CHEADER    = 
+CHEADERCINT = 
+
+CSTUB      = 
+CSTUBCINT  = 
+
+CPPOFILES  = \
+		../include-COR/COREventHeader.o \
+		../include-COR/CORParticle.o \
+		../include-COR/CORStatfile.o 
+
+RMCPPOFILES = \
+		../include-COR/COREventHeader.o \
+		../include-COR/CORParticle.o \
+		../include-COR/CORStatfile.o 
+
+CPPHEADER  = \
+		../include-COR/COREventHeader.hxx \
+		../include-COR/CORParticle.hxx \
+		../include-COR/CORStatfile.hxx 
+CPPHEADERCINT  = \
+		../include-COR/COREventHeader.hxx \
+		../include-COR/CORParticle.hxx \
+		../include-COR/CORStatfile.hxx 
+
+CPPSTUB    = 
+CPPSTUBCINT = 
+
+# Link Object #############################################
+$(OBJECT) : $(MAINO) $(CINTLIB) $(READLINEA) G__setup.o $(COFILES) $(CPPOFILES) $(CIFO) $(CPPIFO) 
+	$(LD) $(OPTIMIZE) $(IPATH) $(MACRO) $(CCOPT) -o $(OBJECT) $(MAINO) $(CIFO) $(CPPIFO) $(COFILES) $(CPPOFILES) $(CINTLIB) G__setup.o $(READLINEA) $(LIBS) $(LDOPT)
+
+# Compile User C source files ##############################
+
+# Compile User C++ source files ############################
+../include-COR/COREventHeader.o : ../include-COR/COREventHeader.cxx $(CPPHEADER)
+	$(CPP) $(IPATH) $(MACRO) $(OPTIMIZE) $(OPTION) $(CCOPT) -o ../include-COR/COREventHeader.o -c ../include-COR/COREventHeader.cxx
+
+../include-COR/CORParticle.o : ../include-COR/CORParticle.cxx $(CPPHEADER)
+	$(CPP) $(IPATH) $(MACRO) $(OPTIMIZE) $(OPTION) $(CCOPT) -o ../include-COR/CORParticle.o -c ../include-COR/CORParticle.cxx
+
+../include-COR/CORStatfile.o : ../include-COR/CORStatfile.cxx $(CPPHEADER)
+	$(CPP) $(IPATH) $(MACRO) $(OPTIMIZE) $(OPTION) $(CCOPT) -o ../include-COR/CORStatfile.o -c ../include-COR/CORStatfile.cxx
+
+
+# Compile dictionary setup routine #######################
+G__setup.o : $(CINTSYSDIR)/main/G__setup.c $(CINTSYSDIR)/G__ci.h
+	$(CC) $(LINKSPEC) $(CINTIPATH) $(OPTIMIZE) $(OPTION) -o G__setup.o -c $(CINTSYSDIR)/main/G__setup.c
+
+# Compile C++ Interface routine ##########################
+$(CPPIFO) : $(CPPIFC)
+	$(CPP) $(CINTIPATH) $(IPATH) $(MACRO) $(OPTIMIZE) $(OPTION) $(CCOPT) -c $(CPPIFC)
+
+# Create C++ Interface routine ###########################
+$(CPPIFC) : $(CPPHEADER) $(CPPSTUB) $(CINTSYSDIR)/cint
+	cint  -w0 -zsplitter-cint -n$(CPPIFC) $(DLLSPEC) -D__MAKECINT__ -DG__MAKECINT  -c-1 -A $(IPATH) $(MACRO) $(CINTOPT) $(CPPHEADERCINT)
+
+
+# Clean up #################################################
+clean :
+	$(RM) $(OBJECT) core $(CIFO) $(CIFC) $(CIFH) $(CPPIFO) $(CPPIFC) $(CPPIFH) $(RMCOFILES) $(RMCPPOFILES) G__setup.o
+
+# re-makecint ##############################################
+makecint :
+	makecint -mk makecint -H ../include-COR/COREventHeader.hxx -C++ ../include-COR/COREventHeader.cxx -H ../include-COR/CORParticle.hxx -C++ ../include-COR/CORParticle.cxx -H ../include-COR/CORStatfile.hxx -C++ ../include-COR/CORStatfile.cxx -I../include-util -I../include -o splitter-cint 
+

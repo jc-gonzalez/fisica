@@ -1,0 +1,31 @@
+
+Installation
+=============
+
+The simplest way to compile this package is:
+
+  1. `cd' to the directory containing the package's source code and
+     edit the file 'config.mk'. Change there anything you need.
+
+  2. Type `make depend' to calculate dependencies.
+
+  3. Type `make' to compile the package.
+
+  4. You can remove the object files from the source code directory by
+     typing `make clean'. 
+
+  5. If you want to recompile everything, you can do it typing
+     'make redo'
+
+Compiling For Multiple Architectures
+=====================================
+
+   You can compile the package for more than one kind of computer at
+the same time, by placing the object files for each architecture in
+their own directory. 
+
+   If you manage to compile this program after making a small or severe
+change into, for example, the 'Makefile', you are strongly encouraged
+to contact the author, in order to add your modifications in a
+(possible) next release.
+

@@ -1,0 +1,15 @@
+macro doit bins=20
+
+sh grep -v a image_errors.dat[bins] > k.dat
+
+*size 20 20
+set mtyp 1
+set *wid 1
+
+h/del 1
+n/cre 1 '' 17 ! ! _
+  ox oy sx sy amp rho theta rv ru xm ym alpha length width dist asymx beta
+
+n/read 1 k.dat 
+
+return
