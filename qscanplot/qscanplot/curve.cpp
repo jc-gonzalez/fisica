@@ -1,6 +1,6 @@
 /*************************************************************************
  *                                                                          
- * qscanplotview.h  -  description
+ * curve.cpp  -  description
  *
  * Copyright (C) 2001  J C Gonzalez
  * gonzalez@gae.ucm.es
@@ -28,58 +28,43 @@
  ************************************************************************/
 
 
-#ifndef QSCANPLOTVIEW_H
-#define QSCANPLOTVIEW_H
+#include "curve.h"
 
-// include files for QT
-#include <qcanvas.h>
-#include <qpixmap.h>
+Curve::Curve() : p(0), name("Curve1"), description("<No description available>") {}
 
-// application specific includes
-#include "qscanplotdoc.h"
+Curve::~Curve() {}
 
-/**
- * This class provides an incomplete base for your application view. 
- */
-
-class QScanPlotView : public QCanvasView
+QTextStream& operator<<(QTextStream & output, const Curve & aCurve)
 {
-  Q_OBJECT
+  output << "#--\n";
 
-  public:
-    QScanPlotView(QWidget *parent=0, QScanPlotDoc* doc=0);
-    ~QScanPlotView();
+  output << "# Curve name\n" << aCurve.name << "\n#\n";
 
-    /** converts image to pixmap */
-    bool convertImage();
-    /** scales pixmap to fit window */
-    void scale();
-    /** Changes the first zoom to view image */
-    void setInitialZoom(double z);
-    /** Changes the zoom to view image */
-    void setZoom(double z);
-    /** shows the scaled pixmap */
-    void showImage();
+  output << "# Curve description\n" << aCurve.description << "\n#\n";
 
-  protected:
-    void contentsMousePressEvent(QMouseEvent*);
-    void contentsMouseMoveEvent(QMouseEvent*);
+  //output << *p;
+  return output;
+}
 
-  protected slots:
-    void slotDocumentChanged();
+QTextStream& operator>>(QTextStream & input, Curve & aCurve)
+{
+  QString s;
 
-  private:
-    QScanPlotDoc *theDoc;
+  s = "#";
+  while (s.at(0) == '#') s=input.readLine();
 
-    QImage       *image;
-    QPixmap      pm;            // the converted pixmap
-    QPixmap      pmScaled;      // the scaled pixmap
-	  double       zoom;
-	  QCanvas      *theCanvas;
+  aCurve.name  = s;
 
-    QCanvasItem* moving;
-    QPoint       moving_start;	
+  qDebug("%% aCurve.name:          [%s]\n", aCurve.name.latin1());
 
-};
+  s = "#";
+  while (s.at(0) == '#') s=input.readLine();
 
-#endif
+  aCurve.description = s;
+
+  qDebug("%% aCurve.description:   [%s]\n", aCurve.description.latin1());
+
+  //input >> *p;
+  return input;
+}
+

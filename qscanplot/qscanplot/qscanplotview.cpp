@@ -36,9 +36,13 @@
 #include "curvepoint.h"
 #include "axispoint.h"
 
+#include <iostream.h>
+
 QScanPlotView::QScanPlotView(QWidget *parent, QScanPlotDoc *doc) : QCanvasView(0, parent)
 {
   theCanvas = new QCanvas();
+  theCanvas->setDoubleBuffering( true );
+  
   setCanvas(theCanvas);
 
   theDoc = doc;
@@ -112,39 +116,6 @@ void QScanPlotView::scale()
   QApplication::restoreOverrideCursor();      // restore original cursor
 }
 
-/** Draws the portion of the scaled pixmap that needs to be updated or prints
- *  an error message if no legal pixmap has been loaded.
- */
-/*
-void QScanPlotView::paintEvent( QPaintEvent *e )
-{
-//  if ( pm.size() != QSize( 0, 0 ) ) {         // is an image loaded?
-//    QPainter painter(this);
-//    painter.setClipRect(e->rect());
-//    painter.drawPixmap(0, 0, pmScaled);
-//  }
-}*/
-
-/*
-void QScanPlotView::resizeEvent( QResizeEvent *e )
-{
-  //  status->setGeometry(0,       height() - status->height(),
-  //                      width(), status->height());
-
-  if ( pm.size() == QSize( 0, 0 ) )           // we couldn't load the image
-    return;
-
-  int h = height(); // - menubar->heightForWidth( width() ) - status->height();
-
-  if ( width() != pmScaled.width() || h != pmScaled.height()) {                                           // if new size,
-    scale();                                // scale pmScaled to window
-    //updateStatus();
-  }
-
-  if ( image->hasAlphaBuffer() )
-    erase();
-}*/
-
 /** Changes the zoom to view image */
 void QScanPlotView::setInitialZoom(double z)
 {
@@ -178,3 +149,38 @@ void QScanPlotView::showImage()
     frameChanged();
   }
 }
+
+void QScanPlotView::contentsMousePressEvent(QMouseEvent* e)
+{
+  qDebug("%% (%f, %f)",
+         double(e->pos().x()) / pmScaled.width(),
+         double(e->pos().y()) / pmScaled.height());
+
+  QCanvasItemList l=canvas()->collisions(e->pos());
+  for (QCanvasItemList::Iterator it=l.begin(); it!=l.end(); ++it) {
+
+    if ( (*it)->rtti() == FigurePointRTTI ) {
+      qDebug("%% OVER A POINT!!");
+	    FigurePoint *item = (FigurePoint*)(*it);
+      if ( ! (item->boundingRect()).contains( e->pos() ) ) continue;
+    }
+    
+    moving = *it;
+    moving_start = e->pos();
+
+    return;
+  }
+  
+  moving = 0;
+}
+
+void QScanPlotView::contentsMouseMoveEvent(QMouseEvent* e)
+{
+  if ( moving ) {
+    moving->moveBy(e->pos().x() - moving_start.x(),
+                   e->pos().y() - moving_start.y());
+    moving_start = e->pos();
+    canvas()->update();
+  }
+}
+

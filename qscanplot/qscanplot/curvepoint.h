@@ -37,10 +37,15 @@
   *@author J C Gonzalez
   */
 
+//static const CurvePointRTTI = 9802;
+
 class CurvePoint : public FigurePoint  {
 public: 
 	CurvePoint(QCanvas *c=0);
 	~CurvePoint();
+
+  //int rtti () const { return CurvePointRTTI; }
 };
+
 
 #endif

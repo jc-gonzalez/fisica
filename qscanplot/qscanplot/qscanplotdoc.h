@@ -36,6 +36,14 @@
 // application specific includes
 
 #include <qimage.h>
+#include <qstring.h>
+#include <qtextstream.h>
+#include <qintdict.h>
+
+#include "curve.h"
+#include "axes.h"
+
+#define SERIALIZE_VERSION  0.1
 
 /**
   * the Document Class
@@ -44,6 +52,9 @@
 class QScanPlotDoc : public QObject
 {
   Q_OBJECT
+
+  friend QTextStream& operator<<(QTextStream &, const QScanPlotDoc &);
+  friend QTextStream& operator>>(QTextStream &, QScanPlotDoc &);
 
   public:
     QScanPlotDoc();
@@ -56,8 +67,12 @@ class QScanPlotDoc : public QObject
 
     /** Loads image file in any of the supported formats */
     bool loadImage(const char* filename);
-    /**  */
+    /** Returns the pointer to the current image */
     QImage* getImage();
+    /** Returns pointer to i-th curve */
+    Curve* getCurve(int i);
+    /** Returns pointer to i-th axes */
+    Axes* getAxes(int i);
 
   signals:
     void documentChanged();
@@ -66,7 +81,15 @@ class QScanPlotDoc : public QObject
     bool modified;
 
   private:
-    QImage      image;         // the loaded image
+    QImage           image;         // the loaded image
+
+    QString          imageName;     // the name of the image
+
+    int              nCurves;
+    QIntDict<Curve>  *theCurves;
+    
+    int              nAxes;
+    QIntDict<Axes>   *theAxes;
 
 };
 

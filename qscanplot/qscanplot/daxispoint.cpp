@@ -1,6 +1,6 @@
 /*************************************************************************
  *                                                                          
- * qscanplotview.h  -  description
+ * daxispoint.cpp  -  description
  *
  * Copyright (C) 2001  J C Gonzalez
  * gonzalez@gae.ucm.es
@@ -28,58 +28,9 @@
  ************************************************************************/
 
 
-#ifndef QSCANPLOTVIEW_H
-#define QSCANPLOTVIEW_H
+#include "daxispoint.h"
 
-// include files for QT
-#include <qcanvas.h>
-#include <qpixmap.h>
-
-// application specific includes
-#include "qscanplotdoc.h"
-
-/**
- * This class provides an incomplete base for your application view. 
- */
-
-class QScanPlotView : public QCanvasView
-{
-  Q_OBJECT
-
-  public:
-    QScanPlotView(QWidget *parent=0, QScanPlotDoc* doc=0);
-    ~QScanPlotView();
-
-    /** converts image to pixmap */
-    bool convertImage();
-    /** scales pixmap to fit window */
-    void scale();
-    /** Changes the first zoom to view image */
-    void setInitialZoom(double z);
-    /** Changes the zoom to view image */
-    void setZoom(double z);
-    /** shows the scaled pixmap */
-    void showImage();
-
-  protected:
-    void contentsMousePressEvent(QMouseEvent*);
-    void contentsMouseMoveEvent(QMouseEvent*);
-
-  protected slots:
-    void slotDocumentChanged();
-
-  private:
-    QScanPlotDoc *theDoc;
-
-    QImage       *image;
-    QPixmap      pm;            // the converted pixmap
-    QPixmap      pmScaled;      // the scaled pixmap
-	  double       zoom;
-	  QCanvas      *theCanvas;
-
-    QCanvasItem* moving;
-    QPoint       moving_start;	
-
-};
-
-#endif
+dAxisPoint::dAxisPoint(QWidget *parent, const char *name ) : dlgAxisPoint(parent,name) {
+}
+dAxisPoint::~dAxisPoint(){
+}

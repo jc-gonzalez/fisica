@@ -1,6 +1,6 @@
 /*************************************************************************
  *                                                                          
- * qscanplotview.h  -  description
+ * pointlist.cpp  -  description
  *
  * Copyright (C) 2001  J C Gonzalez
  * gonzalez@gae.ucm.es
@@ -28,58 +28,21 @@
  ************************************************************************/
 
 
-#ifndef QSCANPLOTVIEW_H
-#define QSCANPLOTVIEW_H
+#include "pointlist.h"
 
-// include files for QT
-#include <qcanvas.h>
-#include <qpixmap.h>
+PointList::PointList() {}
 
-// application specific includes
-#include "qscanplotdoc.h"
+PointList::~PointList() {}
 
-/**
- * This class provides an incomplete base for your application view. 
- */
-
-class QScanPlotView : public QCanvasView
+int PointList::compareItems ( CurvePoint* item1, CurvePoint* item2)
 {
-  Q_OBJECT
+  /* This function returns int rather than bool so that reimplementations
+   * can return three values and use it to sort by: 
+   *
+   *   0 if item1 == item2 
+   *   > 0 (positive integer) if item1 > item2 
+   *   < 0 (negative integer) if item1 < item2
+   */
 
-  public:
-    QScanPlotView(QWidget *parent=0, QScanPlotDoc* doc=0);
-    ~QScanPlotView();
-
-    /** converts image to pixmap */
-    bool convertImage();
-    /** scales pixmap to fit window */
-    void scale();
-    /** Changes the first zoom to view image */
-    void setInitialZoom(double z);
-    /** Changes the zoom to view image */
-    void setZoom(double z);
-    /** shows the scaled pixmap */
-    void showImage();
-
-  protected:
-    void contentsMousePressEvent(QMouseEvent*);
-    void contentsMouseMoveEvent(QMouseEvent*);
-
-  protected slots:
-    void slotDocumentChanged();
-
-  private:
-    QScanPlotDoc *theDoc;
-
-    QImage       *image;
-    QPixmap      pm;            // the converted pixmap
-    QPixmap      pmScaled;      // the scaled pixmap
-	  double       zoom;
-	  QCanvas      *theCanvas;
-
-    QCanvasItem* moving;
-    QPoint       moving_start;	
-
-};
-
-#endif
+  return int(item1->getGX() - item2->getGX());
+}

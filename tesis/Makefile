@@ -262,7 +262,8 @@ clearlang:
 
 clean: clearlang
 	@echo "Cleanning..."
-	-rm -f $(SCRATCH_PATH)/* FILES*
+	-rm -f FILES*
+	-find $(SCRATCH_PATH)/ -type f -exec rm -rf {} \;
 
 mrproper: clean
 	@echo "Mr.Proper in action . . ."

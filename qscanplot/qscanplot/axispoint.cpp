@@ -30,7 +30,9 @@
 
 #include "axispoint.h"
 
-AxisPoint::AxisPoint(QCanvas *c) : FigurePoint(c)
+static const int AxisPointLength = 10;
+
+AxisPoint::AxisPoint(QCanvas *c) : FigurePoint(c, AxisPointLength)
 {
   setPen( QColor(0, 0, 255) );
 }

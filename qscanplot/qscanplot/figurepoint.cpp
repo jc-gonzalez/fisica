@@ -32,21 +32,27 @@
 
 #include <qpainter.h>
 
-FigurePoint::FigurePoint(QCanvas *c) : QCanvasPolygon(c)
+FigurePoint::FigurePoint(QCanvas *c, int len) : QCanvasPolygon(c)
 {
   QPointArray p(12);
-  p.setPoint( 0, -5,  0);
-  p.setPoint( 1, -2,  0);
-  p.setPoint( 2,  0,  2);
-  p.setPoint( 3,  0,  5);
-  p.setPoint( 4,  0,  2);
-  p.setPoint( 5,  2,  0);
-  p.setPoint( 6,  5,  0);
-  p.setPoint( 7,  2,  0);
-  p.setPoint( 8,  0, -2);
-  p.setPoint( 9,  0, -5);
-  p.setPoint(10,  0, -2);
-  p.setPoint(11, -2,  0);
+  p.setPoint( 0, -len,    0);
+  p.setPoint( 1,   -2,    0);
+  p.setPoint( 2,    0,    2);
+  p.setPoint( 3,    0,  len);
+  p.setPoint( 4,    0,    2);
+  p.setPoint( 5,    2,    0);
+  p.setPoint( 6,  len,    0);
+  p.setPoint( 7,    2,    0);
+  p.setPoint( 8,    0,   -2);
+  p.setPoint( 9,    0, -len);
+  p.setPoint(10,    0,   -2);
+  p.setPoint(11,   -2,    0);
+
+//   QPointArray p(4);
+//   p.setPoint(0, 0, 0);
+//   p.setPoint(1, 4, 0);
+//   p.setPoint(2, 4, 4);
+//   p.setPoint(3, 0, 4);
   setPoints(p);
 }
 
@@ -57,3 +63,4 @@ void FigurePoint::drawShape ( QPainter & p )
 {
   p.drawPolygon( areaPoints() );
 }
+

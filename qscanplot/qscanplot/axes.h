@@ -1,6 +1,6 @@
 /*************************************************************************
  *                                                                          
- * qscanplotview.h  -  description
+ * axes.h  -  description
  *
  * Copyright (C) 2001  J C Gonzalez
  * gonzalez@gae.ucm.es
@@ -28,58 +28,37 @@
  ************************************************************************/
 
 
-#ifndef QSCANPLOTVIEW_H
-#define QSCANPLOTVIEW_H
-
-// include files for QT
-#include <qcanvas.h>
-#include <qpixmap.h>
-
-// application specific includes
-#include "qscanplotdoc.h"
+#ifndef AXES_H
+#define AXES_H
 
 /**
- * This class provides an incomplete base for your application view. 
- */
+  *@author J C Gonzalez
+  */
 
-class QScanPlotView : public QCanvasView
-{
-  Q_OBJECT
+#include "axispoint.h"
 
-  public:
-    QScanPlotView(QWidget *parent=0, QScanPlotDoc* doc=0);
-    ~QScanPlotView();
+#include <qtextstream.h>
 
-    /** converts image to pixmap */
-    bool convertImage();
-    /** scales pixmap to fit window */
-    void scale();
-    /** Changes the first zoom to view image */
-    void setInitialZoom(double z);
-    /** Changes the zoom to view image */
-    void setZoom(double z);
-    /** shows the scaled pixmap */
-    void showImage();
+class Axes {
 
-  protected:
-    void contentsMousePressEvent(QMouseEvent*);
-    void contentsMouseMoveEvent(QMouseEvent*);
+  friend QTextStream& operator<<(QTextStream &, const Axes &);
+  friend QTextStream& operator>>(QTextStream &, Axes &);
 
-  protected slots:
-    void slotDocumentChanged();
+public:
+  Axes();
+  ~Axes();
 
-  private:
-    QScanPlotDoc *theDoc;
+  inline void setName(QString& s)     { name = s; }
+  inline QString& getName(void)       { return name; }
 
-    QImage       *image;
-    QPixmap      pm;            // the converted pixmap
-    QPixmap      pmScaled;      // the scaled pixmap
-	  double       zoom;
-	  QCanvas      *theCanvas;
+  inline void setDesc(QString& s)     { description = s; }
+  inline QString& getDesc(void)       { return description; }
 
-    QCanvasItem* moving;
-    QPoint       moving_start;	
-
+private:
+  QString       name;
+  QString       description;
+  AxisPoint     p[3];
 };
+
 
 #endif

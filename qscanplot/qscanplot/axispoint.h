@@ -37,10 +37,14 @@
   *@author J C Gonzalez
   */
 
+//static const AxisPointRTTI = 9801;
+
 class AxisPoint : public FigurePoint  {
 public: 
 	AxisPoint(QCanvas *c=0);
 	~AxisPoint();
+
+  //int rtti () const { return AxisPointRTTI; }
 };
 
 #endif

@@ -44,9 +44,12 @@
   *@author J C Gonzalez
   */
 
+static const int FigurePointRTTI = 9800;
+
 class FigurePoint : public QCanvasPolygon  {
+    
 public: 
-	FigurePoint(QCanvas* c=0);
+	FigurePoint(QCanvas* c=0, int len=5);
 	~FigurePoint();
 	
 public:
@@ -63,10 +66,12 @@ public:
   /** Re-implemented from QCanvasPolygon. Draws the point */
   void drawShape ( QPainter & p );
 	
-	
-private:
-  Point p;
-  GPoint gp;
+  int rtti () const { return FigurePointRTTI; }
+
+ private:
+  Point        p;
+  GPoint       gp;
+
 };
 
 #endif

@@ -13,7 +13,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\chapter{Descripci'on t'ecnica de los programas para el an'alisis de 
+\chapter{Descripci\'on t\'ecnica de los programas para el an\'alisis de 
   datos de \MC}
 \label{appendix:programs}
 
@@ -29,10 +29,10 @@ algunas cuestiones t'ecnicas de estos 'ultimos programas.
 \afterpage{\clearpage}
 
 
-\section{Definici'on del telescopio}
+\section{Definici\'on del telescopio}
 \label{sec:ctdef}
 
-Son dos los programas principales para el an'alisis de los datos de
+Dos son los programas principales para el an'alisis de los datos de
 \MC: \reflector y \camera. El primero intenta simular los espejos, la
 montura y las caracter'isticas 'opticas de \MAGIC, mientras que el
 segundo se encarga de la simulaci'on de la c'amara de \MAGIC. En
@@ -94,8 +94,8 @@ caso de los comandos
 de \MAGIC.  Las l'ineas correspondientes a estos comandos tiene la forma
 %
 \begin{verbatim}
-   n\_pixels   A  B  C
-   n\_rings    P  Q  
+   n_pixels   A  B  C
+   n_rings    P  Q  
 \end{verbatim}
 %
 donde \texttt{A}, \texttt{B}, \texttt{C}, \texttt{P} y \texttt{Q} son
@@ -130,85 +130,6 @@ asociados con algunos comandos es diferente para \MAGIC y para
 caso de CTuno, mientras que el valor asociado para \MAGIC es
 interpretado como la distancia m'as corta desde el centro de uno de
 los espejos cuadrados hasta sus aristas.
-
-%\begin{figure}[htbp]
-%  \centering
-%  \tiny
-%  \hrule width \textwidth depth .01pt \vskip 5pt
-%  \begin{verbatim}
-%###################################################-*-sh-*-##
-%# MAGIC definition file
-%#############################################################
-%# @file         magic.definition
-%# @title        MAGIC definition file
-%# @description  MAGIC def. file to be used by |reflector| and |camera|
-%# @author       J C Gonzalez
-%# @email        gonzalez@mppmu.mpg.de
-%#
-%# @maintitle
-%# @code
-%#------------------------------------------------------------ 
-%# MAGIC definition file
-%#------------------------------------------------------------
-%#
-%#---- type of definition file  (0: CT1, 1: MAGIC)
-%type  1
-%#
-%#---- focal distance [cm]
-%focal_distance      1700.0
-%#
-%#---- std(focal_distance) [cm]
-%focal_std           0.0
-%#
-%#---- point spread function [cm]
-%point_spread        0.5
-%#
-%# std(point spread function) [cm]
-%#
-%point_std           0.5
-%#
-%#---- std value of adjustment deviation [cm]
-%adjustment_dev      0.5
-%#
-%#---- black spot in the center of the mirror, radius [cm]
-%black_spot          0.5
-%#
-%#---- camera width [cm]
-%camera_width        1000.
-%#
-%#---- number of pixels in the camera 
-%#  INNER PIXELS = 3 x N x (N+1) + 1      (N=number of rings)
-%#  OUTER PIXELS = 6 x (n + (n+1) + ... + (n+o)) (n=pix 1st segment; o=n.rings)
-%#  GAP PIXELS   = 6 x (o-1)
-%n_pixels  397 18 180 
-%#
-%#---- number of rings (inner region and outer region)
-%n_rings 11 4 
-%#
-%#---- pixel width (small diameter) [cm] 
-%pixel_width 3.0
-%#
-%#---- number of mirrors
-%n_mirrors 920
-%#
-%#---- radius of a single mirror
-%r_mirror 24.75
-%#
-%#---- this entry is followed by the def. of pixels, everything in [radians] or [cm]
-%define_mirrors
-%  1  1805.4000  -825.0000  -325.0000  -817.1337  -324.5073   113.6783   0.25348800   3.51962137   0.23307531   0.09256091   0.96804357
-%  2  1805.4000  -825.0000  -275.0000  -817.1337  -274.7011   109.2895   0.24874869   3.46589971   0.23335783   0.07844938   0.96922123
-%...     ...        ...        ...        ...        ...        ...        ...          ...          ...          ...          ...
-%920  1805.4000   825.0000   325.0000   817.1337   324.5073   113.6783   0.25348800   0.37802872  -0.23307531  -0.09256091   0.96804357
-%#@endcode
-%#
-%#EOF
-%  \end{verbatim}
-%  \hrule width \textwidth depth .01pt
-%  \figcaption{Portion of a sample CT definition file (in this case, 
-%    \texttt{magic.definition}).}
-%  \label{fig:magicdef}
-%\end{figure}
 
 \begin{listado}
   \tiny
@@ -282,7 +203,7 @@ define_mirrors
 #
 #EOF
 \end{verbatim}
-  \caption{Portion of a sample CT definition file (in this case, 
+  \caption{Porci'on de un fichero de definici'on de telescopio (en este caso, 
     \texttt{magic.definition}).}
   \label{fig:magicdef}
 \end{listado}
@@ -295,287 +216,277 @@ ficheros de definici'on usados para \MAGIC\footnote{Las palabras clave
   como se puede deducir de su aparici'on en l'ineas marcadas como
   comentarios.}.
 
-\afterpage{\clearpage}
+%\afterpage{\clearpage}
 
-\clearpage
+%\clearpage
 
-\section{The c'odigo \reflector}
+\section{El c\'odigo \reflector}
 \label{sec:reflector}
 %
-The program that reads in the simulated atmospheric showers generated
-by \CORSIKA is \reflector. This program takes as input a parameters
-file, where the user specifies what showers to read and the set-up of
-the telescope for their detection. Again, the parameters file is a set
-of lines in the form of keywords plus some parameters. If a line
-starts with the character ``\#'', it's assumed to be a comment, and
-ignored. These are the currently supported keywords:
+El programa que lee los datos producidos en la simulaci'on de cascadas
+atmosf'ericas por \CORSIKA se llama \reflector.  Este programa toma
+como entrada un fichero de par'ametros, donde el usuario especif'ica
+qu'e cascadas desea analizar y en qu'e condiciones operar'a el
+telescopio.  De nuevo, el fichero de par'ametros es un conjunto de
+l'ineas en la forma de comandos seguidas de posibles par'ametros.  Si
+una l'inea comienza con el s'imbolo ``\#'', se asume que la l'inea es
+un comentario y es ignorada.  'Estos son los comandos soportados en el
+momento de escribir este ap'endice:
+
 
 \begin{Uentry}
   
-\item[\texttt{reflector <\emph{version}>}]
+\item[\texttt{reflector <\emph{versi'on}>}]
 %
-  [\emph{required}] \\
-  This \emph{must} be the first line in the parameters file. It acts
-  as a signature for the program: the version shown in
-  \texttt{<\emph{version}>} must correspond with the compiled version
-  of the running \reflector, and must be separated of the keyword
-  ``\texttt{reflector}'' by a single space.  Otherwise, an error
-  message is displayed and the program stops its execution.
+  [\emph{requerido}] \\
+  'Esta debe ser la primera l'inea en el fichero de par'ametros. Actua
+  como \emph{firma} para el programa: la versi'on que aparece en
+  \texttt{<\emph{version}>} debe corresponderse con la versi'on
+  compilada y en ejecuci'on de \reflector, y debe aparecer separada
+  del comando ``\texttt{reflector}'' por un 'unico espacio en blanco.
+  En caso contrario, el programa muestra un mensaje de error y detiene
+  su ejecuci'on.
   
 \item[\texttt{data\_paths} \quad
-  \texttt{<\emph{number}>}]
+  \texttt{<\emph{n'umero}>}]
 %
-  [\emph{required}] \\
-  Sets the number of directories where to read the data from. After
-  this line, a list of these directories is appended, with one
-  directory per line.
+  [\emph{requerido}] \\
+  Determina el n'umero de directorios con datos de \MC en los cuales
+  se buscar'an los datos a ser procesador.  La l'inea en que aparece
+  este comando viene seguida por una lista de los nombres de los
+  directorios en cuesti'on (uno por l'inea).
 
 \item[\texttt{output\_file} \quad
-  \texttt{<\emph{filename}>}]
+  \texttt{<\emph{fichero}>}]
 %
-  [\emph{required}] \\
-  Sets the name of the output file, where processed showers will be
-  written.
+  [\emph{requerido}] \\
+  Especifica el nombre del fichero de salida.
 
 \item[\texttt{ct\_file} \quad
-  \texttt{<\emph{CT definition file}>}]
+  \texttt{<\emph{fich.def.CT}>}]
 %
-  [\emph{required}] \\
-  Sets the name of the file with the definition of the telescope (see
-  previous section).
+  [\emph{requerido}] \\
+  Especifica el nombre del fichero con la definici'on del telescopio
+  (ver secci'on anterior).
 
 \item[\texttt{atm\_model} \quad
-  \texttt{<\emph{model}>}]
+  \texttt{<\emph{modelo}>}]
 %
-  [\emph{required}] \\
-  Changes the atmospheric model to be used. Valid values of
-  \texttt{\emph{model}} are ($T$ is the \emph{transmittance}):\\
+  [\emph{requerido}] \\
+  Cambia el modelo de atm'osfera. Los valores v'alidos para
+  \texttt{\emph{modelo}} son ($T$ es la \emph{transmitancia}):\\
 %
   \begin{tabular}{ll}
-    \texttt{ATM\_NOATMOSPHERE} & No atmosphere at all: $T = 100\%$ 
-                                for all wavelengths\\
-    \texttt{ATM\_90PERCENT}    & Atmosphere with $T = 90\%$ 
-                                for all wavelengths\\
-    \texttt{ATM\_ISOTHERMAL}   & Isothermal approximation \\
-    \texttt{ATM\_CORSIKA}      & Atmosphere as defined in CORSIKA \\
+    \texttt{ATM\_NOATMOSPHERE} & Ausencia de absorci'on atm'osf'erica:
+                                $T = 100\%$ para todas las longitudes de onda\\
+    \texttt{ATM\_90PERCENT}    & Atm'osfera con $T = 90\%$ 
+                                para todas las longitudes de onda\\
+    \texttt{ATM\_ISOTHERMAL}   & Aproximaci'on isoterma\\
+    \texttt{ATM\_CORSIKA}      & Atm'osfera usada en \CORSIKA \\
   \end{tabular}
 
 \item[\texttt{verbose\_level} \quad
-  \texttt{<\emph{number}>}]
+  \texttt{<\emph{n'umero}>}]
 %
-   Defines verbose level of the output. Valid values run from 0 to 4;
-   if the value is greater than 4, then 4 is assumed.
+  Define el nivel de ``locuacidad'' en la ejecuci'on de \reflector.
+  Lon valores v'alidos van de 0 a 4: si el valor es superior a 4, se
+  asume 4.
 
 \item[\texttt{fixed\_target} \quad
   \texttt{<\emph{theta}>  <\emph{phi}>}]
 %
-  Fixes the position towards the CT is pointing.
+  Fija la orientaci'on del telescopio.
 
 \item[\texttt{max\_events} \quad
-  \texttt{<\emph{number}>}]
+  \texttt{<\emph{n'umero}>}]
 %
-  Determines the maximum number of event to read and analyze.
+  Determina el n'umero m'aximo de sucesos que se leer'an y analizar'an.
 
 \item[\texttt{range\_events} \quad
-  \texttt{<\emph{first}>  <\emph{last}>}]
+  \texttt{<\emph{primero}>  <\emph{'ultimo}>}]
 %
-  Analyze events from number \texttt{\emph{first}} to number
-  \texttt{\emph{last}}, both included.
+  Analiza los sucesos desde el n'umero \texttt{\emph{primero}} hasta
+  el n'umero \texttt{\emph{'ultimo}}, ambos inclusive.
 
 \item[\texttt{energy\_cuts} \quad
-  \texttt{<\emph{lowest}>  <\emph{highest}>}]
+  \texttt{<\emph{m'inima}>  <\emph{m'axima}>}]
 %
-  Sets a band of energies allowed. The energy of the events must be in
-  the range [\texttt{\emph{lowest}}, \texttt{\emph{highest}}] for the
-  shower to be processed.
+  Especifica una banda de energ'ias permitidas.  La energ'ia de cada
+  suceso leido ha de estar comprendida en el rango
+  [\texttt{\emph{minima}}, \texttt{\emph{m'axima}}] para que la
+  cascada sea procesada.
 
 \item[\texttt{random\_pointing} \quad
   \texttt{
-    <\emph{mindist}>  <\emph{maxdist}>  <\emph{flag}>  %
-    <\emph{seed1}>  <\emph{seed2}>  }]
+    <\emph{m'in.dist}>  <\emph{m'ax.dist}>  <\emph{marcador}>  %
+    <\emph{semilla1}>  <\emph{semilla2}>  }]
 %
-  The telescope points randomly around each shower (or, from the point
-  of view of the telescope, the shower comes with a random direction
-  within a region around the telescope axis). The region is a ring of
-  internal radius \texttt{\emph{mindist}} degrees and external radius
-  \texttt{\emph{maxdist}} degrees. The value of \texttt{\emph{flag}}
-  determines whether the distribution of random directions is taken to
-  be \emph{uniform} (\texttt{\emph{flag}}$=0$) or \emph{isotropic}
-  (\texttt{\emph{flag}}$>0$). The last two parameters are random seeds
-  used for the calculation of the new direction.
+  Con este comando podemos hacer que el telescopio apunte a una
+  direcci'on al azar en una regi'on anular alrededor de la direcci'on
+  de llegada del primario de cada suceso (o, desde el punto de vista
+  del telescopio, hacer que las cascadas vengan siempre en una regi'on
+  anular alrededor del eje del telescopio).  Esta regi'on es un anillo
+  de radio interno \texttt{\emph{m'in.dist}} grados y radio externo 
+  \texttt{\emph{m'ax.dist}} grados.  El valor de \texttt{\emph{marcador}}
+  determina si las direcciones aleatorias obedecen una distribuci'on 
+  be \emph{uniforme} (\texttt{\emph{marcador}}$=0$) o \emph{is'otropa}
+  (\texttt{\emph{marcador}}$>0$).  Los 'ultimos dos par'ametros son
+  semillas para el generador de n'umeros aleatorios que se usa para el
+  c'alculo de la nueva direcci'on.
   
-\item[\texttt{repeat\_random} \quad \texttt{<\emph{times}>}]
+\item[\texttt{repeat\_random} \quad \texttt{<\emph{n'umero}>}]
 %
-  Number of times that a random pointing is going to be done, for each
-  individual shower.
+  Especifica el n'umero de veces que el apuntado aleatorio ser'a
+  realizado para cada cascada individual.
 
 \item[\texttt{block} \quad
-  \texttt{<\emph{blocksize}>}]
+  \texttt{<\emph{tama~no}>}]
 %
-  Size of the block of files, when operating in ``blocking'' mode
-  (this feature is for the moment in experimental phase).
+  Fija el tama~no de bloque en n'umero de ficheros, cuando se opera en
+  ``modo de bloques'' (este modo de operaci'on se encuentra por el
+  momento en fase experimental).
 
 \item[\texttt{parallel\_beam} \quad
   \texttt{
     <\emph{theta}>  <\emph{phi}>  %
     <\emph{oX}>  <\emph{oY}>  %
-    <\emph{lenX}>  <\emph{lenY}>  %
+    <\emph{lonX}>  <\emph{lonY}>  %
     <\emph{nX}>  <\emph{nY}>  %
-    <\emph{height}>}]
+    <\emph{altura}>}]
 %
-  Defines a point-like source of light. The name \emph{parallel beam}
-  is maintained for historical reasons, although the light coming from
-  the source does not form a parallel beam anymore. The source will be
-  located at a height $h=\texttt{\emph{height}}$, such that the axis
-  of the light cone will have a direction given by the angles
-  $(\theta,\phi)=(\texttt{\emph{theta}},\texttt{\emph{phi}})$, and
-  will hit the ground in the point
-  $(x_0,y_0)=(\texttt{\emph{oY}},\texttt{\emph{oX}})$. In the ground,
-  the beam of light will cover an area of size $\texttt{\emph{lenX}}
-  \times \texttt{\emph{lenY}}$, the photons being generated in an
-  array of $\texttt{\emph{nX}} \text{rows} \times
-  \texttt{\emph{nY}} \text{columns}$
+  Define una fuente puntual de luz.  El nombre del comando
+  \emph{parallel beam} se mantiene por razones hist'oricas, aunque ya
+  no se genera un haz de luz con un frente plano-paralelo. La fuente
+  de luz se localiza a una altura $h=\texttt{\emph{altura}}$, tal que
+  el eje del cono de luz generado posee una direcci'on dada por los
+  'angulos
+  $(\theta,\phi)=(\texttt{\emph{theta}},\texttt{\emph{phi}})$, e
+  incide en el suelo en el punto
+  $(x_0,y_0)=(\texttt{\emph{oY}},\texttt{\emph{oX}})$.  Al proyectarse
+  en el suelo, el haz de luz cubre un 'area de tama~no
+  $\texttt{\emph{lonX}} \times \texttt{\emph{lonY}}$, siendo los
+  fotones generados en una malla de $\texttt{\emph{nX}} \text{filas}
+  \times \texttt{\emph{nY}} \text{columnas}$.
 
 \item[\texttt{pm\_parallel\_beam} \quad
-  \texttt{<\emph{maskfile}>}]
+  \texttt{<\emph{m'ascara}>}]
 %
-  Defines a parallel beam of light, using the pixmap stored in the
-  file ``\texttt{\emph{maskfile}}'' as a mask.
+  Define un haz de luz plano-paralelo, usando una imagen de un fichero
+  ``\texttt{\emph{maskfile}}'' como m'ascara.
 
 \item[\texttt{seeds} \quad
-  \texttt{<\emph{seed1}>  <\emph{seed2}>}]
+  \texttt{<\emph{semilla1}>  <\emph{semilla2}>}]
 %
-  [\emph{required}] \\
-  Defines the seeds to be used for random number generation.
+  [\emph{requerido}] \\
+  Define las semillas para el generador de n'umeros aleatorios.
 
 \item[\texttt{data\_from\_stdin}]
 %
-  The input data is read directly from the \emph{Standard Input}.
+  Los datos de entrada son leidos directamente desde la \emph{Entrada
+    Est'andar}.
   
 \item[\texttt{data\_to\_stdout}]
 %
-  The output data is written directly to the \emph{Standard Output}.
+  Los datos de salida son grabados directamente en la \emph{Salida
+    Est'andar}.
 
 \item[\texttt{end\_file}]
 %
-  [\emph{required}] \\
-  This must be the last entry in the input file. After this keyword,
-  no further input is read from the parameters file.
+  [\emph{requerido}] \\
+  'Este debe ser el 'ultimo comando del fichero de parametros.
+  Despu'es de este comando se detiene la lectura del fichero.
 
 \end{Uentry}
 
-The non-required keywords modify the normal behavior of the program.
-For example, if the keyword \texttt{random\_pointing} does not appear,
-by default the telescope points towards the direction of each incident
-shower, i.e., every shower is supposed to come ``on-axis'' (or,
-equivalently, the telescope is ``pointing'' to the source of the
-primaries that generate the showers). If the keyword
-\texttt{energy\_cuts} is missing, all the showers are processed, etc.
+Los comandos no obligatorios modifican el comportamiento por omisi'on
+del programa.  Por ejemplo, si no utilizamos el comando
+\texttt{random\_pointing}, por defecto el programa hace que el
+telescopio apunte en la direcci'on de llegada de cada cascada, es
+decir, el cada cascada se asume que llega ``en-eje'' (o, de manera
+equivalente, el telescopio apunta a la fuente de los primarios que han
+generado las cascadas).  Si el comando \texttt{energy\_cuts} no est'a
+presenta, se analizar'an todas las cascadas, etc.
 
-Finally, the program can be executed with a command line like the
-following (we assume a Unix-like system, using a Bourne shell --- the
-character ``\texttt{\$}'' is the \emph{prompt} of the shell):
+Finalmente diremos que el programa puede ser ejecutado desde la l'inea
+de comandos con una orden como la siguiente (asumimos un entorno Unix,
+con el procesador de comandos Bourne --- el s'imbolo ``\texttt{\$}''
+es el indicador del procesador de comandos):
 %
 \begin{center}
   \texttt{\$ reflector -f input.par 1>reflector.output 2>reflector.error}
 \end{center}
 %
-This command will execute the program \reflector, with
-``\texttt{input.par}'' as parameters input file, and will write its
-console output (file descriptor\footnote{A file descriptor is a small,
-  non-negative integer for use in Input/Output operations, directly
-  related with a file, normally on disk.} 1) to the file
-``\texttt{reflector.output}'', and any possible error messages,
-normally sent to the Standard Output (file descriptor 2), to the file
-``\texttt{reflector.error}''. 
+Esta orden iniciar'a la ejecuci'on del programa \reflector, con
+``\texttt{input.par}'' como fichero de par'ametros, y reenviar'a todos
+los mensajes de salida de consola (descriptor de fichero\footnote{Un
+  descriptor de fichero es un n'umero entero, no negativo, usado en
+  operaciones de Entrada/Salida, directamente relacionado con un
+  fichero, normalmente en disco.} 1) al fichero
+``\texttt{reflector.output}'', y los posibles mensajes de error
+(descriptor de fichero 2), al fichero ``\texttt{reflector.error}''.
 
-\subsection{Output from \reflector}
+\subsection{Salida de \reflector}
 
-The result of the execution of \reflector is an output file
-(\texttt{output\_1and2.rfl} in Fig. \ref{fig:reflectorinput}). The
-format of this binary output file is as follows:
+El resultado de la ejecuci'on de \reflector aparece en un fichero de
+salida (\texttt{output\_1and2.rfl} en la fig.
+\ref{fig:reflectorinput}).  El formato de este fichero de salida
+binario es el siguiente:
 
 \begin{Uentry}
   
-\item[A \emph{SIGNATURE}]
+\item[Una \emph{FIRMA}]
 %
-  This signature is a string, composed by the word
-  ``\texttt{reflector}'' plus an space plus the version of the
-  program, with the format ``\texttt{M.m}'', where \texttt{M} is the
-  major and \texttt{m} is the minor version numbers.
+  Esta firma es una cadena de letras y n'umeros, compuesta por la
+  palabra 
+  ``\texttt{reflector}'' m'as un espacio en blanco, m'as la version
+  del programa con el formato ``\texttt{M.m}''.
 
-\item[A flag \texttt{START\_OF\_RUN} per data path]
+\item[Un marcador \texttt{COMIENZO\_DE\_TRABAJO} por directorio de datos]
 %
-  This is a 40 byte string, and is written to the output file once per
-  data path specified in the input parameters file. It acts as a flag
-  that marks the beginning of such block.
+  Esta es una cadena de 40 bytes, y se escribe en el fichero de salida
+  una vez por cada directorio de datos especificado en el fichero de
+  par'ametros de entrada.  Su cometido es marcar el principio del
+  bloque de datos de ese directorio.
 
-\item[A flag \texttt{START\_OF\_EVENT} per single event]
+\item[Un marcador \texttt{COMIENZO\_DE\_SUCESO} por suceso]
 %
-  This is a 40 byte string, and is written to the output file once per
-  single event read from the disk.
+  Esta es otra cadena de 40 bytes, escrita en el fichero de salida una
+  vez por cada suceso leido del disco.
 
-\item[A structure \texttt{MCEventHeader} per single event]
+\item[Una estructura de datos \texttt{MCEventHeader} por suceso]
 %
-  This is a set of data members of a class \texttt{MCEventHeader},
-  very similar to the Event Header sub-block defined inside \CORSIKA (see
-  Tables \ref{tab:eh1} and \ref{tab:eh2}).
+  Esta estructura es muy similar a la que aparece en el sub-bloque
+  ``Cabecera de Suceso'' definido en \CORSIKA (v'eanse tablas
+  \ref{tab:eh1} y \ref{tab:eh2}).
 
-\item[A structure \texttt{MCCPhoton} per single photon]
+\item[Una estructura de datos \texttt{MCCPhoton} por cada fot'on]
 %
-  This is a set of data members of a class \texttt{MCCphoton}, very
-  similar to the Cherenkov Photon sub-block defined inside \CORSIKA
-  (see Table \ref{tab:cher}). It has the position of the efectivelly
-  reflected photons in the plane of the camera. Photons absorbed by
-  the atmosphere or lost anyhow in the reflection process are not
-  saved to disk.
+  Este conjunto de datos es muy similar al sub-bloque Fot'on
+  \Cherenkov definido en \CORSIKA (v'ease tabla \ref{tab:cher}).
+  Contiene la posici'on de aquellos fotones que han sido reflejados
+  hacia la c'amara.  Los fotones absorbidos por la atm'osfera o
+  perdidos en el proceso de reflexi'on no son grabados en disco.
   
-\item[A flag \texttt{END\_OF\_EVENT} per single event]
+\item[Un marcador \texttt{FIN\_DE\_SUCESO} por suceso]
 %
-  This is again a 40 byte string, and is written to the output file
-  once per single event read from the disk.
+  'Este es de nuevo una cadena de 40 bytes, y es escrita en el fichero
+  de salida una vez por cada suceso.
 
-\item[A flag \texttt{END\_OF\_RUN} per data path]
+\item[Un marcador \texttt{FIN\_DE\_TRABAJO} por directorio de datos]
 %
-  This is a 40 byte string, and is written to the output file once per
-  data path specified in the input parameters file.
+  De nuevo, una cadena de 40 bytes, escrita al finalizar la lectura de
+  cada directorio de datos.
 
-\item[A flag \texttt{END\_OF\_FILE}]
+\item[Un marcador \texttt{FIN\_DE\_FICHERO}]
 %
-  This is the last 40 byte string, and is written to the output file
-  at the end of the execution of \reflector.
+  Esta en la 'ultima cadena de 40 bytes, y se escribe al fichero de
+  salida al terminar el programa \reflector.
 
 \end{Uentry}
 
-Details about the physical processes simulated inside \reflector are
-given in Chapter \ref{chapter:simmagic}.
-
-%\begin{listado}
-%  \begin{flushleft}
-%%    \ifenglish
-%\caption{Sample \reflector input parameters file}
-%%\else
-%%\caption{Ejemplo de fichero de par'ametros de \reflector}
-%%\fi
-%\label{fig:reflectorinput}
-%%\hrule
-%\ttfamily \footnotesize
-%%\centering
-%\begin{tabular}{l}
-%reflector 0.3 \\
-%verbose\_level       4 \\
-%ct\_file             magic.definition \\
-%output\_file         ./output\_1and2.rfl \\
-%atm\_model           ATM\_CORSIKA \\
-%random\_pointing     0.0 5.0 0 3342 8973 \\
-%\#range\_events       1 100 \\
-%data\_paths          2 \\
-%./output1\_corsika/ \\
-%./output2\_corsika/ \\
-%end\_file \\
-%\end{tabular}
-%\end{flushleft}
-%\end{listado}
+Para ver algunos de los detalles acerca de los procesos f'isicos que
+son simulados dentro de \reflector, v'ease el cap'itulo
+\ref{chapter:simmagic}.
 
 \begin{listado}
 \begin{verbatim}
@@ -600,262 +511,272 @@ end_file
 \label{fig:reflectorinput}
 \end{listado}
 
-\section{The code \camera}
+\section{El c\'odigo \camera}
 \label{sec:camera}
 %
-The \camera program receives as input also a parameters file, in the
-same form as the input parameters file for \reflector, with different
-keywords though.  The currently available keywords are:
+El programa \camera recibe como entrada tambi'en un fichero de
+par'ametros, con la misma forma que el de \reflector, aunque con
+diferentes comandos, como es natural. Los comandos disponibles
+actualmente son:
 
 \begin{Uentry}
   
-\item[\texttt{camera <\emph{version}>}]
+\item[\texttt{camera <\emph{versi'on}>}]
 %
-  [\emph{required}] \\
-  This \emph{must} be the first line in the parameters file. It acts
-  as a signature for the program: the version shown in
-  \texttt{<\emph{version}>} must correspond with the compiled version
-  of the running \camera, and must be separated of the keyword
-  ``\texttt{camera}'' by a single space.  Otherwise, an error
-  message is displayed and the program stops its execution.
+  [\emph{requerido}] \\
+  'Este comando debe aparecer en la primera l'inea del fichero de
+  par'ametros.  La versi'on mostrada en \texttt{<\emph{versi'on}>}
+  debe corresponderse con la versi'on compilada del programa \camera,
+  y debe aparecer separada de la palabra ``\texttt{camera}'' por un
+  solo espacio en blanco.  En caso contrario, se muestra un mensaje de
+  error y el programa detiene su ejecuci'on.
   
 \item[\texttt{input\_file} \quad
-  \texttt{<\emph{filename}>}]
+  \texttt{<\emph{fichero}>}]
 %
-  [\emph{required}] \\
-  Sets the name of the input file (\texttt{.rfl}). By default, this
-  will be the output from a previous session of \reflector. However,
-  the keyword \texttt{read\_phe} can change this behavior (see below).
+  [\emph{requerido}] \\
+  Especifica el nombre del fichero de entrada (\texttt{.rfl}).  Por
+  defecto, 'este ser'a la salida de una sesi'on anterior del programa
+  \reflector.  Sin embargo, el comando \texttt{read\_phe} puede
+  cambiar esto (ver m'as abajo).
      
 
 \item[\texttt{output\_file} \quad
-  \texttt{<\emph{filename}>}]    
+  \texttt{<\emph{fichero}>}]    
 %
-  [\emph{required}] \\
-  Sets the name of the binary output file (\texttt{PHE} file).
+  [\emph{requerido}] \\
+  Determina el nombre del fichero binario de salida (fichero \texttt{PHE}).
 
 \item[\texttt{data\_file} \quad
-  \texttt{<\emph{filename}>}]
+  \texttt{<\emph{fichero}>}]
 %
-  [\emph{required}] \\
-  Sets the name of the \textsc{ascii} output data file (\texttt{DAT}).
+  [\emph{requerido}] \\
+  Determina el nombre del fichero \textsc{ascii} de salida (fichero
+  \texttt{DAT}).
 
 \item[\texttt{hbook\_file} \quad
-  \texttt{<\emph{filename}>}]
+  \texttt{<\emph{fichero}>}]
 %
-  [\emph{required}] \\
-  Sets the name of the \emph{portable binary} output data file
-  (\texttt{HBOOK}).
+  [\emph{requerido}] \\
+  Determina el nombre del fichero \emph{binario portable} de salida
+  (fichero \texttt{HBOOK}).
 
 \item[\texttt{ct\_file} \quad
-  \texttt{<\emph{CT def. file}>}]
+  \texttt{<\emph{fich.def.CT}>}]
 %
-  [\emph{required}] \\
-  Sets the name of the CT definition file (see section
-  \ref{sec:ctdef}).
+  [\emph{requerido}] \\
+  Especifica el nombre del fichero de definici'on del telescopio
+  (v'ease secci'on \ref{sec:ctdef}).
 
 \item[\texttt{ana\_pixels} \quad
-  \texttt{<\emph{number}>}]
+  \texttt{<\emph{n'umero}>}]
 %
-  Number of pixels used in image parameters calculation (by default,
-  equal to the number of pixels defined in the CT definition file).
+  N'umero de p'ixeles a usar en el c'alculo de los par'ametros de
+  imagen (por defecto, igual al n'umero de p'ixeles en el fichero de
+  definici'on del telescopio).
 
 \item[\texttt{nsb\_on}]
 %
-  Activates the NSB simulation. The simulation of the NSB is activated
-  by default (see \ref{ssec:LONS}).
-
+  Activa la simulaci'on de la luz del cielo nocturno (NSB).  Esta
+  simulaci'on est'a activada por defecto (v'ease la secci'on
+  \ref{ssec:LONS}).
 
 \item[\texttt{nsb\_off}]
 %
-  De-activates the simulation of the NSB.
+  Desactiva la simulaci'on de la NSB.
 
 \item[\texttt{nsb\_mean} \quad
-  \texttt{<\emph{mean}>}]
+  \texttt{<\emph{media}>}]
 %
-  Sets the mean value for the NSB. Default values hard coded. This
-  implies always \texttt{nsb\_on} (see \ref{ssec:LONS}).
+  Determina el valor medio de la NSB.  Los valores por omisi'on no son
+  configurables.  Esta opci'on siempre implica \texttt{nsb\_on}
+  (v'ease la secci'on \ref{ssec:LONS}).
 
 \item[\texttt{threshold} \quad
-  \texttt{<\emph{value}>}]
+  \texttt{<\emph{valor}>}]
 %
-  Sets the threshold value $q_0$ for the trigger logic.
+  Fija el valor umbral $q_0$ en la l'ogica de \emph{trigger}.
 
 \item[\texttt{tail\_cut} \quad
-  \texttt{<\emph{value}>}]
+  \texttt{<\emph{valor}>}]
 %
-  Sets the tail-cut value.
+  Fija el valor del corte \emph{de cola}.
 
 \item[\texttt{islands\_on}]
 %
-  Activates the islands calculation (see \ref{ssec:islands}).
+  Activa el c'alculo de islas (v'ease la secci'on \ref{ssec:islands}).
 
 \item[\texttt{islands\_off}]
 %
-  De-activates the islands calculation. 
+  Desactiva el c'alculo de islas. 
 
 \item[\texttt{islands\_cut} \quad
-  \texttt{<\emph{value}>}]
+  \texttt{<\emph{valor}>}]
 %
-  Sets the islands-cut value $i_0$ (see \ref{ssec:islands}). This
-  implies always \texttt{islands\_on}.
+  Fija el valor de corte para las islas $i_0$ (v'ease la secci'on
+  \ref{ssec:islands}).  Esta opci'on siempre implica
+  \texttt{islands\_on}.
 
 \item[\texttt{seeds} \quad
-  \texttt{<\emph{seed1}>  <\emph{seed2}>}]
+  \texttt{<\emph{semilla1}>  <\emph{semilla2}>}]
 %
-  [\emph{required}] \\
-  Sets seeds for random number generation
+  [\emph{requerido}] \\
+  Fijas las semillas para el generador de n'umeros aleatorios.
 
 \item[\texttt{data\_from\_stdin}]
 %
-  Tells \camera to read data directly from the Standard Input.
+  Hace que \camera lea los datos directamente de la Entrada Est'andar.
 
 \item[\texttt{skip} \quad
   \texttt{<\emph{N}>  <\emph{n1}>  <\emph{n2}>  <\emph{n3}>}]
 %
-  Skip pathological/problematic showers. The number \texttt{\emph{N}}
-  expresses the number of showers to be skipped, listed in an space
-  separated list following this number. The showers to be skipped are
-  \texttt{\emph{n1}}, \texttt{\emph{n2}}, \texttt{\emph{n3}}, \ldots
+  Omite el an'alisis de cascadas problematicas o patol'ogicas.  El
+  n'umero \texttt{\emph{N}} expresa el n'umero de cascadas a omitir,
+  las cuales son indicadas a continuaci'on en una lista separadas por
+  espacios.
 
 \item[\texttt{write\_all\_data}]
 %
-  Write to the DAT output \emph{all} image data (by default, only
-  those showers that pass the trigger are written).
+  Escribe en el fichero DAT de salida todas las im'agenes (por
+  omisi'on, s'olo se escriben aquellas cascadas que pasaron el
+  \emph{trigger}).
 
 \item[\texttt{write\_all\_images}]
 %
-  Write to the PHE output \emph{all} image data (by default, only
-  those showers that pass the trigger are written).
+  Escribe al fichero PHE de salida \emph{all} todas las im'agenes (por
+  omisi'on, s'olo se escriben aquellas cascadas que pasaron el
+  \emph{trigger}).
 
 \item[\texttt{read\_phe}]
 %
-  Read an already camera processed file. The program \camera is able
-  to read its own output files, and re-process the same data. This
-  feature is provided since the reading of a PHE file is much faster
-  than the reading of a RFL (\reflector output) file. This mode of
-  operation is useful, for example, if one wants to check for trigger
-  efficiencies, with a common trigger pattern (see below) but
-  different threshold values.
+  Lee un fichero resultante de un proceso anterior de \camera.  El
+  programa \camera es capaz de leer sus propios ficheros, y de
+  reprocesar esos datos.  Se ha provisto a \camera de esta
+  posibilidad, ya que la lectura de un fichero PHE es en general mucho
+  m'as r'apida que la de un fichero RFL (resultado de \reflector).
+  Este modo de operaci'on es 'util, por ejemplo, cuando uno desea
+  comprobar eficiencias de \emph{trigger} con una m'ascara de
+  \emph{trigger} fija, y s'olo cambiando los valores umbral.
 
 \item[\texttt{read\_phe\_all}]
 %
-  The same as above, but the PHE file was processed with
-  \texttt{write\_all\_images}.
+  Igual que el anterior, pero en la generaci'on del fichero PHE de
+  entrada se utiliz'o el comando \texttt{write\_all\_images}.
 
 \item[\texttt{select\_energy} \quad
-  \texttt{<\emph{Elower}>  <\emph{Eupper}>}]
+  \texttt{<\emph{Einferior}>  <\emph{Esuperior}>}]
 %
-  Energy range to read: only for PHE files.
+  Rango de energ'ias valido: s'olo en caso de lectura de ficheros PHE
+  files.
 
 \item[\texttt{trigger\_radius} \quad
-  \texttt{<\emph{radius}>}]
+  \texttt{<\emph{radio}>}]
 %
-  Select trigger radius for the camera (in degrees).
+  Determina el radio de la zona de \emph{trigger} de la c'amara (en
+  grados).
 
 \item[\texttt{time\_histo} \quad
-  \texttt{<\emph{bins}>  <\emph{Xmin}>  <\emph{Xmax}>}]
+  \texttt{<\emph{canales}>  <\emph{Xm'in}>  <\emph{Xm'ax}>}]
 %
-  Sets the characteristics of time histograms.
+  Especifica las caracter'isticas de los histogramas temporales.
 
 \item[\texttt{time\_phisto} \quad
-  \texttt{<\emph{bins}>  <\emph{Xmin}>  <\emph{Xmax}>}]
+  \texttt{<\emph{canales}>  <\emph{Xm'in}>  <\emph{Xm'ax}>}]
 %
-  Sets the characteristics of time pixel histograms.
+  Especifica las caracter'isticas de los histogramas de cada p'ixel.
 
 \item[\texttt{time\_dischisto} \quad
-  \texttt{<\emph{bins}>  <\emph{Xmin}>  <\emph{Xmax}>}]
+  \texttt{<\emph{canales}>  <\emph{Xm'in}>  <\emph{Xm'ax}>}]
 %
-  Sets the characteristics of pixel discriminator histograms.
+  Especifica las caracter'isticas de los histogramas de los discriminadores.
 
 \item[\texttt{trigger\_bins} \quad
-  \texttt{<\emph{bins}>  <\emph{nbefore}>  <\emph{nafter}>}]
+  \texttt{<\emph{canales}>}]
 %
-  Sets number of time bins for the trigger to hold.
+  Fija el n'umero de canales a usar en la l'ogica de \emph{trigger}.
 
 \item[\texttt{correction} \quad
   \texttt{<\emph{factor}>}]
 %
-  Factor for correction in the pixel values (just for control
-  purposes).
+  Factor de correcci'on para los valores de los p'ixeles.
 
 \item[\texttt{trigger\_pattern} \quad
-  \texttt{<\emph{mask}>}] 
+  \texttt{<\emph{m'ascara}>}] 
 %
-  Composed trigger pattern mask to be used in the run (see Table
+  M'ascara de \emph{trigger} a usar en el an'alisis (v'ease tabla
   \ref{tab:patterns}).
 
 \item[\texttt{sps\_mean} \quad
-  \texttt{<\emph{value}>}]
+  \texttt{<\emph{valor}>}]
 %
-  Sets Single \phe Spectrum mean required.
+  Fija el valor medio de la Distribuci'on Espectral de Fotoelectrones.
 
 \item[\texttt{sps\_fwhm} \quad
   \texttt{<\emph{value}>}]
 %
-  Sets the Full Width Half Maximum (FWHM) value of the signals for
-  each \phe.
+  Fija el valor de anchura a semialtura (FWHM) para las se~nales
+  generadas por cada \phe.
 
 \item[\texttt{end\_file}]
 %
-  [\emph{required}] \\
-  Last command in the parameters file.
+  [\emph{requerido}] \\
+  'Ultimo comando en el fichero de par'ametros.
 
 \end{Uentry}
 
 
-\subsection{Output files from \camera}
+\subsection{Ficheros de salida de \camera}
 
-For its right execution, \camera must be feed in with the output of
-\reflector.  After its operation, the output from \camera is given in
-three separated files, commonly named ``PHE'', ``DAT'' and ``HBOOK''
-files. Their structure is as follows.
+Tras su correcta ejecuci'on, \camera proporciona su salida en tres
+ficheros separados, denominados comunmente ficheros ``PHE'', ``DAT'' y
+``HBOOK''. A continuaci'on se explica brevemente su estructura.
 
-\subsubsection*{PHE output file}
+\subsubsection*{Fichero de salida PHE}
 
-This is a \textbf{binary} file, with an author-defined format, as
-follows:
+'Este es un fichero \textbf{binario}, con el siguiente formato
+definido por el autor:
 
 \begin{Uentry}
   
-\item[A \emph{SIGNATURE}] Like the one written in the output file from
+\item[Una \emph{FIRMA}] Similar a la usada en la salida de \reflector.
+  
+\item[Una cabecera de suceso] Que aparece una vez por suceso, con
+  informaci'on similar a la que aparece en el fichero de salida de
   \reflector.
   
-\item[An Event Header] Once per event, with similar information to the
-  equivalent header that appears in the \reflector output file.
-  
-\item[Image information] Once per event, is a stream of $N$ floating
-  point numbers (where $N$ is the number of pixels in the camera),
-  with the information of how many photoelectrons have been registered
-  by each camera pixel.
+\item[Informaci'on de la imagen] Una vez por suceso, consiste en un
+  conjunto de $N$ n'umeros enteros (donde $N$ es el n'umero de
+  p'ixeles de la c'amara), con la informaci'on de cuantos
+  fotoelectrones se han registrado en cada p'ixel.
   
 \end{Uentry}
 
-\subsubsection*{DAT output file}
+\subsubsection*{Fichero de salida DAT}
 
-This is a \textbf{normal text} file, with, again, an author-defined
-format. A file with information about $n$ events will have $3 n$
-lines. The first 3 lines contain information about the first event,
-the next 3 lines contain information about the second event, and so
-on. In each set of 3 lines (information about a given event), this
-data is stored
+'Este es una fichero de texto normal, de nuevo con un formato definido
+por el usuario. Un fichero como 'este con informaci'on acerca de $n$
+sucesos contendr'a $3 x$ l'ineas. Las primeras 3 l'ineas contienen
+informaci'on sobre el primer suceso, las 3 siguientes sobre el
+siguiente, etc. En cada grupo de 3 l'ineas (con la informaci'on sobre
+un suceso), se guardan los siguientes datos:
 
 \begin{Uentry}
   
-\item[First line : \emph{Event General Information}] This line is
-  formed by a set of 50 numbers, separated by spaces. The information
-  can be read and used to fill in a data structure, each value
-  corresponding to the variables shown in Listing
-  \ref{tab:hbookntuple}, except the first value, which is an internal
-  counter that gets actualized every time an event passes the trigger.
+\item[Primera l'inea: \emph{Informaci'on general del suceso}] Esta
+  l'inea est'a formada por un conjunto de 50 n'umeros, separados por
+  espacios. La informaci'on puede ser le'ida y usada para llenar las
+  variables de una estructura que aparecen en el listado
+  \ref{tab:hbookntuple}, excepto el primer valor, que es un contador
+  que se actualiza cada vez que un suceso pasa la l'ogica de
+  \emph{trigger}.
   
-\item[Second line : \emph{Event Image}] This line is formed by a set
-  of $N+1$ values, where the first one is always -9999, and the next
-  $N$ are the photoelectrons registered in the $N$ pixels of the
-  camera.
-
-\item[Third line : \emph{Reserved}] This line starts always with the
-  number -9998.
+\item[Segunda l'inea: \emph{Imagen del suceso}] Esta l'inea est'a
+  formada por un conjunto de $N+1$ valores, donde el primero es
+  siempre -9999, y los $N$ siguientes son los fotoelectrones
+  registrados en los $N$ p'ixeles de la c'amara.
+  
+\item[Tercera l'inea: \emph{Reservada}] Esta l'inea comienza siempre
+  por -9998.
 
 \end{Uentry}
 
@@ -864,111 +785,116 @@ data is stored
   \scriptsize
   \begin{tabular}{|rll|}
     \hline
-    \emph{N.var} & \emph{Name} & \emph{Description}\hspace{12em} \\
+    \emph{N.var} & \emph{Nombre} & \emph{Descripci'on}\hspace{12em} \\
     \hline
-  1 & \texttt{n      } & Number of event \\
-  2 & \texttt{primary} & GEANT code of primary particle  \\
-  3 & \texttt{energy } & Energy of primary  \\
-  4 & \texttt{cored  } & Core distance  \\
-  5 & \texttt{impact } & Impact parameter  \\
-  6 & \texttt{xcore  } & Coordinate X of core position  \\
-  7 & \texttt{ycore  } & Coordinate Y of core position  \\
-  8 & \texttt{theta  } & Zenith Angle $\Theta$  \\
-  9 & \texttt{phi    } & Azimuth Angle $\Phi$  \\
- 10 & \texttt{dangle } & Off-axis angle  \\
- 11 & \texttt{dtheta } & Component $\theta$ of off-axis angle  \\
- 12 & \texttt{dphi   } & Component $\phi$ of off-axis angle  \\
+  1 & \texttt{n      } & N'umero de suceso \\
+  2 & \texttt{primary} & C'odigo GEANT de la part'icula primaria  \\
+  3 & \texttt{energy } & Energ'ia del primario  \\
+  4 & \texttt{cored  } & Distancia al \emph{core}  \\
+  5 & \texttt{impact } & Par'ametro de impacto \\
+  6 & \texttt{xcore  } & Coordenada X del \emph{core}  \\
+  7 & \texttt{ycore  } & Coordenada Y del \emph{core} \\
+  8 & \texttt{theta  } & 'Angulo Cenital $\Theta$  \\
+  9 & \texttt{phi    } & 'Angulo Acimutal $\Phi$  \\
+ 10 & \texttt{dangle } & 'Angulo \emph{fuera de eje} \\
+ 11 & \texttt{dtheta } & Componente $\theta$ del 'angulo \emph{fuera de eje} \\
+ 12 & \texttt{dphi   } & Componente $\phi$ del 'angulo \emph{fuera de eje} \\
  13 & \texttt{trigger} & 1:Trigger , 0:No trigger  \\
- 14 & \texttt{ncphs  } & Number of Cher. photons generated  \\
- 15 & \texttt{nphes  } & Number of photoelectrons produced  \\
- 16 & \texttt{nphes2 } & Sum. of photoelectrons in 6 maxima  \\
- 17 & \texttt{length } & Image parameter \textsc{length}  \\
- 18 & \texttt{width  } & Image parameter \textsc{width}  \\
- 19 & \texttt{dist   } & Image parameter \textsc{dist}  \\
- 20 & \texttt{xdist  } & Image parameter \textsc{xdist}  \\
- 21 & \texttt{azw    } & Image parameter \textsc{azw}  \\
- 22 & \texttt{miss   } & Image parameter \textsc{miss}  \\
- 23 & \texttt{alpha  } & Image parameter \textsc{alpha}  \\
- 24 & \texttt{conc2  } & Image parameter \textsc{conc}$_2$  \\
- 25 & \texttt{conc3  } & Image parameter \textsc{conc}$_3$  \\
+ 14 & \texttt{ncphs  } & N'umero de fot.Cher. generados  \\
+ 15 & \texttt{nphes  } & N'umero de \phes producidos  \\
+ 16 & \texttt{nphes2 } & Suma de fotoelectrones en 6 maxima  \\
+ 17 & \texttt{length } & Par'ametro de imagen \textsc{length}  \\
+ 18 & \texttt{width  } & Par'ametro de imagen \textsc{width}  \\
+ 19 & \texttt{dist   } & Par'ametro de imagen \textsc{dist}  \\
+ 20 & \texttt{xdist  } & Par'ametro de imagen \textsc{xdist}  \\
+ 21 & \texttt{azw    } & Par'ametro de imagen \textsc{azw}  \\
+ 22 & \texttt{miss   } & Par'ametro de imagen \textsc{miss}  \\
+ 23 & \texttt{alpha  } & Par'ametro de imagen \textsc{alpha}  \\
+ 24 & \texttt{conc2  } & Par'ametro de imagen \textsc{conc}$_2$  \\
+ 25 & \texttt{conc3  } & Par'ametro de imagen \textsc{conc}$_3$  \\
  \hline
   \end{tabular}
   \hfill
   \begin{tabular}{|rll|}
     \hline
-    \emph{N.var} & \emph{Name} & \emph{Description}\hspace{12em} \\
+    \emph{N.var} & \emph{Nombre} & \emph{Descripci'on}\hspace{12em} \\
     \hline
- 26 & \texttt{conc4  } & Image parameter \textsc{conc}$_4$  \\
- 27 & \texttt{conc5  } & Image parameter \textsc{conc}$_5$  \\
- 28 & \texttt{conc6  } & Image parameter \textsc{conc}$_6$  \\
- 29 & \texttt{conc7  } & Image parameter \textsc{conc}$_7$  \\
- 30 & \texttt{conc8  } & Image parameter \textsc{conc}$_8$  \\
- 31 & \texttt{conc9  } & Image parameter \textsc{conc}$_9$  \\
- 32 & \texttt{xmax   } & X coord. of weig. pos. of maximum   \\
- 33 & \texttt{ymax   } & Y coord. of weig. pos. of maximum  \\
- 34 & \texttt{xm     } & X coord. of centroid  \\
- 35 & \texttt{ym     } & Y coord. of centroid  \\
+ 26 & \texttt{conc4  } & Par'ametro de imagen \textsc{conc}$_4$  \\
+ 27 & \texttt{conc5  } & Par'ametro de imagen \textsc{conc}$_5$  \\
+ 28 & \texttt{conc6  } & Par'ametro de imagen \textsc{conc}$_6$  \\
+ 29 & \texttt{conc7  } & Par'ametro de imagen \textsc{conc}$_7$  \\
+ 30 & \texttt{conc8  } & Par'ametro de imagen \textsc{conc}$_8$  \\
+ 31 & \texttt{conc9  } & Par'ametro de imagen \textsc{conc}$_9$  \\
+ 32 & \texttt{xmax   } & Coord. X de posicion pesada del m'aximo \\
+ 33 & \texttt{ymax   } & Coord. Y de posicion pesada del m'aximo \\
+ 34 & \texttt{xm     } & Coord. X del centroide \\
+ 35 & \texttt{ym     } & Coord. Y del centroide \\
  36 & \texttt{beta   } &   \\
- 37 & \texttt{m2xy   } & Covariance  \\
- 38 & \texttt{asymx  } & Image parameter \textsc{asymetry}$_{\text{X}}$  \\
- 39 & \texttt{asymy  } & Image parameter \textsc{asymetry}$_{\text{X}}$  \\
+ 37 & \texttt{m2xy   } & Covarianza  \\
+ 38 & \texttt{asymx  } & Par'ametro de imagen \textsc{asymetry}$_{\text{X}}$  \\
+ 39 & \texttt{asymy  } & Par'ametro de imagen \textsc{asymetry}$_{\text{X}}$  \\
  40 & \texttt{phiasym} &   \\
  41 & \texttt{l1     } & Semi-\textsc{length}$_1$  \\
  42 & \texttt{l2     } & Semi-\textsc{length}$_2$  \\
  43 & \texttt{w1     } & Semi-\textsc{width}$_1$  \\
  44 & \texttt{w2     } & Semi-\textsc{width}$_2$  \\
- 45 & \texttt{twidth } & Width of the \phe times distribution  \\
- 46 & \texttt{tpeak  } & Peak of the \phe times distribution  \\
- 47 & \texttt{tfirst } & Time of the first photon  \\
- 48 & \texttt{tlast  } & Time of the last photon  \\
- 49 & \texttt{trange } & Full domain of time distribution  \\
+ 45 & \texttt{twidth } & Anchura de distrib. de tiempos de \phes \\
+ 46 & \texttt{tpeak  } & Pico de distrib. de tiempos de \phes \\
+ 47 & \texttt{tfirst } & Tiempo del primer fot'on  \\
+ 48 & \texttt{tlast  } & Tiempo del 'ultimo fot'on \\
+ 49 & \texttt{trange } & Dominio de la distribuci'on de tiempos \\
  \hline
  \multicolumn{3}{c}{} \\
   \end{tabular}
-  \caption{Variables written in the \emph{n-tuple}, in the HBOOK
-    output file (for the definition of the different image parameters,
-    see the Appendix \ref{appendix:image})}
+  \caption{Variables escritas en una \emph{n-tupla}, en el fichero de
+    salida HBOOK (m'as detalles sobre la definici'on de los
+    par'ametros de imagen en el ap'endice \ref{appendix:image})}
   \label{tab:hbookntuple}
 \end{table}
 
-\subsubsection*{HBOOK output file}
+\subsubsection*{Fichero de salida HBOOK}
 
-This is a \textbf{portable binary} file, which is created by using the
-well established HBOOK routines from the CERN libraries
-\cite{CERNlib}. Written in this file is an \emph{n-tuple} (with
-identifier 1), a table of data formated in lines (\emph{records}) and
-columns (\emph{variables}). Each record represents a single event. The
-following data are stored into the \emph{n-tuple}:
+'Este es un fichero de salida \textbf{binario portable}, creado con las
+conocidas biblioteca de funciones HBOOK de las bibliotecas del CERN
+\cite{CERNlib}.  Dentro de este fichero aparece una  \emph{n-tupla}
+(con identificador 1), una tabla de datos en filas (\emph{registros})
+y columnas (\emph{variables}).  Cada registro representa un
+suceso. Los datos guardados en esa \emph{n-tupla} se muestran en la
+tabla \ref{tab:hbookntuple}.
 
-\subsection{Islands calculation}
+\subsection{C\'alculo de islas}
 \label{ssec:islands}
 
-The algorithm for the calculation of islands in the image is a simple
-adaptation of the one provided by \cite{Fabero:islas}. The adaptation
-simply changes the geometry of the problem, from a square tessellation
-to a hexagonal one. Here I will explain the algorithm for a square
-tessellation. This algorithm, as explained here, is suitable only for
-a Moore neighborhood (see Fig. \ref{fig:neighborhood}).
+El algoritmo usado en el c'alculo de islas en el programa \camera es
+una sencilla adaptaci'on del proporcionado por \cite{Fabero:islas}. La
+adaptaci'on se limita al cambio de la geometr'ia del problema, de un
+teselado cuadrado a uno hexagonal.  A continuaci'on se explicar'a el
+algoritmo para el teselado cuadrado, ligeramente m'as sencillo.  Este
+algoritmo, tal y como se describe aqu'i, requiere el uso de un
+``vecindario'' de Moore (v'ease fig. \ref{fig:neighborhood}).
 
-Let $\mathbf{A}$ be an array of cells, of dimensions $m \times n$
+Sea $\mathbf{A}$ una matriz de celdillas, de dimensiones $m \times n$
 %
 \begin{equation}
 \mathbf{A} = \{ \, a_{ij} \,|\, i=1\mathord{:}m,\, j=1\mathord{:}n \}
 \label{eq:arrayA}
 \end{equation}
 %
-that contains our values (number of \phes, for example) distributed in
-rows and columns.  The value of a given cell can be either $0$ or
-different from zero.  Let $\mathbf{B}$ be a parallel array, similar to
-$\mathbf{A}$, filled with zeros. Let $\mathcal{J}$ be a way to go
-through all the cells in $\mathbf{A}$ or $\mathbf{B}$. I call
-$\mathcal{J}$ a \emph{journey}. Let $\mathcal{J}$ be the
-\emph{journey} that goes through all the cells \emph{row by row},
-starting at the first one.  That is,
+conteniendo cada celdilla nuestros valores problema (n'umero de \phes,
+por ejemplo) distribu'idos en filas y columnas.  El valor de una
+celdilla determinada puede ser $0$ o distinto de cero.  Sea
+$\mathbf{B}$ una matriz paralela, similar a 
+$\mathbf{A}$, rellena de ceros. Sea $\mathcal{R}$ una forma de
+recorrer todas y cada una de las celdillas de $\mathbf{A}$ o
+$\mathbf{B}$.  Denominar'e este
+$\mathcal{R}$ un \emph{recorrido}.  Definamos $\mathcal{R}$ como el
+recorrido \emph{recorrido} que pasa por todas las celdillas \emph{por filas},
+comenzando en la primera.  Es decir, los 'indices de las celdas
+recorridas vienen dados por
 %
 \begin{equation}
   \begin{matrix}
-    \mathcal{J} &\equiv \{ & (1,1),& (1,2),&\cdots,& (1,n),& \\
+    \mathcal{R} &\equiv \{ & (1,1),& (1,2),&\cdots,& (1,n),& \\
                 &          & (2,1),& (2,2),&\cdots,& (2,n),& \\
                 &          &\cdots,&\cdots,&\cdots,&\cdots,& \\
                 &          & (m,1),& (m,2),&\cdots,& (m,n) & \}
@@ -976,31 +902,31 @@ starting at the first one.  That is,
   \label{eq:journey}
 \end{equation}
 %
-Let $\mathcal{J}'$ be the reverse \emph{journey} of $\mathcal{J}$.
-The algorithm then has the following steps:
+Sea $\mathcal{R}'$ el \emph{recorrido} inverso de $\mathcal{R}$.  El
+algoritmo contempla los siguientes pasos:
 
 \begin{enumerate}
   
-\item For each cell $(i,j)$ in $\mathbf{A}$, following $\mathcal{J}$,
-  assign to the corresponding cell in $\mathbf{B}$ a correlative
-  number (starting from 1, then 2, \ldots) if the cell value $a_{ij}$
-  is \emph{non-zero}. By this procedure, we have \textbf{uniquely}
-  numbered each non-zeroed cell in the original array. We will call
-  each of that numbers an ``\emph{index}''. In pseudo-mathematical
-  terms, if we have a counter $k=1$:
+\item Para cada celda $(i,j)$ de $\mathbf{A}$, siguiendo
+  $\mathcal{R}$, asignamos a la celda correspondiende de $\mathbf{B}$
+  a n'umero (comenzando por 1, luego 2, \ldots) si el valor de la
+  celda $a_{ij}$ es \emph{distinto de cero}.  Mediante este proceso,
+  numeramos de manera \textbf{un'ivoca} cada celda con valor distinto
+  de cero de la matriz original.  Denominaremos cada uno de los
+  n'umeros usados un ``\emph{'indice}''.  En t'erminos
+  pseudo-matem'aticos, si tenemos un contador $k=1$:
                                 %
   \begin{equation}
     \label{eq:islandsalg1}
-    b_{ij|\mathcal{J}} = 
+    b_{ij|\mathcal{R}} = 
     \begin{cases}
-      k, & \text{if $a_{ij}\neq 0$, \quad (and we update $k \gets k+1$)}\\
-      0, & \text{if $a_{ij}=0$}
+      k, & \text{si $a_{ij}\neq 0$, \quad (y actualizamos $k \gets k+1$)}\\
+      0, & \text{si $a_{ij}=0$}
     \end{cases}
   \end{equation}
   
 \begin{figure}[hbt]
-  \centering
-  \mbox{}\hfill
+  \centering \mbox{}\hfill
   \subfigure[]{%
     \label{fig:neigvonn}\includegraphics[width=.20\textwidth]{vonneumann}}
   \hfill
@@ -1011,58 +937,62 @@ The algorithm then has the following steps:
     \label{fig:neighex}\includegraphics[width=.20\textwidth]{hexagonal}}
   \hfill\mbox{}
   \ifenglish
-  \caption[Different kinds of neighborhood]{Different kinds of
-    neighborhoods: (a) Von Neumann, (b) Moore and (c) Hexagonal. In
-    order to update the state of the central cell (in black), the
-    cells (circles) in gray are used (together with the central one);
-    the empty circles are not taken into account for that cell.}
-  \else
-  \caption[]{(a), (b), (c).}  \fi
+  \caption[]{(a), (b), (c).} \else
+  \caption[Diferentes tipos de ``vecindarios'']{Diferentes tipos de
+    ``vecindarios'': (a) de Von Neumann, (b) de Moore y (c) Hexagonal.
+    Para actualizar el estado de la celdilla central (en negro), se
+    usan las celdillas (c'irculos) en gris (junto con la central); los
+    estados de los c'irculos en blanco son ignorados para esa
+    celdilla.} \fi
   \label{fig:neighborhood}
 \end{figure}
 
-\item For each cell $(i,j)$ in $\mathbf{B}$, we set as its new value,
-  the maximum (or minimum) value of the \emph{indices} of the cells in
-  its (Moore) neighborhood. That is, for example:
+\item Para cada celda $(i,j)$ de $\mathbf{B}$, cambiamos su valor por
+  el m'aximo (o m'inimo) de los 'indices de las celdas de su
+  vecindario de Moore. Es decir, por ejemplo:
                                 %
   \begin{equation}
     \label{eq:islandsalg2}
     b_{ij} = \max[\{b_{ij}\}_{\text{Moore}}]
   \end{equation}
                                 %
-  In the simple version of the algorithm, we iterate this step
-  following the \emph{journey} $\mathcal{J}$, until no further
-  modification is made to the array $\mathbf{B}$.
+  En la versi'on m'as simple del algoritmo, iteramos este paso
+  siguiendo siempre \emph{recorrido} $\mathcal{R}$, hasta que deje de
+  realizarse alguna modificaci'on a los estados de las celdas de
+  $\mathbf{B}$.
   
-  In an optimized version, we iterate first following $\mathcal{J}'$
-  and then following $\mathcal{J}$, alternatively (in case we use a
-  ``minimum'' rule in the previous expression, we would take first
-  $\mathcal{J}$ and then $\mathcal{J}'$).  By following this strategy,
-  the number of iterations gets dramatically decreased.
+  En una versi'on optimizada, iteramos primero siguiendo
+  $\mathcal{R}'$ y despu'es $\mathcal{R}$, alternativamente (si
+  hubiesemos optado por una regla de ``m'inimo'' en la expresi'on
+  anterior, tomar'iamos primero $\mathcal{R}$ y luego $\mathcal{R}'$).
+  Siguiendo esta estrategia conseguimos disminuir considerablemente el
+  n'umero de iteraciones.
   
-  Since the original \emph{indices} in $\mathbf{B}$ were
-  \textbf{unique}, after this step some of the \emph{indices} have
-  been removed from the array $\mathbf{B}$.  Let $\mathcal{I}=\{i_1,
-  i_2, \ldots, i_L\}$ be the set of \emph{indices} that are left.
+  Dado que los \emph{'indices} originales eran 'unicos en
+  $\mathbf{B}$, despu'es de este proceso algunos de los
+  \emph{'indices} habr'an sido eliminados de la matriz $\mathbf{B}$.
+  Sea $\mathcal{I}=\{i_1, i_2, \ldots, i_L\}$ en conjunto de
+  \emph{'indices} que permanecen en $\mathbf{B}$.
   
 \end{enumerate}
 
-After this step one has to count how many different \emph{indices} are
-left in $\mathbf{B}$, $L = \card[\mathcal{I}]$, and their
-multiplicity, i.e. how many cells have each of the remaining indices
-$n_k = n(i_k)$.  $L$ is the \emph{number of islands}, and the $\{n_k\}$
-are the number of cells belonging to each island.  At this point, one
-can also calculate moments on each island (centroids, weighted
-contributions to the global array, etc.).
+Despu'es de este paso, contamos cuantos \emph{'indices} diferentes
+quedan en $\mathbf{B}$, $L = \card[\mathcal{I}]$, y sus
+multiplicidades, es decir cu'antas celdas contienen cada uno de los
+'indices restantes, $n_k = n(i_k)$.  $L$ es el \emph{n'umero de
+  islas}, y los $\{n_k\}$ son los n'umeros de celdas que pertenecen a
+cada isla.  A partir de aqu'i podemos calcular momentos en cada isla
+(centroides, contribuciones pesadas a la matrix global, etc.).
 
-As an example, we have created an array $\mathbf{A}$ filled with some
-values, and applied the algorithm. The arrays $\mathbf{A}$ and
-$\mathbf{B}$, as well as the final status of $\mathbf{B}$, are shown
-in Listings \ref{lis:arraya}, \ref{lis:arrayb} and \ref{lis:arraybb}.
-The result of the counting is shown in Table \ref{tab:islands}, where
-we show the remaining indices, $\{i_k\}$, and their multiplicities, $n_k
-= n(i_k)$. In this particular case, only one iteration (following
-first $\mathcal{J}'$ and then $\mathcal{J}$, only once) was needed.
+Como ejemplo hemos creado una matriz ficticia $\mathbf{A}$ y aplicado
+el algoritmo.  Las matrices $\mathbf{A}$ y $\mathbf{B}$, as'i como el
+estado final de $\mathbf{B}$, se muestran en los listados
+\ref{lis:arraya}, \ref{lis:arrayb} y \ref{lis:arraybb}.  El resultado
+del conteo de islas aparece en la tabla \ref{tab:islands}, donde
+mostramos los 'indices supervivientes, $\{i_k\}$, y sus
+multiplicidades, $n_k = n(i_k)$.  En este caso particular se necesito
+una 'unica iteraci'on (usando primero $\mathcal{R}'$ y luego
+$\mathcal{R}$).
 
 \begin{listado}
 $\mathbf{A} = $
@@ -1090,7 +1020,7 @@ $\mathbf{A} = $
           0   0   0   0   0   0   0   0   0   0   0   0  16   0   0   0   0   0   0   0   0
           0   0   0  21   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0            
 \end{verbatim}                                                                                 
-\caption{The original array $\mathbf{A}$}                                                      
+\caption{Matriz original $\mathbf{A}$}                                                      
 \label{lis:arraya}                                                                             
 \end{listado}                                                                                  
                                                                                                
@@ -1120,7 +1050,7 @@ $\mathbf{B} = $
           0   0   0   0   0   0   0   0   0   0   0   0 129   0   0   0   0   0   0   0   0
           0   0   0 130   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
 \end{verbatim}                                                                                 
-\caption{The array $\mathbf{B}$ after first step}                                              
+\caption{Matriz $\mathbf{B}$ despues del primero paso del algoritmo}                                              
 \label{lis:arrayb}                                                                             
 \end{listado}                                                                                  
                                                                                                
@@ -1150,7 +1080,7 @@ $\mathbf{B}' = $
           0   0   0   0   0   0   0   0   0   0   0   0 129   0   0   0   0   0   0   0   0
           0   0   0 130   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0            
 \end{verbatim}
-\caption{The final status of array $\mathbf{B}$}
+\caption{Estado final de la matriz $\mathbf{B}$}
 \label{lis:arraybb}
 \end{listado}
 
@@ -1159,7 +1089,7 @@ $\mathbf{B}' = $
 \footnotesize
 \begin{tabular}{|cc|cc|}
 \hline
-\emph{Indices} & \emph{Multiplicity} & \emph{Indices} & \emph{Multiplicity}\\
+\emph{'Indice} & \emph{Multiplicidad} & \emph{'Indice} & \emph{Multiplicidad}\\
  $i_k$ & $n_k = n(i_k)$ & $i_k$ & $n_k = n(i_k)$ \\  
 \hline
     2 &  2 &  106 &  1 \\
@@ -1173,188 +1103,200 @@ $\mathbf{B}' = $
   100 &  1 &      &    \\
 \hline
 \end{tabular} 
-\caption{Final results of the Islands' counting procedure}
+\caption{Resultado final del algoritmo de conteo de islas}
 \label{tab:islands}
 \end{table}
 
-Finally, we could make a simple \emph{cleaning} of the image (the
-array) by putting to zero those cells in $\mathbf{A}$ that correspond
-to an island with less that a certain number of cells. In our example,
-if we apply a cut of $n_k>3$, only there will be three islands left,
-the ones with indices equal to 84, 90 and 122, with 29, 55 and 25
-cells respectively.
+Como punto final mencionaremos que si quisieramos realizar una
+limpieza de la imagen (nuestra matrix original) podr'iamos poner a
+cero los valores de aquellas celdillas en $\mathbf{A}$ que
+correspondiesen a islas con una multiplicidad menor que un valor
+prefijado.  En nuestro ejemplo, si aplicamos un corte $n_k>3$,
+solamente sobrevivir'ian las islas con 'indices 84, 90 y 122, con
+multiplicidades 29, 55 y 25 respectivamente.
 
 \clearpage
 
-One of the most important results of the program \camera is the
-calculation of the image parameters for each event. These parameters
-are calculated using the simple formul{\ae}\ presented in Appendix
-\ref{appendix:image}.
+Uno de los resultados m'as importantes del programa \camera es la
+obtenci'on de los par'ametros de imagen para cada suceso.  Estos
+par'ametros son calculados usando las formulas presentadas en el
+Ap'endice \ref{appendix:image}.
 
-\section{Additional data files for \MC simulation}
+\section{Ficheros adicionales para la simulaci\'on}
 \label{sec:addfiles}
 
-Several additional files are needed for the programs \reflector and
-\camera to work. These files contain data concerning the reflectivity
-and possible deviation of the mirrors, the pixel coordinates, the
-Quantum Efficiency of the PMTs and the Single Photoelectron Spectrum
-used in the simulation. All the files follow the simple rule of
-ignoring every line starting with the character ``\texttt{\#}''. They
-all are normal \textsc{ascii} files.
+Para el correcto funcionamiento de los programas \reflector y \camera
+se necesitan varios ficheros adicionales.  Estos ficheros contienen
+data concerniente a la reflectividad de los espejos, posibles
+desviaciones de su orientacion, coordenadas de los p'ixeles de la
+c'amara, eficiencias cu'anticas de los fotomultiplicadores, y la
+Distribuci'on Espectral de Fotoelectrones usados en la simulaci'on.
+Todos los ficheros siguen la regla de usar el s'imbolo ``\texttt{\#}''
+al inicio de l'ineas que se desea sean ignoradas.  Son ficheros
+\textsc{ascii} sencillos.
 
-\subsection{Reflectivity file}
+\subsection{Fichero de reflectividad}
 
-In this file, a first line declares de number of data pairs $(\lambda,
-R(\lambda))$ that appear in the rest of the file (with $\lambda$ the
-wavelength and $R(\lambda)$ the reflectivity of the mirror at that
-wavelength), one data pair per line.
+En este fichero, una primera l'inea establece el n'umero de pares $(\lambda,
+R(\lambda))$ que aparecen en el resto del fichero (siendo $\lambda$ la
+longitud de onda y $R(\lambda)$ la reflectividad de los espejos a esa
+longitud de onda), con uno de estos pares por l'inea.
 
-\subsection{Axes deviation file}
+\subsection{Fichero de desviaci\'on de ejes}
 
-This file contains a list of pairs, $(\Delta x, \Delta y)$, one per
-mirror, that represent the deviation in the camera plane of the axis
-of each mirror, in centimeters.  This file is automatically created
-from the data values that appear in the CT definition file.
+Este fichero contiene una lista de pares, $(\Delta x, \Delta y)$, uno
+por espejo, que representa la desviaci'on lineal en el plano de la
+c'amara, de los ejes de cada espejo, en cent'imetros.  El fichero se
+genera autom'aticamente en caso de no estar presente, a partir de los
+par'ametros establecidos en el fichero de definici'on del telescopio.
 
-\subsection{Pixel coordinates file}
+\subsection{Fichero de coordenadas de los p\'ixeles}
 
-This is one of the most important files. It has a complex structure,
-with information about the geometry of the pixels' distribution in the
-camera. The file is divided in four sections:
+'Este es uno de los ficheros m'as importantes.  Posee una estructura
+algo compleja, con informaci'on acerca de la distribuci'on de los
+p'ixeles en la c'amara.  Se encuentra dividido de manera l'ogica en
+cuatro secciones:
 
 \begin{enumerate}
   
-\item The first section contains information for the pixels in the
-  central part of the camera (\emph{small pixels}), in the form
+\item En la primera secci'on aparece informaci'on de los p'ixeles
+  contenidos en la zona central de la c'amara (\emph{p'ixeles
+    centrales}), en la forma
 %
 \begin{verbatim}
     n   i   j   k   x   y
 \end{verbatim}
 %
-  where \texttt{n} is the number, or identifier, of the pixel,
-  following spiral counting (the central pixel is the number 1); the
-  $(\texttt{i},\texttt{j},\texttt{k})$ are the coordinates of the
-  (center of the) pixel in the system explained in section
-  \ref{sec:pixelization} and shown in Fig. \ref{fig:triaxis} (they
-  correspond to the coordinates there called $(x',y',z')$); and
-  $(\texttt{x},\texttt{y})$ are the actual cartesian coordinates of
-  the (center of the) pixels.  There assumed size of the pixels is 1
-  from one edge to the opposite edge.
+  donde \texttt{n} es el n'umero, o identificador, de cada p'ixel,
+  siguiendo una numeraci'on espiral (el p'ixel central es el n'umero
+  1); $(\texttt{i},\texttt{j},\texttt{k})$ son las coordenadas del
+  centro del p'ixel en el sistema explicado en la secci'on
+  \ref{sec:pixelization} y que se muestra en la fig. \ref{fig:triaxis}
+  (se corresponden con las coordenadas all'i denominadas
+  $(x',y',z')$); y $(\texttt{x},\texttt{y})$ son las coordenadas
+  cartesianas del centro del p'ixel.  Se asume un tama~no de borde a
+  borde del p'ixel de 1.
   
-\item The second section contains information for the so called
-  ``\emph{gap}'' pixels of the camera, in the same form as the
-  previous section.
+\item La segunda secci'on contiene informaci'on acerda de los llamados
+  p'ixeles ``\emph{de hueco}'' de la c'amara, en el mismo formato que
+  en la secci'on anterior.
   
-\item The third and the fourth section contains information for the so
-  called ``\emph{big}'' pixels of the camera. However, these pixels
-  are twice as big as one normal pixel, and they can be assumed to be
-  built from three normal pixels (let's call them
-  \emph{virtual-pixels}) plus three ``thirds'' of a normal pixel. These
-  ``thirds'' of pixels belong to \emph{virtual-pixels} that can be
-  shared between adjacent ``big'' pixels.  In the third section, there
-  appear the coordinates of the centers of the first three
-  \emph{virtual-pixels}.  They appear in groups of three, and the pixel
-  identifier is the same for them (being this identifier the one for
-  the big pixel).
+\item La tercera y cuarta secciones contienen informaci'on acerca de
+  los ``\emph{p'ixeles externos}'' de la c'amara. Sin embardo, al ser 0estos
+  p'ixeles el doble de grandes que los p'ixeles normales, se asume que
+  estan formados por tres p'ixeles normales (digamos, de manera
+  \emph{virtual}), y tres ``tercios'' de pixel normal. Estos
+  ``tercios'' de pixel pertenecer'ian a \emph{p'ixeles virtuales} que
+  ser'ian compartidos por dos o tres p'ixeles externos adyacentes.  en
+  la tercera secci'on aparecen las coordenadas de los centros de los
+  tres primeros p'ixeles \emph{virtuales} citados. Aparecen en grupos
+  de tres, siendo el p'ixel identificador el mismo para cada uno de
+  los tres de cada grupo (siendo 'este el identificador del pixel
+  externo real).
   
-\item In the fourth section, the format is the same, but the
-  identifier is substituted by a number with the digits
-  \texttt{AAABBBCCC}, where \texttt{AAA}, \texttt{BBB} y \texttt{CCC}
-  correspond to identifiers of up to 3 ``big'' pixels that can share a
-  certain \emph{virtual-pixels}. The leading information on a given
-  line is the same as explained above.
+\item En la cuarta secci'on el formato es semejante, pero el
+  identificador se sustituye por un n'umero de 6 d'igitos
+  \texttt{AAABBBCCC}, correspondiendo \texttt{AAA}, \texttt{BBB} y \texttt{CCC}
+  a los identificadores de los p'ixeles externos que comparten un
+  cierto \emph{p'ixel virtual}. Es resto de la informaci'on en la
+  l'inea es la misma que la explicada en parrafos anteriores.
 
 \end{enumerate}
 
 \begin{wrapfigure}[17]{r}{0.50\textwidth}
   \centering
   \includegraphics[width=.30\textwidth]{bigpixels}
-  \caption{Example illustrating the sub-division of big pixels 
-    (located in the outer ring of the camera of \MAGIC), for their
-    characterization in the Pixels definition file }
+  \caption{Ejemplo ilustrativo de la subdivisi'on de un p'ixel externo
+    (localizado en el anillo exterior de la c'amara de \MAGIC), para
+    su caracterizaci'on en el fichero de definici'on de los p'ixeles}
   \label{fig:bigpixels}
 \end{wrapfigure}
 %
-As an example of the contents of the third and fourth sections, in the
-Fig. \ref{fig:bigpixels} we show a set of pixels that could appear in
-the outer region of the camera of \MAGIC. Let's concentrate on the
-central big pixel in this figure, the one with identifier 426. For
-this pixel there will appear 3 lines in the third section, all of them
-with pixel identifier equal to 426, and with coordinates corresponding
-to the 3 \emph{virtual-pixels} fully contained on it. There will
-appear also three lines in the fourth section, corresponding to the
-shared \emph{virtual-pixels} (drawn with dashed lines in the figure).
-These lines, for our example, will have pixel identifiers like
-418425426, 419426427 and 426463464.
+Como ejemplo del contenido de las secciones tres y cuatro, en la fig.
+\ref{fig:bigpixels} mostramos un conjunto de p'ixeles externos tal y
+como podr'ian aparecer en el anillo exterior de la c'amara de \MAGIC.
+Concentr'emonos en el p'ixel central, con identificador 426. Para este
+p'ixel encontraremos 3 l'ineas en la secci'on tres, todos ellos con
+identificador igual a 426, y con las coordenadas de los 3
+\emph{p'ixeles virtuales} totalmente contenidos 'el.  Tambi'en
+aparecer'an 3 l'ineas en la secci'on cuarta, correspondientes a los
+\emph{p'ixeles virtuales} compartidos (mostrados en la figura con
+bordes discontinuos).  Estas l'ineas, seg'un nuestro ejemplo,
+aparecer'an con identificadores del tipo 418425426, 419426427 and
+426463464.
 
-\subsection{Quantum Efficiency file}
+\subsection{Fichero de Eficiencia Cu\'antica}
 
-The Quantum Efficiency file contains the values of the Quantum
-Efficiency for each single pixel in the camera, in the form of tables
-of data points $(\lambda, \QE(\lambda))$, where $\lambda$ is the wavelength. The
-structure is as follows:
+El fichero de Eficiencia Cu'antica contiene los valores de la \QE para
+cada p'ixel en la c'amara, en forma de listas de parejas de valores
+$(\lambda, \QE(\lambda))$, donde $\lambda$ es la longitud de onda.  Su
+estructura es la siguiente:
 
 \begin{itemize}
-\item In a first section, the number of wavelengths used, $n_\lambda$, and
-  the wavelengths themselves (in \u{nm}) are listed.
+\item En una primera secci'on aparece el n'umero de longitudes de onda
+  que aparecen en las tablas, y se listan los valores de esas
+  longitudes de onda, en nan'ometros.
   
-\item In a second section, which covers most of the file length, a $n$
-  tables of data, one per pixel (with $n$ being the number of pixels
-  characterized in the file) are listed. Each table will have $n_\lambda$
-  rows, and each row three values, $(\texttt{i}, \texttt{j},
-  \texttt{q})$, separated by spaces, where \texttt{i} is the pixel
-  number, \texttt{j} is the index of the wavelength used and
-  \texttt{q} is the value of the \QE for that wavelength.
+\item En una segunda secci'on, que ocupa la pr'actica totalidad del
+  fichero, se muestran $n$ tablas de datos, uno por p'ixel (siendo $n$
+  el n'umero de p'ixeles definidos en el fichero).  Cada tabla
+  contiene $n_\lambda$ filas, y cada fila tres valores, $(\texttt{i},
+  \texttt{j}, \texttt{q})$, separados por espacios, donde \texttt{i}
+  es el n'umero de p'ixel, \texttt{j} es el 'indice de longitud de
+  onda usada, y \texttt{q} el valor de \QE para esa longitud de onda.
 \end{itemize}
 
-In Fig. \ref{fig:qefile} we have plotted the curves $(\lambda,
-\QE(\lambda))$ for every individual pixel that appears in one of the
-Quantum Efficiency files used in this work, in particular for normal
-PMTs. We show also the mean \QE curve. For the distribution of \QE
-values at each wavelength, the median, quartiles and 0\% and 100\%
-percentiles, as well as the mean and standard deviation, are shown.
+En la fig. \ref{fig:qefile} se muestran todas las curvas $(\lambda,
+\QE(\lambda))$ para cada p'ixel individual que aparecen en un fichero
+de Eficiencia Cu'antica usado en este trabajo, en particular para PMTs
+normales.  Se muestra tambi'en la curva de \QE media. Para la
+distribuci'on de los valores de \QE para una longitud de onda fija
+aparecen tambi'en la media, los cuartiles y los percentiles a 0\% y
+100\%, as'i como los valores de la media y la desviaci'on estandar.
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=.6\textwidth]{qefile}
-  \caption{Quantum Efficiency curves as they appear in a 
-    \emph{Quantum Efficiency file} used in this work}
+  \includegraphics[width=.6\textwidth]{qefile_e}
+  \caption{Curvas de Eficiencia Cu'antica tal y como se aparecen en un
+    \emph{fichero de Eficiencia Cu'antica} usado en este trabajo}
   \label{fig:qefile}
 \end{figure}
 
 
-\subsection{Single Photoelectron Spectrum}
+\subsection{Distribuci\'on Espectral de Fotoelectrones}
 \label{sec:sps}
 
-The last file needed for the execution of the simulation programs,
-\camera in this case, is the file that contains the \emph{Single
-  Photoelectron Spectrum}, normalized to $0.1\u{\phe/ns}$. The Fig.
-\ref{fig:sps} shows the content of this file, in a plot of relative
-frequency versus number of photoelectrons.
+El 'ultimo fichero necesario, en este caso para la ejecuci'on de
+\camera, es el que contiene la \emph{Distribuci'on Espectral de
+  Fotoelectrones}, normalizada a $0.1\u{\phe/ns}$. La fig.
+\ref{fig:sps} muestra el contenido de este fichero, en un gr'afico de
+frecuencia relativa frente a n'umero de fotoelectrones.
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=.6\textwidth]{sps}
-  \caption{Normalized Single Photoelectron Spectrum, as used by 
-    the program \camera}
+  \includegraphics[width=.6\textwidth]{sps_e}
+  \caption{Distribuci'on Espectral de
+    Fotoelectrones normalizada, tal y como se ha usado para el
+    programa \camera}
   \label{fig:sps}
 \end{figure}
 
 
 
-\section{Event Display}
+\section{Visualizador de Sucesos}
 \label{sec:eventdisplay}
 
-A small program was developed for private use, for the display of the
-events. In Fig. \ref{fig:qmagicdisplay} there is an example of such
-program running. A $500\u{GeV}$ gamma initiated shower image is shown.
+Se ha desarrollado as'imismo un programa para la visualizaci'on de los
+sucesos analizados.  En la fig. \ref{fig:qmagicdisplay} se muestra un
+ejemplo de la ejecuci'on de este programa, donde aparece la imagen de
+una cascada gamma de $500\u{GeV}$.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\textwidth]{qmagicdisplay1}
-  \caption{A gamma initiated shower image, with $500\u{GeV}$ as primary
-    energy, displayed with the event display created for \MAGIC \MC
-    data.}
+  \caption{Imagen de una cascada gamma de $500\u{GeV}$ de energ'ia
+    primaria, mostrada en el visualizador de sucesos creado para
+    \MAGIC.}
   \label{fig:qmagicdisplay}
 \end{figure}
 
