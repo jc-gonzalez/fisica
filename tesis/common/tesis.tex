@@ -41,10 +41,10 @@
 
 \ifpdf
   \typeout{### Precompiled for pdfLaTeX . . .}
-  \DeclareGraphicsExtensions{.pdf,.mps,.jpg,.png}
+  \DeclareGraphicsExtensions{.mps,.pdf,.jpg,.png}
 \else
   \typeout{### Precompiled for LaTeX . . .}
-  \DeclareGraphicsExtensions{.eps,.mps,.jpg,.png}
+  \DeclareGraphicsExtensions{.mps,.eps,.jpg,.png}
 \fi
 
 \input{figures.tex}
@@ -78,9 +78,21 @@
 
 \input{biblio.tex}
 
-%\printindex
+%======================================== Addenda
+
+%\afterpage{\pagestyle{empty}}
+
+%\part*{Addenda}
+
+%\chapter*{The code \reflector}
+
+%\chapter*{The code \camera}
+
+%======================================== Bye, bye
 
 %\input{thanks.tex}
+
+%\printindex
 
 \input{post-scriptum.tex}
 

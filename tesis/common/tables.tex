@@ -28,7 +28,7 @@ Element & Z & $\Phi_0$ & $\alpha$ \\
  &   & {\footnotesize $[\u{m^2}\u{s}\u{sr}\u{TeV/nucleus}]^{-1}$} & \\
 \else
 Elemento & Z & $\Phi_0$ & $\alpha$ \\ 
- &   & {\footnotesize $[\u{m^2}\u{s}\u{sr}\u{TeV/\text{n\'ucleo}}]^{-1}$} & \\
+ &   & {\footnotesize $[\u{m^2}\u{s}\u{sr}\u{TeV/\text{n{\'u}cleo}}]^{-1}$} & \\
 \fi
 %
 \hline\hline
@@ -169,7 +169,7 @@ Code & Particle\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\CORSIKAtableRH{
-\begin{table}[t]
+\begin{table}[p]
   \begin{center}
     \footnotesize
     \begin{tabular}{|r|l|}
@@ -221,7 +221,7 @@ No. of word&Contents of word\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\CORSIKAtableEHone{
-\begin{table}[t]
+\begin{table}[p]
   \begin{center}
     \footnotesize
     \begin{tabular}{|r|l|}
@@ -279,7 +279,7 @@ No. of word&Contents of word\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\CORSIKAtableEHtwo{
-\begin{table}[t]
+\begin{table}[p]
   \begin{center}
     \footnotesize
     \begin{tabular}{|r|l|}
@@ -337,7 +337,7 @@ No. of word&Contents of word\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\CORSIKAtableEE{
-\begin{table}[t]
+\begin{table}[p]
   \begin{center}
     \footnotesize
     \begin{tabular}{|r|l|}
@@ -386,7 +386,7 @@ No. of word&Contents of word\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\CORSIKAtableRE{
-\begin{table}[t]
+\begin{table}[p]
   \begin{center}
     \footnotesize
     \begin{tabular}{|r|l|}
@@ -409,7 +409,7 @@ No. of word&Contents of word\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\CORSIKAtablePART{
-\begin{table}[t]
+\begin{table}[p]
   \begin{center}
     \footnotesize
     \begin{tabular}{|r|l|}
@@ -440,7 +440,7 @@ $7\times (n-1)+7$ &t time since first interaction in nsec \\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\CORSIKAtableCHER{
-\begin{table}[t]
+\begin{table}[p]
   \begin{center}
     \footnotesize
     \begin{tabular}{|r|l|}
@@ -473,7 +473,7 @@ $7\times (n-1)+7$ &height of production of photon in cm\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\CORSIKAtableSTA{
-\begin{table}[t]
+\begin{table}[p]
   \begin{center}
     \footnotesize
     \begin{tabular}{|r|l|}
@@ -617,6 +617,111 @@ VIII  &  1805.40 & 124 \\
 \label{tbl:zonefocals}
 \end{table}
 }
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% TECH. DESC. OF THE PROGRAMS FOR THE ANALYSIS OF MC DATA %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\ctdefkeywordstbl{
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|ll|}
+\hline
+\textsl{Keywords}        & \textsl{Description} \\ 
+\hline       
+\texttt{type}            & Type of definition file (CT identifier) \\        
+\texttt{focal\_distance} & Focal distance (global or individual) \\       
+\texttt{focal\_std}      & Standard deviation of Focal distance of mirrors \\  
+\texttt{point\_spread}   & Point spread \\       
+\texttt{point\_std}      & Standard deviation of point spread \\  
+\texttt{adjustment\_dev} & Standard deviation of adjustment error \\  
+\texttt{black\_spot}     & Radius of the black spot in center of mirrors \\ 
+\texttt{n\_mirrors}      & Number of mirrors \\    
+\texttt{r\_mirror}       & Size of one mirror \\ 
+\texttt{camera\_width}   & Camera width \\         
+\texttt{n\_pixels}       & Number of pixels in the camera \\ 
+\texttt{n\_rings}        & Number of rings of pixels in the inner/outer 
+                           part of the camera\\
+\texttt{pixel\_width}    & Pixel width \\
+\texttt{define\_mirrors} & (This entry is followed by the definition 
+                           of individual mirrors) \\
+\hline
+  \end{tabular}
+  \caption{Keywords supported for the \emph{CT definition file}.}
+  \label{tbl:ctdefkeywords}
+\end{table}
+
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\mirrordefCTunotbl{
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|rcl|}
+\hline
+\multicolumn{3}{|l|}{\textbf{Definition of mirror's : Type = 0 --
+    \CTuno}}\\
+\hline
+\textsl{Column} & \textsl{Variable} & \textsl{Interpretation} \\
+\hline
+ 1&        $i$ & number of the mirror \\
+ 2&        $s$ & arc length from the center of the dish to the center 
+                 of the mirror \\
+ 3&     $\rho$ & polar distance of the position of the center of the mirror \\
+ 4&   $\theta$ & polar angle of the position of the center of the mirror \\
+ 5&        $x$ & X coordinate of the center of the mirror \\
+ 6&        $y$ & Y coordinate of the center of the mirror \\
+ 7&        $z$ & Z coordinate of the center of the mirror \\
+ 8& $\theta_n$ & polar $\Theta$ angle of the direction where the 
+                 mirror points to \\
+ 9&   $\phi_n$ & polar $\Phi$ angle of the direction where the 
+                 mirror points to \\
+10&      $x_n$ & X component of the normal vector in the center\\
+11&      $y_n$ & Y component of the normal vector in the center\\
+12&      $z_n$ & Z component of the normal vector in the center\\
+\hline
+  \end{tabular}
+  \caption{Definition of mirror's characteristics, in the case of 
+    \CTuno}
+  \label{tbl:mirrordefCTuno}
+\end{table}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\mirrordefMAGICtbl{
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|rcl|}
+\hline
+\multicolumn{3}{|l|}{\textbf{Definition of mirror's : Type = 1 --
+    \MAGIC}}\\
+\hline
+\textsl{Column} & \textsl{Variable} & \textsl{Interpretation} \\
+\hline
+ 1&        $i$ & number of the mirror \\
+ 2&        $f$ & focal length of that mirror \\
+ 3&      $s_x$ & curvilinear coordinate of mirror's center in X \\
+ 4&      $s_y$ & curvilinear coordinate of mirror's center in Y \\
+ 5&        $x$ & X coordinate of the center of the mirror \\
+ 6&        $y$ & Y coordinate of the center of the mirror \\
+ 7&        $z$ & Z coordinate of the center of the mirror \\
+ 8& $\theta_n$ & polar $\Theta$ angle of the direction where the 
+                 mirror points to \\
+ 9&   $\phi_n$ & polar $\Phi$ angle of the direction where the 
+                 mirror points to \\
+10&      $x_n$ & X component of the normal vector in the center\\
+11&      $y_n$ & Y component of the normal vector in the center\\
+12&      $z_n$ & Z component of the normal vector in the center\\
+\hline
+  \end{tabular}
+  \caption{Definition of mirror's characteristics, in the case of 
+    \MAGIC}
+  \label{tbl:mirrordefMAGIC}
+\end{table}
+}
+
 
 
 %% \begin{description}

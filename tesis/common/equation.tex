@@ -806,6 +806,27 @@ m \equiv \mathrm{AM} =
 \end{equation}
 }
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% TECH. DESC. OF THE PROGRAMS FOR THE ANALYSIS OF MC DATA %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\calcnpixelseq{
+\begin{subequations}
+\label{eq:calcnpixels}
+  \begin{align}
+    \label{eq:ninnerpixels}
+    \texttt{A} &= 3 \times \texttt{P} \times (\texttt{P}+1) + 1 \\
+    \label{eq:ngappixels}
+    \texttt{B} &= 6 \times (\texttt{Q} - 1) \\
+    \label{eq:nouterpixels}
+    \texttt{C} &= 6 \times \left[ n + (n+1) + \cdots + 
+                                  (n+\texttt{Q}-1) \right] 
+  \end{align}
+\end{subequations}
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\def\eq{
 %}

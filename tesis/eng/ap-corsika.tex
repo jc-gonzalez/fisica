@@ -16,10 +16,48 @@
 \chapter{Description of the \CORSIKA code}
 \label{appendix:corsika}
 
+For the generation of Monte Carlo atmospheric showers we used a
+modified version of \CORSIKA 5.20, suitable for our purposes.  We
+modified the detector geometry in order to allow the simulation of
+collection of light by \Cherenkov telescopes. Several minor
+modifications were also introduced in order to make easier the
+handling of the output data.  
+
+As we said in Chapter \ref{chapter:simshowers}, the input for a
+\CORSIKA run is a plain ASCII parameters file, with several entries in
+the form ``\texttt{KEYWORD <par1> <par2>} \ldots'', where \texttt{<parN>}
+means the N-th parameter for that keyword \texttt{KEYWORD}. An example
+of a parameters file was shown in Fig. \fullref{fig:corinput}.
+
+The binary output of \CORSIKA is divided in different files, blocks
+and subblocks. The nature of these blocks was already explained in
+Chapter \ref{chapter:simshowers}. Here, we show the structure of each
+of these blocks.
+
+\CORSIKAtableRH
+
+\CORSIKAtableRH
+
+\CORSIKAtableEHone
+
+\CORSIKAtableEHtwo
+
+\CORSIKAtableEE
+
+\CORSIKAtableRE
+
+\CORSIKAtablePART
+
+\CORSIKAtableCHER
+
+\CORSIKAtableSTA
+
+
 \endinput
 %
 %% Local Variables:
 %% mode:latex
+%% TeX-master: t
 %% End:
 
 %%EOF

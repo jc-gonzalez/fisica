@@ -54,8 +54,9 @@ the simulation concentrate in the analysis of this light produced in
 the atmosphere by air showers.
 
 The information saved in the output files for each \Cherenkov photon
-was shown in Table \fullref{tab:cphstruct}, and consists, for each
-\Cherenkov photon, of the 7-tuple $\{\lambda,x,y,u,v,t,h\}$, where:
+is shown in Appendix \ref{appendix:corsika}, Table \fullref{tab:cher},
+and consists, for each \Cherenkov photon, of the 7-tuple
+$\{\lambda,x,y,u,v,t,h\}$, where:
 %
 \begin{center}
 \begin{tabular}{cl}
@@ -536,13 +537,17 @@ distances than $R_{\mathrm{c}}/2$. This is the so called
 \emph{shortening of the focal length}, which depends of the incident
 angle of the light.
 
+\label{circular_cite} % Just a joke ;o)
+
 In the case of the tessellated mirror of \MAGIC and a parallel beam of
 light (incident angle of 0\deg with respect of the optical axis of the
 reflector), all the single mirror elements will receive the light at
 angles different from 0\deg. In particular, the distance from the
 mirror where we get the smallest blur size will decrease when we take
 mirrors with increasing distances to the optical axis of the system.
-Therefore, we must \emph{increase} the focal length of the mirrors.
+Therefore, we must \emph{increase} the focal length of the mirrors%
+%(see \cite{JCGonzalez:tesis}, page \pageref{circular_cite})%
+.
 
 Having this in mind, all the mirrors have been grouped in a total of
 eight sets or \emph{zones}, each of them characterized by a constant
@@ -565,7 +570,7 @@ surface, orientations of the mirrors or focal distances, and no
 atmospheric absorption. If we apply the effect of a non-perfect
 reflection, possible axis-deviations, imperfections in the mirrors and
 the effect of the atmosphere, we will get the results shown in Fig.
-\ref{fig:spotsh}.
+\ref{fig:thetaspots}.
 
 %%------------------------------------------------------------
 \subsection{Plate-scale in the camera of \MAGIC}
@@ -614,6 +619,7 @@ few words, the steps taken in this program are:
 
 %%------------------------------------------------------------
 \subsection{Pixelization}
+\label{sec:pixelization}
 
 In Fig. \ref{fig:triaxis} we can see the definition of the tri-axial
 frame used for the numbering\footnote{We are using the so called
@@ -701,6 +707,7 @@ we just apply the following change of system:
 
 %%------------------------------------------------------------
 \subsection{Contribution of the Light Of Night Sky}
+\label{ssec:LONS}
 
 The amount of diffuse Light Of Night Sky (LONS) in La Palma, at
 the site where \MAGIC will be locate, has been measured
@@ -896,14 +903,14 @@ the $r$-distribution.
 The main use of the binomial distribution is in the limits:
 %
 \begin{itemize}
-\item if $p\rightarrow 0$, $N\rightarrow\infty$, but $Np=\mu$ (constant),
+\item if $p\to 0$, $N\to\infty$, but $Np=\mu$ (constant),
   Binomial $\longrightarrow$ Poisson, and
-\item if $p=const.$, $N\rightarrow\infty$, Binomial $\longrightarrow$
+\item if $p=const.$, $N\to\infty$, Binomial $\longrightarrow$
   Gaussian
 \end{itemize}
 %
 In our case, $N=\Nphot$, $p=\QEo$ and $Np=\Nmean$.  This means that,
-\emph{for \Nphot large and in the case of $\QEo\rightarrow 0$} (more
+\emph{for \Nphot large and in the case of $\QEo\to 0$} (more
 generally speaking, for \QEo small) the distribution of the number of
 outcoming photoelectrons \Ntrial will be very similar to the
 distribution obtained by using the mean number of photoelectrons
@@ -977,7 +984,7 @@ scenario is shown in Fig. \ref{fig:vonneumann}.
 
 First, simulate a random value $x$ uniformly on $(a,b)$. Then generate
 a $y$ on $(0,C/(b-a))$. The point $(x,y)$ will uniformly populate the
-box shown in Fig. \ref{fig:vonneumann}. If $y\le S(x)$, we accept $x$
+box shown in Fig. \ref{fig:vonneumann}. If $y\leq S(x)$, we accept $x$
 as then next value f the random number. If $y\geq S(x)$, reject $x$
 and try again.  This method is very simple and has an efficiency
 (fraction of values $x$ accepted) of
@@ -1315,7 +1322,7 @@ energies greater or equal to $E_0$ of:
 %
 \begin{equation}
   \label{eq:Rcr}
-  R(E\ge E_0,\Theta) = 
+  R(E\geq E_0,\Theta) = 
   \int_{E_0}^{\infty}\,\d E\,\frac{\d F(E)}{\d E}\,
   \chronopair{
   \int_0^{2\pi}\,\d \varphi 
@@ -1329,7 +1336,7 @@ Grouping the expression marked with the sign
 %
 \begin{equation}
   \label{eq:Rcrbis}
-  R(E\ge E_0,\Theta) = 
+  R(E\geq E_0,\Theta) = 
   \int_{E_0}^{\infty}\,\d E\,\frac{\d F(E)}{\d E}\,\hat{\mathcal{S}}(E,\Theta)
 \end{equation}
 %
@@ -1341,7 +1348,7 @@ angle
 %
 \begin{equation}
   \label{eq:Rcrtris}
-  R(E\ge E_0,\Theta) = 
+  R(E\geq E_0,\Theta) = 
   \int_{E_0}^{\infty}\,\d E\,\frac{\d F(E)}{\d E}\,
   \frac{1}{\Omega}\,\Omega\,\hat{\mathcal{S}}(E,\Theta) =
   \int_{E_0}^{\infty}\,\d E\,\frac{\d F(E)}{\d E}\,

@@ -104,6 +104,16 @@
 \newtheorem{Theo}{Theorem}
 \theoremheaderfont{\normalfont\bfseries}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% define new floating environments
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{float}
+%\floatstyle{ruled}
+\floatstyle{boxed}
+\newfloat{listado}{htbp}{lol}[chapter]
+\floatname{listado}{Listing}
+
 \usepackage[indent,footnotesize,sc]{caption2}
 \setlength{\captionmargin}{5mm}
 
@@ -111,14 +121,6 @@
 
 \newif\ifCOLORversion
 \COLORversionfalse
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% define new floating environments
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%% \usepackage{float}
-%% \floatstyle{ruled}
-%% \newfloat{Table}{thp}{loT}[chapter]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% prepares the index and defines some macros for it
@@ -146,7 +148,7 @@
 %%\newcommand{\enhance}[1]{{\scshape #1}}
 \newcommand{\enhance}[1]{{#1}}
 
-\newcommand{\entrylabel}[1]{\mbox{\enhance{#1:}}\hfil}
+\newcommand{\entrylabel}[1]{\mbox{\enhance{#1}}\hfil}
 
 \newenvironment{entry}%
     {\begin{list}{}%
@@ -155,13 +157,13 @@
     {\end{list}}
 
 \newenvironment{Ventry}[1]%
-    {\begin{list}{}{\renewcommand{\makelabel}[1]{\enhance{##1:}\hfil}%
-        \settowidth{\labelwidth}{\enhance{#1:}}%
+    {\begin{list}{}{\renewcommand{\makelabel}[1]{\enhance{##1}\hfil}%
+        \settowidth{\labelwidth}{\enhance{#1}}%
         \setlength{\leftmargin}{\labelwidth+\labelsep}}}%
     {\end{list}}
 
 \newenvironment{Wentry}[1]%
-    {\begin{list}{}{\renewcommand{\makelabel}[1]{\enhance{##1:}\hfil}%
+    {\begin{list}{}{\renewcommand{\makelabel}[1]{\enhance{##1}\hfil}%
         \setlength{\labelwidth}{#1}%
         \setlength{\leftmargin}{\labelwidth+\labelsep}}}%
     {\end{list}}
@@ -169,11 +171,11 @@
 \newlength{\Ulength}
 
 \newcommand{\Uentrylabel}[1]{%
-    \settowidth{\Ulength}{\enhance{#1:}}%
+    \settowidth{\Ulength}{\enhance{#1}}%
     \ifthenelse{\lengthtest{\Ulength > \labelwidth}}%
         {\parbox[b]{\labelwidth}%  term > labelwidth
-            {\makebox[0pt][l]{\enhance{#1:}}\\}}%
-        {\enhance{#1:}}%            term < labelwidth
+            {\makebox[0pt][l]{\enhance{#1}}\\}}%
+        {\enhance{#1}}%            term < labelwidth
     \hfil\relax}
 
 \newenvironment{Uentry}%
@@ -187,9 +189,25 @@
 
 \typeout{----> Processing definitions . . .}
 
+\makeatletter
+\newcommand\figcaption{\def\@captype{figure}\caption}
+\newcommand\tabcaption{\def\@captype{table}\caption}
+\makeatother
+
+\newenvironment{narrow}[2]{%
+  \begin{list}{}{%
+    \setlength{\topsep}{0pt}%
+    \setlength{\leftmargin}{#1}%
+    \setlength{\rightmargin}{#2}%
+    \setlength{\listparindent}{\parindent}%
+    \setlength{\itemindent}{\parindent}%
+    \setlength{\parsep}{\parskip}}%
+  \item[]}{\end{list}}
+\newlength{\narrowlength}
+
 %-------------------- Captions
 
-\makeatletter
+%\makeatletter
 
 %\long\def\@makecaption#1#2{\vskip \abovecaptionskip 
 %\begin{list}{}
@@ -220,7 +238,7 @@
 % \ifx\@captype\aafigurecaption\else\vskip6pt\fi
 % \makeatother}
 
-\makeatother
+%\makeatother
 
 % \newcounter{figure}
 % \def\thefigure{\@arabic\c@figure}
@@ -248,6 +266,7 @@
 
 \def\HEGRA{{HEGRA\xspace}}
 \def\MAGIC{{MAGIC}\xspace}
+\def\CTuno{{\sffamily CT1}\xspace}
 \def\XTAL{{\mdseries\scshape xtal}\xspace}
 \def\GMTQ{{\mdseries\scshape gmtq}\xspace}
 \def\reflector{\texttt{reflector}\xspace}
@@ -273,6 +292,7 @@
 
 \def\mean#1{\ensuremath{\langle #1 \rangle}}
 \DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\card}{card}
 
 %%% Macro from "RockMover" <rmover@golovolomka.net>, The Master of Flame
 \def\chronopair#1{\let\saveupbracefill\upbracefill
@@ -541,7 +561,7 @@ MAGIC
 \ifpdf 
   \usepackage[%
     pdftex,
-    backref,
+%    backref,
     linktocpage,
     pdfpagemode=UseOutlines, 
     pdfcreator={J.C. Gonzalez}, 

@@ -132,7 +132,7 @@ E_{\mathrm{c}}$) is
 \toyDeq
 
 \hadronicfig
-
+%
 The basic features of these equations hold both for high energy EMAS
 and also for HAS. In general, we have
 %
@@ -161,16 +161,16 @@ nucleus is fragmented in smaller pieces, with one of them being much
 bigger than the others (which, after secondary interactions, can be
 again splitted up into smaller fragments).
 
-\lognefig
-
 %%==========================================================
 \subsection{Particles in the atmospheric shower}
-
+%
 Actually, a more detailed study of the development of the shower is
 needed. Using Monte Carlo methods one can show that the mean
 longitudinal profile of an EMAS can be approximated by
 %
 \Neeq
+%
+%\hadronicfig
 %
 where $N_{\mathrm{e}}$ is the number of electrons in the shower
 (``size of the shower''), $\tau$ is the atmospheric depth in
@@ -184,8 +184,6 @@ of the shower to 1 at the maximum development, and from this value to
 2 at the point where the number of particles is below 1. In Fig.
 \ref{fig:logne} one can see the theoretical longitudinal development
 of an EMAS.
-
-\samplelonglatdistfig
 
 For the average lateral distribution of EMAS we can use the so called
 \emph{NKG formula}
@@ -204,6 +202,10 @@ fitting the lateral distributions obtained in Monte Carlo
 simulations. In Fig. \ref{fig:samplelonglatdist} we can see an example of
 mean longitudinal and lateral distributions for Monte Carlo generated
 showers at 100\u{GeV} and 1\u{TeV} (primary energies) for an EMAS.
+
+\lognefig
+
+\samplelonglatdistfig
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Production of \Cherenkov light}
@@ -337,19 +339,21 @@ Just for illustration purposes, we'll try to simulate this effect. We
 assume a single charged particle, that emits \Cherenkov photons at a
 density and angle given by the equations
 \eqref{eq:Cherenkovangle}-\eqref{eq:cherenkovlight} (see Fig.
-\ref{humpsketch}). We assume also that the trajectory of this particle
+\ref{fig:humpgeom}). We assume also that the trajectory of this particle
 is a straight line; that is, it does not interact or decay during its
 flight until it reaches the observation level. If we register the
 distance at which the photons hit the ground (at the points A and B,
-as outlined in Fig. \ref{humpsketch}), we will get, for different
+as outlined in Fig. \ref{fig:humpgeom}), we will get, for different
 Zenith Angles ($\Theta$), the histograms in blue shown in Figs.
-\ref{fig:humpfigs}.(a)-(f). For completeness, we introduced a small
+\ref{fig:humpldist}.(a)-(f). For completeness, we introduced a small
 \emph{smoothing} effect, to show the effect of the scattering of the
 charged particles in the atmosphere.  The result is shown in the
-histograms drawn in red in Figs. \ref{fig:humpfigs}.(a)-(f). The
+histograms drawn in red in Figs. \ref{fig:humpldist}.(a)-(f). The
 distance $r_{\text{max}}$ where these histograms (for all Zenith
 Angles between 0\deg to 88\deg) have their maxima is shown in Fig.
 \ref{fig:humps} (the red curve).
+
+\humpfigsfig
 
 One can get similar results by theoretical arguments: at a given
 height (or thickness $\tau$), the magnitude of the \Cherenkov angle will
@@ -367,50 +371,13 @@ One can see that the position of the maximum obtained in Fig.
 \ref{fig:humpfigs}.(a) (where the Zenith Angle is 0\deg) agrees very
 well with our theoretical estimation.
 
-\begin{figure}[tb]
-  \centering
-  \mbox{}\hfill
-  \subfigure[\label{fig:humpfocus}]{%
-    \includegraphics[width=.25\textwidth]{humpfocus}}
-  \hfill
-  \subfigure[\label{fig:humpsketch}]{%
-    \includegraphics[width=.4\textwidth]{humpsketch}}
-  \hfill\mbox{}
-  \caption{(a) Sketch of the focussing of the \Cherenkov light in 
-    the atmosphere. (b) Geometrical construction used in our
-    \emph{toy-model}.}
-  \label{fig:humpfigs}
-\end{figure}
+\humpldistfig
 
-\begin{figure}[tb]
-  \centering \includegraphics[width=.90\textwidth]{hump_ldist}
-  \caption{Histograms of the hits of the \Cherenkov
-    photons in the plane perpendicular to the trajectory of the
-    charged particle, for different values of the Zenith Angle, in
-    arbitrary units --- in blue, without smoothing; in red, with a
-    gaussian smoothing function, assuming $\sigma(\theta_{\text{c}}) =
-    0.05\text{\%}$. Note that in the first three histograms, (a)-(c),
-    the scale in the X axis is the same, while in the last three,
-    (d)-(f), the scale is doubling.}
-  \label{fig:humpldist}
-\end{figure}
-
-\begin{figure}[tb]
-  \centering \includegraphics[width=.7\textwidth]{humps}
-  \caption{Maxima of the radial distributions of \Cherenkov photons 
-    obtained for different initial Zenith Angles. In the embeded
-    graph, the theoretical values of the radial distances of the
-    emitted \Cherenkov photons are shown as a function of the
-    atmospheric thickness $\tau$, for Zenith Angle 0\deg. We can see that
-    the theoretical value of the maximum $r$, around $150\u{m}$, is
-    very close (and higher) to our calculated value of the position of
-    the hump for 0\deg, $r_{\text{max}}\simeq125\u{m}$, as expected.}
-  \label{fig:humps}
-\end{figure}
+\humpsfig
 
 
 %\begin{description}
-
+%
 %\item[\textbf{Rayleigh scattering}] The molecules in the atmosphere
 %  produced scattering of the photons. This effects is strongly
 %  correlated with the wavelength $\lambda$ of the light, being more
@@ -425,7 +392,7 @@ well with our theoretical estimation.
 %  free path of the Rayleigh scattering in terms of thickness, $\tau_0
 %  = 0.00129\u{g/cm^2}$, and $H_{\mathrm{S}} \simeq 7.5\u{km}$ is the
 %  mentioned scale-height of the atmosphere.
-  
+%  
 %\item[\textbf{Mie scattering}] This effect is almost constant over the
 %  whole range of optical wavelengths. It is due to the aerosol (dust)
 %  particles suspended in the air, being its effect bigger at lower
@@ -437,12 +404,12 @@ well with our theoretical estimation.
 %  where $l_{\mathrm{M}}(400\u{nm}) \simeq 14\u{km}$ is the mean free
 %  path for the Mie scattering, and $h_{\mathrm{M}} \simeq 1.2\u{km}$ is
 %  the scale-height for the aerosol distribution.
-  
+%  
 %\item[\textbf{Ozone absorption}] This effect is very important in the
 %  range 280--340\u{nm} and for low energy showers, in which most of
 %  the \Cherenkov light emission is located where the density of ozone
 %  is high.
-
+%
 %\end{description}
 
 \endinput

@@ -47,24 +47,50 @@
 @default symbol size 1.000000
 @default sformat "%16.8g"
 @background color 0
-@page background fill on
+@page background fill off
 @timestamp off
 @timestamp 0.03, 0.03
 @timestamp color 1
 @timestamp rot 0
 @timestamp font 0
 @timestamp char size 1.000000
-@timestamp def "Mon Jun 25 22:13:39 2001"
+@timestamp def "Sat Jun 30 12:26:40 2001"
+@with line
+@    line on
+@    line loctype world
+@    line g1
+@    line 20, 150, 780, 150
+@    line linewidth 1.0
+@    line linestyle 4
+@    line color 3
+@    line arrow 0
+@    line arrow type 0
+@    line arrow length 1.000000
+@    line arrow layout 1.000000, 1.000000
+@line def
+@with line
+@    line on
+@    line loctype world
+@    line g1
+@    line 125, 0, 125, 200
+@    line linewidth 1.0
+@    line linestyle 4
+@    line color 3
+@    line arrow 0
+@    line arrow type 0
+@    line arrow length 1.000000
+@    line arrow layout 1.000000, 1.000000
+@line def
 @with string
 @    string on
 @    string loctype view
-@    string 0.655462184874, 0.695798319328
+@    string 0.453781512605, 0.537815126051
 @    string color 1
 @    string rot 0
 @    string font 0
 @    string just 0
 @    string char size 1.800000
-@    string def "0°"
+@    string def "ZA = 0°"
 @r0 off
 @link r0 to g0
 @r0 type above

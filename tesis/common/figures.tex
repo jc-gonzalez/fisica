@@ -277,53 +277,91 @@ masivas]{Representaci'on esquem'atica de la posible secuencia
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\toymodelfig{
-\begin{wrapfigure}{r}{0.4\textwidth}
+\begin{wrapfigure}{r}{.3\textwidth}
+%\begin{narrow}{0cm}{-1cm}
 \ifenglish
-\includegraphics[width=0.35\textwidth]{toymodel}
-\caption{Scheme of the development of an electromagnetic
-  atmospheric shower (\emph{toy-model})}{Schematized view of the
+\includegraphics[width=.3\textwidth]{toymodel}
+\caption[Scheme of the development of an electromagnetic
+  atmospheric shower (\emph{toy-model})]{Schematized view of the
   development of an electromagnetic atmospheric shower
-  (\emph{toy-model})} \else
-\includegraphics[width=0.35\textwidth]{toymodel_e}
+  (\emph{toy-model})} 
+\else
+\includegraphics[width=.3\textwidth]{toymodel_e}
 \caption{Visi'on esquem'atica del desarrollo de una cascada 
-  electromagn'etica (\emph{modelo de jugete})} \fi
+  electromagn'etica (\emph{modelo de jugete})} 
+\fi
 \label{fig:toymodel}
+%\end{narrow}
 \end{wrapfigure}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\hadronicfig{
 \begin{figure}[tbh]
+%\begin{wrapfigure}{l}{0.5\textwidth}
 \centering
 \ifenglish
-\includegraphics[width=0.8\textwidth]{hadronic}
+\includegraphics[width=0.5\textwidth]{hadronic}
 \caption[A schematic diagram of the development of a hadronic cascade
   in the atmosphere]{A schematic diagram of the development of a
   hadronic cascade in the atmosphere (adapted from
   \cite{Sokolsky:book})}
 \else
-\includegraphics[width=0.8\textwidth]{hadronic_e}
+\includegraphics[width=0.5\textwidth]{hadronic_e}
 \caption[Diagrama esquem'atico del desarrollo de una cascada 
   hadr'onica]{Diagr'ama esquem'atico del desarrollo de una cascada
   hadr'onica en la atm'osfera (adaptado de \cite{Sokolsky:book})}
 \fi
 \label{fig:hadronic}
+%\end{wrapfigure}
 \end{figure}
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\lognefig{
+%\begin{figure}[p]
+%\centering
+%\ifenglish
+%\includegraphics[width=0.65\textwidth]{longdistteo}
+%\caption[Longitudinal development of an electromagnetic atmospheric
+%shower]{Theoretical longitudinal development of an electromagnetic
+%  atmospheric shower. The numbers in blue (6 to 26) correspond to
+%  different values of $x=\ln(E_0/E_{\mathrm{c}})$. The numbers
+%  enclosed in red squares (0.4 to 1.8) correspond to values with
+%  constant age $s$} \else
+%\includegraphics[width=0.65\textwidth]{longdistteo_e}
+%\caption[Desarrollo longitudinal de una cascada electromagn'etica]
+%{Desarrollo longitudinal te'orico de una cascada atmosf'erica
+%  electromagn'etica. Los n'umeros en azul (6 a 26) corresponden a
+%  diferentes valores de $x=\ln(E_0/E_{\mathrm{c}})$.  The n'umeros en
+%  recuadros rojos (0.4 a 1.8) corresponden a valores con parametro de
+%  edad $s$ constante} \fi
+%\label{fig:logne}
+%\end{figure}
+%}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\lognefig{
-\begin{figure}[tbh]
+\begin{figure}[p]
+\centering
+\begin{minipage}[c]{.60\textwidth}
 \centering
 \ifenglish
-\includegraphics[width=0.8\textwidth]{longdistteo}
+\includegraphics[width=0.99\textwidth]{longdistteo}
+\else
+\includegraphics[width=0.99\textwidth]{longdistteo_e}
+\fi
+\end{minipage}
+\hfill
+\begin{minipage}[c]{.39\textwidth}
+\centering
+\ifenglish
 \caption[Longitudinal development of an electromagnetic atmospheric
 shower]{Theoretical longitudinal development of an electromagnetic
   atmospheric shower. The numbers in blue (6 to 26) correspond to
   different values of $x=\ln(E_0/E_{\mathrm{c}})$. The numbers
   enclosed in red squares (0.4 to 1.8) correspond to values with
   constant age $s$} \else
-\includegraphics[width=0.8\textwidth]{longdistteo_e}
 \caption[Desarrollo longitudinal de una cascada electromagn'etica]
 {Desarrollo longitudinal te'orico de una cascada atmosf'erica
   electromagn'etica. Los n'umeros en azul (6 a 26) corresponden a
@@ -331,12 +369,13 @@ shower]{Theoretical longitudinal development of an electromagnetic
   recuadros rojos (0.4 a 1.8) corresponden a valores con parametro de
   edad $s$ constante} \fi
 \label{fig:logne}
+\end{minipage}
 \end{figure}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\samplelonglatdistfig{
-\begin{figure}[tbh]
+\begin{figure}[p]
 \centering
 \hfill
 \hfill
@@ -402,6 +441,77 @@ aire al paso de una part'icula cargada relativista]{Esquema del
 \end{minipage}
 \end{figure}
 }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\humpfigsfig{
+\begin{figure}[b]
+  \centering
+  \mbox{}\hfill
+  \subfigure[]{%
+    \label{fig:humpfocus}\includegraphics[width=.22\textwidth]{humpfocus}}
+  \hfill
+  \subfigure[]{%
+    \label{fig:humpgeom}\includegraphics[width=.35\textwidth]{humpgeom}}
+  \hfill\mbox{}
+  \ifenglish
+  \caption[Focussing \Cherenkov light, and geometrical construction]{(a) 
+    Sketch of the focussing of the \Cherenkov light in the atmosphere.
+    (b) Geometrical construction used in our \emph{toy-model}.}  \else
+  \caption[Efecto de enfoque de la luz \Cherenkov, y construcci'on 
+  geom'etrica]{(a) Ilustraci{\'o}n del efecto de enfoque de la luz
+    \Cherenkov en la atm'osfera, dando lugar al \emph{hump}. (b)
+    Construcci'on geom'etrica usada en nuestros calculos.} \fi
+  \label{fig:humpfigs}
+\end{figure}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\humpldistfig{
+\begin{figure}[tb]
+  \centering \includegraphics[width=.80\textwidth]{hump_ldist}
+  \ifenglish
+  \caption[Simple simulation of lateral distributions of \Cherenkov 
+  photons]{Histograms of the hits of the \Cherenkov photons in the
+    plane perpendicular to the trajectory of the charged particle, for
+    different values of the Zenith Angle, in arbitrary units --- in
+    blue, without smoothing; in red, with a gaussian smoothing
+    function, assuming $\sigma(\theta_{\text{c}}) = 0.05\text{\%}$. Note that in
+    the first three histograms, (a)-(c), the scale in the X axis is
+    the same, while in the last three, (d)-(f), the scale is
+    doubling.} \else
+  \caption[Simulaci'on simplista de distribuciones laterales de 
+  fotones \Cherenkov]{Histogramas de los puntos de incidencia de
+    fotones \Cherenkov en el plano perpendicular a la trayectoria de
+    la part'icula cargada inicial, para diversos valores del 'angulo
+    cenital, en unidades arbitrarias --- en azul, sin efecto de
+    \emph{dispersi'on}; en rojo, con una funci'on de dispersi'on
+    gaussiana, tal que $\sigma(\theta_{\text{c}}) = 0.05\text{\%}$.  N'otese que
+    en los tres primeros histogramas, (a)-(c), la escala en el eje X
+    es identica, mientras que en los tres 'ultimos, (d)-(f), se va
+    duplicando al pasar de uno al siguiente.} \fi
+  \label{fig:humpldist}
+\end{figure}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\humpsfig{
+\begin{figure}[tb]
+  \centering \includegraphics[width=.6\textwidth]{humps}
+  \caption{Maxima of the radial distributions of \Cherenkov photons 
+    obtained for different initial Zenith Angles. In the embeded
+    graph, the theoretical values of the radial distances of the
+    emitted \Cherenkov photons are shown as a function of the
+    atmospheric thickness $\tau$, for Zenith Angle 0\deg. We can see that
+    the theoretical value of the maximum $r$, around $150\u{m}$, is
+    very close (and higher) to our calculated value of the position of
+    the hump for 0\deg, $r_{\text{max}}\simeq125\u{m}$, as expected.}
+  \label{fig:humps}
+\end{figure}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\fig{
+%}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -647,7 +757,7 @@ a escala 1:30 de \MAGIC]{(a) Imagen generada por ordenador del disco
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\QuantumEfffig{
-\begin{figure}[Hbt]
+\begin{figure}[hbt]
 \centering
 \includegraphics[width=0.8\textwidth]{QEs}
 \ifenglish
@@ -666,7 +776,7 @@ devices]{Spectral Quantum Efficiency for different detection devices.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\pixelreadoutfig{
-\begin{figure}[Hbt]
+\begin{figure}[hbt]
 \centering
 \ifenglish
 \includegraphics[width=0.9\textwidth]{pixel_readout}
@@ -799,12 +909,15 @@ under a Zenith Angle $\theta$]{This geometrical construction
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\Systemsfig{ %% this is done in landscape, so we use \textheight
 %\begin{landscape}
-\begin{figure}[t]
+\begin{figure}[p]
+\begin{narrow}{-1.5cm}{-1cm}
+\setlength{\narrowlength}{\linewidth}
 \begin{sideways}
-\parbox[b]{12cm}{
+\parbox[b]{13.5cm}{
 \centering
 \ifenglish
-\includegraphics[width=0.95\linewidth]{coord}
+%\includegraphics[width=0.95\linewidth]{coord}
+\includegraphics[height=.87\narrowlength]{coord}
 \caption[Coordinate systems and angles in the simulation]{Coordinate systems
   and angles used in the simulation programs. There are three main
   coordinate systems, $S \equiv OXYZ$, $S' \equiv OX'Y'Z'$ and
@@ -820,22 +933,23 @@ under a Zenith Angle $\theta$]{This geometrical construction
   claridad.}  
 \fi
 \label{fig:coordsys}}
+\hfill
 \parbox[b]{8cm}{
 \centering
-\includegraphics[width=0.95\linewidth]{geomview}
+%\includegraphics[width=0.95\linewidth]{geomviewmp}
+\includegraphics[height=.87\narrowlength]{geomviewmp}
 \ifenglish
 \caption[Geometrical construction for an observer looking at a source
 under a Zenith Angle $\theta$]{This geometrical construction
   illustrates the situation for an observer located at A, looking at a
-  source under a Zenith Angle $\theta$ \phantom{XXX XXX XXX XXX XXX
-    XXX XXX}} \else
+  source under a Zenith Angle $\theta$} \else
 \caption[Escenario para un observador apuntando a una fuente bajo un 
 'angulo cenital $\theta$]{Esta construcci'on geom'etrica ilustra el
   escenario en el que un observador situado en A apunta su telescopio
-  hacia la una fuente que se encuentra a un 'angulo cenital $\theta$
-  \phantom{XXX XXX XXX XXX XXX XXX XXX}} \fi
+  hacia la una fuente que se encuentra a un 'angulo cenital $\theta$} \fi
 \label{fig:geomview}}
 \end{sideways}
+\end{narrow}
 \end{figure}
 %\end{landscape}
 }
@@ -1724,6 +1838,9 @@ zonas]{Los espejos de \MAGIC han sido agrupados en ocho zonas. Cada
 \end{figure}
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% TECH. DESC. OF THE PROGRAMS FOR THE ANALYSIS OF MC DATA %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
