@@ -326,6 +326,14 @@ m \equiv \mathrm{AM} =
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\diffhveq{
+\begin{equation}
+  \label{eq:diffhv}
+  \Delta\hv = \frac{h_{\mathrm{v,approx}}-\hv}{\hv}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\Rayleigheq{
 \begin{equation}
   \label{eq:ray}
@@ -424,8 +432,8 @@ m \equiv \mathrm{AM} =
   \begin{cases}
     \mathbf{r}" = \Omega(\thetam,\phim) \cdot \mathbf{r}' \\
     \mathbf{x}" = \Omega(\thetam,\phim) \cdot 
-                (T_{\mathrm{m}} \mathbf{x}_{\mathrm{cut}}) 
-                = \Omega(\thetam,\phim) \cdot 
+                (T_{\mathrm{m}} \mathbf{x}_{\mathrm{cut}}) \\
+    \phantom{\mathbf{x}"} = \Omega(\thetam,\phim) \cdot 
                 (\mathbf{x}_{\mathrm{cut}} - \mathbf{x}_{\mathrm{m}}) \\
   \end{cases}
 \end{equation}
@@ -666,8 +674,112 @@ m \equiv \mathrm{AM} =
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\gFluxeq{
+\begin{equation}
+  \label{eq:gFlux}
+  \Phi_\gamma(E) = 
+  10^{-8} \left(\frac{E}{10\u{GeV}}\right)^{-1.5} 
+  \u{cm^{-2}}\u{s^{-1}}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\gdFluxeq{
+\begin{eqnarray}
+  \label{eq:gdFlux}
+  \frac{\d\Phi_\gamma}{\d E}(E) & = 
+  1.5\E{-9} \left(\displaystyle\frac{E}{10\u{GeV}}\right)^{-2.5} 
+  \u{cm^{-2}}\u{s^{-1}}\u{GeV^{-1}} \\
+  ~ & = 1.5\E{-7} \left(\displaystyle\frac{E}{1\u{TeV}}\right)^{-2.5} 
+  \u{m^{-2}}\u{s^{-1}}\u{TeV^{-1}} \\ 
+\end{eqnarray}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\crFluxeq{
+\begin{equation}
+  \label{eq:crFlux}
+  \frac{\d\Phi_{\mathrm{cr}}}{\d E}(E) = 
+  10.91\E{-2} \left(\frac{E}{1\u{TeV}}\right)^{-2.75} 
+  \u{m^{-2}}\u{s^{-1}}\u{sr^{-1}}\u{TeV^{-1}}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\specindexeq{
+\begin{equation}
+  \label{eq:specindex}
+  \alpha_\gamma = 2.5 \hspace{2cm} \alpha_{\mathrm{cr}} = 2.75
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\gdRateeq{
+\begin{equation}
+  \label{eq:gdRate}
+  \frac{\d R_\gamma}{\d E}(E) = S_\gamma(E) \cdot
+  \frac{\d\Phi_\gamma}{\d E}(E) 
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\crdRateeq{
+\begin{equation}
+  \label{eq:crdRate}
+  \frac{\d R_{\mathrm{cr}}}{\d E}(E) = S_{\mathrm{cr}}(E) \cdot
+  \frac{\d\Phi_{\mathrm{cr}}}{\d E}(E) 
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\gRateeq{
+\begin{equation}
+  \label{eq:gRate}
+  R_\gamma(E) = \int_E^\infty \, 
+  S_\gamma(E) \, \frac{\d\Phi_\gamma}{\d E}(E) \, \d E
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\crRateeq{
+\begin{equation}
+  \label{eq:crRate}
+  R_{\mathrm{cr}}(E) = \int_E^\infty \,
+  S_{\mathrm{cr}}(E) \, \frac{\d\Phi_{\mathrm{cr}}}{\d E}(E) \, \d E
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\def\eq{
 %}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\eq{
+%}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\eq{
+%}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\eq{
+%}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\eq{
+%}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\eq{
+%}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\eq{
+%}
+
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\def\eq{
@@ -684,5 +796,5 @@ m \equiv \mathrm{AM} =
 
 %%% Local Variables: 
 %%% mode: latex
-%%% TeX-master: "figures"
+%%% TeX-master: t
 %%% End: 

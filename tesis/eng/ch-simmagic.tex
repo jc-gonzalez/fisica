@@ -90,6 +90,7 @@ Fig.\ref{fig:coordsys}):
 In the simulation of the reflexion, we obey the following algorithm:
 %
 \begin{enumerate}[1.]
+
 \item Read parameters for the simulation, allocate memory and
   initialize different variables, and open the files.
 
@@ -108,6 +109,7 @@ In the simulation of the reflexion, we obey the following algorithm:
   \end{enumerate}
 
 \item Go back to 2.1 while there are photons/showers left.
+
 \end{enumerate}
 
 Let's explain briefly the most important steps.
@@ -238,15 +240,19 @@ can be obtained by taking instead
 First, we would like to compare the true expression for the
 calculation of the \hv with the one obtained by assuming that \ho is
 small enough, $h_{\mathrm{v,approx}}$. For this purpose we calculate
-the vertical height for $\ho=0\u{km}$ and $\ho=2.2\u{km}$ (height of
-the future location of MAGIC), for different Zenith Angles, and plot
-the difference in percentage (see Fig.\ref{fig:hvdiffs}). We can see
-that the difference increases with the zenith angle, as expected,
-although still this difference remains far below 5\% up to 85\deg.
+the expression
+%
+\diffhveq
+%
+for $\ho=2.2\u{km}$ (height of the future location of MAGIC), for
+different Zenith Angles and different original height \hc (see
+Fig.\ref{fig:hvdiffs}). We can see that the difference increases with
+the zenith angle, as expected, although still this difference remains
+far below 5\% up to 85\deg.
 
 \hvdiffsfig
-
-The second thing we want to compare is the geometrical expressions for
+%
+The next thing we want to compare is the geometrical expressions for
 the air mass, namely $m$ and $m_{\mathrm{simple}}$ (the simple
 approximation using $h_{\mathrm{approx}}$), with the more elaborated
 calculation using the exponential density model, $\mathcal{AM}$. We
@@ -258,6 +264,8 @@ vertical height, $\hv=5\u{km}$ and $\hv=100\u{km}$. (The function
 $\mathrm{sec}(x)$ is shown for illustration.)
 
 \AMcompfig
+
+\afterpage{\clearpage}
 
 %------------------------------------------------------------
 \subsubsection{Calculation of the atmospheric transmission}
@@ -336,7 +344,7 @@ $[290\u{nm},600\u{nm}]$, our range of interest.
 In general, the telescope is looking in any direction, and a photon is
 coming from another different direction (of course, if it comes
 outside the limits of the field of view of the telescope, it will not
-be reflected in the mirrors). We associate a coordinate system to the
+be reflected back to the camera). We associate a coordinate system to the
 telescope (see Fig.\ref{fig:coordsys}), $S'$. The system in the
 observer's level is $S$, and it is in this system where we have the
 parameters of the trajectory of the photon, the direction vector,
@@ -364,6 +372,8 @@ focussing in the camera. Due to this fact, there are small gaps
 between to adjacent mirrors, and the photon could be lost through one
 of these ``holes''.
 
+\collimationfig
+%
 If the photon indeed hit a mirror, we calculate the reflected
 trajectory from the point were the photon arrives to the mirror,
 $\mathbf{x}_{\mathrm{cut}}$. For this purpose we must once more change
@@ -383,6 +393,8 @@ reflected trajectory, given by a new vector $\hat{\mathbf{r}}"$, and
 therefore the final position of the reflected photon in the camera
 plane.
 
+\subsection{Focussing the mirrors}
+
 Every single mirror in the global frame is pointing towards the
 optical axis of the whole telescope, with an angle and a focal length
 determined by two factors:
@@ -393,26 +405,22 @@ determined by two factors:
 \end{enumerate}
 
 This later parameter, the \emph{overall focal length}, if fixed to
-$F=1700\u{cm}$. In Fig.\ref{fig:spotsperfecth} we show the image of a
-point-like source of light, located at different heights \hv in the
-vertical of the telescope (pointing to the Zenit). We can see that
-when the source is virtually at infinity ($\hv=100\u{km}$) we get the
-best focus. The reflectivity taken here is 100\%, a perfect,
-mathematical reflexion has been done, and any atmospheric effect has
-been removed.
+$F=1700\u{cm}$. 
 
-Our system is focussed \emph{at infinity}. But the bulk of our data
-will be showers which have their maximum development at around
-$12\u{km}$ a.s.l., this means, a height of $\hv\simeq 10\u{km}$ above
-the observation level.  So we should focus our telescope to this
-height.  This effect is called \emph{collimation}. In
+Let's assume that we focus the different mirrors \emph{at infinity}.
+The bulk of our data will be showers which have their maximum
+development at around $12\u{km}$ a.s.l. though, this means, a height
+of $\hv\simeq 10\u{km}$ above our observation level.  Therefore, we
+must afterwards put the telescope out of focus, i.e. move the camera a
+little bit. This effect is called \emph{collimation}. In
 Fig.\ref{fig:collimation} we can see a geometrical construction which
-help us to understand this behaviour.  For simplicity, let us assume
-that the telescope is pointingat the Zenith. A single mirror is
-located at a distance $r$ of the optical axis of the telescope,
-$\overline{\mathrm{OP}}$. This mirror is fixed to the global,
-parabolic shape of the telescope, and therefore at a height with
-respect to the center of the telescope $\mathrm{O}$ of
+help us to understand this behaviour.  
+
+For simplicity, let us assume that the telescope is pointing at the
+Zenith. A single mirror is located at a distance $r$ of the optical
+axis of the telescope, $\overline{\mathrm{OP}}$. This mirror is fixed
+to the global, parabolic shape of the telescope, and therefore at a
+height with respect to the center of the telescope $\mathrm{O}$ of
 %
 \zparabeq
 %
@@ -430,13 +438,9 @@ center of the mirror will be $\mathbf{s}$. The angle between this and
 the ``original'' trajectory is $\widehat{\mathbf{rs}}\equiv\zeta$. The
 reflected photon will cross the optical axis instead in $\mathrm{C}$.
 
-\collimationfig
-
-\colldeltafig
-
-We have then two options: either we reorient our mirrors, or we shift
-the camera from $\mathrm{F}$ to $\mathrm{C}$. We choose this last
-option. From Fig.\ref{fig:collimation} we get the relations:
+Therefore, in order to have well focussed our system at 10\u{km} above
+the observation level, we shift the camera from $\mathrm{F}$ to
+$\mathrm{C}$. From Fig.\ref{fig:collimation} we get the relations:
 %
 \relationsAeq
 %
@@ -449,10 +453,83 @@ Therefore, the displacement to apply is given by the expression:
 \collimationeq
 %
 In our case, this displacement is in the range
-2.9--3.3\u{cm}$\approx$3\u{cm} (see Fig.\ref{fig:colldelta}, depending
-of the mirror position. We will take a new value for the focal length
-of $F=1703\u{cm}$, and will say that this new position of the camera
-is the \emph{optimal-focus position}.
+2.9--3.3\u{cm}$\approx$3\u{cm} (see Fig.\ref{fig:colldelta}),
+depending of the mirror position. We would say then that this new
+position of the camera is the \emph{optimal-focus position}.
+
+However, we could have focussed in from the beginning our system to
+this height of 10\u{km}. By doing so, we avoid any shifting of the
+camera. Note that, in any case, we are interested on having our system
+focussed at 10\u{km}, and therefore \emph{the stars in our field of
+  view will be out of focus}, and hence will form in our image larger
+spots than ni the case of a system focussed at infinity.
+
+\colldeltafig
+
+In Figs.\ref{fig:hlfivekm}.a-\ref{fig:hlinf}.a we show the image of a
+point-like source of light, located at different heights \hv in the
+vertical of the telescope (pointing to the Zenit) when the system is
+focussed \emph{at infinity}, and for different positions of the camera
+plane. We can see that when the source is virtually at infinity
+($\hv=10\E{4}\u{km}$) we get the best focus. However, in the case of a
+source of light at $\hv=10\u{km}$, we see that the best focus position
+is at 1703\u{cm}, as calculated. The green hexagon represents the
+central pixel. We also observe that 100\u{km} is virtually infinity
+for our purposes. The reflectivity taken here is 100\%, a perfect,
+mathematical reflexion has been done, and any atmospheric effect has
+been removed.
+
+%\hfinfhlfivekmfig
+
+%\hftenkmhlfivekmfig
+
+%\hfinfhltenkmfig
+
+%\hftenkmhltenkmfig
+
+%\hfinfhltwelvekmfig
+
+%\hftenkmhltwelvekmfig
+
+%\hfinfhlhundredkmfig
+
+%\hftenkmhlhundredkmfig
+
+%\hfinfhlinffig
+
+%\hftenkmhlinffig
+
+\hlfivekmfig
+ 
+\hltenkmfig
+ 
+\hltwelvekmfig
+ 
+\hlhundredkmfig
+ 
+\hlinffig
+
+\Mspotsfig
+
+\afterpage{\clearpage}
+
+In Figs.\ref{fig:hlfivekm}-\ref{fig:hlinf} we see something
+similar, but now the system is directly focussed at 10\u{km}.
+Therefore, for a light located at this height, we get the best focus
+position at the nominal focal plane position, 1700\u{cm}. 
+
+In these figures, the scale is normalized to the maximum concentration
+of light (light at infinity and projection plane at 1703\u{cm} for the
+(a) cases, and light at 10\u{km} and projection plane at 1700\u{cm}
+for the (b) cases, respectively).
+
+In Fig.\ref{fig:Mspots} we see the reflected image of an \texttt{M},
+surrounded by a square, hypothetically projected from a lamp located
+at our reference position 10\u{km}, and with a size in the ground
+comparable to the while dish of \MAGIC. Again, the minimal spot
+position is at 1700\u{cm}, and we observe how the image flips upside
+down when we move the projection plane from the front to the back of
+the focal plane.
 
 Another effect, already taken into account is the following: the
 actual \emph{focal surface} is no longer a plane. In general, it will
@@ -482,11 +559,18 @@ to comply with the fixed focal length of the system. The values of
 these focal lengths $f_i$ are summarized in Table
 \ref{tbl:zonefocals}.
 
-We used a \emph{perfect} system in Fig.\ref{fig:spotsperfecth}:
-reflectivity 100\%, no imperfections, no atmospheric absorption. If we
-apply the effect of a non-perfect reflexion, possible axis-deviations,
-imperfections in the mirrors and the effect of the atmorphere, we will
-get the results shown in Fig.\ref{fig:spotsh}.
+\zonefocalstbl
+
+\thetaspotsfig
+
+\afterpage{\clearpage}
+
+We used a \emph{perfect} system in figures Fig.\ref{fig:hlfivekm}
+to \ref{fig:Mspots}: reflectivity 100\%, no imperfections, no
+atmospheric absorption. If we apply the effect of a non-perfect
+reflexion, possible axis-deviations, imperfections in the mirrors and
+the effect of the atmorphere, we will get the results shown in
+Fig.\ref{fig:spotsh}.
 
 %%------------------------------------------------------------
 \subsection{Plate-scale in the camera of \MAGIC}
@@ -495,7 +579,7 @@ We are now interested on the \emph{plate-scale}, that is, the
 equivalence between linear distance in the camera plane, and angular
 distance in the sky. For this, we change the Zenith Angle of our
 point-like source (initially 0\deg) to several values. In
-Fig.\ref{fig:spotsht} we can see the results. Just for completion, we
+Fig.\ref{fig:thetaspots} we can see the results. Just for completion, we
 show the effect of the height of the source, although we are only
 interested in the height $\hv=10\u{km}$ above the detector --- the one
 used for the optimal-focus position.
@@ -503,8 +587,6 @@ used for the optimal-focus position.
 The value taken for the plate-scale in the camera plane of \MAGIC is:
 %
 \platescaleeq
-
-\zonefocalstbl
 
 %%------------------------------------------------------------
 \section{Detection in the camera}
@@ -1252,42 +1334,22 @@ a flux similar to that of our standard candle, the Crab Nebula.
 Indeed, we will use as the spectrum for our assumed source of gamma
 rays
 %
-\begin{equation}
-  \label{eq:gFlux}
-  \Phi_\gamma(E) = 
-  10^{-8} \left(\frac{E}{10\u{GeV}}\right)^{-1.5} 
-  \u{cm^{-2}}\u{s^{-1}}
-\end{equation}
+\gFluxeq
 %
 normalized at $10\u{GeV}$, and extrapolated to higher energies.
 This means, a differential flux of
 %
-\begin{eqnarray}
-  \label{eq:gdFlux}
-  \frac{\d\Phi_\gamma}{\d E}(E) & = 
-  1.5\E{-9} \left(\displaystyle\frac{E}{10\u{GeV}}\right)^{-2.5} 
-  \u{cm^{-2}}\u{s^{-1}}\u{GeV^{-1}} \\
-  ~ & = 1.5\E{-7} \left(\displaystyle\frac{E}{1\u{TeV}}\right)^{-2.5} 
-  \u{m^{-2}}\u{s^{-1}}\u{TeV^{-1}} \\ 
-\end{eqnarray}
+\gdFluxeq
 
 For cosmic rays, we used the measured flux:
 %
-\begin{equation}
-  \label{eq:crFlux}
-  \frac{\d\Phi_{\mathrm{cr}}}{\d E}(E) = 
-  10.91\E{-2} \left(\frac{E}{1\u{TeV}}\right)^{-2.75} 
-  \u{m^{-2}}\u{s^{-1}}\u{sr^{-1}}\u{TeV^{-1}}
-\end{equation}
+\crFluxeq
 
 We will call \emph{spectral index}, $\alpha$, to the (positive)
 exponent of the differential flux. Therefore, we have in our
 simulations
 %
-\begin{equation}
-  \label{eq:alphas}
-  \alpha_\gamma = 2.5 \hspace{2cm} \alpha_{\mathrm{cr}} = 2.75
-\end{equation}
+\specindexeq
 
 %%------------------------------------------------------------
 \subsubsection{Differential rates of detection}
@@ -1295,19 +1357,11 @@ simulations
 With these differential fluxes, we can calculate the differential
 detection rates as follows: for gamma rays
 %
-\begin{equation}
-  \label{eq:gdRate}
-  \frac{\d R_\gamma}{\d E}(E) = S_\gamma(E) \cdot
-  \frac{\d\Phi_\gamma}{\d E}(E) 
-\end{equation}
+\gdRateeq
 %
 where we do not write the dependency in $\Theta$; for cosmic rays
 %
-\begin{equation}
-  \label{eq:crdRate}
-  \frac{\d R_{\mathrm{cr}}}{\d E}(E) = S_{\mathrm{cr}}(E) \cdot
-  \frac{\d\Phi_{\mathrm{cr}}}{\d E}(E) 
-\end{equation}
+\crdRateeq
 
 
 %%------------------------------------------------------------
@@ -1317,19 +1371,11 @@ From the Eq. \ref{eq:gdRate}, the expression for the integral
 detection rate for gammas is (forgetting once more the dependency with
 $\Theta$; i.e., for a given value of the Zenith Angle)
 %
-\begin{equation}
-  \label{eq:gRate}
-  R_\gamma(E) = \int_E^\infty \, 
-  S_\gamma(E) \, \frac{\d\Phi_\gamma}{\d E}(E) \, \d E
-\end{equation}
+\gRateeq
 %
 and similarly for cosmic rays
 %
-\begin{equation}
-  \label{eq:crRate}
-  R_{\mathrm{cr}}(E) = \int_E^\infty \,
-  S_{\mathrm{cr}}(E) \, \frac{\d\Phi_{\mathrm{cr}}}{\d E}(E) \, \d E
-\end{equation}
+\crRateeq
 
 
 %%------------------------------------------------------------

@@ -80,10 +80,13 @@ engps pseng: eng ps
 
 espps psesp: esp ps
 
-esp eng ps pdf::
+esp eng ::
 	echo $@ > .$@
+	echo $@ > .lang
 
-all: ps pdf
+ps pdf::
+	echo $@ > .$@
+	echo $@ > .fmt
 
 ps:: dvi $(OUTPS) clearlang
 
@@ -101,8 +104,10 @@ virtex:
 	ln -sf `which virtex` $(COMMON_PATH)/$(RUN) && \
 	ln -sf `which pdfvirtex` $(COMMON_PATH)/$(RUNPDF)
 
+all: virtex clean eng ps clean eng pdf 
+
 common: $(COMMON_FILES)
-	if [ -f .esp ]; then \
+	if [ -f $(THIS)/.esp ]; then \
 	  ln -sf $(SCRATCH_PATH)/$(DOC).tex $(SCRATCH_PATH)/$(DOC)-esp.tex;\
 	else \
 	  ln -sf $(SCRATCH_PATH)/$(DOC).tex $(SCRATCH_PATH)/$(DOC)-eng.tex;\
@@ -113,13 +118,13 @@ $(COMMON_FILES):
 	@ln -sf $@ $(SCRATCH_PATH)/
 
 lang:
-	if [ -f .ps ]; then \
+	if [ -f $(THIS)/.ps ]; then \
 	  echo "%% TESIS version PostScript" > language.tex;\
 	else \
 	  echo "%% TESIS version PDF" > language.tex;\
 	fi
 	echo "\newif\ifenglish" >> language.tex
-	if [ -f .eng ]; then \
+	if [ -f $(THIS)/.eng ]; then \
 	  echo "\englishtrue" >> language.tex;\
 	else \
 	  echo "\englishfalse" >> language.tex;\
@@ -139,7 +144,7 @@ lang:
 	echo "\endinput" ) >> language.tex
 
 notation:
-	if [ -f .esp ]; then \
+	if [ -f $(THIS)/.esp ]; then \
 	  awk -v lang=esp -f $(NOTATIONAWK) $(NOTATIONLST) > $(NOTATIONTBL) ;\
 	else \
 	  awk -f $(NOTATIONAWK) $(NOTATIONLST) > $(NOTATIONTBL) ;\
@@ -151,7 +156,7 @@ log:
 	-rm -f $(WRNFILE)
 	cd $(SCRATCH_PATH);\
 	awk -f $(ANALYZELOG) $(LOGFILE);\
-	if [ -f .esp ]; then \
+	if [ -f $(THIS)/.esp ]; then \
 	  tail -30 $(DOC)-esp.log | grep "^ [0-9]" > $(MEMFILE);\
 	else \
 	  tail -30 $(DOC)-eng.log | grep "^ [0-9]" > $(MEMFILE);\
@@ -165,7 +170,7 @@ log:
 	cat $(WRNFILE)
 
 $(OUTDVI):
-	if [ -f .esp ];then \
+	if [ -f $(THIS)/.esp ];then \
 	  TEXINPUTS=.:$(ADD_TEXINPUTS_ESP):$${TEXINPUTS};\
 	else \
 	  TEXINPUTS=.:$(ADD_TEXINPUTS_ENG):$${TEXINPUTS};\
@@ -175,14 +180,14 @@ $(OUTDVI):
 	export TEXPSHEADERS;\
 	cd $(SCRATCH_PATH);\
 	for run in $(RUN) $(RUN) $(RUNBIB) $(RUNIDX) $(RUN); do \
-	  if [ -f .esp ]; then \
+	  if [ -f $(THIS)/.esp ]; then \
 	    $$run $(DOC)-esp.tex 2>&1 | tee $(LOGFILE);\
 	  else \
 	    $$run $(DOC)-eng.tex 2>&1 | tee $(LOGFILE);\
 	  fi; \
 	done;\
 	cd -;\
-	if [ -f .esp ]; then \
+	if [ -f $(THIS)/.esp ]; then \
 	  ln -sf {$(SCRATCH_PATH),$(THIS)}/$(DOC)-esp.dvi;\
 	else \
 	  ln -sf {$(SCRATCH_PATH),$(THIS)}/$(DOC)-eng.dvi;\
@@ -190,7 +195,7 @@ $(OUTDVI):
 
 $(OUTPS): $(OUTDVI)
 	cd $(FIGS_PATH); \
-	if [ -f .esp ]; then \
+	if [ -f $(THIS)/.esp ]; then \
 	  $(DVIPS) -o $(THIS)/$(DOC)-esp.{ps,dvi};\
 	else \
 	  $(DVIPS) -o $(THIS)/$(DOC)-eng.{ps,dvi};\
@@ -198,7 +203,7 @@ $(OUTPS): $(OUTDVI)
 	cd -
 
 $(OUTPDF):
-	if [ -f .esp ];then \
+	if [ -f $(THIS)/.esp ];then \
 	  TEXINPUTS=.:$(ADD_TEXINPUTS_ESP):$${TEXINPUTS};\
 	else \
 	  TEXINPUTS=.:$(ADD_TEXINPUTS_ENG):$${TEXINPUTS};\
@@ -208,14 +213,14 @@ $(OUTPDF):
 	export TEXPSHEADERS;\
 	cd $(SCRATCH_PATH);\
 	for run in $(RUNPDF) $(RUNPDF) $(RUNBIB) $(RUNIDX) $(RUNPDF); do \
-	  if [ -f .esp ]; then \
+	  if [ -f $(THIS)/.esp ]; then \
 	    $$run $(DOC)-esp 2>&1 | tee $(LOGFILE);\
 	  else \
 	    $$run $(DOC)-eng 2>&1 | tee $(LOGFILE);\
 	  fi; \
 	done;\
 	cd -;\
-	if [ -f .esp ]; then \
+	if [ -f $(THIS)/.esp ]; then \
 	  ln -sf {$(SCRATCH_PATH),$(THIS)}/$(DOC)-esp.pdf;\
 	else \
 	  ln -sf {$(SCRATCH_PATH),$(THIS)}/$(DOC)-eng.pdf;\
@@ -225,13 +230,13 @@ banner:
 	@echo "----------------------------------------"
 	@echo " Generating Ph.D.Thesis output" 
 	@echo ""
-	@echo " Language:      "$(DOCLANG)
-	@echo " Output format: "$(OUTFMT)
+	@echo " Language:      "`cat .lang`
+	@echo " Output format: "`cat .fmt`
 	@echo "----------------------------------------"
 
 clearlang:
 	cd $(THIS)
-	-rm -rf .eng .esp .pdf .ps language.tex
+	-rm -rf .eng .esp .pdf .ps .lang .fmt language.tex
 
 clean: clearlang
 	@echo "Cleanning..."
@@ -243,5 +248,8 @@ mrproper: clean
 	-rm -f $(THIS)/tesis-{eng,esp}.{ps,dvi,pdf}
 
 redo: clean all
+
+help:
+	-cat common/makefile.hlp
 
 #EOF

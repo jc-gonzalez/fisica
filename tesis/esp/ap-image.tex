@@ -12,14 +12,573 @@
 %% Date:     $Date$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-\chapter{Calculation of the image parameters}
+\chapter{C\'alculo de los par\'ametros de imagen}
 \label{appendix:image}
+
+%%------------------------------------------------------------
+\section{Definici\'on estad\'\i stica de los par\'ametros de imagen}
+
+Los datos de cada suceso individual vienen representados
+principalmente por un conjunto de ternas $\{(x_i, y_i, q_i)\}$, con
+$i=1,2,\ldots,n$, donde $n$ es el n'mero de p'ixeles en la c'amara,
+$(x_i, y_i)$ las coordenadas del centro del p'ixel $i$-'esimo, y $q_i$
+su carga. Asumiremos que todos los p'ixeles son iguales, o lo que es
+equivalente que dentro de $q_i$ ya se han incorporado todas las
+posibles diferencias. Si definimos\footnote{Se asumir'a que Un
+  sub'indice como $i$ en una suma recorre todos los valores desde el
+  menor hasta el mayor, seg'un haya sido definido previamente, a menos
+  que se diga lo contrario.} $Q\equiv\sum_i q_i$, entonces los
+primeros y segundos momentos de la distribuci'on de valores dada por
+$\{(x_i, y_i, q_i)\}$ son:
+%
+\begin{gather}
+  \label{eq:defmeans}
+  \mean{x} = \frac{\sum_i q_i x_i}{Q}, \qquad
+  \mean{y} = \frac{\sum_i q_i y_i}{Q}, \qquad
+  \\
+  \label{eq:defmeans2}
+  \mean{x^2} = \frac{\sum_i q_i x_i^2}{Q}, \qquad
+  \mean{xy} = \frac{\sum_i q_i x_i y_i}{Q}, \qquad
+  \mean{y^2} = \frac{\sum_i q_i y_i^2}{Q}
+\end{gather}
+%
+Llamaremos \emph{centroide de la distribuci'on} al punto
+$(\mean{x},\mean{y})$. Los primeros momentos en torno a este centroide
+son cero. Los segundos momentos se denominan \emph{varianzas}:
+%
+\begin{equation}
+  \label{eq:defvar}
+  \sigma_x^2  = \frac{\sum_i q_i (x_i - \mean{x})^2}{Q}, \qquad
+  \sigma_{xy} = \frac{\sum_i q_i 
+    (x_i - \mean{x})(y_i - \mean{y})}{Q}, \qquad
+  \sigma_y^2  = \frac{\sum_i q_i (y_i - \mean{y})^2}{Q}
+\end{equation}
+%
+siendo $\sigma_{xy}$ la \emph{covariance}. Se demuestra f'acilmente
+que estas expresiones pueden escribirse:
+%
+\begin{equation}
+  \label{eq:defvarbis}
+  \sigma_x^2  = \mean{x^2} - \mean{x}^2, \qquad 
+  \sigma_{xy}  = \mean{xy} - \mean{x}\mean{y}, \qquad 
+  \sigma_y^2  = \mean{y^2} - \mean{y}^2, \qquad 
+\end{equation}
+%
+Finalmente, definiremos el \emph{coeficiente de correlaci'on}:
+\begin{equation}
+  \label{eq:corr}
+  \rho\equiv\frac{\sigma_{xy}}{\sigma_x\, \sigma_y}
+\end{equation}
+%
+El dominio de valores del coeficiente de correlaci'on es $[-1,1]$.
+
+Definamos ahora las siguientes variables auxiliares:
+%
+\begin{equation}
+\label{eq:auxiliary}
+\begin{split}
+  d = \sigma_y^2 - \sigma_x^2 &\qquad\qquad
+  z = \left(d^2+4\sigma_{xy}^2\right)^{1/2} \\
+  u = \left(1+(d/x)\right) &\qquad\qquad
+  v = 2 - u
+\end{split}
+\end{equation}
+                                %
+Con estas expresiones, se definen los \emph{par'ametros de imagen}
+como:
+%
+\begin{subequations}
+  \label{eq:imageparams}
+  \begin{align}
+%
+    \label{eq:lengthdef}
+    \text{\scshape length} &\equiv 
+    \left[\frac{1}{2}\left(\sigma_x^2+\sigma_y^2+z\right)\right]^{1/2}\\
+%
+    \label{eq:widthdef}
+    \text{\scshape width} &\equiv 
+    \left[\frac{1}{2}\left(\sigma_x^2+\sigma_y^2-z\right)\right]^{1/2}\\
+%
+    \label{eq:distdef}
+    \text{\scshape distance} &\equiv 
+    \left(\mean{x}^2 + \mean{y}^2\right)^{1/2}\\
+%
+    \label{eq:azwidthdef}
+    \text{\scshape azwidth} &\equiv 
+    \left[\frac{\mean{x}^2\mean{y^2} 
+        - 2\mean{x}\mean{y}\mean{xy} 
+        + \mean{x^2}\mean{y}^2}{\text{\scshape distance}^2}\right]^{1/2}\\
+%
+    \label{eq:missdef}
+    \text{\scshape miss} &\equiv 
+    \left[\frac{1}{2}\left(u\mean{x}^2 + v\mean{y}^2\right)
+        - \left(\frac{2\sigma_{xy}\mean{x}\mean{y}}{z}\right)\right]^{1/2}\\
+%
+    \label{eq:alphadef}
+    \text{\scshape alpha} &\equiv
+    \arcsin\left(\frac{\text{\scshape miss}}{\text{\scshape distance}}\right)\\
+%
+    \label{eq:concdef}
+    \text{\scshape conc} &\equiv
+    \frac{q_{\mathrm{max.1}} + q_{\mathrm{max.2}}}{Q}
+%
+  \end{align}
+\end{subequations}
+
+\imageparaxesfig
+
+%\clearpage
+
+%%------------------------------------------------------------
+\section{Deduci\'on}% de los par\'ametros de imagen como autovalores de la
+%  matriz de covarianza}
+
+Usaremos la \emph{matriz de covarianza} para obtener expresiones que
+nos permitan calcular los par'ametros de imagen {\scshape distance},
+{\scshape length}, {\scshape width} y {\scshape alpha}.
+
+La distribuci'on de valores $\{q_i\}$ en la imagen puede interpretarse
+como una gaussiana bidimensional. La expresi'on de una funci'on tal es
+(cambiando $mean{x}$ por $\mu_x$ para mayor claridad):
+%
+\begin{gather}
+  \label{eq:gauss2d}
+  f(x,y) = A 
+  \exp\left\{ -\frac{1}{2(1-\rho^2)} 
+    \left[
+      \left(\frac{x-\mu_x}{\sigma_x}\right)^2
+      - 2 \rho \left(\frac{x-\mu_x}{\sigma_x}\right)
+      \left(\frac{y-\mu_y}{\sigma_y}\right)
+      + \left(\frac{y-\mu_y}{\sigma_y}\right)^2
+      \right]\right\}
+    \intertext{with}
+    A = \frac{1}{2\pi\sigma_x\sigma_y\sqrt{1-\rho^2}}
+\end{gather}
+%
+La \emph{matriz de covarianza} se define como:
+%
+\begin{equation}
+  \label{eq:covmat}
+  \Sigma \equiv
+  \begin{pmatrix}
+    \sigma_x^2 & \sigma_{xy} \\ \sigma_{xy} & \sigma_y^2
+  \end{pmatrix}
+\end{equation}
+% 
+El determinante y la inversa de esta matriz son:
+%
+\begin{align}  
+  \label{eq:covmatdet}
+  |\Sigma| &= \sigma_x^2 \sigma_y^2 - \sigma_{xy}^2 \\
+  \label{eq:covmatinv}
+  \Sigma^{-1} &= \frac{1}{|\Sigma|}
+  \begin{pmatrix}
+    \sigma_y^2 & -\sigma_{xy} \\ -\sigma_{xy} & \sigma_x^2
+  \end{pmatrix}
+\end{align}
+%
+Con estas expresiones, podemos reescribir \eqref{eq:gauss2d} en forma
+vectorial de la siguiente manera:
+%
+\begin{align}
+  \label{eq:gauss2dbis}
+  f(x,y) &= \frac{1}{2\pi|\Sigma|^{1/2}} 
+  \exp\left[ -\frac{1}{2 |\Sigma|}
+      \left( x - \mu_x, y - \mu_y \right)
+      \begin{pmatrix}
+        \sigma_y^2 & -\sigma_{xy} \\ -\sigma_{xy} & \sigma_x^2
+      \end{pmatrix}
+      \begin{pmatrix}
+        x -\mu_x \\ y - \mu_y
+      \end{pmatrix}
+    \right]
+    \\
+  \intertext{or mejor}
+  \label{eq:gauss2dvec}
+  f(x,y)  &=  \frac{1}{2\pi|\Sigma|^{1/2}} 
+  \exp\left[ -\frac{1}{2}
+    (\mathbf{x} - \boldsymbol{\mu}) \Sigma^{-1} 
+    (\mathbf{x} - \boldsymbol{\mu})^{\mathrm{T}}
+  \right]
+\end{align}
+%
+donde el super'indice \texttt{T} significa transposici'on matricial.
+  
+Antes de seguir, n'otese que por supuesto disponemos ya de nuestra
+primera definici'on:
+%
+\begin{equation}
+  \label{eq:distance}
+  \text{\scshape distance} = \sqrt{\mean{x}^2 + \mean{y}^2}
+\end{equation}
+%
+Hagamos una traslaci'on de ejes desde el sistema $S\equiv\{X,Y\}$
+hasta el $\hat{S}\equiv\{\hat{X},\hat{Y}\}$ (ver fig.
+\ref{fig:imageparaxes}). Ahora el origen de nuestro sistema es el
+anterior $(\mean{x}, \mean{y})\equiv(\mu_x, \mu_y)$.  Como en este
+nuevo sistema tendremos $\mu_{\hat{x}} = \mu_{\hat{y}} = 0$, despu'es
+la traslaci'on la expresi'on de nuestra funci'on bidimensional se
+transforma en (n'otese que a'un tenemos $\hat{\Sigma} = \Sigma$):
+%
+\begin{align}
+  \label{eq:gauss2dvechat}
+  f(x,y)  &=  \frac{1}{2\pi|\Sigma|^{1/2}} 
+  \exp\left[ -\frac{1}{2} \;
+    \hat{\mathbf{x}} \; \Sigma^{-1} \; \hat{\mathbf{x}}^{\mathrm{T}}
+  \right]
+\end{align}
+%
+Las propiedades intr'insecas de esta distribuci'on no se modifican con
+el cambio de variable realizado. En particular, el determinante de la
+matriz de covarianza es invariante bajo traslaciones y rotaciones
+(dado que expresa propiedades locales e intr'insecas de la
+distribuci'on misma). Nuestras acciones vendr'an respaldadas por los
+siguientes teoremas (el lector podr'a encontrar f'acilmente
+demostraciones en la literatura, por ejemplo en \cite{}):
+
+\begin{Theo}
+  Si $X$ e $Y$ son variables aleatorias bidimensionales, entonces
+  siempre es posible encontrar un cambio de variables a U y V, siendo
+  'estas una combinaci'on lineal de aquellas, tal que las nuevas
+  variables no est'an correlacionadas.
+\end{Theo}
+
+\begin{Theo}
+  En particular, siempre es posible encontrar una transformaci'on
+  lineal $\mathbf{U}=\mathcal{C}\,\mathbf{X}+\mathbf{D}$, siendo
+  $\mathcal{C}$ una matriz y $\mathbf{U}$, $\mathbf{X}$ y $\mathbf{D}$
+  vectores, tal que las componentes de $\mathbf{U}$ son variables
+  aleatorias normales estandarizadas e independientes
+  ($\mu=0,\sigma=1,\rho=0$).
+\end{Theo}
+
+\begin{Theo}
+  Si $\mathbf{X}$ es normal bidimensional con matriz de covarianza
+  diagonal, entonces las componentes de $\mathbf{X}$ son
+  independientes. Es decir, el que la correlaci'on sea cero es
+  necesario y suficiente para que las componentes de $\mathbf{X}$ sean
+  independientes. Esto \emph{no} es cierto en general para otras
+  distribuciones.
+\end{Theo}
+
+Por tanto, podremos encontrar un sistema de ejes, $S'\equiv\{X',Y'\}$,
+en el cual la matriz de covarianza sea \emph{diagonal}. Intentemos
+diagonalizar $\Sigma$.  Para ello, tenemos que calcular sus 
+\emph{autovalores}, $\lambda_k$, $k=1,2$, resolviendo la ecuaci'on:
+%
+\begin{equation}
+  \label{eq:eigen}
+  |\Sigma - \lambda \mathbf{I}| = 0
+\end{equation}
+% 
+donde $\mathbf{I}$ representa la matriz identidad. Esto es:
+%
+\begin{equation}
+  \label{eq:eigen2}
+  \begin{split}
+    \begin{vmatrix}
+      \sigma_x^2-\lambda & \sigma_{xy} \\ \sigma_{xy} & \sigma_y^2-\lambda
+    \end{vmatrix}
+    & = (\sigma_x^2-\lambda)(\sigma_y^2-\lambda) - \sigma_{xy}^2 \\
+    & = \lambda^2 - \lambda(\sigma_x^2+\sigma_y^2) + 
+    (\sigma_x^2\sigma_y^2 - \sigma_{xy}^2)  = 0
+  \end{split}
+\end{equation}
+
+Las soluciones a dicha ecuaci'on son:
+%
+\begin{equation}
+  \label{eq:eigensol}
+  \lambda_{1,2} = \frac{(\sigma_x^2+\sigma_y^2) \pm 
+    \sqrt{(\sigma_x^2-\sigma_y^2) + 4\sigma_{xy}^2}}{2}
+\end{equation}
+%
+y por tanto la matriz diagonalizada en el nuevo sistema $S'$ ser'a:
+%
+\begin{equation}
+  \begin{split}
+    \label{eq:Snew}
+    \begin{pmatrix}
+      \lambda_1 & 0\\0 & \lambda_2
+    \end{pmatrix}
+    = &
+    \begin{pmatrix}
+      \displaystyle \frac{(\sigma_x^2+\sigma_y^2) +
+        \sqrt{(\sigma_x^2-\sigma_y^2) + 4\sigma_{xy}^2}}{2} & 0 \\
+      0 & \displaystyle \frac{(\sigma_x^2+\sigma_y^2) - 
+        \sqrt{(\sigma_x^2-\sigma_y^2) + 4\sigma_{xy}^2}}{2}
+    \end{pmatrix}\\
+    \equiv &
+    \begin{pmatrix}
+      {\sigma'}_x^2 & 0\\0 & {\sigma'}_y^2
+    \end{pmatrix}
+    \equiv \Sigma'
+  \end{split}
+\end{equation}
+%
+donde asumimos que ${\sigma'}_x^2 > {\sigma'}_y^2$ y usamos el hecho
+de que en este nuevo sistema debe cumplirse ${\sigma'}_{xy}=0$. Estas
+expresiones representan nuestros dos primeros par'ametros de forma:
+%
+\begin{align}
+  \label{eq:lengthwidth}
+  \text{\scshape length}^2 &\equiv {\sigma'}_x^2 = 
+  \frac{1}{2}\left[(\sigma_x^2+\sigma_y^2) +
+    \sqrt{(\sigma_x^2-\sigma_y^2) + 4\sigma_{xy}^2}\,\right] \\
+  \text{\scshape width}^2 &\equiv {\sigma'}_y^2 = 
+  \frac{1}{2}\left[(\sigma_x^2+\sigma_y^2) -
+    \sqrt{(\sigma_x^2-\sigma_y^2) + 4\sigma_{xy}^2}\,\right]
+\end{align}
+
+Los \emph{autovectores} de $\hat{S}$ son las soluciones a la
+ecuaci'on:
+%
+\begin{equation}
+  \label{eq:eigenveceq}
+  \hat{S}\,\mathbf{v}_k = \lambda_k\,\mathbf{v}_k
+\end{equation}
+%
+donde $\lambda_k$ son los \emph{autovalores} previamente
+calculados. Estos $\mathbf{v}_k$ pueden escribirse como:
+%
+\begin{equation}
+  \label{eq:eigenvec}
+  \mathbf{v}_{1,2} = \left(
+    \frac{(\sigma_x^2-\sigma_y^2) \mp
+      \sqrt{(\sigma_x^2-\sigma_y^2) + 4\sigma_{xy}^2}}{2\,\sigma_{xy}},
+    \quad 1 \right)
+\end{equation}
+%
+donde los signos menos y m'as corresponden a los 'indices 1 y 2,
+respectivamente. En general estos vectores no est'an normalizados.
+
+Podr'iamos haber obtenido el mismo resultado aplicando el siguiente
+razonamiento. La diferencia entre los sistemas $\hat{S}$ y $S'$ es una
+rotaci'on de un cierto 'angulo $\theta$ (v'ease
+fig.\ref{fig:imageparaxes}):
+%
+\begin{equation}
+  \label{eq:rot}
+  \begin{pmatrix}
+    x' \\ y'
+  \end{pmatrix} =
+  \begin{pmatrix}
+    \cos\theta & \sin\theta \\ -\sin\theta & \cos\theta
+  \end{pmatrix}
+  \begin{pmatrix}
+    x \\ y
+  \end{pmatrix}
+\end{equation}
+%
+Los valores de nuestra gaussiana bidimensional, sin embargo, han de
+mantenerse. Es decir, tendemos que:
+%
+\begin{equation}
+  \label{eq:equalz}
+  \frac{1}{2\pi|\Sigma|^{1/2}} 
+  \exp\left[ -\frac{1}{2} \;
+    \hat{\mathbf{x}} \; \Sigma^{-1} \; \hat{\mathbf{x}}^{\mathrm{T}}
+  \right]
+  =
+  \frac{1}{2\pi|\Sigma'|^{1/2}} 
+  \exp\left[ -\frac{1}{2} \;
+    {\mathbf{x}'} \; {\Sigma'}^{-1} \; {\mathbf{x}'}^{\mathrm{T}}
+  \right]  
+\end{equation}
+%
+Pero sabemos que $|\Sigma|$ permanece invariante. Por tanto:
+%
+\begin{equation}
+  \label{eq:equalzvec}
+  \hat{\mathbf{x}} \; \Sigma^{-1} \; \hat{\mathbf{x}}^{\mathrm{T}} =
+  {\mathbf{x}'} \; {\Sigma'}^{-1} \; {\mathbf{x}'}^{\mathrm{T}} =
+  \hat{\mathbf{x}} \; R^{\mathrm{T}} \; 
+  {\Sigma'}^{-1} \; R \; \hat{\mathbf{x}}^{\mathrm{T}}
+\end{equation}
+%
+es decir:
+%
+\begin{equation}
+  \label{eq:equalmat}
+  \Sigma^{-1} = R^{\mathrm{T}} \; {\Sigma'}^{-1} \; R 
+  \qquad \text{or better} \qquad
+  {\Sigma'}^{-1} = R \; \Sigma^{-1} \; R^{\mathrm{T}} 
+\end{equation}
+%
+Expresado expl'icitamente en forma matricial:
+%
+\begin{multline}
+  \label{eq:rotexplicit}
+  \begin{pmatrix}
+    {\sigma'}_y^2 & -{\sigma'}_{xy} \\ -{\sigma'}_{xy} & {\sigma'}_x^2
+  \end{pmatrix}
+  =
+  \begin{pmatrix}
+    \cos\theta & \sin\theta \\ -\sin\theta & \cos\theta
+  \end{pmatrix}
+  \begin{pmatrix}
+    \sigma_y^2 & -\sigma_{xy} \\ -\sigma_{xy} & \sigma_x^2
+  \end{pmatrix}
+  \begin{pmatrix}
+    \cos\theta & -\sin\theta \\ \sin\theta & \cos\theta
+  \end{pmatrix} \\
+  =
+  \begin{pmatrix}
+    \sigma_x^2 \sin^2\theta + \sigma_y^2 \cos^2\theta 
+    - \sigma_{xy} \sin2\theta&
+    \frac{1}{2}(\sigma_x^2 - \sigma_y^2)\sin2\theta  
+    - \sigma_{xy}\cos2\theta \\
+    \frac{1}{2}(\sigma_x^2 - \sigma_y^2)\sin2\theta 
+    - \sigma_{xy}\cos2\theta &
+    \sigma_x^2 \cos^2\theta + \sigma_y^2 \sin^2\theta 
+    + \sigma_{xy} \sin2\theta
+  \end{pmatrix}
+\end{multline}
+%
+Sabemos que ${\sigma'}_{xy} = 0$, y por lo tanto se debe cumplir la
+siguiente ecuaci'on:
+%
+\begin{equation}
+  \label{eq:sigmapxy}
+  \frac{1}{2}(\sigma_x^2 - \sigma_y^2)\sin2\theta  
+    - \sigma_{xy}\cos2\theta = 0
+\end{equation}
+%
+Esto nos proporciona una expresi'on para el 'angulo $\theta$:
+%
+\begin{equation}
+  \label{eq:theta}
+  \theta = \frac{1}{2} \arctan 
+  \left(\frac{2\sigma_{xy}}{\sigma_x^2 - \sigma_y^2}\right)
+\end{equation}
+%
+Por otro lado, el 'angulo $\chi$ en la fig.\ref{fig:imageparaxes}
+viene dado por:
+%
+\begin{equation}
+  \label{eq:chi}
+  \chi = \arctan\left(\frac{\mean{y}}{\mean{x}}\right)
+\end{equation}
+%
+Y por tanto, nuestro 'ultimo par'ametro de imagen resulta:
+%
+\begin{equation}
+  \label{eq:alpha}
+  \text{\scshape alpha} \equiv \alpha = \chi - \theta
+\end{equation}
+
+
+%%------------------------------------------------------------
+\section{Nuevos par\'ametros}
+
+\subsubsection{Asimetr\'\i a}
+%
+Hasta ahora hemos asumido que la distribuci'on de luz proviniento de
+un suceso gamma en el plano de la c'amara puede ser aproximada por una
+gaussiana bidimiensional. En realidad existen ciertas asimetr'ias,
+siendo la m'as clara la producida a lo largo del eje mayor de la
+imagen el'iptica, como se muestra en la fig.\ref{fig:asym}. Para
+cuantificar este efecto usaremos, adem'as de las definiciones dadas en
+las ecuaciones \eqref{eq:defmeans} y \eqref{eq:defmeans2}, los
+terceros momentos en torno al origen:
+%
+\begin{equation}
+  \label{eq:defthirdmom}
+  \mean{x^3} = \frac{\sum_i q_i x_i^3}{Q}, \qquad
+  \mean{x^2y} = \frac{\sum_i q_i x_i^2 y_i}{Q}, \qquad
+  \mean{xy^2} = \frac{\sum_i q_i x_i y_i^2}{Q}, \qquad
+  \mean{y^3} = \frac{\sum_i q_i y_i^3}{Q}  
+\end{equation}
+%
+y los terceros momentos en torno al centroide (o media de la
+distribuci'on)\footnote{A pesar de que no aparece ning'un exponente
+  en, por ejemplo, $\sigma_{x^2y}$, un $3$ est'a impl'icito. Lo hemos
+  eliminado por claridad.}:
+%
+\begin{equation}
+  \label{eq:defthirmommean}
+  \begin{split}
+    \sigma_{x^3} & = \mean{x^3} - 3\mean{x^2}\mean{x} + 2\mean{x}^3\\
+    \sigma_{x^2 y} & = \mean{x^2 y} - 2\mean{xy}\mean{x} 
+    + 2\mean{x}^2\mean{y} - 2\mean{x^2}\mean{y} \\
+    \sigma_{x y^2} & = \mean{x y^2} - 2\mean{xy}\mean{y} 
+    + 2\mean{x}\mean{y}^2 - 2\mean{x}\mean{y^2} \\
+    \sigma_{y^3} & = \mean{y^3} - 3\mean{y^2}\mean{y} + 2\mean{y}^3
+  \end{split}
+\end{equation}
+%
+Utilizando de nuevo las definiciones dadas en la ecuaci'on
+\eqref{eq:auxiliary}, calculamos el vector $\mathbf{u}$:
+%
+\begin{equation}
+  \label{eq:vectoru}
+  \mathbf{u} = \left(
+    \left(\frac{z-d}{2z}\right)^{1/2},\quad
+    \sign(\sigma_{xy})\left(\frac{z-d}{2z}\right)^{1/2}
+    \right)
+\end{equation}
+%
+Con esto, definimos el \emph{vector Asimetr'ia} $\mathbf{A}$ (v'ease
+fig.\ref{fig:asym}):
+%
+\begin{equation}
+  \label{eq:asymmetryvec}
+  \mathbf{A} \equiv (x_{\mathrm{A}},\, y_{\mathrm{A}}) 
+  \equiv -\sigma_{\mathrm{A}}\,\mathbf{u}
+\end{equation}
+%
+con
+%
+\begin{equation}
+  \label{eq:sigmaA}
+  \sigma_{\mathrm{A}} = \left[
+    \sigma_{x^3}\cos^3\phi +
+    3\, \sigma_{x^2 y}\cos^2\phi\sin\phi +
+    3\, \sigma_{x y^2}\cos\phi\sin^2\phi +
+    \sigma_{y^3}\sin^3\phi\right]^{1/3}
+\end{equation}
+%
+siendo $\phi$ el 'angulo que forma el vector $\mathbf{u}$ con el eje
+$X$. Finalmente definimos el par'ametro \emph{asimetr'ia} ({\scshape
+  asymmetry}):
+%
+\begin{equation}
+  \label{eq:asymmetry}
+  \text{\scshape asymmetry} \equiv
+  \sign(\mathbf{A}\cdot\mathbf{D})
+  \frac{|\sigma_{\mathrm{A}}|}{\text{\scshape length}} =
+  \frac{\mathbf{A}\cdot\mathbf{D}}{\text{\scshape distance}\mspace{8mu}
+    \text{\scshape length}\,\cos(\text{\scshape length})}
+\end{equation}
+
+\subsubsection*{Concentraci\'on}
+%
+Podemos extender la definici'on del parametro concentraci'on, de la
+manera siguiente:
+%
+\begin{equation}
+  \label{eq:conck}
+  \text{\scshape conc}_k \equiv
+  \frac{q_{\mathrm{max.1}} + q_{\mathrm{max.2}} + \cdots 
+    + q_{\mathrm{max.}k}}{Q}
+\end{equation}
+%
+De este modo, el par'ametro concentraci'on definido en
+\eqref{eq:concdef} no es m'as que $\text{\scshape conc} \equiv
+\text{\scshape conc}_2$.
+
+\clearpage
+
+\asymfig
+
+\mbox{}
 
 \endinput
 %
 %% Local Variables:
 %% mode:latex
+%% TeX-master: t
+%% TeX-master: t
 %% End:
 
 %%EOF

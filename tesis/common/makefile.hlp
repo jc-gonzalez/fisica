@@ -1,0 +1,40 @@
+
+
+########################################################################
+#                                                                      #
+#               SIMULATION AND PERFORMANCE STUDIES FOR                 #
+#                 IMAGING CHERENKOV TELESCOPES USING                   #
+#                       MONTE CARLO TECHNIQUES                         #
+#                                                                      #
+#                            Ph.D.Thesis                               #
+#                                                                      #
+#                            J C Gonzalez                              #
+#                                                                      #
+#______________________________________________________________________#
+#                                                                      #
+#                            The Makefile                              #
+#                                                                      #
+########################################################################
+
+  Usage:  make <option1> <option2> ...
+
+  where <optionN> can be:
+
+    help         shows this message
+    eng          generates english version
+    esp          generates spanish version
+    ps           generates PostScript (TM) version
+    pdf          generates PDF (Portable Data Format (TM)) version
+    dvi          generates DVI (DeVice Independent) file
+    engps        eng + ps
+    engpdf       eng + pdf
+    espps        esp + ps
+    esppdf       esp + pdf
+    virtex       generates dumped preprocessors texis and pdftexis
+    clean        cleans up garbage
+    mrproper     cleans up everything but the original files
+    all          generates everything
+
+
+                                                          J C Gonzalez
+							  

@@ -72,6 +72,7 @@
 \usepackage{mathpple}
 %\usepackage{charter}
 \usepackage{floatflt}
+\usepackage{afterpage}
 \usepackage{multicol}
 \usepackage{multirow}
 \usepackage{dcolumn}
@@ -84,11 +85,20 @@
 \usepackage{lscape}
 %\usepackage{draft}
 %%\usepackage[cam]{crop}   %% option 'mirror' for mirroring every page
+\usepackage{theorem}
+
+\theoremstyle{plain}
+\theorembodyfont{\itshape}
+\newtheorem{Theo}{Theorem}
+\theoremheaderfont{\normalfont\bfseries}
 
 \usepackage[indent,footnotesize,sc]{caption2}
 \setlength{\captionmargin}{5mm}
 
 \setlength{\overfullrule}{10pt}
+
+\newif\ifCOLORversion
+\COLORversionfalse
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% define new floating environments
@@ -246,6 +256,9 @@
 \def\specialcolon{\mathrel{\mathop:}}
 
 \def\defas{\doteq}
+
+\def\mean#1{\ensuremath{\langle #1 \rangle}}
+\DeclareMathOperator{\sign}{sign}
 
 \def\deg{\ensuremath{^\circ}\xspace}        %% degrees
 \def\muon{\ensuremath{\mu}}                 %% muon
@@ -417,6 +430,24 @@ in page \protect\pageref{#1}\xspace}                 %% id.
 
 %%----------------------------------------------------------------------
 
+%%-- These are the previous "schapter" defs ----------------------------
+%\def\myschapter#1{\if@twocolumn
+%                   \@topnewpage[\mymakeschapterhead{#1}]%
+%                 \else
+%                   \mymakeschapterhead{#1}%
+%                   \@afterheading
+%                 \fi}
+
+%\def\mymakeschapterhead#1{%
+%  \vspace*{50\p@}%
+%  {\parindent \z@ \raggedright
+%    \normalfont
+%    \interlinepenalty\@M
+%    \Huge \bfseries  #1\par\nobreak
+%    \vskip 40\p@
+%  }}
+%%----------------------------------------------------------------------
+
 \def\myschapter#1{\if@twocolumn
                    \@topnewpage[\mymakeschapterhead{#1}]%
                  \else
@@ -426,10 +457,9 @@ in page \protect\pageref{#1}\xspace}                 %% id.
 
 \def\mymakeschapterhead#1{%
   \vspace*{50\p@}%
-  {\parindent \z@ \raggedright
-    \normalfont
+  {\parindent \z@ \raggedleft \normalfont
     \interlinepenalty\@M
-    \Huge \bfseries  #1\par\nobreak
+    \Huge \sffamily #1\par\nobreak
     \vskip 40\p@
   }}
 
@@ -643,7 +673,14 @@ MAGIC
 %% graphics conversion rules
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%\DeclareGraphicsRule{.jpg}{eps}{.jpg.bb}{`convert #1 'eps:-'}
+\ifx\pdfoutput\undefined 
+\DeclareGraphicsRule{.jpg}{eps}{.jpg.bb}{`convert #1 'eps:-'}
+\DeclareGraphicsRule{.png}{eps}{.png.bb}{`convert #1 'eps:-'}
+\fi
 
 %
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
 %%EOF

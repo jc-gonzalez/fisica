@@ -12,16 +12,32 @@
 %% Date:     $Date$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\chapter*{Notation}
+\ifenglish
+  \def\notationname{Notation}
+  \def\notationsymb{Symbol}
+  \def\notationdesc{Description}
+  \def\notationlist{List of Symbols}
+\else
+  \def\notationname{Notaci'on}
+  \def\notationsymb{S'imbolo}
+  \def\notationdesc{Descripci'on}
+  \def\notationlist{Lista de s'imbolos}
+\fi
+
+\chapter{\notationname}
 \label{appendix:notation}
-\markboth{Notation}{Notation}
-\renewcommand{\headname}{Notation}
-\addcontentsline{toc}{chapter}{\numberline{}Notation}
-%
+%\markboth{\notationname}{\notationname}
+%\markright{\notationname}
+%\renewcommand{\headname}{\notationname}
+%\addcontentsline{toc}{chapter}{\numberline{}\notationname}
+
+\section{\notationlist}
+
+{\footnotesize
 
 %\setlongtables
 \begin{longtable}[l]{cl}
-{\bfseries Symbol} & {\bfseries Description} \\ 
+{\bfseries \notationsymb} & {\bfseries \notationdesc} \\ 
 \\
 \endhead
  & \hfill \ldots \\ 
@@ -31,6 +47,7 @@
 \input{notation.tbl}
 
 \end{longtable}
+}
 
 \endinput
 %

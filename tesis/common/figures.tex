@@ -385,8 +385,10 @@ aire al paso de una part'icula cargada relativista]{Esquema del
 \def\MAGICframefig{
 \begin{figure}[htb]
 \centering
-\includegraphics[width=0.495\textwidth]{magiccompview1}\hfill
-\includegraphics[width=0.495\textwidth]{magic_model}\\
+%\includegraphics[width=0.495\textwidth]{dummy-figure}\hfill
+%\includegraphics[width=0.495\textwidth]{dummy-figure}\\
+\includegraphics[width=0.48\textwidth]{magiccompview1}\hfill
+\includegraphics[width=0.48\textwidth]{magic_model}\\
 ~ \hfill (a) \hfill ~ \hfill (b) \hfill ~\\
 \ifenglish
 \caption[Computer generated view and photograph of a 1:30 model of 
@@ -585,20 +587,65 @@ under a Zenith Angle $\theta$]{This geometrical construction
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\Systemsfig{ %% this is done in landscape, so we use \textheight
+%\begin{landscape}
+%\begin{figure}[t]
+%\begin{minipage}[b]{14cm}%mbox{}
+%\centering
+%\ifenglish
+%\includegraphics[width=0.7\linewidth]{coord}
+%\caption[Coordinate systems and angles in the simulation]{Coordinate systems
+%  and angles used in the simulation programs. There are three main
+%  coordinate systems, $S \equiv OXYZ$, $S' \equiv OX'Y'Z'$ and
+%  $S"\equiv O"X"Y"Z"$ (see text). For the systems $S'$ and $S"$ the
+%  axes $Y'$ and $Y"$ have been omitted for clarity} 
+%\else
+%\includegraphics[width=0.7\linewidth]{coord_e}
+%\caption['Angulos y systemas de coordenadas de la simulaci'on]{'Angulos
+%  y systemas de coordenadas usados en los progamas de simulaci'on.
+%  Existen tres sistemas principales, $S \equiv OXYZ$, $S' \equiv
+%  OX'Y'Z'$ y $S"\equiv O"X"Y"Z"$ (ver texto). Para los systemas $S'$ y
+%  $S"$, los ejes $Y'$ y $Y"$ se han omitido en la figura para mayor
+%  claridad.}  
+%\fi
+%\label{fig:coordsys}
+%\end{minipage}
+%\begin{minipage}[b]{8cm}%mbox{}
+%\centering
+%\includegraphics[width=0.9\linewidth]{geomview}
+%\ifenglish
+%\caption[Geometrical construction for an observer looking at a source
+%under a Zenith Angle $\theta$]{This geometrical construction
+%  illustrates the situation for an observer located at A, looking at a
+%  source under a Zenith Angle $\theta$}
+%\else
+%\caption[Escenario para un observador apuntando a una fuente bajo un 
+%'angulo cenital $\theta$]{Esta construcci'on geom'etrica ilustra el
+%  escenario en el que un observador situado en A apunta su telescopio
+%  hacia la una fuente que se encuentra a un 'angulo cenital $\theta$}
+%\fi
+%\label{fig:geomview}
+%\end{minipage}
+%\end{figure}
+%\end{landscape}
+%}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\Systemsfig{ %% this is done in landscape, so we use \textheight
-\begin{landscape}
+%\begin{landscape}
 \begin{figure}[t]
-\begin{minipage}[b]{14cm}%mbox{}
+\begin{sideways}
+\parbox[b]{12cm}{
 \centering
 \ifenglish
-\includegraphics[width=0.8\linewidth]{coord}
+\includegraphics[width=0.9\linewidth]{coord}
 \caption[Coordinate systems and angles in the simulation]{Coordinate systems
   and angles used in the simulation programs. There are three main
   coordinate systems, $S \equiv OXYZ$, $S' \equiv OX'Y'Z'$ and
   $S"\equiv O"X"Y"Z"$ (see text). For the systems $S'$ and $S"$ the
   axes $Y'$ and $Y"$ have been omitted for clarity} 
 \else
-\includegraphics[width=0.8\linewidth]{coord_e}
+\includegraphics[width=0.9\linewidth]{coord_e}
 \caption['Angulos y systemas de coordenadas de la simulaci'on]{'Angulos
   y systemas de coordenadas usados en los progamas de simulaci'on.
   Existen tres sistemas principales, $S \equiv OXYZ$, $S' \equiv
@@ -606,11 +653,10 @@ under a Zenith Angle $\theta$]{This geometrical construction
   $S"$, los ejes $Y'$ y $Y"$ se han omitido en la figura para mayor
   claridad.}  
 \fi
-\label{fig:coordsys}
-\end{minipage}
-\begin{minipage}[b]{8cm}%mbox{}
+\label{fig:coordsys}}
+\parbox[b]{6cm}{
 \centering
-\includegraphics[width=0.8\linewidth]{geomview}
+\includegraphics[width=0.9\linewidth]{geomview}
 \ifenglish
 \caption[Geometrical construction for an observer looking at a source
 under a Zenith Angle $\theta$]{This geometrical construction
@@ -622,34 +668,56 @@ under a Zenith Angle $\theta$]{This geometrical construction
   escenario en el que un observador situado en A apunta su telescopio
   hacia la una fuente que se encuentra a un 'angulo cenital $\theta$}
 \fi
-\label{fig:geomview}
-\end{minipage}
+\label{fig:geomview}}
+\end{sideways}
 \end{figure}
-\end{landscape}
+%\end{landscape}
 }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\hvdiffsfig{
+%\begin{figure}[htbp]
+%\includegraphics[width=0.49\linewidth]{deg-difference}
+%\hfill
+%\includegraphics[width=0.49\linewidth]{differences}\\
+%\mbox{}\hfill(a)\hfill\mbox{}\hfill(b)\hfill\mbox{} 
+%\ifenglish
+%\caption[Difference of vertical heights \hv and $h_{\mathrm{v,approx}}$]%
+%{Difference of vertical heights \hv and $h_{\mathrm{v,approx}}$ for
+%  $\ho=0\u{km}$ and $\ho=2.2\u{km}$: (a) as a function of the Zenith
+%  Angle, for different values of \hc; and (b) as a function of \hc,
+%  for different Zenith Angles.}  
+%\else
+%\caption[Diferencia entre alturas verticales \hv y $h_{\mathrm{v,approx}}$]%
+%{Diferencia entre alturas verticales \hv y $h_{\mathrm{v,approx}}$,
+%  para $\ho=0\u{km}$ y $\ho=2.2\u{km}$: (a) en funci'on del 'angulo
+%  cenital, para diferentes valores de \hc; y (b) en funci'on de \hc,
+%  para varios 'angulos cenitales} 
+%\fi
+%\label{fig:hvdiffs}
+%\end{figure}
+%}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\hvdiffsfig{
-\begin{figure}[htbp]
-\includegraphics[width=0.49\linewidth]{deg-difference}
-\hfill
-\includegraphics[width=0.49\linewidth]{differences}\\
-\mbox{}\hfill(a)\hfill\mbox{}\hfill(b)\hfill\mbox{} 
+\begin{wrapfigure}[16]{r}{0.55\textwidth}
+\includegraphics[width=0.55\textwidth]{hvdif}
 \ifenglish
 \caption[Difference of vertical heights \hv and $h_{\mathrm{v,approx}}$]%
-{Difference of vertical heights \hv and $h_{\mathrm{v,approx}}$ for
-  $\ho=0\u{km}$ and $\ho=2.2\u{km}$: (a) as a function of the Zenith
-  Angle, for different values of \hc; and (b) as a function of \hc,
-  for different Zenith Angles.}  
+{Difference of vertical heights \hv and $h_{\mathrm{v,approx}}$, when
+  $\ho=2.2\u{km}$. The figure shows the value of $\Delta\hv$ (see
+  text), as a function of the height \hc and the Zenith Angle. Below
+  85\deg the difference is far below the 5\%.}  
 \else
 \caption[Diferencia entre alturas verticales \hv y $h_{\mathrm{v,approx}}$]%
 {Diferencia entre alturas verticales \hv y $h_{\mathrm{v,approx}}$,
-  para $\ho=0\u{km}$ y $\ho=2.2\u{km}$: (a) en funci'on del 'angulo
-  cenital, para diferentes valores de \hc; y (b) en funci'on de \hc,
-  para varios 'angulos cenitales} 
+  cuando $\ho=2.2\u{km}$. La figura muestra el valor de $\Delta\hv$
+  (ver texto), en funci'on de la altura \hc y el 'angulo cenital. Por
+  debajo de 85\deg la diferencia se encuentra siempre por debajo del
+  5\%} 
 \fi
 \label{fig:hvdiffs}
-\end{figure}
+\end{wrapfigure}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -720,25 +788,29 @@ $\mathcal{AM}_{\mathrm{refraction}}$]{Comparaci'on de los valores de
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\collimationfig{
-%\begin{wrapfigure}[38]{r}{0.44\textwidth}
-\begin{figure}[p]
+\begin{wrapfigure}[36]{r}{0.45\textwidth}
+%\begin{floatingfigure}{0.45\textwidth}
+%\begin{figure}[p]
 \centering
-\includegraphics[height=0.8\textheight]{collimation}
+\vskip -20pt
+\includegraphics[width=0.43\textwidth]{collimation}
+%\includegraphics[height=0.8\textheight]{collimation}
 \ifenglish
 \caption{Illustration of the \emph{collimation} effect in \MAGIC.}
 \else 
 \caption{Ilustraci'on del efecto \emph{colimaci'on} in \MAGIC.}
 \fi
 \label{fig:collimation}
-\end{figure}
-%\end{wrapfigure}
+%\end{figure}
+%\end{floatingfigure}
+\end{wrapfigure}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\colldeltafig{
-\begin{figure}[htb]
+\begin{figure}[b]
 \centering
-\includegraphics[width=0.6\textwidth]{colldelta}
+\includegraphics[width=0.55\textwidth]{colldelta}
 \ifenglish
 \caption[Displacement of the camera position as a function of the
 distance of the mirror to the optical axis of \MAGIC]{Value of the
@@ -753,6 +825,325 @@ distancia del espejo al eje 'optico de \MAGIC]{Valor del
   'optico de \MAGIC, $r$.}  
 \fi
 \label{fig:colldelta}
+\end{figure}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\hfinfhlfivekmfig{
+%\begin{figure}[p]
+%  \centering
+%  \includegraphics[width=0.6\textwidth]{hfinf-hl5km}
+%  \caption{Image of a point-like source of light at 5\u{km}, when the 
+%    telescope is focussed at infinity}
+%  \label{fig:hfinfhlfivekm}
+%\end{figure}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\hfinfhltenkmfig{
+%\begin{figure}[p]
+%  \centering
+%  \includegraphics[width=0.6\textwidth]{hfinf-hl10km}
+%  \caption{Image of a point-like source of light at 10\u{km}, when the 
+%    telescope is focussed at infinity}
+%  \label{fig:hfinfhltenkm}
+%\end{figure}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\hfinfhltwelvekmfig{
+%\begin{figure}[p]
+%  \centering
+%  \includegraphics[width=0.6\textwidth]{hfinf-hl12km}
+%  \caption{Image of a point-like source of light at 12\u{km}, when the 
+%    telescope is focussed at infinity}
+%  \label{fig:hfinfhltwelvekm}
+%\end{figure}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\hfinfhlhundredkmfig{
+%\begin{figure}[p]
+%  \centering
+%  \includegraphics[width=0.6\textwidth]{hfinf-hl100km}
+%  \caption{Image of a point-like source of light at 100\u{km}, when the 
+%    telescope is focussed at infinity}
+%  \label{fig:hfinfhlhundredkm}
+%\end{figure}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\hfinfhlinffig{
+%\begin{figure}[p]
+%  \centering
+%  \includegraphics[width=0.6\textwidth]{hfinf-hlinf}
+%  \caption{Image of a point-like source of light at infinity, when the 
+%    telescope is focussed at infinity}
+%  \label{fig:hfinfhlinf}
+%\end{figure}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\hftenkmhlfivekmfig{
+%\begin{figure}[p]
+%  \centering
+%  \includegraphics[width=0.6\textwidth]{hf10km-hl5km}
+%  \caption{Image of a point-like source of light at 5\u{km}, when the 
+%    telescope is focussed at 10\u{km}}
+%  \label{fig:hftenmkhlfivekm}
+%\end{figure}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\hftenkmhltenkmfig{
+%\begin{figure}[p]
+%  \centering
+%  \includegraphics[width=0.6\textwidth]{hf10km-hl10km}
+%  \caption{Image of a point-like source of light at 10\u{km}, when the 
+%    telescope is focussed at 10\u{km}}
+%  \label{fig:hftenmkhltenkm}
+%\end{figure}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\hftenkmhltwelvekmfig{
+%\begin{figure}[p]
+%  \centering
+%  \includegraphics[width=0.6\textwidth]{hf10km-hl12km}
+%  \caption{Image of a point-like source of light at 12\u{km}, when the 
+%    telescope is focussed at 10\u{km}}
+%  \label{fig:hftenmkhltwelvekm}
+%\end{figure}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\hftenkmhlhundredkmfig{
+%\begin{figure}[p]
+%  \centering
+%  \includegraphics[width=0.6\textwidth]{hf10km-hl100km}
+%  \caption{Image of a point-like source of light at 100\u{km}, when the 
+%    telescope is focussed at 10\u{km}}
+%  \label{fig:hftenmkhlhundredkm}
+%\end{figure}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\hftenkmhlinffig{
+%\begin{figure}[p]
+%  \centering
+%  \includegraphics[width=0.6\textwidth]{hf10km-hlinf}
+%  \caption{Image of a point-like source of light at infinity, when the 
+%    telescope is focussed at 10\u{km}}
+%  \label{fig:hftenmkhlinf}
+%\end{figure}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\hlfivekmfig{
+\begin{figure}[p]
+  \centering
+  \ifCOLORversion
+    \includegraphics[width=0.49\linewidth]{hfinf-hl5km}\hfill
+    \includegraphics[width=0.49\linewidth]{hf10km-hl5km}\\
+  \else
+    \includegraphics[width=0.49\linewidth]{hfinf-hl5km-bw}\hfill
+    \includegraphics[width=0.49\linewidth]{hf10km-hl5km-bw}\\
+  \fi
+  \mbox{}\hfill(a)\hfill\mbox{}\hfill(b)\hfill\mbox{} \\
+  \ifenglish
+  \caption[Image of a point-like source of light located at 
+  5\u{km}]{Image of a point-like source of light located at 5\u{km} in
+    the vertical of the telescope, in different projection planes, at
+    both sides of the overall focal plane: (a) when the telescope is
+    focussed at infinity; and (b) when the telescope is focussed at
+    10\u{km}} 
+  \else
+  \caption[Imagen de una fuente puntual situada a 5\u{km}]{Imagen 
+    de una fuente puntual situada a 5\u{km} en la vertical del
+    telescopio, vista en diferentes planos de proyecci'on a ambos
+    lados del plano focal: (a) cuando el telescopio está enfocado al
+    infinito; y (b) cuando está enfocado a 10\u{km}} 
+  \fi
+  \label{fig:hlfivekm}
+\end{figure}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\hltenkmfig{
+\begin{figure}[p]
+  \centering
+  \ifCOLORversion
+    \includegraphics[width=0.49\linewidth]{hfinf-hl10km}\hfill
+    \includegraphics[width=0.49\linewidth]{hf10km-hl10km}\\
+  \else
+    \includegraphics[width=0.49\linewidth]{hfinf-hl10km-bw}\hfill
+    \includegraphics[width=0.49\linewidth]{hf10km-hl10km-bw}\\
+  \fi
+  \mbox{}\hfill(a)\hfill\mbox{}\hfill(b)\hfill\mbox{} \\
+  \ifenglish
+  \caption[Image of a point-like source of light located at 
+  10\u{km}]{Image of a point-like source of light located at 10\u{km}
+    in the vertical of the telescope, in different projection planes,
+    at both sides of the overall focal plane: (a) when the telescope
+    is focussed at infinity; and (b) when the telescope is focussed at
+    10\u{km}} 
+  \else
+  \caption[Imagen de una fuente puntual situada a 10\u{km}]{Imagen 
+    de una fuente puntual situada a 10\u{km} en la vertical del
+    telescopio, vista en diferentes planos de proyecci'on a ambos
+    lados del plano focal: (a) cuando el telescopio está enfocado al
+    infinito; y (b) cuando está enfocado a 10\u{km}} 
+  \fi
+  \label{fig:hltenkm}
+\end{figure}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\hltwelvekmfig{
+\begin{figure}[p]
+  \centering
+  \ifCOLORversion
+    \includegraphics[width=0.49\linewidth]{hfinf-hl12km}\hfill
+    \includegraphics[width=0.49\linewidth]{hf10km-hl12km}\\
+  \else
+    \includegraphics[width=0.49\linewidth]{hfinf-hl12km-bw}\hfill
+    \includegraphics[width=0.49\linewidth]{hf10km-hl12km-bw}\\
+  \fi
+  \mbox{}\hfill(a)\hfill\mbox{}\hfill(b)\hfill\mbox{} \\
+  \ifenglish
+  \caption[Image of a point-like source of light located at 
+  12\u{km}]{Image of a point-like source of light located at 12\u{km}
+    in the vertical of the telescope, in different projection planes,
+    at both sides of the overall focal plane: (a) when the telescope
+    is focussed at infinity; and (b) when the telescope is focussed at
+    10\u{km}} 
+  \else
+  \caption[Imagen de una fuente puntual situada a 12\u{km}]{Imagen 
+    de una fuente puntual situada a 12\u{km} en la vertical del
+    telescopio, vista en diferentes planos de proyecci'on a ambos
+    lados del plano focal: (a) cuando el telescopio está enfocado al
+    infinito; y (b) cuando está enfocado a 10\u{km}} 
+  \fi
+  \label{fig:hltwelvekm}
+\end{figure}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\hlhundredkmfig{
+\begin{figure}[p]
+  \centering
+  \ifCOLORversion
+    \includegraphics[width=0.49\linewidth]{hfinf-hl100km}\hfill
+    \includegraphics[width=0.49\linewidth]{hf10km-hl100km}\\
+  \else
+    \includegraphics[width=0.49\linewidth]{hfinf-hl100km-bw}\hfill
+    \includegraphics[width=0.49\linewidth]{hf10km-hl100km-bw}\\
+  \fi
+  \mbox{}\hfill(a)\hfill\mbox{}\hfill(b)\hfill\mbox{} \\
+  \ifenglish
+  \caption[Image of a point-like source of light located at 
+  100\u{km}]{Image of a point-like source of light located at
+    100\u{km} in the vertical of the telescope, in different
+    projection planes, at both sides of the overall focal plane: (a)
+    when the telescope is focussed at infinity; and (b) when the
+    telescope is focussed at 10\u{km}} 
+  \else
+  \caption[Imagen de una fuente puntual situada a 100\u{km}]{Imagen 
+    de una fuente puntual situada a 100\u{km} en la vertical del
+    telescopio, vista en diferentes planos de proyecci'on a ambos
+    lados del plano focal: (a) cuando el telescopio está enfocado al
+    infinito; y (b) cuando está enfocado a 10\u{km}} 
+  \fi
+  \label{fig:hlhundredkm}
+\end{figure}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\hlinffig{
+\begin{figure}[p]
+  \centering
+  \ifCOLORversion
+    \includegraphics[width=0.49\linewidth]{hfinf-hlinf}\hfill
+    \includegraphics[width=0.49\linewidth]{hf10km-hlinf}\\
+  \else
+    \includegraphics[width=0.49\linewidth]{hfinf-hlinf-bw}\hfill
+    \includegraphics[width=0.49\linewidth]{hf10km-hlinf-bw}\\
+  \fi
+  \mbox{}\hfill(a)\hfill\mbox{}\hfill(b)\hfill\mbox{} \\
+  \ifenglish
+  \caption[Image of a point-like source of light located at 
+  infinity]{Image of a point-like source of light located at infinity
+    in the vertical of the telescope, in different projection planes,
+    at both sides of the overall focal plane: (a) when the telescope
+    is focussed at infinity; and (b) when the telescope is focussed at
+    10\u{km}} 
+  \else
+  \caption[Imagen de una fuente puntual en el infinito]{Imagen 
+    de una fuente puntual en el infinito, en la vertical del
+    telescopio, vista en diferentes planos de proyecci'on a ambos
+    lados del plano focal: (a) cuando el telescopio está enfocado al
+    infinito; y (b) cuando está enfocado a 10\u{km}} 
+  \fi
+  \label{fig:hlinf}
+\end{figure}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\Mspotsfig{
+\begin{figure}[p]
+  \centering
+  {\mbox{}\hspace{10cm}\includegraphics[width=2cm]{testbmp}}\\[-25pt]
+  \ifCOLORversion
+  \includegraphics[width=\textwidth]{Mspots}
+  \else
+  \includegraphics[width=\textwidth]{Mspots-bw}
+  \fi
+  \ifenglish
+  \caption[Image of an \texttt{M} surrounded by a square in the camera 
+  plane]{Image of an \texttt{M} surrounded by a square in the camera
+    plane (see above, the light comes from the white areas). The image
+    is projected from a lamp located at height above the observation
+    level of 10\u{km}, with the telescope pointing to the Zenith. The
+    area in the ground covered by the image is just slightly larger
+    that the dish of \MAGIC. The different images correspond to
+    different distances of the projection plane to the dish, from
+    1692\u{cm} to 1707\u{cm} (see text). Note that the scale is
+    normalized to the maximum concentration of light (for 1700\u{cm})}
+  \else
+  \caption[Imagen de la letra \texttt{M} rodeada por un cuadrado]{Imagen 
+    de la letra \texttt{M} rodeada por un cuadrado, en el plano focal
+    (v'ease encima la imagen original; la luz proviene de las 'aeras
+    en blanco).  The image se envia desde un proyector situado a
+    10\u{km} por encima del nivel de observaci'on, en la vertical del
+    telescopio, con 'este apuntando al cenit. El 'area cubierta en el
+    suelo es ligeramente mayor que el tama~no del espejo de \MAGIC.
+    Las diferentes im'agenes corresponden a distintas distancias entre
+    el centro del espejo y el plano de la imagen, desde 1692\u{cm} a
+    1707\u{cm} (ver texto).  N'otese que la escala se ha normalizado a
+    la m'axima concentraci'on de luz (obtenida para 1700\u{cm})} \fi
+  \label{fig:Mspots}
+\end{figure}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\thetaspotsfig{
+\begin{figure}[p]
+  \centering
+  \ifCOLORversion
+    \includegraphics[width=0.8\textwidth]{theta-spots}
+  \else
+    \includegraphics[width=0.8\textwidth]{theta-spots-bw}
+  \fi
+  \ifenglish
+  \caption[Image of an point-like light source for different 
+  angles]{Image of an point-like light source located at 10\u{km}
+    above the observation level, in the vertical of \MAGIC, with the
+    telescope pointing at the Zenith. Different \emph{off-axis} angles
+    have been used, from 0\deg to 2.5\deg. The different rows of
+    images correspond to: (a) perfect system, reflectivity 100\%; (b)
+    to (f) realistic system, reflectivity 90\%, deviation of mirror
+    axes from 0\u{mm} to 5\u{mm} in the camera plane (see text). Note
+    that in this figure a logarithmic scale, normalized to the case of
+    the maximum concentration of light --- first spot, 0\deg, in (a)
+    --- has been applied} \else
+  \caption[Imagen de una fuente puntual de luz a 10\u{km}]{Imagen de una
+    fuente puntual de luz a 10\u{km} situada a 10\u{km} por encima del
+    nivel de observaci'on, en la vertical del telescopio, con 'este
+    apuntando al cenit. Se han usado varios 'angulos \emph{off-axis}
+    de incidencia de la luz, desde 0\deg hasta 2.5\deg. Las diferentes
+    filas de im'agenes corresponden a: (a) sistema perfecto,
+    reflectividad 100\%; (b) a (f) sistema realista, reflectividad
+    90\%, desviaci'on del apuntado de los ejes de los espejos de
+    0\u{mm} a 5\u{mm}, en el plano de la c'amara (ver texto). N'otese
+    que en esta figura se ha utilizado una escala de intensidades de
+    luz logar'itmica, normalizada al caso de m'axima concentraci'on de
+    luz --- primera imagen, 0\deg, del caso (a).}  \fi
+  \label{fig:thetaspots}
 \end{figure}
 }
 
@@ -1084,7 +1475,7 @@ zonas]{Los espejos de \MAGIC han sido agrupados en ocho zonas. Cada
   efectiva}]{Representaci'on de la idea de \emph{'Area efectiva}. Las
   cascadas A a D serán detectadas, no así la E.}  
 \fi
-\label{fig:trigpatt}
+\label{fig:collareaIdea}
 \end{figure}
 }
 
@@ -1109,6 +1500,62 @@ zonas]{Los espejos de \MAGIC han sido agrupados en ocho zonas. Cada
 \label{fig:randpoi}
 \end{figure}
 }
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% CALCULATION OF THE IMAGE PARAMETERS %%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\imageparaxesfig{
+\begin{figure}[hb]
+  \begin{center}
+    \includegraphics[height=11cm]{imgpar}
+    \ifenglish
+    \caption{Scenario for the calculation of the image parameters. 
+      The border of the ellipse is given by a 1-sigma contour level,
+      and roughly describes the border of the image of an event in the
+      camera plane}
+    \else
+    \caption{La figura recrea un posible suceso gamma, as'i como
+      algunos de los par'ametros de imagen. El borde de la elipse
+      viene dado por un nivel de 1 sigma desde el centroide.}
+    \fi
+    \label{fig:imageparaxes}
+  \end{center}
+\end{figure}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\asymfig{
+\begin{figure}[ht]
+  \begin{center}
+    \ifenglish
+    \includegraphics[width=0.8\textwidth]{asymfig}
+    \caption{Schematic diagram of a typical gamma-ray image to 
+      define the Asymmetry vector $\mathbf{A}$. Adapted from XX}
+    \else
+    \includegraphics[width=0.8\textwidth]{asymfig-e}
+    \caption{Diagr'ama esquem'atica de una imagen t'ipica de un rayo
+      gamma. En ella vemos definido el vector \emph{Asimetr'ia}
+      $\mathbf{A}$. Adaptado de XX}
+    \fi
+    \label{fig:asym}
+  \end{center}
+\end{figure}
+}
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1177,3 +1624,8 @@ zonas]{Los espejos de \MAGIC han sido agrupados en ocho zonas. Cada
 \endinput
 %
 %%EOF
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
