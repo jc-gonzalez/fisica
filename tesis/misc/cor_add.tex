@@ -1,94 +1,94 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%
-%%  tables.tex
-%%
-%%  Created: Mon Oct 20 14:58:56 1997
-%%  Author.: Jose Carlos Gonzalez
-%%  Notes..:
-%%          
-%%-------------------------------------------------------------------------
-%% Filename: $RCSfile$
-%% Revision: $Revision$
-%% Date:     $Date$
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\bhline{\noalign{\hrule height 1pt}}
+\newcommand{\ms}{\noalign{\vspace{3pt}}}
+\newcommand{\br}{\ms\bhline\ms}
+\newcommand{\mr}{\ms\hline\ms}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% THE COSMIC RADIATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\mcsimsample{
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.6\textwidth]{mcsimsample.mps}
+\ifenglish
+\caption[Schematic flow chart for UNICAS]{Schematic flow chart for a 
+  version of UNICAS, the core subroutine of one of the first
+  simulation programs, developed by J.A. Wrotniak in 1986. This
+  routine developed a shower due to the interaction of a single
+  nucleon of photon starting at slant height $H_1$, and included
+  photoproduction of hadrons. Taken from \cite{Gaisser:book}.}  
+\else
+\caption[Organigrama de la subrutina UNICAS]{Organigrama de la 
+  subrutina UNICAS, n'ucleo principal de uno de los primeros paquetes
+  de simulaci'on de cascadas, desarrollado en 1986 oir J.A. Wrotniak.
+  Esta rutina produc'ia cascadas por la interacci'on de un hadr'on o
+  fot'on individual, a una altura inclinada $H_1$, e inclu'ia la
+  fotoproducci'on de hadrones. Tomado de \cite{Gaisser:book}.}  
+\fi
+\label{fig:MCsimGaisser}
+\end{figure}
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% ATMOPHERIC GAMMA AND COSMIC RAY SHOWERS %%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\CORSIKAsampleInputfig{
+\begin{figure}[htb]
+\centering
+\ifenglish
+\caption{Sample \CORSIKA input parameters file}
+\else
+\caption{Ejemplo de fichero de par'ametros de \CORSIKA}
+\fi
+\label{fig:CORSIKAparamfile}
+\end{figure}
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% SIMULATION OF ATMOSPHERIC SHOWERS %%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\def\CORSIKAGeanttable{
+\def\CORSIKAGeanttableA{
 \begin{table}[htb]
 \begin{center}
-\normalsize
 Naming convention for particles in \CORSIKA according to GEANT \\
-with extensions for resonances ($\rho$, $K^*$, and $\Delta$) and neutrinos\\[10pt]
-\scriptsize
+with extensions for resonances ($\rho$, $K^*$, and $\Delta$) and neutrinos\\
 \begin{tabular}{rc|rc}
 \hline
-Code & \hspace{5em} Particle \hspace{5em} & Code & \hspace{5em} Particle \hspace{5em} \\
+Code & Particle & Code & Particle \\
 \hline %%----------------------------------------
 \hline %%----------------------------------------
-        1 & $\gamma$ &                               39 & ($F^+$) \\
-        2 & $e^+$ &                                  40 & ($F^-$) \\
-        3 & $e^-$ &                                  41 & ($\Lambda_{\text{C}}^+$) \\
-        4 & $\mu$ (see codes 66--69) &               42 & ($W^+$) \\
-        5 & $\mu^+$ &                                43 & ($W^-$) \\
-        6 & $\mu^-$ &                                44 & ($Z^0$) \\
-        7 & $\pi^0$ &                                45 & (Deuteron) \\
-        8 & $\pi^+$ &                                46 & (Tritium) \\
+        1 & $\gamma$ &                               39 & ($F^+$) \\                               
+        2 & $e^+$ &                                  40 & ($F^-$) \\                               
+        3 & $e^-$ &                                  41 & ($\Lambda_{\text{C}}^+$) \\              
+        4 & $\mu$ (see codes 66--69) &               42 & ($W^+$) \\                               
+        5 & $\mu^+$ &                                43 & ($W^-$) \\                               
+        6 & $\mu^-$ &                                44 & ($Z^0$) \\                               
+        7 & $\pi^0$ &                                45 & (Deuteron) \\                            
+        8 & $\pi^+$ &                                46 & (Tritium) \\                             
         9 & $\pi^-$ &                                47 & (Alpha) \\
-       10 & $K^0_{\text{L}}$ &                       48 & --- \\
-       11 & $K^+$ &                                  49 & --- \\
-       12 & $K^-$ &                                  50 & --- \\
-       13 & $n$ &                                    51 & $\rho^0$ \\
-       14 & $p$ &                                    52 & $\rho^+$ \\
-       15 & $\bar{p}$ &                              53 & $\rho^-$ \\
-       16 & $K^0_{\text{S}}$ &                       54 & $\Delta^{++}$ \\
-       17 & $\eta$ (see codes 71--74) &              55 & $\Delta^+$ \\
-       18 & $\Lambda$ &                              56 & $\Delta^0$ \\
-       19 & $\Sigma^+$ &                             57 & $\Delta^-$ \\
-       20 & $\Sigma^0$ &                             58 & $\bar{\Delta}^{--}$ \\
-       21 & $\Sigma^-$ &                             59 & $\bar{\Delta}^-$ \\
-       22 & $\Xi^0$ &                                60 & $\bar{\Delta}^0$ \\
-       23 & $\Xi^-$ &                                61 & $\bar{\Delta}^+$ \\
-       24 & $\Omega$ &                               62 & $K^{*0}$ \\
-       25 & $\bar{n}$ &                              63 & $K^{*+}$ \\
-       26 & $\bar{\Lambda}$ &                        64 & $K^{*-}$ \\
-       27 & $\bar{\Sigma}^-$ &                       65 & $\bar{K}^{*0}$ \\
-       28 & $\bar{\Sigma}^0$ &                       66 & $\nu_e$   \\
-       29 & $\bar{\Sigma}^+$ &                       67 & $\bar{\nu}_e$ \\
-       30 & $\bar{\Xi}^0$ &                          68 & $\nu_\mu$ \\
-       31 & $\bar{\Xi}^+$ &                          69 & $\bar{\nu}_\mu$ \\
-       32 & $\bar{\Omega}$ &                         70 & --- \\
-       33 & ($\tau^+$) &                             71 & $\eta \longrightarrow 2 \gamma$ \\
-       34 & ($\tau^-$) &                             72 & $\eta \longrightarrow 3 \pi^0$ \\
-       35 & ($D^+$) &                                73 & $\eta \longrightarrow \pi^+ + \pi^- + \pi^0$ \\
-       36 & ($D^-$) &                                74 & $\eta \longrightarrow \pi^+ + \pi^- + \gamma$ \\
-       37 & ($D^0$) &                                75 & $\muon^+$  additional information of origin \\
-       38 & ($\bar{D}^0$) &                          76 & $\muon^-$  additional information of origin \\
-\hline
-\end{tabular}\\
-\vspace{20pt}
-\normalsize
-Naming convention (extension) for nuclei\\[10pt]
-\scriptsize
-\begin{tabular}{rc}
-\hline
-Code & Particle\\
-\hline %%----------------------------------------
-\hline %%----------------------------------------
-     $AAZZ$ & Nucleus of $ZZ$ protons and $(AA-ZZ)$ neutrons \\
-          & restrictions:  $AA < 59$   and   $ZZ < AA+1$ \\
-     9900 & \Cherenkov photons on the particle output file \\
+       10 & $K^0_{\text{L}}$ &                       48 & --- \\                                   
+       11 & $K^+$ &                                  49 & --- \\                                   
+       12 & $K^-$ &                                  50 & --- \\                                   
+       13 & $n$ &                                    51 & $\rho^0$ \\                              
+       14 & $p$ &                                    52 & $\rho^+$ \\                              
+       15 & $\bar{p}$ &                              53 & $\rho^-$ \\                              
+       16 & $K^0_{\text{S}}$ &                       54 & $\Delta^{++}$ \\                         
+       17 & $\eta$ (see codes 71--74) &              55 & $\Delta^+$ \\                            
+       18 & $\Lambda$ &                              56 & $\Delta^0$ \\                            
+       19 & $\Sigma^+$ &                             57 & $\Delta^-$ \\                            
+       20 & $\Sigma^0$ &                             58 & $\bar{\Delta}^{--}$ \\                   
+       21 & $\Sigma^-$ &                             59 & $\bar{\Delta}^-$ \\                      
+       22 & $\Xi^0$ &                                60 & $\bar{\Delta}^0$ \\                      
+       23 & $\Xi^-$ &                                61 & $\bar{\Delta}^+$ \\                      
+       24 & $\Omega$ &                               62 & $K^{*0}$ \\                              
+       25 & $\bar{n}$ &                              63 & $K^{*+}$ \\                              
+       26 & $\bar{\Lambda}$ &                        64 & $K^{*-}$ \\                              
+       27 & $\bar{\Sigma}^-$ &                       65 & $\bar{K}^{*0}$ \\                        
+       28 & $\bar{\Sigma}^0$ &                       66 & $\nu_e$       \\                         
+       29 & $\bar{\Sigma}^+$ &                       67 & $\bar{\nu}_e$ \\                         
+       30 & $\bar{\Xi}^0$ &                          68 & $\nu_\mu$ \\                             
+       31 & $\bar{\Xi}^+$ &                          69 & $\bar{\nu}_\mu$ \\                       
+       32 & $\bar{\Omega}$ &                         70 & --- \\                                   
+       33 & ($\tau^+$) &                             71 & $\eta \longrightarrow 2 \gamma$ \\       
+       34 & ($\tau^-$) &                             72 & $\eta \longrightarrow 3 \pi^0$ \\        
+       35 & ($D^+$) &                                73 & $\eta \longrightarrow \pi^+ + \pi^- + \pi^0$ \\  
+       36 & ($D^-$) &                                74 & $\eta \longrightarrow \pi^+ + \pi^- + \gamma$ \\ 
+       37 & ($D^0$) &                                75 & $\muon^+$  additional information of origin \\   
+       38 & ($\bar{D}^0$) &                          76 & $\muon^-$  additional information of origin \\   
 \hline
 \end{tabular}
 \end{center}
@@ -97,13 +97,49 @@ Code & Particle\\
 \else
 \caption{Lista de part'iculas utilizadas en \CORSIKA}
 \fi
-\label{table:CORSIKAGeantcodes}
+\label{table:CORSIKAGeantcodesA}
 \end{table}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\CORSIKAGeanttableB{
+\begin{table}[htb]
+\begin{center}
+Naming convention (extension) for nuclei\\
+\begin{tabular}{rc}
+\hline
+Code & Particle\\
+\hline %%----------------------------------------
+\hline %%----------------------------------------
+     $AAZZ$ & Nucleus of $ZZ$ protons and $(AA-ZZ)$ neutrons \\
+          & restrictions:  $AA < 59$   and   $ZZ < AA+1$ \\
+     9900 & \Cherenkov photons on the particle output file \\
+\hline    
+\end{tabular}
+\end{center}
+\ifenglish
+\caption{List of particles handled by \CORSIKA (continuation)}
+\else
+\caption{Lista de part'iculas que son contempladas por \CORSIKA (continuaci'on)}
+\fi
+\label{table:CORSIKAGeantcodesB}
+\end{table}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\CORSIKAstructfig{
+\begin{figure}[p]
+  \begin{center}
+    \epsfig{file=corsikastruc.eps,width=0.75\textwidth}
+    \caption{Structure of the \CORSIKA output.}
+    \label{fig:corsikastruc} 
+  \end{center} 
+\end{figure}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\CORSIKAtableRH{
-\begin{table}[t]
+\begin{table}[p]
   \begin{center}
     \footnotesize
     \begin{tabular}{|r|l|}
@@ -155,7 +191,7 @@ No. of word&Contents of word\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\CORSIKAtableEHone{
-\begin{table}[t]
+\begin{table}[p]
   \begin{center}
     \footnotesize
     \begin{tabular}{|r|l|}
@@ -213,7 +249,7 @@ No. of word&Contents of word\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\CORSIKAtableEHtwo{
-\begin{table}[t]
+\begin{table}[p]
   \begin{center}
     \footnotesize
     \begin{tabular}{|r|l|}
@@ -222,29 +258,29 @@ No. of word&Contents of word\\
 No. of word&Contents of word\\
 \hline %%----------------------------------------
 \hline %%----------------------------------------
-75 &GHEISHA flag as real number\\
-76 &VENUS flag as real number   \\
-77 &CERENKOV flag as real number\\
-78 &NEUTRINO flag as real number\\
-79 &HORIZONT flag as real number\\
-80 &computer flag (1=IBM, 2=Transputer, 3=DEC/UNIX,   \\
-&4=Macintosh, 5=VAX/VMS, 6=LINUX) as real number\\
-81 &lower edge of $\theta$ interval (in $^\circ$)\\
-82 &upper edge of $\theta$ interval (in $^\circ$)\\
-83 &lower edge of OE interval (in $^\circ$)\\
-84 &upper edge of OE interval (in $^\circ$)\\
-85 &Cherenkov bunch size in the case of Cherenkov calculations\\
-86 &number of Cherenkov detectors in x-direction\\
-87 &number of Cherenkov detectors in y-direction\\
-88 &grid spacing of Cherenkov detectors in x-direction in cm\\
-89 &grid spacing of Cherenkov detectors in y-direction in cm\\
-90 &length of each Cherenkov detector in x-direction in cm\\
-91 &length of each Cherenkov detector in y-direction in cm\\
-92 &Cherenkov output directed to particle output file (= 0.)   \\
-&or Cherenkov output file (= 1.)      \\
-93 &angle (in rad) between array x-direction and magnetic north\\
-94 &flag for additional muon information on particle output file\\
-95 &step length factor for multiple scattering step length in EGS\\
+75 &GHEISHA flag as real number                               \\
+76 &VENUS flag as real number                                  \\
+77 &CERENKOV flag as real number                               \\
+78 &NEUTRINO flag as real number                               \\
+79 &HORIZONT flag as real number                               \\
+80 &computer flag (1=IBM, 2=Transputer, 3=DEC/UNIX,                              \\
+&4=Macintosh, 5=VAX/VMS, 6=LINUX) as real number                               \\
+81 &lower edge of $\theta$ interval (in $^\circ$)                               \\
+82 &upper edge of $\theta$ interval (in $^\circ$)                               \\
+83 &lower edge of OE interval (in $^\circ$)                               \\
+84 &upper edge of OE interval (in $^\circ$)                               \\
+85 &Cherenkov bunch size in the case of Cherenkov calculations                               \\
+86 &number of Cherenkov detectors in x-direction                               \\
+87 &number of Cherenkov detectors in y-direction                               \\
+88 &grid spacing of Cherenkov detectors in x-direction in cm                               \\
+89 &grid spacing of Cherenkov detectors in y-direction in cm                               \\
+90 &length of each Cherenkov detector in x-direction in cm                               \\
+91 &length of each Cherenkov detector in y-direction in cm                               \\
+92 &Cherenkov output directed to particle output file (= 0.)                              \\
+&or Cherenkov output file (= 1.)                                     \\
+93 &angle (in rad) between array x-direction and magnetic north                               \\
+94 &flag for additional muon information on particle output file                               \\
+95 &step length factor for multiple scattering step length in EGS                               \\
 96 &Cherenkov bandwidth lower end in nm \\
 97 &Cherenkov bandwidth upper end in nm \\
 98 &number $i$ of uses of each event \\
@@ -271,7 +307,7 @@ No. of word&Contents of word\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\CORSIKAtableEE{
-\begin{table}[t]
+\begin{table}[p]
   \begin{center}
     \footnotesize
     \begin{tabular}{|r|l|}
@@ -291,23 +327,23 @@ No. of word&Contents of word\\
 &(This number includes also Cherenkov bunches, if Cherenkov output  \\
 &is directed to PATAPE, but excludes additional muon information)  \\
 &NKG output (if selected) :  \\
-7+$i$&$i$= 1..21 lateral distribution in x direction for 1. level in \u{cm^2}\\
-28+$i$&$i$= 1..21 lateral distribution in y direction for 1. level in \u{cm^2}\\
+7+$i$&$i$= 1..21 lateral distribution in x direction for 1. level in \u{cm^2}\\  
+28+$i$&$i$= 1..21 lateral distribution in y direction for 1. level in \u{cm^2}\\ 
 49+$i$&$i$= 1..21 lateral distribution in xy direction for 1. level in \u{cm^2}\\
-70+$i$&$i$= 1..21 lateral distribution in yx direction for 1. level in \u{cm^2}\\
-91+$i$&$i$= 1..21 lateral distribution in x direction for 2. level in \u{cm^2}\\
-112+$i$&$i$= 1..21 lateral distribution in y direction for 2. level in \u{cm^2}\\
+70+$i$&$i$= 1..21 lateral distribution in yx direction for 1. level in \u{cm^2}\\ 
+91+$i$&$i$= 1..21 lateral distribution in x direction for 2. level in \u{cm^2}\\  
+112+$i$&$i$= 1..21 lateral distribution in y direction for 2. level in \u{cm^2}\\ 
 133+$i$&$i$= 1..21 lateral distribution in xy direction for 2. level in \u{cm^2}\\
 154+$i$&$i$= 1..21 lateral distribution in yx direction for 2. level in \u{cm^2}\\
-175+$i$&$i$= 1..10 electron number in steps of 100 \u{g/cm^2} \\
-185+$i$&$i$= 1..10 age in steps of 100 \u{g/cm^2} \\
-195+$i$&$i$= 1..10 distances for electron distribution in cm \\
-205+$i$&$i$= 1..10 local age 1. level\\
-215+$i$&$i$= 1..10 height of levels for electron numbers in \u{g/cm^2}\\
-225+$i$&$i$= 1..10 height of levels for electron numbers in cm \\
-235+$i$&$i$= 1..10 distance bins for local age in cm \\
-245+$i$&$i$= 1..10 local age 2. level \\
-255+$i$&$i$= 1..6 parameters of longitudinal distribution of charged particles\\
+175+$i$&$i$= 1..10 electron number in steps of 100 \u{g/cm^2} \\ 
+185+$i$&$i$= 1..10 age in steps of 100 \u{g/cm^2} \\ 
+195+$i$&$i$= 1..10 distances for electron distribution in cm \\ 
+205+$i$&$i$= 1..10 local age 1. level\\ 
+215+$i$&$i$= 1..10 height of levels for electron numbers in \u{g/cm^2}\\  
+225+$i$&$i$= 1..10 height of levels for electron numbers in cm \\ 
+235+$i$&$i$= 1..10 distance bins for local age in cm \\ 
+245+$i$&$i$= 1..10 local age 2. level \\ 
+255+$i$&$i$= 1..6 parameters of longitudinal distribution of charged particles\\ 
 262&$\chi^2$ per degree of freedom of fit to longitudinal distribution  \\
 263..273&not used \\
 \hline
@@ -320,7 +356,7 @@ No. of word&Contents of word\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\CORSIKAtableRE{
-\begin{table}[t]
+\begin{table}[p]
   \begin{center}
     \footnotesize
     \begin{tabular}{|r|l|}
@@ -343,7 +379,7 @@ No. of word&Contents of word\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\CORSIKAtablePART{
-\begin{table}[t]
+\begin{table}[p]
   \begin{center}
     \footnotesize
     \begin{tabular}{|r|l|}
@@ -374,7 +410,7 @@ $7\times (n-1)+7$ &t time since first interaction in nsec \\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\CORSIKAtableCHER{
-\begin{table}[t]
+\begin{table}[p]
   \begin{center}
     \footnotesize
     \begin{tabular}{|r|l|}
@@ -396,7 +432,7 @@ $7\times (n-1)+7$ &height of production of photon in cm\\
 \hline
     \end{tabular}
   \end{center}
-  \caption{Structure of Cherenkov photon data sub-block. The value of
+  \caption{Structure of Cherenkov photon data sub-block. The value of 
     $j$ is defined as $j\equiv$number of the telescope which gave
     trigger (usually 1). We simulate with a bunch size (number of
     photons per sub-block) equal to 1.}
@@ -406,7 +442,7 @@ $7\times (n-1)+7$ &height of production of photon in cm\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\CORSIKAtableSTA{
-\begin{table}[t]
+\begin{table}[p]
   \begin{center}
     \footnotesize
     \begin{tabular}{|r|l|}
@@ -448,7 +484,7 @@ No. of word&Contents of word \\
 \hline
 770&Number of Nucleons\\
 771&Number of Pions   \\
-772&Number of Etas\\
+772&Number of Etas    \\
 773&Number of Kaons   \\
 773&Number of strange Baryons\\
 774&Number of Cherenkov photons from Electrons\\
@@ -463,7 +499,7 @@ No. of word&Contents of word \\
 \multicolumn{2}{|c|}{$\gamma$,e$^+$,e$^-$,$\mu^-$,$\mu^+$,hadrons,charged
 particles,nuclei and Cherenkov photons}\\
 \multicolumn{2}{|c|}{and for $i$ = 0 \ldots $N_{\mathrm{STEP}}$}\\
-\multicolumn{2}{|c|}{ $\longrightarrow$ $N_{\mathrm{STEP}}$ steps
+\multicolumn{2}{|c|}{ $\longrightarrow$ $N_{\mathrm{STEP}}$ steps 
 of $W_{\mathrm{STEP}}$}\\
 \hline
 779+$k\times N_{\mathrm{STEP}}+i$&Number of particles of specie
@@ -476,124 +512,3 @@ $k$ at depth $i\times W_{\mathrm{STEP}}$ g/cm$^2$ \\
   \label{tab:sta}
 \end{table}
 }
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% SIMULATION OF THE DETECTOR: MAGIC %%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\def\seventupletbl{
-\begin{center}
-\begin{tabular}{cl}
-$\lambda$ & Wavelength of the emitted \Cherenkov photon \\
-$x,y$     & Position of the \Cherenkov photon in the horizontal
-  plane of the observation level \\
-$u,v$     & Director cosines in X and Y directions of the incoming
-  photon\\
-$t$       & Time elapsed since the primary of the shower entered the
-  atmosphere until the photon was emitted\\
-$h$       & Height of production of the photon\\
-\end{tabular}
-\end{center}
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\def\zonefocalstbl{
-\begin{table}[p]
-\begin{center}
-\begin{tabular}{|c|D{.}{.}{4}|D{.}{.}{2}|}
-\hline
-%\ifenglish
-%\multirow{2}{2cm}{~~Zone} & 
-%\multicolumn{1}{c|}{Focal Length} & 
-%\multicolumn{1}{c|}{N.mirrors} \\
-%~ & \multicolumn{1}{c|}{(cm)} & ~ \\
-%\else 
-%\multirow{2}{2cm}{~~Zona} & 
-%\multicolumn{1}{c|}{Dist. Focal} & 
-%\multicolumn{1}{c|}{N.espejos} \\
-%~ & \multicolumn{1}{c|}{(cm)} & ~ \\
-%\fi
-\ifenglish
-Zone & 
-\multicolumn{1}{c|}{Focal Length} & 
-\multicolumn{1}{c|}{N.mirrors} \\
-\phantom{X} & \multicolumn{1}{c|}{(cm)} & \phantom{X} \\
-\else 
-Zona & 
-\multicolumn{1}{c|}{Dist. Focal} & 
-\multicolumn{1}{c|}{N.espejos} \\
-\phantom{X} & \multicolumn{1}{c|}{(cm)} & \phantom{X} \\
-\fi
-\hline
-I     &  1703.34 &  36 \\
-II    &  1709.22 &  60 \\
-III   &  1718.14 &  96 \\
-IV    &  1730.06 & 108 \\
-V     &  1745.07 & 132 \\
-VI    &  1763.26 & 168 \\
-VII   &  1784.73 & 196 \\
-VIII  &  1805.40 & 124 \\
-\hline
-\end{tabular}
-\end{center}
-\ifenglish
-\caption{Focal length selected for the 8 zones on the reflector of 
-  \MAGIC (see Fig. \ref{fig:zones}).}
-\else 
-\caption{Longitudes focales para las 8 zonas en que se ha dividido el 
-  reflector de \MAGIC (ver fig. \ref{fig:zones}).}  
-\fi
-\label{tbl:zonefocals}
-\end{table}
-}
-
-
-%% \begin{description}
-%% \item[$\lambda$:] Wavelength of the emitted \Cherenkov photon.
-%%   
-%% \item[$x,y$:] Position of the \Cherenkov photon in the horizontal
-%%   plane of the observation level.
-%%   
-%% \item[$u,v$:] Director cosines in X and Y directions of the incoming
-%%   photon.
-%%   
-%% \item[$t$:] Time elapsed since the primary of the shower entered the
-%%   atmosphere until the photon was emitted.
-%%   
-%% \item[$h$:] Height of production of the photon.
-%% \end{description}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\def\q_tbl{
-\begin{table}[hbt]
-%\vspace{-6pt}
-\DependingOnLanguagE%
-{\caption{Quality factor calculated for different MaxDIST bins, for the
- Standard IAPDs Camera.}\label{q:tbl}}%
-{\caption{Quality factor calculated for different MaxDIST bins, for the
- Standard IAPDs Camera.}\label{q:tbl}}
-\begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline
-~& Gammas & Protons &~\\
- MaxDIST bin &Aceptance factor &Aceptance factor &Q\\
-\hline
-0.4\tdeg-- 0.5\tdeg &  0.451 & 0.0077 & 5.14  \\ 
-0.5\tdeg-- 0.9\tdeg &  0.452 & 0.0049 & 6.47  \\ 
-0.9\tdeg-- 1.1\tdeg &  0.446 & 0.0012 & 12.84 \\ 
-\hline
-\end{tabular}
-\end{center}
-\end{table}
-}
-
-\endinput
-%
-%%EOF

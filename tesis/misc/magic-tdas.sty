@@ -1,0 +1,205 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  magic-tdas.sty -- style file to write MAGIC-TDAS documents
+%%%-----------------------------------------------------------------
+%%%  Kopyleft (K) 2000 J C Gonzalez
+%%%  Max-Planck-Institut fuer Physik, 
+%%%  Foehringer Ring 6, 80805 Muenchen, Germany
+%%%  E-mail: gonzalez@mppmu.mpg.de
+%%%-----------------------------------------------------------------
+%%%  This program is free software; you can redistribute, copy,
+%%%  modify, use it and its documentation for any purpose,
+%%%  provided that the above copyright notice appear in all
+%%%  copies and that both that copyright notice and this
+%%%  permission notice appear in supporting documentation.
+%%%  
+%%%  This piece of code is distributed in the hope that it will
+%%%  be useful, but WITHOUT ANY WARRANTY; without even the
+%%%  implied warranty of FITNESS FOR A PARTICULAR PURPOSE.
+%%%
+%%%  Although you can actually do whatever you want with this
+%%%  file (following the copyright notice above), your are 
+%%%  strongly encouraged NOT to edit directly this file. 
+%%%  Instead, make a copy and edit the copy for your purposes.
+%%% 
+%%%  Modifying this file means that you have the very basic 
+%%%  knowledge needed to make things by your own, and therefore... 
+%%%  you will not get _any_ additional support  :-)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Last update: Time-stamp: <Tue Feb 22 16:23:07 MET 2000>
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{magic-tdas}
+[2000/03/01 v0.01 magic-tdas -- style file to write MAGIC-TDAS documents]
+
+\typeout{magic-tdas -- style file to write MAGIC-TDAS documents}
+
+%%% PACKAGES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[english]{babel}
+\usepackage{epsfig}
+\usepackage{fancyheadings}
+\usepackage{rotating}
+\usepackage{amsmath}
+\usepackage{xspace}
+\usepackage{enumerate}
+\usepackage{makeidx}
+\usepackage{floatflt}
+\usepackage{wrapfig}
+%\usepackage{html}
+\usepackage{verbatim}
+
+%\usepackage{a4wide}
+\usepackage{vmargin}
+\setpapersize{A4}
+\setmarginsrb{2cm}{3cm}{2cm}{3cm}{12pt}{20pt}{0pt}{0pt}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% NEW COMMANDS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\TDAScode[1]{\gdef\@TDASnumber{#1}}
+%-----------------------------------------------------------
+\newcommand\TDASref[1]{\gdef\@TDASref{#1}}
+%-----------------------------------------------------------
+\renewcommand\@maketitle{%
+  \newpage
+  \null
+  \begin{picture}(0,0)%
+  \put(0,50){\epsfig{file=magiclogo.eps,width=4cm}}%
+  \put(400,80){\parbox[t]{0.3\linewidth}{\textsf{\@TDASnumber}}}%
+  \end{picture}%
+  \begin{center}%
+  \let \footnote \thanks
+    {\large \scshape \@title \par}%
+    \vskip 1.5em%
+    {\large
+      \lineskip .5em%
+      \begin{tabular}[t]{c}%
+        \@author
+      \end{tabular}\par}%
+    \vskip 1em%
+    {\large \@date}%
+  \end{center}%
+  \par
+  \vskip 1.5em}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% TABLE OF CONTENTS AND BIBLIOGRAPHY %%%%%%%%%%%%%%%%%%%%%
+\def\thetableofcontents{%
+\small%
+\renewcommand{\contentsname}{}%
+\begin{center}%
+{\bfseries Contents}\\%
+\begin{minipage}{0.7\linewidth}%
+\footnotesize%
+\tableofcontents%
+\end{minipage}%
+\vskip20pt
+\end{center}}
+
+\def\theBibliography{%
+\nocite{*}
+\renewcommand{\refname}{}
+\bibliographystyle{abbrv}
+\begin{center}%
+{\bfseries References}\\%
+\begin{minipage}{0.7\linewidth}%
+\footnotesize%
+\bibliography{anasoft}%
+\end{minipage}%
+\end{center}}
+
+\renewenvironment{thebibliography}[1]
+     {\vskip\baselineskip\centering{\bfseries References\\}
+        \@mkboth{References}{References}%
+        \list{\@biblabel{\@arabic\c@enumiv}}%
+           {\settowidth\labelwidth{\@biblabel{#1}}%
+            \leftmargin\labelwidth
+            \advance\leftmargin\labelsep
+            \@openbib@code
+            \usecounter{enumiv}%
+            \let\p@enumiv\@empty
+            \renewcommand\theenumiv{\@arabic\c@enumiv}}%
+      \sloppy
+      \clubpenalty4000
+      \@clubpenalty \clubpenalty
+      \widowpenalty4000%
+      \sfcode`\.\@m}
+     {\def\@noitemerr
+       {\@latex@warning{Empty `thebibliography' environment}}%
+      \endlist}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% CITES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% cite(s) in captions
+\newcommand{\ccite}[1]{\protect\cite{#1}\xspace}     
+%% references in captions
+\newcommand{\cref}[1]{\protect\ref{#1}\xspace}       
+%% also references in captions
+\newcommand{\fullcref}[1]{\protect\ref{#1} %
+in page \protect\pageref{#1}\xspace} 
+%% id., normal
+\newcommand{\fullref}[1]{\ref{#1} in page \pageref{#1}\xspace} 
+
+%% units
+\renewcommand{\u}[1]{\ensuremath{\mathrm{\,#1}}}    
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% FANCYHEADINGS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{fancyplain}
+%\addtolength{\headwidth}{\marginparsep}
+%\addtolength{\headwidth}{\marginparwidth}
+\addtolength{\headwidth}{1cm}
+%\renewcommand{\chaptermark}[1]%
+%   {\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]%
+   {\markright{\thesection\ #1}}
+\renewcommand{\subsectionmark}[1]%
+   {\markright{\thesubsection\ #1}}
+\lhead[\fancyplain{}{\itshape \thepage}]%
+   {\fancyplain{}{\itshape  \rightmark}}
+\rhead[\fancyplain{}{\itshape \thetitle}]%
+   {\fancyplain{}{\itshape \thepage}}
+\cfoot{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% CAPTIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\long\def\@makecaption#1#2{%
+%\centering\parbox[b][\height+\baselineskip][b]{0.8\linewidth}{\small{\bf #1}.\quad #2}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% SECTIONING COMMANDS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\section}{\@startsection
+  {section}%
+  {1}%
+  {0pt}%
+  {\baselineskip}% 
+  {0.5\baselineskip}%
+  {\large\scshape}}
+
+\renewcommand{\subsection}{\@startsection
+  {subsection}%
+  {2}%
+  {0pt}%
+  {0.8\baselineskip}% 
+  {0.5\baselineskip}%
+  {\bfseries}}
+
+\renewcommand{\subsubsection}{\@startsection
+  {subsubsection}%
+  {3}%
+  {10pt}%
+  {0.5\baselineskip}% 
+  {0.2\baselineskip}%
+  {\itshape}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% GENERAL FORMATTING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.2\baselineskip}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\endinput
+
+%%EOF

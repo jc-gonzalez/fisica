@@ -1,0 +1,78 @@
+class COREventHeader {
+
+public:
+  char         EVTH[4];             // `EVTH'
+  Float_t      EvtNumber;           // event number
+  Float_t      PrimaryID;           // particle id (code or A x 100+Z for nuclei)
+  Float_t      Etotal;              // total energy in GeV
+  Float_t      Thick0;              // starting altitude in g=cm2
+  Float_t      FirstTarget;         // number of first target if fixed
+  Float_t      zFirstInt;           // z coor. (height) of first interaction (cm)
+  Float_t      p[3];                // (px,py,pz) momentum in GeV
+  Float_t      Theta;               // zenith angle THETA in radian
+  Float_t      Phi;                 // azimuth angle PHI in radian
+                                    
+  Float_t      NumRndSeq;           // number of diff.random number seq.(max.10)
+  Float_t      RndData[10][3];      // initializers of random numbers
+                                    
+  Float_t      RunNumber;           // run number
+  Float_t      DateRun;             // date of begin run (yymmdd) 
+  Float_t      VersionPGM;          // version of program
+                                    
+  Float_t      NumObsLev;           // number of observation levels
+  Float_t      HeightLev[10];       // heights of levels in cm
+                                    
+  Float_t      SlopeSpec;           // differential slope of energy spectrum
+  Float_t      ELowLim;             // lower limit of energy range in GeV
+  Float_t      EUppLim;             // upper limit of energy range in GeV
+                                    
+  Float_t      Ecutoffh;            // cutoff for hadrons kinetic energy in GeV
+  Float_t      Ecutoffm;            // cutoff for muons kinetic energy in GeV
+  Float_t      Ecutoffe;            // cutoff for electrons kinetic energy in GeV
+  Float_t      Ecutoffg;            // cutoff for photons energy in GeV
+                                    
+  Float_t      NFLAIN;              // NFLAIN as a real number
+  Float_t      NFLDIF;              // NFLDIF as a real number
+  Float_t      NFLPI0;              // NFLPI0 as a real number
+  Float_t      NFLPIF;              // NFLPIF as a real number
+  Float_t      NFLCHE;              // NFLCHE as a real number
+  Float_t      NFRAGM;              // NFRAGM as a real number
+                                    
+  Float_t      Bx;                  // x component of Earth's magnetic field in uT
+  Float_t      By;                  // z component of Earth's magnetic field in uT
+                                    
+  Float_t      EGS4yn;              // flag for activating EGS4 (as real number)
+  Float_t      NKGyn;               // flag for activating NKG (as real number)
+  Float_t      GHEISHAyn;           // GHEISHA flag as real number                    
+  Float_t      VENUSyn;             // VENUS flag as real number                      
+  Float_t      CERENKOVyn;          // CERENKOV flag as real number                   
+  Float_t      NEUTRINOyn;          // NEUTRINO flag as real number                   
+  Float_t      HORIZONTyn;          // HORIZONT flag as real number                   
+  Float_t      COMPUTER;            // COMPUTER flag as real number   
+                                    // (IBM,Transp.,Unix,Mac,VMS,6=LINUX)
+
+  Float_t      ThetaMin;            // 
+  Float_t      ThetaMax;            // 
+  Float_t      PhiMin;              // 
+  Float_t      PhiMax;              // 
+                                    
+  Float_t      CBunchSize;          // 
+  Float_t      CDetInX,CDetInY;     // 
+  Float_t      CSpacInX,CSpacInY;   // 
+  Float_t      CLenInX,CLenInY;     // 
+  Float_t      COutput;             // 
+                                    
+  Float_t      AngleNorthX;         // 
+  Float_t      MuonInfo;            // 
+                                    
+  Float_t      StepLength;          // 
+  Float_t      CWaveLower;          // 
+  Float_t      CWaveUpper;          // 
+  Float_t      Multipl;             // 
+  Float_t      CorePos[2][20];      // 
+                                    
+  Float_t      dmmy1;               // Reserved
+  Float_t      SpinTheta;           // Used for test purposes, now obsolete
+  Float_t      SpinPhi;             // Used for test purposes, now obsolete
+  Float_t      dmmy2[132];          // Reserved
+};                           

@@ -14,91 +14,130 @@
 
 \chapter{Simulation of atmospheric showers}
 \label{chapter:simshowers}
-
+%
 Usually, the \MC simulations of atmospheric showers follow a well
 defined scheme. They start the simulation at the top of the
-atmosphere, with a given primary particle. Then they simulate the fly
-and interaction of this particle. At a certain moment, this particle
-produces some secondary particles, which are written to a stack, being
-processed each of them afterwards. Each secondary particle have a
-certain probability of interact or decay, and in virtue of this
-probability new (tertiary) particles are produced and written into a
-new stack. The process follows until a detector (or ground) is
-reached. See Fig. \ref{fig:MCsimGaisser} as an example.
+atmosphere, with a given primary particle. From there they simulate
+the fly and interactions of this particle with its environment. At a
+certain moment, this particle produces some secondary particles, which
+are written to a stack, being processed each of them afterwards. Each
+secondary particle have a certain probability of interact or decay,
+and in virtue of this probability new (tertiary) particles are
+produced and written into a new stack. The process follows until a
+detector (or ground) is reached. See Fig. \ref{fig:MCsimGaisser} as an
+example.
 
 \mcsimsample
 
 Several cuts (in energy, for example) or simplifications are normally
 taken into account in the simulation programs in order to minimize the
-computation time by rejecting, during the simulation, those particles
-which fall into a ``dead zone'' of the whole process or our detector.
-For instance, if we are interested in detecting electrons, and our
-instrument do only detect those above a sharp cut-off energy
-$E_{\mathrm{threshold}}$, perhaps we are interested in removing from
-the simulation process any electron as soon as he reaches this energy.
+computation time. The simulation code will reject, during the
+simulation, those particles which fall into a ``dead zone'' of the
+phase space of the simulation parameters, or a ``blind region'' of the
+detector.  For instance, if we are interested in detecting electrons,
+and our instrument do only detect those above a sharp energy cut-off
+$E_{\mathrm{threshold}}$, we are interested quite likely in removing
+from the simulation process any electron as soon as his energy falls
+down beyond this energy.
 
 %%==========================================================
 \section{The \CORSIKA code}
 \label{sec:CORSIKA}
 %
 One of the most spreadly used simulation codes in the field of cosmic
-and $\gamma$-rays is the CORSIKA code \cite{CORSIKA:manual}. The last
-official version released at the time of writing this work is 5.60.
-CORSIKA (COsmic Ray SImulations for KAscade) is a detailed Monte Carlo
-program to study the evolution and properties of extensive air showers
-in the atmosphere, and was developed to perform simulations for the
-KASKADE experiment, in Karlsruhe (Germany) \cite{KASKADE} (this
-experiment aims to measure the elemental composition of the primary
-cosmic radiation in the energy range $3\E{14}$--$5\E{16}$\u{eV}). The
-code is mostly written in Fortran 77 (some pieces of code in new
-versions are written in C for portability) and hence is easily portable
-to almost any computer.
+and $\gamma$-rays is the \CORSIKA code \cite{CORSIKA:manual}. The last
+official version released at the time of writing this work is
+\lastCORSIKA.  \CORSIKA (COsmic Ray SImulations for KAscade) is a
+detailed Monte Carlo program to study the evolution and properties of
+extensive air showers in the atmosphere, and was developed to perform
+simulations for the KASKADE experiment, in Karlsruhe (Germany)
+\cite{KASKADE} (this experiment aims to measure the elemental
+composition of the primary cosmic radiation in the energy range
+$3\E{14}$--$5\E{16}$\u{eV}). The code is mostly written in Fortran 77
+(some pieces of code in new versions are written in C for portability)
+and hence is easily portable to almost any computer.
 
-CORSIKA simulates interactions and decays of nuclei and subatomic
-particles (hadrons, muons, electrons, photons, \ldots) up to energies of
-10\pow{17}\u{eV}. All secondary particles are tracked along their
+\CORSIKA simulates interactions and decays of nuclei and subatomic
+particles (hadrons, muons, electrons, photons, \ldots) up to energies
+of 10\pow{17}\u{eV}. All secondary particles are tracked along their
 trajectories and their parameters when reaching the user-defined
-detector levels (energy, position, direction and arrival time) are saved
-into disk.
+detector levels (energy, position, direction and arrival time) are
+saved into disk.
 
-CORSIKA was originally developed on the basis of three well established
-program systems. The first treats the hadronic part of proton induced
-showers using the \emph{fire ball} and \emph{isobar}, and was written in
-the 70s by P.K.F. Grieder \cite{Grieder:1979}. Nowadays, its structure
-serves as the general frame where CORSIKA handles its input and output,
-and the interaction routines used in this program can be used as
-hadronic interactions at low energies. The second program was developed
-by J.N. Capdevielle \cite{Capdevielle:1989} following the \emph{Dual
-  Parton Model} (DPM)\cite{Capella:1980}, describing the interactions of
-protons at high energies in good agreement with the measured collider
-data. The third part, used for the simulation of the electromagnetic
-part of the air shower, is based in the EGS4 code \cite{EGS4}. Whenever
-possible, experimentally accesible data have been used.
+\CORSIKA was originally developed on the basis of three well
+established program systems. The first treats the hadronic part of
+proton induced showers using the \emph{fire ball} and \emph{isobar},
+and was written in the 70's by P.K.F.Grieder \cite{Grieder:1979}.
+Nowadays, its structure serves as the general frame where \CORSIKA
+handles its input and output, and the interaction routines used in
+this program can be used as hadronic interactions at low energies. The
+second program was developed by J.N.Capdevielle
+\cite{Capdevielle:1989} following the \emph{Dual Parton Model}
+(DPM)\cite{Capella:1980}, describing the interactions of protons at
+high energies in good agreement with the measured collider data. The
+third part, used for the simulation of the electromagnetic part of the
+air shower, is based in the EGS4 code \cite{EGS4}. Whenever possible,
+experimentally accesible data have been used.
 
-For the simulation of the hadronic interactions several models can be
+For the simulation of the strong interactions several models can be
 used (they are chosed by the user). The current available models are:
 
+\begin{itemize}
+  
+\item Strong interactions at low energies:
+
 \begin{description}
+\item[Isobar \& Fire-ball] These model routines where developed
+  \cite{Grieder:1979} for low energy interactions. They work at center
+  of mass energies between 0.3\u{GeV} and 10\u{GeV}. In this model the
+  hadron-nucleus collisions are approximated by hadron-nucleon
+  reactions. The non-interacting nucleons of the target are neglected.
+  The hadron-nucleon reactions are assumed to take place via several
+  intermediate states which are decaying immediately into up to 5
+  secondaries.
   
-\item[The DPM] These routines are based on the \emph{Dual Parton Model}
-  and can be used for high energies to reproduce the kinematical
-  distributions being measured or predicted by theory.
-  
-\item[VENUS] It simulates the inelastion ultra-relativistic heavy ion
-  collisions with detailed simulation of creation, interaction and
-  fragmentation of colour strings. It's the alternative to the DPM.
-  
-\item[Isobar and Fire-ball model routines] For low energy interactions
-  
-\item[GHEISHA] It's a more sophisticated replacement of the isobar and
-  fire-ball routines. Suitable for energies up to several hundred
-  \u{GeV}.
-
-\item[Q??]      ??
-
-\item[SYBILL] ??
-
+\item[GHEISHA] It's a more sophisticated replacement of the Isobar and
+  Fire-ball routines. The GHEISHA routines are designed for laboratory
+  energies up to some hundred \u{GeV}. \CORSIKA uses them only at
+  laboratory energies below 80\u{GeV} to treat the interactions of
+  hadronic projectiles with the nuclei of the atmosphere.
 \end{description}
+
+\item Strong interactions at high energies:
+
+\begin{description}
+\item[VENUS] The VENUS code (Very Energetic NUclear Scattering) is
+  mainly designed to treat nucleon-nucleon, nucleon-nucleus, and
+  nucleus-nucleus scattering at ultrarelativistic energies. It
+  simulates the inelastic ultra-relativistic heavy ion collisions with
+  detailed simulation of creation, interaction and fragmentation of
+  colour strings. It's the alternative to the original DPM.
+  
+\item[QGSJET] The Quark Gluon String model with JETs is an
+  extension of the QGS model developed in the 80's, which describes
+  hadronic interactions on the basis of exchanging supercritical
+  Pomerons, and includes minijets to describe the hard interactions
+  which are important at the highest energies.
+  
+\item[DPMJET] The Dual Parton Model with JETs (Version II.4) is based
+  on the two component Dual Parton Model\cite{Capella:1980}, and
+  contains multiple soft chains as well as multiple minijets. It
+  relies on the same theory that VENUS and QGSJET do.
+  
+\item[SIBYLL] SIBYLL (Version 1.6) is a minijet model essentially
+  designed for usage in EAS Monte Carlo programs. For hadronic soft
+  collisions both projectile and target particles fragment into a
+  quark-diquark respect to the quark-antiquark system, that forms a
+  triplet and anti-triplet of colour.
+  
+\item[HDPM] As an alternative model of the interactions between
+  hadrons and nuclei at high energies, a phenomenological generator
+  called HDPM may be used. For historical reasons it is the default in
+  \CORSIKA.  It is developed by Capdevielle \cite{Capdevielle:1989}
+  and inspired by the Dual Parton Model\cite{Capella:1980}.
+\end{description}
+
+\end{itemize}
 
 The photoproduction of muon pairs and hadrons is added to the
 electromagnetic part to allow the calculation of the muon content of
@@ -112,21 +151,25 @@ anti-neutrinos, and to simulate showers under nearly horizontal
 incident directions (without the possibility of \Cherenkov light
 generation, though).
 
-We used a modified version of CORSIKA 4.50, suitable for our purposes.
+We used a modified version of \CORSIKA 4.50, suitable for our purposes.
 We modified the detector geometry in order to allow the simulation of
 collection of light by \Cherenkov telescopes. Several minor
 modifications were also introduced in order to make easier the
 handling of the output data.
 
-\subsection{Input and output from CORSIKA}
+\subsection{Input and output from \CORSIKA}
 %
-The input for a CORSIKA run is a plain ASCII parameters file, with
+The input for a \CORSIKA run is a plain ASCII parameters file, with
 several entries in the form ``\texttt{KEYWORD <par1> <par2>} \ldots'',
 where \texttt{<parN>} means the N-th parameter for that keyword
 \texttt{KEYWORD}. An example of a parameters file is shown in Fig.
-\ref{fig:CORSIKAparamfile}.
+\ref{fig:corinput}.
 
-\CORSIKAsampleInputfig
+\CORSIKAinputfig
+
+\afterpage{\clearpage}
+
+\CORSIKAGeanttable
 
 Among other parameters, the user can set the type of primary for the
 showers (\texttt{PRMPAR}), the run number (\texttt{RUNNR}), the number
@@ -140,19 +183,17 @@ certain threshold, and the geometry of the detector (\texttt{CERARY}
 in the original version, \texttt{ERANGE} and \texttt{ERANGE} in our
 modified version).
 
-CORSIKA is able to treat the particles that are listed in Table
-\ref{table:CORSIKA_GEANTcodes}
+\CORSIKA is able to treat the particles that are listed in Table
+\ref{table:CORSIKAGeantcodes}
 
-\CORSIKAGeantcodes_table
-
-The output of CORSIKA comes in two different ways. First, we have an
+The output of \CORSIKA comes in two different ways. First, we have an
 ASCII output, with statistics and sumaries of the simulation of the
 showers and even with debugging information if needed.  The real
-output of CORSIKA is given in binary format. For each particle hitting
+output of \CORSIKA is given in binary format. For each particle hitting
 the detector area in our pre-defined observation levels we get the
 type of the particle, the position in the plane of that observation
 level, the direction, the energy, the height of production and the
-arrival time. If we selected the CERENKOV version of CORSIKA, we'll be
+arrival time. If we selected the CERENKOV version of \CORSIKA, we'll be
 able to get information about the \Cherenkov photons as well. Due to
 the huge number of \Cherenkov photons produces at high energies, we
 can generate and follow them in groups (\emph{bunches}).  However, for
@@ -160,11 +201,72 @@ our purposes we traced each single \Cherenkov photon. For these
 photons we stored into disk the wavelength, the position, the
 direction, height of production and arrival time.
 
+The output or the currently used \CORSIKA code is structured as shown
+in Fig. \ref{fig:corsikastruc}. For each run with $N$ showers we will
+end up with $3 N+2$ binary data files, with information about the
+run and each individual shower. These files are (in the following list
+\texttt{XXXXXX} means a 6-digit number):
+
+\CORSIKAstructfig
+
+\begin{itemize}
+  
+\item A \emph{Run Header file}, \texttt{runXXXXXX}, with information
+  about the whole run (see Table \ref{tab:rh}). It's the first data
+  file generated.
+  
+\item A \emph{Run End file}, \texttt{endXXXXXX}, with information
+  about the whole run and some statistics about the run just generated
+  (see Table \ref{tab:re}). It's the last file generated. It's sole
+  presence indicates that the run has been finished.
+  
+\item One \emph{Particle data file} per shower, \texttt{datXXXXXX},
+  with information about the particles (not Cherenkov photons)
+  generated in the shower and which arrived at the ground (actually,
+  at any user defined obs. level), in the user-defined area (see Table
+  \ref{tab:part}).
+  
+\item One \emph{Cherenkov data file} per shower, \texttt{cerXXXXXX},
+  with information about the Cherenkov photons generated in the shower
+  and which arrived at the ground (actually, at any user defined obs.
+  level), in the user-defined area (see Table \ref{tab:cher}).
+  
+\item One \emph{Statistics data file} per shower, \texttt{staXXXXXX},
+  with information longitudinal profiles for different showers and
+  other parameters of the shower (see Table \ref{tab:sta}).
+
+\end{itemize}
+
+As you can see in Fig.\ref{fig:corsikastruc}, each Particle and
+Cherenkov file has an \emph{Event Header}, a list of \emph{Particle}
+or \emph{Cherenkov photon} data blocks, and an \emph{Event End}. The
+information stored in the \emph{Event Header} and \emph{Event End}
+data blocks are shown in Tables \ref{tab:eh1}-\ref{tab:eh2} and
+\ref{tab:ee}.
+
+The structure of each \emph{Particle} or \emph{Cherenkov photon}
+sub-blocks is shown in Tables \ref{tab:part}-\ref{tab:cher}.
+
+\CORSIKAtableRH
+
+\CORSIKAtableRH
+
+\CORSIKAtableEHone
+
+\CORSIKAtableEHtwo
+
+\CORSIKAtableEE
+
+\CORSIKAtableRE
+
+\CORSIKAtablePART
+
+\CORSIKAtableCHER
+
+\CORSIKAtableSTA
+
 
 \MORE%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Input and output from CORSIKA}
-%
 
 %%==========================================================
 \section{Simulation of showers at High Zenith Angle}
@@ -178,6 +280,7 @@ direction, height of production and arrival time.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Other simulation methods}
 \label{sec:simothers}
+
 \endinput
 %
 %% Local Variables:

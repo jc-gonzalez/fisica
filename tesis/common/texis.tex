@@ -57,13 +57,14 @@
 \usepackage{a4wide}
 %\usepackage{epsfig}
 \ifpdf 
-  \usepackage[pdftex]{graphicx}
+  \usepackage[pdftex,draft]{graphicx}
   \usepackage{thumbpdf}
 \else
-  \usepackage[dvips]{graphicx}
+  \usepackage[dvips,draft]{graphicx}
 \fi
 \usepackage{fancyheadings}
 \usepackage{rotating}
+\usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{xspace}
 \usepackage{enumerate}
@@ -242,7 +243,9 @@
 \def\reflector{\texttt{reflector}\xspace}
 \def\camera{\texttt{camera}\xspace}
 \def\CORSIKA{{CORSIKA}\xspace}
-\def\trigger{{\itshape trigger}\xspace}
+\def\lastCORSIKA{X.X\xspace}
+\def\trigger{\emph{trigger}\xspace}
+\def\closepack{\emph{close-pack}\xspace}
 
 %-------------------- Paragraphs and lines
 
@@ -328,7 +331,7 @@
 \def\d{\mathrm{d}}
 
 \newcommand{\pow}[1]{\ensuremath{^{#1}}}        %% a\pow{x} = a^x
-\newcommand{\E}[1]{\ensuremath{\cdot 10^{#1}}}  %% a\E{x}   = a.10^x
+\newcommand{\E}[1]{\ensuremath{\mathord{\cdot}10^{#1}}}  %% a\E{x}   = a.10^x
 
 \def\MORE{\par{\centering \mbox{} \hbox spread 200pt{%
 --- T O --- B E --- C O N T I N U E D ---%

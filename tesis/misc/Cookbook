@@ -1,0 +1,628 @@
+if [not [defined ARFLAGS]] then
+	ARFLAGS = rv;
+if [not [defined AR]] then
+	AR = ar;
+if [not [defined WEAVE]] then
+	WEAVE = weave;
+if [not [defined CWEAVE]] then
+	CWEAVE = cweave;
+if [not [defined TANGLE]] then
+	TANGLE = tangle;
+if [not [defined CTANGLE]] then
+	CTANGLE = ctangle;
+if [not [defined TEXI2DVI]] then
+	TEXI2DVI = texi2dvi;
+if [not [defined TEX]] then
+	TEX = tex;
+if [not [defined MAKEINFO]] then
+	MAKEINFO = makeinfo;
+if [not [defined CPPFLAGS]] then
+	CPPFLAGS = ;
+if [not [defined CC]] then
+	CC = cc;
+if [not [defined PREPROCESS.S]] then
+	PREPROCESS.S = [CC] -E [CPPFLAGS];
+if [not [defined RFLAGS]] then
+	RFLAGS = ;
+if [not [defined FFLAGS]] then
+	FFLAGS = ;
+if [not [defined FC]] then
+	FC = f77;
+if [not [defined TARGET_ARCH]] then
+	TARGET_ARCH = ;
+if [not [defined PREPROCESS.r]] then
+	PREPROCESS.r = [FC] [FFLAGS] [RFLAGS] [TARGET_ARCH] -F;
+if [not [defined PREPROCESS.F]] then
+	PREPROCESS.F = [FC] [FFLAGS] [CPPFLAGS] [TARGET_ARCH] -F;
+if [not [defined LFLAGS]] then
+	LFLAGS = ;
+if [not [defined LEX]] then
+	LEX = lex;
+if [not [defined LEX.l]] then
+	LEX.l = [LEX] [LFLAGS] -t;
+if [not [defined RM]] then
+	RM = rm -f;
+if [not [defined YFLAGS]] then
+	YFLAGS = ;
+if [not [defined YACC]] then
+	YACC = yacc;
+if [not [defined YACC.y]] then
+	YACC.y = [YACC] [YFLAGS];
+if [not [defined LINTFLAGS]] then
+	LINTFLAGS = ;
+if [not [defined LINT]] then
+	LINT = lint;
+if [not [defined LINT.c]] then
+	LINT.c = [LINT] [LINTFLAGS] [CPPFLAGS] [TARGET_ARCH];
+if [not [defined COMPILE.r]] then
+	COMPILE.r = [FC] [FFLAGS] [RFLAGS] [TARGET_ARCH] -c;
+if [not [defined COMPILE.F]] then
+	COMPILE.F = [FC] [FFLAGS] [CPPFLAGS] [TARGET_ARCH] -c;
+if [not [defined PFLAGS]] then
+	PFLAGS = ;
+if [not [defined PC]] then
+	PC = pc;
+if [not [defined COMPILE.p]] then
+	COMPILE.p = [PC] [PFLAGS] [CPPFLAGS] [TARGET_ARCH] -c;
+if [not [defined COMPILE.f]] then
+	COMPILE.f = [FC] [FFLAGS] [TARGET_ARCH] -c;
+if [not [defined CXXFLAGS]] then
+	CXXFLAGS = ;
+if [not [defined CXX]] then
+	CXX = g++;
+if [not [defined COMPILE.cc]] then
+	COMPILE.cc = [CXX] [CXXFLAGS] [CPPFLAGS] [TARGET_ARCH] -c;
+if [not [defined COMPILE.C]] then
+	COMPILE.C = [COMPILE.cc];
+if [not [defined CFLAGS]] then
+	CFLAGS = ;
+if [not [defined COMPILE.c]] then
+	COMPILE.c = [CC] [CFLAGS] [CPPFLAGS] [TARGET_ARCH] -c;
+if [not [defined TARGET_MACH]] then
+	TARGET_MACH = ;
+if [not [defined ASFLAGS]] then
+	ASFLAGS = ;
+if [not [defined COMPILE.S]] then
+	COMPILE.S = [CC] [ASFLAGS] [CPPFLAGS] [TARGET_MACH] -c;
+if [not [defined AS]] then
+	AS = as;
+if [not [defined COMPILE.s]] then
+	COMPILE.s = [AS] [ASFLAGS] [TARGET_MACH];
+if [not [defined DEFFLAGS]] then
+	DEFFLAGS = ;
+if [not [defined M2FLAGS]] then
+	M2FLAGS = ;
+if [not [defined M2C]] then
+	M2C = m2c;
+if [not [defined COMPILE.def]] then
+	COMPILE.def = [M2C] [M2FLAGS] [DEFFLAGS] [TARGET_ARCH];
+if [not [defined MODFLAGS]] then
+	MODFLAGS = ;
+if [not [defined COMPILE.mod]] then
+	COMPILE.mod = [M2C] [M2FLAGS] [MODFLAGS] [TARGET_ARCH];
+if [not [defined LDFLAGS]] then
+	LDFLAGS = ;
+if [not [defined LINK.r]] then
+	LINK.r = [FC] [FFLAGS] [RFLAGS] [LDFLAGS] [TARGET_ARCH];
+if [not [defined LINK.F]] then
+	LINK.F = [FC] [FFLAGS] [CPPFLAGS] [LDFLAGS] [TARGET_ARCH];
+if [not [defined LINK.p]] then
+	LINK.p = [PC] [PFLAGS] [CPPFLAGS] [LDFLAGS] [TARGET_ARCH];
+if [not [defined LINK.f]] then
+	LINK.f = [FC] [FFLAGS] [LDFLAGS] [TARGET_ARCH];
+if [not [defined LINK.cc]] then
+	LINK.cc = [CXX] [CXXFLAGS] [CPPFLAGS] [LDFLAGS] [TARGET_ARCH];
+if [not [defined LINK.C]] then
+	LINK.C = [LINK.cc];
+if [not [defined LINK.c]] then
+	LINK.c = [CC] [CFLAGS] [CPPFLAGS] [LDFLAGS] [TARGET_ARCH];
+if [not [defined LINK.S]] then
+	LINK.S = [CC] [ASFLAGS] [CPPFLAGS] [LDFLAGS] [TARGET_MACH];
+if [not [defined LINK.s]] then
+	LINK.s = [CC] [ASFLAGS] [LDFLAGS] [TARGET_MACH];
+if [not [defined LDLIBS]] then
+	LDLIBS = ;
+if [not [defined LOADLIBES]] then
+	LOADLIBES = ;
+if [not [defined LINK.o]] then
+	LINK.o = [CC] [LDFLAGS] [TARGET_ARCH];
+if [not [defined TESIS]] then
+	TESIS = ;
+
+/*
+ * makefile -- Makefile for processing Ph.D.Thesis
+ *
+ * $RCSfile$
+ * $Revision$
+ * $Author$
+ * $Date$
+ */
+
+
+
+/*
+ * NEEDS GNUMake !!!
+ */
+if [not [defined THIS]] then
+	THIS = [shell pwd];
+if [not [defined RUN]] then
+	RUN = texis;
+if [not [defined RUNPDF]] then
+	RUNPDF = pdf[RUN];
+if [not [defined RUNBIB]] then
+	RUNBIB = bibtex;
+if [not [defined RUNIDX]] then
+	RUNIDX = makeindex;
+if [not [defined DVIPS]] then
+	DVIPS = dvips;
+if [not [defined DOC]] then
+	DOC = tesis;
+if [not [defined DOCPDF]] then
+	DOCPDF = pdf[DOC];
+if [not [defined OUTDVI]] then
+	OUTDVI = [TESIS].dvi;
+if [not [defined OUTPDF]] then
+	OUTPDF = [TESIS].pdf;
+if [not [defined OUTPS]] then
+	OUTPS = [TESIS].ps;
+if [not [defined COMMON_PATH]] then
+	COMMON_PATH = [THIS]/common;
+if [not [defined SCRATCH_PATH]] then
+	SCRATCH_PATH = [THIS]/scratch;
+if [not [defined FIGS_PATH]] then
+	FIGS_PATH = [THIS]/figs;
+if [not [defined ENG_PATH]] then
+	ENG_PATH = [THIS]/eng;
+if [not [defined ESP_PATH]] then
+	ESP_PATH = [THIS]/esp;
+if [not [defined ADD_TEXINPUTS_ENG]] then
+	ADD_TEXINPUTS_ENG = [THIS]\:[COMMON_PATH]\:[FIGS_PATH]\:[ENG_PATH];
+if [not [defined ADD_TEXINPUTS_ESP]] then
+	ADD_TEXINPUTS_ESP = [THIS]\:[COMMON_PATH]\:[FIGS_PATH]\:[ESP_PATH];
+if [not [defined LOGFILE]] then
+	LOGFILE = [SCRATCH_PATH]/[DOC].out;
+if [not [defined WRNFILE]] then
+	WRNFILE = [SCRATCH_PATH]/warning;
+if [not [defined FULFILE]] then
+	FULFILE = [SCRATCH_PATH]/overfuls;
+if [not [defined LSTFILE]] then
+	LSTFILE = [SCRATCH_PATH]/filelist;
+if [not [defined MEMFILE]] then
+	MEMFILE = [SCRATCH_PATH]/memory;
+if [not [defined ANALYZELOG]] then
+	ANALYZELOG = [COMMON_PATH]/log.awk;
+if [not [defined NOTATIONLST]] then
+	NOTATIONLST = [COMMON_PATH]/notation.lst;
+if [not [defined NOTATIONAWK]] then
+	NOTATIONAWK = [COMMON_PATH]/notation.awk;
+if [not [defined NOTATIONTBL]] then
+	NOTATIONTBL = [COMMON_PATH]/notation.tbl;
+if [not [defined DOCSRC]] then
+	DOCSRC = [COMMON_PATH]/[DOC].tex;
+if [not [defined BIBSRC]] then
+	BIBSRC = [COMMON_PATH]/jc.bst;
+if [not [defined BIBLIO]] then
+	BIBLIO = [COMMON_PATH]/tesis.bib [COMMON_PATH]/magic.bib;
+if [not [defined ENGINES]] then
+	ENGINES = [COMMON_PATH]/[RUN] [COMMON_PATH]/[RUNPDF];
+if [not [defined FORMATS1]] then
+	FORMATS1 = [COMMON_PATH]/[RUN].fmt [COMMON_PATH]/[RUNPDF].fmt;
+if [not [defined FORMATS2]] then
+	FORMATS2 = [COMMON_PATH]/supp-mis.tex [COMMON_PATH]/supp-pdf.tex;
+if [not [defined FORMATS]] then
+	FORMATS = [FORMATS1] [FORMATS2];
+if [not [defined COMMON_FILES]] then
+	COMMON_FILES = [DOCSRC] [BIBSRC] [BIBLIO] [ENGINES] [FORMATS];
+
+
+
+
+
+
+
+
+
+/*
+ * ----------------------------------------------------------------------
+ */
+engpdf pdfeng: eng pdf
+	set force force;
+
+esppdf pdfesp: esp pdf
+	set force force;
+
+engps pseng: eng ps
+	set force force;
+
+espps psesp: esp ps
+	set force force;
+
+esp eng:
+	set force force
+{
+	echo [target] > .[target];
+	echo [target] > .lang;
+}
+ps pdf:
+	set force force
+{
+	echo [target] > .[target];
+	echo [target] > .fmt;
+}
+ps: dvi [OUTPS] clearlang
+	set force;
+
+dvi: prepare [OUTDVI] log clearlang
+	set force;
+
+pdf: prepare [OUTPDF] log clearlang
+	set force;
+
+prepare: banner common lang notation
+	set force;
+
+virtex:
+	set force
+{
+	cd [COMMON_PATH]\; cp [COMMON_PATH]/[RUN].tex [COMMON_PATH]/[RUNPDF].tex\; initex \'&latex \'[COMMON_PATH]/[RUN].tex\' \\dump\' && pdfinitex \'&pdflatex \'[COMMON_PATH]/[RUNPDF].tex\' \\dump\'\; ln -sf `which virtex` [COMMON_PATH]/[RUN] && ln -sf `which pdfvirtex` [COMMON_PATH]/[RUNPDF];
+}
+
+
+
+
+
+all: virtex clean eng ps clean eng pdf
+	set force;
+
+common: [COMMON_FILES]
+	set force
+{
+	if \[ -f [THIS]/.esp \]\; then ln -sf [SCRATCH_PATH]/[DOC].tex [SCRATCH_PATH]/[DOC]-esp.tex\; else ln -sf [SCRATCH_PATH]/[DOC].tex [SCRATCH_PATH]/[DOC]-eng.tex\; fi;
+}
+
+
+
+
+[COMMON_FILES]:
+	set force
+{
+	echo Making symbolic link for [target] . . .
+		set silent;
+	ln -sf [target] [SCRATCH_PATH]/
+		set silent;
+}
+lang:
+	set force
+{
+	if \[ -f [THIS]/.ps \]\; then echo \"%% TESIS version PostScript\" > language.tex\; else echo \"%% TESIS version PDF\" > language.tex\; fi;
+
+
+
+
+	echo \"\\newif\\ifenglish\" >> language.tex;
+	if \[ -f [THIS]/.eng \]\; then echo \"\\englishtrue\" >> language.tex\; else echo \"\\englishfalse\" >> language.tex\; fi;
+
+
+
+
+	( echo \"\\typeout\{^^J\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\}\"\; echo \"\\ifenglish\" \; echo \"\\typeout\{Compiling THESIS, English version...\}\"\; echo \"\\else \"\; echo \"\\typeout\{Compilando TESIS, version Espa\361ol...\}\"\; echo \"\\fi\"\; echo \"\\typeout\{\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=^^J\}\"\; echo \"\\ifenglish \"\; echo \"\\usepackage\[english\]\{babel\}\"\; echo \"\\else \"\; echo \"\\usepackage\[spanish,activeacute\]\{babel\}\"\; echo \"\\fi\"\; echo \"\\endinput\" ) >> language.tex;
+}
+
+notation:
+	set force
+{
+	if \[ -f [THIS]/.esp \]\; then awk -v lang\=esp -f [NOTATIONAWK] [NOTATIONLST] > [NOTATIONTBL] \; else awk -f [NOTATIONAWK] [NOTATIONLST] > [NOTATIONTBL] \; fi;
+}
+
+
+
+
+log:
+	set force
+{
+	rm -f [FULFILE]
+		set errok;
+	rm -f [LSTFILE]
+		set errok;
+	rm -f [WRNFILE]
+		set errok;
+	cd [SCRATCH_PATH]\; awk -f [ANALYZELOG] [LOGFILE]\; if \[ -f [THIS]/.esp \]\; then tail -30 [DOC]-esp.log | grep \"^ \[0-9\]\" > [MEMFILE]\; else tail -30 [DOC]-eng.log | grep \"^ \[0-9\]\" > [MEMFILE]\; fi\; cd -;
+
+
+
+
+
+
+
+	echo \"\"\;echo \"#### Over/Underfuls ########################\";
+	cat [FULFILE];
+	echo \"\"\;echo \"#### List of files #########################\";
+	cat [LSTFILE];
+	echo \"\"\;echo \"#### Warnings ##############################\";
+	cat [WRNFILE];
+}
+[OUTDVI]:
+	set force
+{
+	if \[ -f [THIS]/.esp \]\;then TEXINPUTS\=.\:[ADD_TEXINPUTS_ESP]\:$\{TEXINPUTS\}\; else TEXINPUTS\=.\:[ADD_TEXINPUTS_ENG]\:$\{TEXINPUTS\}\; fi\; TEXPSHEADERS\=$\{TEXINPUTS\}\; export TEXINPUTS\; export TEXPSHEADERS\; cd [SCRATCH_PATH]\; for run in [RUN] [RUN] [RUNBIB] [RUNIDX] [RUN]\; do if \[ -f [THIS]/.esp \]\; then $run [DOC]-esp.tex 2>&1 | tee [LOGFILE]\; else $run [DOC]-eng.tex 2>&1 | tee [LOGFILE]\; fi\; done\; cd -\; if \[ -f [THIS]/.esp \]\; then ln -sf \{[SCRATCH_PATH],[THIS]\}/[DOC]-esp.dvi\; else ln -sf \{[SCRATCH_PATH],[THIS]\}/[DOC]-eng.dvi\; fi;
+}
+
+[OUTPS]: [OUTDVI]
+	set force
+{
+	cd [FIGS_PATH]\; if \[ -f [THIS]/.esp \]\; then [DVIPS] -o [THIS]/[DOC]-esp.\{ps,dvi\}\; else [DVIPS] -o [THIS]/[DOC]-eng.\{ps,dvi\}\; fi\; cd -;
+}
+
+
+
+
+
+
+[OUTPDF]:
+	set force
+{
+	if \[ -f [THIS]/.esp \]\;then TEXINPUTS\=.\:[ADD_TEXINPUTS_ESP]\:$\{TEXINPUTS\}\; else TEXINPUTS\=.\:[ADD_TEXINPUTS_ENG]\:$\{TEXINPUTS\}\; fi\; TEXPSHEADERS\=$\{TEXINPUTS\}\; export TEXINPUTS\; export TEXPSHEADERS\; cd [SCRATCH_PATH]\; for run in [RUNPDF] [RUNPDF] [RUNBIB] [RUNIDX] [RUNPDF]\; do if \[ -f [THIS]/.esp \]\; then $run [DOC]-esp 2>&1 | tee [LOGFILE]\; else $run [DOC]-eng 2>&1 | tee [LOGFILE]\; fi\; done\; cd -\; if \[ -f [THIS]/.esp \]\; then ln -sf \{[SCRATCH_PATH],[THIS]\}/[DOC]-esp.pdf\; else ln -sf \{[SCRATCH_PATH],[THIS]\}/[DOC]-eng.pdf\; fi;
+}
+
+banner:
+	set force
+{
+	echo \"----------------------------------------\"
+		set silent;
+	echo \" Generating Ph.D.Thesis output\"
+		set silent;
+	echo \"\"
+		set silent;
+	echo \" Language\: \"`cat .lang`
+		set silent;
+	echo \" Output format\: \"`cat .fmt`
+		set silent;
+	echo \"----------------------------------------\"
+		set silent;
+}
+clearlang:
+	set force
+{
+	cd [THIS];
+	rm -rf .eng .esp .pdf .ps .lang .fmt language.tex
+		set errok;
+}
+clean: clearlang
+	set force
+{
+	echo \"Cleanning...\"
+		set silent;
+	rm -f [SCRATCH_PATH]/\*
+		set errok;
+}
+mrproper: clean
+	set force
+{
+	echo \"Mr.Proper in action . . .\"
+		set silent;
+	find . -name \"*~\" -exec rm -f \{\} \\\;
+		set errok;
+	rm -f [THIS]/tesis-\{eng,esp\}.\{ps,dvi,pdf\}
+		set errok;
+}
+redo: clean all
+	set force;
+
+help:
+{
+	cat common/makefile.hlp
+		set errok;
+}
+/*
+ * EOF
+ */
+
+%0%: %0%.o
+{
+	[LINK.o] [resolve [need]] [LOADLIBES] [LDLIBS] -o [target];
+}
+%0%: %0%.s
+{
+	[LINK.s] [resolve [need]] [LOADLIBES] [LDLIBS] -o [target];
+}
+%0%: %0%.S
+{
+	[LINK.S] [resolve [need]] [LOADLIBES] [LDLIBS] -o [target];
+}
+%0%: %0%.c
+{
+	[LINK.c] [resolve [need]] [LOADLIBES] [LDLIBS] -o [target];
+}
+%0%: %0%.cc
+{
+	[LINK.cc] [resolve [need]] [LOADLIBES] [LDLIBS] -o [target];
+}
+%0%: %0%.C
+{
+	[LINK.C] [resolve [need]] [LOADLIBES] [LDLIBS] -o [target];
+}
+%0%: %0%.f
+{
+	[LINK.f] [resolve [need]] [LOADLIBES] [LDLIBS] -o [target];
+}
+%0%: %0%.p
+{
+	[LINK.p] [resolve [need]] [LOADLIBES] [LDLIBS] -o [target];
+}
+%0%: %0%.F
+{
+	[LINK.F] [resolve [need]] [LOADLIBES] [LDLIBS] -o [target];
+}
+%0%: %0%.r
+{
+	[LINK.r] [resolve [need]] [LOADLIBES] [LDLIBS] -o [target];
+}
+%0%: %0%.mod
+{
+	[COMPILE.mod] -o [target] -e [target] [resolve [need]];
+}
+%0%.sym: %0%.def
+{
+	[COMPILE.def] -o [target] [resolve [head [need]]];
+}
+%0%: %0%.sh
+	set unlink
+{
+	cat [resolve [head [need]]] > [target];
+	chmod a+x [target];
+}
+%0%.o: %0%.s
+{
+	[COMPILE.s] -o [target] [resolve [head [need]]];
+}
+%0%.o: %0%.S
+{
+	[COMPILE.S] -o [target] [resolve [head [need]]];
+}
+%0%.o: %0%.c
+{
+	[COMPILE.c] [resolve [head [need]]];
+}
+%0%.o: %0%.cc
+{
+	[COMPILE.cc] [resolve [head [need]]];
+}
+%0%.o: %0%.C
+{
+	[COMPILE.C] [resolve [head [need]]];
+}
+%0%.o: %0%.f
+{
+	[COMPILE.f] [resolve [head [need]]];
+}
+%0%.o: %0%.p
+{
+	[COMPILE.p] [resolve [head [need]]];
+}
+%0%.o: %0%.F
+{
+	[COMPILE.F] [resolve [head [need]]];
+}
+%0%.o: %0%.r
+{
+	[COMPILE.r] [resolve [head [need]]];
+}
+%0%.o: %0%.mod
+{
+	[COMPILE.mod] -o [target] [resolve [head [need]]];
+}
+%0%.ln: %0%.c
+{
+	[LINT.c] -C%0% [resolve [head [need]]];
+}
+%0%.ln: %0%.y
+	single-thread y.tab.c
+{
+	[YACC.y] [resolve [head [need]]];
+	[LINT.c] -C%0% y.tab.c;
+	[RM] y.tab.c;
+}
+%0%.ln: %0%.l
+	single-thread %0%.c
+{
+	[RM] %0%.c
+		set silent;
+	[LEX.l] [resolve [head [need]]] > %0%.c;
+	[LINT.c] -i %0%.c -o [target];
+	[RM] %0%.c;
+}
+%0%.c: %0%.y
+	single-thread y.tab.c
+{
+	[YACC.y] [resolve [head [need]]];
+	mv y.tab.c [target];
+}
+%0%.c: %0%.l
+{
+	[LEX.l] [resolve [head [need]]] > [target];
+}
+%0%.f: %0%.F
+{
+	[PREPROCESS.F] [resolve [head [need]]];
+}
+%0%.f: %0%.r
+{
+	[PREPROCESS.r] [resolve [head [need]]];
+}
+%0%.r: %0%.l
+	single-thread lex.yy.r lex.yy.c
+{
+	[LEX.l] [resolve [head [need]]] > [target];
+	mv lex.yy.r [target];
+}
+%0%.s: %0%.S
+{
+	[PREPROCESS.S] [resolve [head [need]]] > [target];
+}
+%0%.info: %0%.texinfo
+{
+	[MAKEINFO] [resolve [head [need]]] -o [target];
+}
+%0%.info: %0%.texi
+{
+	[MAKEINFO] [resolve [head [need]]] -o [target];
+}
+%0%.info: %0%.txinfo
+{
+	[MAKEINFO] [resolve [head [need]]] -o [target];
+}
+%0%.dvi: %0%.tex
+{
+	[TEX] [resolve [head [need]]];
+}
+%0%.dvi: %0%.texinfo
+{
+	[TEXI2DVI] [resolve [head [need]]];
+}
+%0%.dvi: %0%.texi
+{
+	[TEXI2DVI] [resolve [head [need]]];
+}
+%0%.dvi: %0%.txinfo
+{
+	[TEXI2DVI] [resolve [head [need]]];
+}
+%0%.c: %0%.w
+{
+	[CTANGLE] [resolve [head [need]]] - [target];
+}
+%0%.p: %0%.web
+{
+	[TANGLE] [resolve [head [need]]];
+}
+%0%.tex: %0%.w
+{
+	[CWEAVE] [resolve [head [need]]] - [target];
+}
+%0%.tex: %0%.web
+{
+	[WEAVE] [resolve [head [need]]];
+}
+%0%1.a(%.o): %0%.o
+	single-thread %0%1.a
+{
+	[AR] [ARFLAGS] %0%1.a [resolve [head [need]]];
+}
+%0%.out: %0%
+	set unlink
+{
+	cp [resolve [head [need]]] [target];
+}
+%0%.c: %0%.w %0%.ch
+{
+	[CTANGLE] [resolve [need]] [target];
+}
+%0%.tex: %0%.w %0%.ch
+{
+	[CWEAVE] [resolve [need]] [target];
+}
+%0%1(%): %0%
+	single-thread %0%1
+{
+	[AR] [ARFLAGS] %0%1 [resolve [head [need]]];
+}

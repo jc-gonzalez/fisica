@@ -24,13 +24,15 @@
 \def\toyAeq{
 \begin{equation} 
   N(X)=2^n=2^{X/\lambda} 
+  \label{eq:toyA}
 \end{equation}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\toyBeq{
 \begin{equation} 
-  E(X)=E_0/N(X) 
+  E(X)=E_0 / N(X) 
+  \label{eq:toyB}
 \end{equation}
 }
 
@@ -38,23 +40,38 @@
 \def\toyCeq{
 \begin{equation} 
   E(X) = E_{\mathrm{c}}
+  \label{eq:toyC}
 \end{equation}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\toyDeq{
 \begin{equation} 
-  E(X) = E_{\mathrm{c}}
+  N = E_0 / E_{\mathrm{c}}
+  \label{eq:toyD}
 \end{equation}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\NXsimpleeq{
+%\begin{eqnarray}
+%  \label{eq:xmax}
+%  N_{\mathrm{max}} &\propto& E_0  \eqcomm{and}  \\
+%  X_{\mathrm{max}} &\propto& \ln(E_0)
+%\end{eqnarray}
+%}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\NXsimpleeq{
-\begin{eqnarray}
-  \label{eq:xmax}
-  N_{\mathrm{max}} &\propto& E_0  \eqcomm{and}  \\
-  X_{\mathrm{max}} &\propto& \ln(E_0)
-\end{eqnarray}
+\begin{subequations}
+\label{eq:xmax}
+  \begin{align}
+    \label{eq:xmaxN}
+    N_{\mathrm{max}} &\propto E_0  \eqcomm{and}  \\
+    \label{eq:xmaxX}
+    X_{\mathrm{max}} &\propto \ln(E_0)
+  \end{align}
+\end{subequations}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -504,9 +521,9 @@ m \equiv \mathrm{AM} =
 %  \vec{\mathcal{R}} \left\{ \vec{\mathcal{R}}(\vec r) -
 %    \left[ 0.5 - \underset{i}{\max} |\mathcal{R}(r_i) - r_i | \right]
 %    \underset{i}{\sum} \mathcal{R}(r_i) \right\}
-  k \equiv \mathcal{R} \left[ \mathcal{R}(\mathbf{r}) -
-    \left( 0.5 - \underset{i}{\max} |\mathcal{R}(r_i) - r_i | \right)
-    \underset{i}{\sum} \mathcal{R}(r_i) \right]
+  k \equiv \mathcal{R} \left[ \mathcal{R}[\mathbf{r}] -
+    \left( 0.5 - \underset{i}{\max} |\mathcal{R}[r_i] - r_i | \right)
+    \underset{i}{\sum} \mathcal{R}[r_i] \right]
 \end{equation}
 }
 
@@ -538,7 +555,7 @@ m \equiv \mathrm{AM} =
   \label{eq:Nin}
   N_{\mathrm{in}} = 
   \langle\mathrm{LONS}\rangle \cdot t \cdot R \cdot S_{\text{mirror}}
-  \cdot \epsilon_{\text{l.guides}} \cdot \epsilon_{\text{window}}
+  \cdot \epsilon_{\text{l.guide}} \cdot \epsilon_{\text{window}}
   \cdot \Delta\Omega \simeq 0.8\u{ph}/\u{ns}
 \end{equation}
 }
@@ -555,11 +572,22 @@ m \equiv \mathrm{AM} =
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\NinbisIPCeq{
+\begin{equation}
+  \label{eq:NinIPC2}
+  N_{\text{in,IPC}}' = N_{\text{in}}
+  \cdot \langle\QE\rangle_{\text{LONS,IPC}}
+  \cdot \epsilon_{1^{\text{st}}\text{dyn.coll.}}
+  \simeq 0.32 \u{ph.e.}/\u{ns}
+\end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\LONStimeeq{
 \begin{equation}
   \label{eq:LONStime}
   \langle\text{LONS}\rangle_{\text{1 pixel}} =
-  N_{\mathrm{in}}' \cdot \Delta T = 0.47 \u{ph.e.}/\u{gate}
+  N_{\mathrm{in}}' \cdot \Delta T = 0.47 \u{ph.e.}
 \end{equation}
 }
 

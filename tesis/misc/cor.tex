@@ -1,0 +1,511 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% 
+%%%    formats1.tex
+%%%
+%%%    A short description of the data formats 
+%%%    involved in the MC simulation
+%%%
+%%%    J.C. Gonzalez 
+%%%
+%%%    Dpto.Fisica Atomica, Molecular y Nuclear
+%%%    Facultad CC. Fisicas, UCM
+%%%    Avda.Complutense s/n
+%%%    E-28040 Madrid, Spain
+%%%
+%%%-----------------------------------------------------------------
+%%%  Kopyleft (K) 2000 J C Gonzalez
+%%%  Max-Planck-Institut fuer Physik, 
+%%%  Foehringer Ring 6, 80805 Muenchen, Germany
+%%%  E-mail: gonzalez@mppmu.mpg.de
+%%%-----------------------------------------------------------------
+%%%  This program is free software; you can redistribute, copy,
+%%%  modify, use it and its documentation for any purpose,
+%%%  provided that the above copyright notice appear in all
+%%%  copies and that both that copyright notice and this
+%%%  permission notice appear in supporting documentation.
+%%%  
+%%%  This piece of code is distributed in the hope that it will
+%%%  be useful, but WITHOUT ANY WARRANTY; without even the
+%%%  implied warranty of FITNESS FOR A PARTICULAR PURPOSE.
+%%%
+%%%  Although you can actually do whatever you want with this
+%%%  file (following the copyright notice above), your are 
+%%%  strongly encouraged NOT to edit directly this file. 
+%%%  Instead, make a copy and edit the copy for your purposes.
+%%% 
+%%%  Modifying thie original file means that you actually have 
+%%%  the (very basic) knowledge needed to make things by your 
+%%%  own, and therefore... you will not get _any_ additional 
+%%%  support  :-)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Last update: Time-stamp: <01/04/02 17:02:41 gonzalez>
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\documentclass[12pt]{article}
+
+\usepackage{magic-tdas}
+
+\usepackage[light,first]{draftcopy}
+
+\usepackage{float}
+\floatstyle{ruled}
+\newfloat{Class}{thp}{lcl}
+
+\usepackage{listings}
+
+%\usepackage[nofiglist,notablist]{endfloat}
+%\nomarkersintext
+
+\newif\ifenglish \englishtrue
+\ifenglish
+\usepackage[english]{babel}
+\else
+\usepackage[spanish,activeacute]{babel}
+\fi
+
+\def\deg{\ensuremath{^\circ}\xspace}
+\renewcommand{\u}[1]{\ensuremath{\mathrm{\,#1}}} 
+
+\def\lastCORSIKA{X.X\xspace}
+\def\CORSIKA{\textsf{CORSIKA}\xspace}
+
+\def\HEGRA{{HEGRA\xspace}}
+\def\MAGIC{{MAGIC}\xspace}
+\def\XTAL{{\mdseries\scshape xtal}\xspace}
+\def\GMTQ{{\mdseries\scshape gmtq}\xspace}
+\def\reflector{{\ttfamily\upshape reflector}\xspace}
+\def\camera{\mbox{\texttt{camera}}\xspace}
+\def\trigger{{\itshape trigger}\xspace}
+
+%-------------------- Paragraphs and lines
+
+%%\setlength{\parindent}{0pt}
+\newcommand{\headname}[1]{#1}
+\def\blankline{\vspace{0.4 cm}}
+\def\indentfirstpar{\hspace{\parindent}}
+%% \def\paragraph{\vspace{2pt}\par}
+
+%-------------------- Math. symbols an so on...
+
+\def\specialcolon{\mathrel{\mathop:}}
+
+\def\defas{\doteq}
+
+\def\mean#1{\ensuremath{\langle #1 \rangle}}
+\DeclareMathOperator{\sign}{sign}
+
+%%% Macro from "RockMover" <rmover@golovolomka.net>, The Master of Flame
+\def\chronopair#1{\let\saveupbracefill\upbracefill
+  \def\upbracefill{$\mathsurround0pt
+  \kern2pt\vrule height4pt depth1sp 
+  \leaders \hrule depth1sp \hfill
+  \vrule height4pt depth1sp \kern2pt
+  $}\underbrace{#1}\let\upbracefill\saveupbracefill}
+
+\def\deg{\ensuremath{^\circ}\xspace}        %% degrees
+\def\muon{\ensuremath{\mu}}                 %% muon
+\def\muons{\ensuremath{\mu}'s}              %% muons
+\def\cph{\v C-$\gamma$\xspace}              %% C-photon
+\def\cphs{\v C-$\gamma$'s\xspace}           %% C-photon's
+\def\phe{ph.e.\xspace}                      %% photo-electron
+\def\phes{ph.e.s\xspace}                    %% photo-electrons
+\def\mphe{\mathrm{ph.e}}                    %% photo-electron  (math-mode)
+\def\mphes{\mathrm{ph.e.s}}                 %% photo-electrons (math-mode)
+\def\wlrange{{290--600 {\it nm\/}}\xspace}  %% wavelength range used
+%%\def\cerenkov{\v Cerenkov\xspace}           %% Cherenkov
+\def\cerenkov{Cherenkov\xspace}             %% Cherenkov
+\def\Cerenkov{\cerenkov}                    %%    "
+\def\cherenkov{\cerenkov}                   %%    "
+\def\Cherenkov{\cerenkov}                   %%    "
+\def\MonteCarlo{Monte Carlo\xspace}         %% Monte Carlo
+\def\MC{\MonteCarlo}                        %%    "
+\def\etal{{\sl et al.}\xspace}              %% et al. (slanted)
+\def\QE{\ensuremath{QE}\xspace}                    %% Quantum Efficiency
+\def\QEeff{\ensuremath{\langle\QE\rangle_\mathrm{eff}}\xspace}
+\def\QElons{\ensuremath{\langle\QE\rangle_\mathrm{LONS}}\xspace}
+\def\QEo{\ensuremath{\hat{\QE}}\xspace}
+
+\def\ho{\ensuremath{h_0}\xspace}
+\def\hc{\ensuremath{h_{\mathrm{C}}}\xspace}
+\def\hv{\ensuremath{h_{\mathrm{v}}}\xspace}
+\def\Hs{\ensuremath{H_{\mathrm{S}}}\xspace}
+
+\def\Nphot{\ensuremath{%
+  \mathcal{N}_{\gamma}}\xspace}
+\def\Ntrial{\ensuremath{%
+  \mathcal{N}_{\mathrm{ph.e.s}}}\xspace}
+\def\Nmean{\ensuremath{%
+  \bar{\mathcal{N}}_{\mathrm{ph.e.s}}}\xspace}
+\def\Nrand{\ensuremath{%
+  \mathcal{N}^{\mathrm{r}}_{\mathrm{ph.e.s}}}\xspace}
+\def\Ntrialrand{\ensuremath{%
+  \mathcal{N}^{\mathrm{t+r}}_{\mathrm{ph.e.s}}}\xspace}
+
+\def\rhump{\ensuremath{\rho_{\mathrm{hump}}}\xspace}
+
+\def\tRC{\ensuremath{\tau_{\mathrm{RC}}}\xspace}
+
+\def\thetaCT{\ensuremath{\theta_{\mathrm{CT}}}\xspace}
+\def\phiCT{\ensuremath{\phi_{\mathrm{CT}}}\xspace}
+
+\def\thetam{\ensuremath{\theta_{\mathrm{m}}}\xspace} 
+\def\phim{\ensuremath{\phi_{\mathrm{m}}}\xspace}
+
+\newcommand{\trigM}[2]{\ensuremath{\mathrm{M}[#1;#2]}\xspace}
+\newcommand{\trigNN}[2]{\ensuremath{\mathrm{NN}[#1;#2]}\xspace}
+\newcommand{\trigNNc}[2]{\ensuremath{\mathrm{NN}^{\mathrm{c}}[#1;#2]}\xspace}
+\newcommand{\trigTop}[2]{\ensuremath{\mathrm{Top}[#1;#2]}\xspace}
+
+\newcommand{\eqcomm}[2][2cm]{\mbox{\hspace{#1} #2}} 
+
+\def\d{\mathrm{d}}
+
+\newcommand{\pow}[1]{\ensuremath{^{#1}}}        %% a\pow{x} = a^x
+\newcommand{\E}[1]{\ensuremath{\cdot 10^{#1}}}  %% a\E{x}   = a.10^x
+
+\def\MORE{\par{\centering \mbox{} \hbox spread 200pt{%
+--- T O --- B E --- C O N T I N U E D ---%
+}\\}\par}
+
+
+\input{cor_add.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% BEGIN DOCUMENT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Please, for the formatting just include here the standard
+%% elements: title, author, date, plus TDAScode
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{A short description of the data formats \\
+involved in the MC simulation (I).\\
+{\slshape The \CORSIKA and \texttt{reflector} output formats}}
+\author{J C Gonz\'alez\\
+Max Planck Institute for Physics, Munich\\ 
+\texttt{<gonzalez@mppmu.mpg.de>}}
+\date{July 10, 2000}
+\TDAScode{MAGIC-TDAS 00-XX\\ 000710/JCGonzalez}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% title %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\maketitle
+
+%% abstract %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+  In this document I will try to explain a little bit the output
+  format of the programs \CORSIKA version X.XX and \texttt{reflector}
+  version X.XX. These formats are the ones which are used in the MAGIC
+  Software Repository at the date of writing this small memo.\\
+\end{abstract}
+
+%% contents %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\thetableofcontents
+
+\newpage
+
+%% body %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\chapter{Simulation of atmospheric showers}
+\label{chapter:simshowers}
+
+Usually, the \MC simulations of atmospheric showers follow a well
+defined scheme. They start the simulation at the top of the
+atmosphere, with a given primary particle. From there they simulate
+the fly and interactions of this particle with its environment. At a
+certain moment, this particle produces some secondary particles, which
+are written to a stack, being processed each of them afterwards. Each
+secondary particle have a certain probability of interact or decay,
+and in virtue of this probability new (tertiary) particles are
+produced and written into a new stack. The process follows until a
+detector (or ground) is reached. See Fig. \ref{fig:MCsimGaisser} as an
+example.
+
+\mcsimsample
+
+Several cuts (in energy, for example) or simplifications are normally
+taken into account in the simulation programs in order to minimize the
+computation time. The simulation code will reject, during the
+simulation, those particles which fall into a ``dead zone'' of the
+phase space of the parameters of the simulation, or of the detector.
+For instance, if we are interested in detecting electrons, and our
+instrument do only detect those above a sharp cut-off energy
+$E_{\mathrm{threshold}}$, quite likely we are interested in removing
+from the simulation process any electron as soon as he reaches this
+energy.
+
+%%==========================================================
+\section{The \CORSIKA code}
+\label{sec:CORSIKA}
+%
+One of the most spreadly used simulation codes in the field of cosmic
+and $\gamma$-rays is the \CORSIKA code \cite{CORSIKA:manual}. The last
+official version released at the time of writing this work is
+\lastCORSIKA.  \CORSIKA (COsmic Ray SImulations for KAscade) is a
+detailed Monte Carlo program to study the evolution and properties of
+extensive air showers in the atmosphere, and was developed to perform
+simulations for the KASKADE experiment, in Karlsruhe (Germany)
+\cite{KASKADE} (this experiment aims to measure the elemental
+composition of the primary cosmic radiation in the energy range
+$3\E{14}$--$5\E{16}$\u{eV}). The code is mostly written in Fortran 77
+(some pieces of code in new versions are written in C for portability)
+and hence is easily portable to almost any computer.
+
+\CORSIKA simulates interactions and decays of nuclei and subatomic
+particles (hadrons, muons, electrons, photons, \ldots) up to energies
+of 10\pow{17}\u{eV}. All secondary particles are tracked along their
+trajectories and their parameters when reaching the user-defined
+detector levels (energy, position, direction and arrival time) are
+saved into disk.
+
+\CORSIKA was originally developed on the basis of three well
+established program systems. The first treats the hadronic part of
+proton induced showers using the \emph{fire ball} and \emph{isobar},
+and was written in the 70's by P.K.F. Grieder \cite{Grieder:1979}.
+Nowadays, its structure serves as the general frame where \CORSIKA
+handles its input and output, and the interaction routines used in
+this program can be used as hadronic interactions at low energies. The
+second program was developed by J.N. Capdevielle
+\cite{Capdevielle:1989} following the \emph{Dual Parton Model}
+(DPM)\cite{Capella:1980}, describing the interactions of protons at
+high energies in good agreement with the measured collider data. The
+third part, used for the simulation of the electromagnetic part of the
+air shower, is based in the EGS4 code \cite{EGS4}. Whenever possible,
+experimentally accesible data have been used.
+
+For the simulation of the hadronic interactions several models can be
+used (they are chosed by the user). The current available models are:
+
+\begin{description}
+  
+\item[The DPM] These routines are based on the \emph{Dual Parton Model}
+  and can be used for high energies to reproduce the kinematical
+  distributions being measured or predicted by theory.
+  
+\item[VENUS] It simulates the inelastion ultra-relativistic heavy ion
+  collisions with detailed simulation of creation, interaction and
+  fragmentation of colour strings. It's the alternative to the DPM.
+  
+\item[Isobar and Fire-ball model routines] For low energy interactions
+  
+\item[GHEISHA] It's a more sophisticated replacement of the isobar and
+  fire-ball routines. Suitable for energies up to several hundred
+  \u{GeV}.
+
+\item[Q??]      ??
+
+\item[SYBILL] ??
+
+\end{description}
+
+The photoproduction of muon pairs and hadrons is added to the
+electromagnetic part to allow the calculation of the muon content of
+photon induced showers. A second way of treating the electromagnetic
+component is to use the corrected and adapted form of the analytic NKG
+formula for each electron or photon produced in the cascade.
+
+It is also possible to include the generation of \Cherenkov light in
+the atmosphere, to handle electronic and muonic neutrinos and
+anti-neutrinos, and to simulate showers under nearly horizontal
+incident directions (without the possibility of \Cherenkov light
+generation, though).
+
+We used a modified version of \CORSIKA 4.50, suitable for our purposes.
+We modified the detector geometry in order to allow the simulation of
+collection of light by \Cherenkov telescopes. Several minor
+modifications were also introduced in order to make easier the
+handling of the output data.
+
+\subsection{Input and output from \CORSIKA}
+%
+The input for a \CORSIKA run is a plain ASCII parameters file, with
+several entries in the form ``\texttt{KEYWORD <par1> <par2>} \ldots'',
+where \texttt{<parN>} means the N-th parameter for that keyword
+\texttt{KEYWORD}. An example of a parameters file is shown in Fig.
+\ref{fig:CORSIKAparamfile}.
+
+\CORSIKAsampleInputfig
+
+Among other parameters, the user can set the type of primary for the
+showers (\texttt{PRMPAR}), the run number (\texttt{RUNNR}), the number
+of event for this run (\texttt{NSHOW}), the energy range
+(\texttt{ERANGE}), the simulated slope of the spectrum in this energy
+range (\texttt{ESLOPE}), the range of $(\theta,\phi)$ angles
+(\texttt{THETAP}, \texttt{PHIP}), the observation levels
+(\texttt{OBSLEV}), the cuts in energy (\texttt{ECUTS}) which allow us
+to reduce the computation time by rejecting those particles below a
+certain threshold, and the geometry of the detector (\texttt{CERARY}
+in the original version, \texttt{ERANGE} and \texttt{ERANGE} in our
+modified version).
+
+\CORSIKA is able to treat the particles that are listed in Table
+\ref{table:CORSIKAGeantcodes}
+
+\CORSIKAGeanttableA
+
+\CORSIKAGeanttableB
+
+The output of \CORSIKA comes in two different ways. First, we have an
+ASCII output, with statistics and sumaries of the simulation of the
+showers and even with debugging information if needed.  The real
+output of \CORSIKA is given in binary format. For each particle hitting
+the detector area in our pre-defined observation levels we get the
+type of the particle, the position in the plane of that observation
+level, the direction, the energy, the height of production and the
+arrival time. If we selected the CERENKOV version of \CORSIKA, we'll be
+able to get information about the \Cherenkov photons as well. Due to
+the huge number of \Cherenkov photons produces at high energies, we
+can generate and follow them in groups (\emph{bunches}).  However, for
+our purposes we traced each single \Cherenkov photon. For these
+photons we stored into disk the wavelength, the position, the
+direction, height of production and arrival time.
+
+
+\MORE%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%==========================================================
+\section{Simulation of showers at High Zenith Angle}
+
+%%==========================================================
+\section{Information available from the showers}
+
+%%==========================================================
+\section{Time Structure of the \Cherenkov pulse from an atmospheric shower}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Other simulation methods}
+\label{sec:simothers}
+
+\section{\CORSIKA output data format}
+
+The output or the currently used \CORSIKA code is structured as shown
+in Fig. \ref{fig:corsikastruc}. For each run with $N$ showers we will
+end up with $3 N+2$ binary data files, with information about the
+run and each individual shower. These files are (in the following list
+\texttt{XXXXXX} means a 6-digit number):
+
+\CORSIKAstructfig
+
+\begin{itemize}
+  
+\item A \emph{Run Header file}, \texttt{runXXXXXX}, with information
+  about the whole run (see Table \ref{tab:rh}). It's the first data
+  file generated.
+  
+\item A \emph{Run End file}, \texttt{endXXXXXX}, with information
+  about the whole run and some statistics about the run just generated
+  (see Table \ref{tab:re}). It's the last file generated. It's sole
+  presence indicates that the run has been finished.
+  
+\item One \emph{Particle data file} per shower, \texttt{datXXXXXX},
+  with information about the particles (not Cherenkov photons)
+  generated in the shower and which arrived at the ground (actually,
+  at any user defined obs. level), in the user-defined area (see Table
+  \ref{tab:part}).
+  
+\item One \emph{Cherenkov data file} per shower, \texttt{cerXXXXXX},
+  with information about the Cherenkov photons generated in the shower
+  and which arrived at the ground (actually, at any user defined obs.
+  level), in the user-defined area (see Table \ref{tab:cher}).
+  
+\item One \emph{Statistics data file} per shower, \texttt{staXXXXXX},
+  with information longitudinal profiles for different showers and
+  other parameters of the shower (see Table \ref{tab:sta}).
+
+\end{itemize}
+
+As you can see in Fig.\ref{fig:corsikastruc}, each Particle and
+Cherenkov file has an \emph{Event Header}, a list of \emph{Particle}
+or \emph{Cherenkov photon} data blocks, and an \emph{Event End}. The
+information stored in the \emph{Event Header} and \emph{Event End}
+data blocks are shown in Tables \ref{tab:eh1}-\ref{tab:eh2} and
+\ref{tab:ee}.
+
+The structure of each \emph{Particle} or \emph{Cherenkov photon}
+sub-blocks is shown in Tables \ref{tab:part}-\ref{tab:cher}.
+
+\CORSIKAtableRH
+
+\CORSIKAtableRH
+
+\CORSIKAtableEHone
+
+\CORSIKAtableEHtwo
+
+\CORSIKAtableEE
+
+\CORSIKAtableRE
+
+\CORSIKAtablePART
+
+\CORSIKAtableCHER
+
+\CORSIKAtableSTA{
+
+%------------------------------------------------------------
+\section{Input data structures for \reflector}
+
+The input data for \reflector, apart from the human-readable ASCII
+format for the parameters file\footnote{The format of the parameters
+  file will be explained in a next revision of this document},
+consists of the output files from \CORSIKA. The format of these output
+files has been already presented in the previous section, and the data
+stored inside each block has been shown in tables
+\ref{tab:rh}--\ref{tab:sta}. These data are read by \reflector through
+some classes, which internal data members are shown in tables
+\ref{class:coreh}.
+
+%\begin{Class}[p]
+%  \begin{center}
+%  \scriptsize
+%  \end{center}
+%  \caption{Data members in clas \texttt{COREventHeader} used by \reflector.}
+%  \label{class:coreh}
+%\end{Class}
+
+\lstset{%
+language=C++,%
+basicstyle=\scriptsize\sffamily,%
+keywordstyle=\bfseries,%
+commentstyle=\rmfamily\itshape,%
+stringstyle=\sffamily,%
+%labelstyle=\tiny\itshape,%
+%labelstep=10,%
+indent=1em,%
+tabsize=2}
+
+\lstinputlisting[keywords={char,Float_t}]{COREventHeader.class}
+
+
+
+%%% BIBLIOGRAPHY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%>>>> Use the following if you are using BibTeX for bibliography
+%\theBibliography
+
+\end{document}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Upper-case    A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+%%% Lower-case    a b c d e f g h i j k l m n o p q r s t u v w x y z
+%%% Digits        0 1 2 3 4 5 6 7 8 9
+%%% Exclamation   !           Double quote "          Hash (number) #
+%%% Dollar        $           Percent      %          Ampersand     &
+%%% Acute accent  '           Left paren   (          Right paren   )
+%%% Asterisk      *           Plus         +          Comma         ,
+%%% Minus         -           Point        .          Solidus       /
+%%% Colon         :           Semicolon    ;          Less than     <
+%%% Equals        =           Greater than >          Question mark ?
+%%% At            @           Left bracket [          Backslash     \
+%%% Right bracket ]           Circumflex   ^          Underscore    _
+%%% Grave accent  `           Left brace   {          Vertical bar  |
+%%% Right brace   }           Tilde        ~
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Local Variables:
+%% mode:latex
+%% mode:font-lock
+%% mode:auto-fill
+%% time-stamp-line-limit:100
+%% End:
+%% EOF

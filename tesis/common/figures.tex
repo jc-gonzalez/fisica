@@ -264,14 +264,14 @@ masivas]{Representaci'on esquem'atica de la posible secuencia
 \caption[Schematic view of the polarization process in the atmosphere 
 for a relativistic charged particle]{Schematic view of the
   polarization process in the atmosphere when a charged particle is
-  moving at high velocity. In (a) the velocity is $\beta\ll c$, in (b)
-  $\beta\simeq c$} 
+  moving at high velocity. In (a) the velocity is $\beta\ll 1$, in (b)
+  $\beta\simeq 1$} 
 \else
 \caption[Esquema del proceso de polarizaci'on de las mol'eculas del 
 aire al paso de una part'icula cargada relativista]{Esquema del
   proceso de polarizaci'on de las mol'eculas del aire al paso de las
-  part'iculas cargadas. En (a) la velocidad es $\beta\ll c$, en (b)
-  $\beta\simeq c$} 
+  part'iculas cargadas. En (a) la velocidad es $\beta\ll 1$, en (b)
+  $\beta\simeq 1$} 
 \fi
 \label{fig:polariz}
 \end{minipage}
@@ -287,38 +287,96 @@ aire al paso de una part'icula cargada relativista]{Esquema del
 \def\mcsimsample{
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.6\textwidth]{mcsimsample}
+\includegraphics[width=0.4\textwidth]{mcsimsample.mps}
 \ifenglish
-\caption[Schematic flow chart for UNICAS]{Schematic flow chart for a 
+\caption[Schematic flow chart for UNICAS]{Schematic flow chart for a
   version of UNICAS, the core subroutine of one of the first
   simulation programs, developed by J.A. Wrotniak in 1986. This
   routine developed a shower due to the interaction of a single
   nucleon of photon starting at slant height $H_1$, and included
-  photoproduction of hadrons. Taken from \cite{Gaisser:book}.}  
+  photoproduction of hadrons. Taken from \cite{Gaisser:book}.}
 \else
-\caption[Organigrama de la subrutina UNICAS]{Organigrama de la 
+\caption[Organigrama de la subrutina UNICAS]{Organigrama de la
   subrutina UNICAS, n'ucleo principal de uno de los primeros paquetes
   de simulaci'on de cascadas, desarrollado en 1986 oir J.A. Wrotniak.
   Esta rutina produc'ia cascadas por la interacci'on de un hadr'on o
   fot'on individual, a una altura inclinada $H_1$, e inclu'ia la
-  fotoproducci'on de hadrones. Tomado de \cite{Gaisser:book}.}  
+  fotoproducci'on de hadrones. Tomado de \cite{Gaisser:book}.}
 \fi
 \label{fig:MCsimGaisser}
 \end{figure}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\def\CORSIKAsampleInputfig{
-\begin{figure}[htb]
-\centering
-\ifenglish
-\caption{Sample CORSIKA input parameters file}
-\else
-\caption{Ejemplo de fichero de par'ametros de CORSIKA}
-\fi
-\label{fig:CORSIKAparamfile}
+\def\CORSIKAstructfig{
+\begin{figure}[t]
+  \begin{center}
+    \includegraphics[width=0.5\textwidth]{corsikastruc}
+    \caption{Structure of the \CORSIKA output.}
+    \label{fig:corsikastruc}
+  \end{center}
 \end{figure}
 }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\CORSIKAinputfig{
+\begin{figure}[tb]
+\begin{center}
+\ttfamily
+\scriptsize
+\begin{tabular}{lll}
+\hline
+RUNNR  &1                            & {\rmfamily\itshape number of run} \\
+EVTNR  &1                            & {\rmfamily\itshape number of first shower event} \\
+NSHOW  &10                           & {\rmfamily\itshape number of showers to generate} \\
+PRMPAR &1                            & {\rmfamily\itshape particle type of prim. particle} \\
+ESLOPE &0.                           & {\rmfamily\itshape slope of primary energy spectrum} \\
+ERANGE &5.E2  5.E2                   & {\rmfamily\itshape energy range of primary particle} \\
+THETAP &0.  0.                       & {\rmfamily\itshape range of zenith angle (degree)} \\
+PHIP   &0.  0.                       & {\rmfamily\itshape range of azimuth angle (degree)} \\
+SEED   &1   0   0                    & {\rmfamily\itshape seed for 1. random number sequence} \\
+SEED   &2   0   0                    & {\rmfamily\itshape seed for 2. random number sequence} \\
+SEED   &3   0   0                    & {\rmfamily\itshape seed for 3. random number sequence} \\
+OBSLEV &2200.E2                      & {\rmfamily\itshape observation level (in cm)} \\
+ELMFLG &T   F                        & {\rmfamily\itshape em. interaction flags (NKG,EGS)} \\
+RADNKG &200.E2                       & {\rmfamily\itshape outer radius for NKG lat.dens.determ.} \\
+ARRANG &0.                           & {\rmfamily\itshape rotation of array to north} \\
+FIXHEI &0.  0                        & {\rmfamily\itshape first interaction height \& target} \\
+FIXCHI &0.                           & {\rmfamily\itshape starting altitude (g/cm**2)} \\
+MAGNET &20.0  42.8                   & {\rmfamily\itshape magnetic field centr. europe} \\
+HADFLG &0  0  0  0  0  0             & {\rmfamily\itshape flags for hadr. interaction} \\
+GHEISH &T                            & {\rmfamily\itshape use gheisha for low energy hadrons} \\
+VENUS  &T                            & {\rmfamily\itshape use venus for high energy hadrons} \\
+VENSIG &T                            & {\rmfamily\itshape use VENUS hadronic cross sections} \\
+ECUTS  &0.3  0.3  0.020 0.020        & {\rmfamily\itshape energy cuts for particles} \\
+MUADDI &T                            & {\rmfamily\itshape additional info for muons} \\
+MUMULT &T                            & {\rmfamily\itshape muon multiple scattering angle} \\
+LONGI  &T  10.  T                    & {\rmfamily\itshape longit.distr. \& step size \& fit} \\
+MAXPRT &10                           & {\rmfamily\itshape max. number of printed events} \\
+ECTMAP &1.E4                         & {\rmfamily\itshape cut on gamma factor for printout} \\
+STEPFC &10.0                         & {\rmfamily\itshape mult. scattering step length fact.} \\
+DEBUG  &F  6  F  1000000             & {\rmfamily\itshape debug flag and log.unit for out} \\
+VENDBG &0                            & {\rmfamily\itshape venus debug option} \\
+DIRECT &./                           & {\rmfamily\itshape output directory} \\
+CWAVLG &290.  600.                   & {\rmfamily\itshape Cherenkov wavelength band} \\
+CSCAT  &1  0.  0.                    & {\rmfamily\itshape scatter Cherenkov events} \\
+CERSIZ &1.                           & {\rmfamily\itshape bunch size Cherenkov photons} \\
+CERFIL &T                            & {\rmfamily\itshape Cherenkov output to extra file} \\
+CERTEL &       1                     & {\rmfamily\itshape Number of Cherenkov telescopes (CTs)} \\
+       &0. 0. 0. 0. 0. 2000. 1700.   & {\rmfamily\itshape location and size of each CT} \\
+EXIT   &                             & {\rmfamily\itshape terminates input} \\
+\hline
+\end{tabular}
+\end{center}
+\ifenglish
+\caption{Sample \CORSIKA input parameters file}
+\else
+\caption{Ejemplo de fichero de par'ametros de \CORSIKA}
+\fi
+\label{fig:corinput}
+\end{figure}
+}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% THE MAGIC TELESCOPE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -332,8 +390,8 @@ aire al paso de una part'icula cargada relativista]{Esquema del
 \ifenglish
 \caption[The covering of the electromagnetic spectrum]{Almost all the
   energies in the electromagnetic spectrum are covered by different
-  observation techniques. There is only an energy window still
-  unexplored: The range between 10-30 GeV and 100-200 GeV. Covering
+  observation techniques. There is only one energy window still
+  unexplored: the range between 10-30 GeV and 100-200 GeV. Covering
   this energy range is the major goal of \MAGIC}
 \else
 \caption[Cobertura del espectro electromagn'etico]{Casi todos los 
@@ -654,9 +712,9 @@ under a Zenith Angle $\theta$]{This geometrical construction
   claridad.}  
 \fi
 \label{fig:coordsys}}
-\parbox[b]{6cm}{
+\parbox[b]{7cm}{
 \centering
-\includegraphics[width=0.9\linewidth]{geomview}
+\includegraphics[width=0.95\linewidth]{geomview}
 \ifenglish
 \caption[Geometrical construction for an observer looking at a source
 under a Zenith Angle $\theta$]{This geometrical construction
@@ -707,8 +765,7 @@ under a Zenith Angle $\theta$]{This geometrical construction
 {Difference of vertical heights \hv and $h_{\mathrm{v,approx}}$, when
   $\ho=2.2\u{km}$. The figure shows the value of $\Delta\hv$ (see
   text), as a function of the height \hc and the Zenith Angle. Below
-  85\deg the difference is far below the 5\%.}  
-\else
+  85\deg the difference is well below the 5\%.}  \else
 \caption[Diferencia entre alturas verticales \hv y $h_{\mathrm{v,approx}}$]%
 {Diferencia entre alturas verticales \hv y $h_{\mathrm{v,approx}}$,
   cuando $\ho=2.2\u{km}$. La figura muestra el valor de $\Delta\hv$
@@ -942,18 +999,16 @@ distancia del espejo al eje 'optico de \MAGIC]{Valor del
   \mbox{}\hfill(a)\hfill\mbox{}\hfill(b)\hfill\mbox{} \\
   \ifenglish
   \caption[Image of a point-like source of light located at 
-  5\u{km}]{Image of a point-like source of light located at 5\u{km} in
-    the vertical of the telescope, in different projection planes, at
-    both sides of the overall focal plane: (a) when the telescope is
-    focussed at infinity; and (b) when the telescope is focussed at
-    10\u{km}} 
-  \else
+  5\u{km}]{Image of a point-like source of light located at 5\u{km} on
+    the axis of the telescope, in different image planes, at both
+    sides of the focal plane of the reflector: (a) when the telescope
+    is focussed at infinity; and (b) when the telescope is focussed at
+    10\u{km}} \else
   \caption[Imagen de una fuente puntual situada a 5\u{km}]{Imagen 
-    de una fuente puntual situada a 5\u{km} en la vertical del
-    telescopio, vista en diferentes planos de proyecci'on a ambos
-    lados del plano focal: (a) cuando el telescopio está enfocado al
-    infinito; y (b) cuando está enfocado a 10\u{km}} 
-  \fi
+    de una fuente puntual situada a 5\u{km} en el eje del telescopio,
+    vista en diferentes planos de proyecci'on a ambos lados del plano
+    focal del reflector: (a) cuando el telescopio está enfocado al
+    infinito; y (b) cuando está enfocado a 10\u{km}} \fi
   \label{fig:hlfivekm}
 \end{figure}}
 
@@ -972,17 +1027,15 @@ distancia del espejo al eje 'optico de \MAGIC]{Valor del
   \ifenglish
   \caption[Image of a point-like source of light located at 
   10\u{km}]{Image of a point-like source of light located at 10\u{km}
-    in the vertical of the telescope, in different projection planes,
-    at both sides of the overall focal plane: (a) when the telescope
+    on the axis of the telescope, in different image planes, at both
+    sides of the focal plane of the reflector: (a) when the telescope
     is focussed at infinity; and (b) when the telescope is focussed at
-    10\u{km}} 
-  \else
+    10\u{km}} \else
   \caption[Imagen de una fuente puntual situada a 10\u{km}]{Imagen 
-    de una fuente puntual situada a 10\u{km} en la vertical del
-    telescopio, vista en diferentes planos de proyecci'on a ambos
-    lados del plano focal: (a) cuando el telescopio está enfocado al
-    infinito; y (b) cuando está enfocado a 10\u{km}} 
-  \fi
+    de una fuente puntual situada a 10\u{km} en el eje del telescopio,
+    vista en diferentes planos de proyecci'on a ambos lados del plano
+    focal del reflector: (a) cuando el telescopio está enfocado al
+    infinito; y (b) cuando está enfocado a 10\u{km}} \fi
   \label{fig:hltenkm}
 \end{figure}}
 
@@ -1001,17 +1054,15 @@ distancia del espejo al eje 'optico de \MAGIC]{Valor del
   \ifenglish
   \caption[Image of a point-like source of light located at 
   12\u{km}]{Image of a point-like source of light located at 12\u{km}
-    in the vertical of the telescope, in different projection planes,
-    at both sides of the overall focal plane: (a) when the telescope
+    on the axis of the telescope, in different image planes, at both
+    sides of the focal plane of the reflector: (a) when the telescope
     is focussed at infinity; and (b) when the telescope is focussed at
-    10\u{km}} 
-  \else
+    10\u{km}} \else
   \caption[Imagen de una fuente puntual situada a 12\u{km}]{Imagen 
-    de una fuente puntual situada a 12\u{km} en la vertical del
-    telescopio, vista en diferentes planos de proyecci'on a ambos
-    lados del plano focal: (a) cuando el telescopio está enfocado al
-    infinito; y (b) cuando está enfocado a 10\u{km}} 
-  \fi
+    de una fuente puntual situada a 12\u{km} en el eje del telescopio,
+    vista en diferentes planos de proyecci'on a ambos lados del plano
+    focal del reflector: (a) cuando el telescopio está enfocado al
+    infinito; y (b) cuando está enfocado a 10\u{km}} \fi
   \label{fig:hltwelvekm}
 \end{figure}}
 
@@ -1030,17 +1081,15 @@ distancia del espejo al eje 'optico de \MAGIC]{Valor del
   \ifenglish
   \caption[Image of a point-like source of light located at 
   100\u{km}]{Image of a point-like source of light located at
-    100\u{km} in the vertical of the telescope, in different
-    projection planes, at both sides of the overall focal plane: (a)
-    when the telescope is focussed at infinity; and (b) when the
-    telescope is focussed at 10\u{km}} 
-  \else
+    100\u{km} on the axis of the telescope, in different image planes,
+    at both sides of the focal plane of the reflector: (a) when the
+    telescope is focussed at infinity; and (b) when the telescope is
+    focussed at 10\u{km}} \else
   \caption[Imagen de una fuente puntual situada a 100\u{km}]{Imagen 
-    de una fuente puntual situada a 100\u{km} en la vertical del
+    de una fuente puntual situada a 100\u{km} en el eje del
     telescopio, vista en diferentes planos de proyecci'on a ambos
-    lados del plano focal: (a) cuando el telescopio está enfocado al
-    infinito; y (b) cuando está enfocado a 10\u{km}} 
-  \fi
+    lados del plano focal del reflector: (a) cuando el telescopio está
+    enfocado al infinito; y (b) cuando está enfocado a 10\u{km}} \fi
   \label{fig:hlhundredkm}
 \end{figure}}
 
@@ -1059,17 +1108,15 @@ distancia del espejo al eje 'optico de \MAGIC]{Valor del
   \ifenglish
   \caption[Image of a point-like source of light located at 
   infinity]{Image of a point-like source of light located at infinity
-    in the vertical of the telescope, in different projection planes,
-    at both sides of the overall focal plane: (a) when the telescope
+    on the axis of the telescope, in different image planes, at both
+    sides of the focal plane of the reflector: (a) when the telescope
     is focussed at infinity; and (b) when the telescope is focussed at
-    10\u{km}} 
-  \else
+    10\u{km}} \else
   \caption[Imagen de una fuente puntual en el infinito]{Imagen 
-    de una fuente puntual en el infinito, en la vertical del
-    telescopio, vista en diferentes planos de proyecci'on a ambos
-    lados del plano focal: (a) cuando el telescopio está enfocado al
-    infinito; y (b) cuando está enfocado a 10\u{km}} 
-  \fi
+    de una fuente puntual en el infinito, en el eje del telescopio,
+    vista en diferentes planos de proyecci'on a ambos lados del plano
+    focal del reflector: (a) cuando el telescopio está enfocado al
+    infinito; y (b) cuando está enfocado a 10\u{km}} \fi
   \label{fig:hlinf}
 \end{figure}}
 
@@ -1084,17 +1131,17 @@ distancia del espejo al eje 'optico de \MAGIC]{Valor del
   \includegraphics[width=\textwidth]{Mspots-bw}
   \fi
   \ifenglish
-  \caption[Image of an \texttt{M} surrounded by a square in the camera 
-  plane]{Image of an \texttt{M} surrounded by a square in the camera
-    plane (see above, the light comes from the white areas). The image
-    is projected from a lamp located at height above the observation
-    level of 10\u{km}, with the telescope pointing to the Zenith. The
-    area in the ground covered by the image is just slightly larger
-    that the dish of \MAGIC. The different images correspond to
-    different distances of the projection plane to the dish, from
-    1692\u{cm} to 1707\u{cm} (see text). Note that the scale is
-    normalized to the maximum concentration of light (for 1700\u{cm})}
-  \else
+  \caption[Image of a letter \texttt{M} enclosed in a square, in the camera 
+  plane]{Image of a letter \texttt{M} enclosed in a square, in the
+    camera plane (see above, the light comes from the white areas).
+    The image is projected from a lamp located at height above the
+    observation level of 10\u{km}, with the telescope pointing to the
+    Zenith. The area on the ground covered by the image is just
+    slightly larger that the dish of \MAGIC. The different images
+    correspond to different distances of the projection plane to the
+    dish, from 1692\u{cm} to 1707\u{cm} (see text). Note that the
+    scale is normalized to the maximum concentration of light (for
+    1700\u{cm})} \else
   \caption[Imagen de la letra \texttt{M} rodeada por un cuadrado]{Imagen 
     de la letra \texttt{M} rodeada por un cuadrado, en el plano focal
     (v'ease encima la imagen original; la luz proviene de las 'aeras
@@ -1120,29 +1167,31 @@ distancia del espejo al eje 'optico de \MAGIC]{Valor del
     \includegraphics[width=0.8\textwidth]{theta-spots-bw}
   \fi
   \ifenglish
-  \caption[Image of an point-like light source for different 
-  angles]{Image of an point-like light source located at 10\u{km}
-    above the observation level, in the vertical of \MAGIC, with the
-    telescope pointing at the Zenith. Different \emph{off-axis} angles
-    have been used, from 0\deg to 2.5\deg. The different rows of
+  \caption[Image of a point-like light source for different 
+  angles]{Image of a point-like light source located at 10\u{km} above
+    the observation level, in the axis of \MAGIC, with the telescope
+    pointing to the Zenith. Different \emph{off-axis} angles have
+    simulated used, from 0\deg to 2.5\deg. The different rows of
     images correspond to: (a) perfect system, reflectivity 100\%; (b)
-    to (f) realistic system, reflectivity 90\%, deviation of mirror
-    axes from 0\u{mm} to 5\u{mm} in the camera plane (see text). Note
-    that in this figure a logarithmic scale, normalized to the case of
-    the maximum concentration of light --- first spot, 0\deg, in (a)
-    --- has been applied} \else
+    to (f) realistic system, reflectivity 90\%, scatter in the
+    orientation of individual mirrors from 0\u{mm} to 5\u{mm} in the
+    camera plane (see text). Note that we have used a logarithmic
+    scale (normalized to the case of the maximum concentration of
+    light --- obtained for the first spot, 0\deg, in (a)).}  
+\else
   \caption[Imagen de una fuente puntual de luz a 10\u{km}]{Imagen de una
     fuente puntual de luz a 10\u{km} situada a 10\u{km} por encima del
-    nivel de observaci'on, en la vertical del telescopio, con 'este
+    nivel de observaci'on, en el eje del telescopio, con 'este
     apuntando al cenit. Se han usado varios 'angulos \emph{off-axis}
     de incidencia de la luz, desde 0\deg hasta 2.5\deg. Las diferentes
     filas de im'agenes corresponden a: (a) sistema perfecto,
     reflectividad 100\%; (b) a (f) sistema realista, reflectividad
-    90\%, desviaci'on del apuntado de los ejes de los espejos de
-    0\u{mm} a 5\u{mm}, en el plano de la c'amara (ver texto). N'otese
-    que en esta figura se ha utilizado una escala de intensidades de
-    luz logar'itmica, normalizada al caso de m'axima concentraci'on de
-    luz --- primera imagen, 0\deg, del caso (a).}  \fi
+    90\%, desviaciones aleatorias del apuntado de los ejes de los
+    espejos de 0\u{mm} a 5\u{mm}, en el plano de la c'amara (ver
+    texto). N'otese que en esta figura se ha utilizado una escala de
+    intensidades de luz logar'itmica, normalizada al caso de m'axima
+    concentraci'on de luz --- obtenida para la primera imagen, 0\deg,
+    del caso (a).}  \fi
   \label{fig:thetaspots}
 \end{figure}
 }
@@ -1156,15 +1205,14 @@ distancia del espejo al eje 'optico de \MAGIC]{Valor del
 \caption[Division of the mirrors of \MAGIC in different zones]{The 
   whole set of mirrors in \MAGIC is divided in eight different zones,
   having all the mirrors in a given zone a common focal length. This
-  focal length increases with the radius of the zone.}  
-\else
+  focal length increases with the radius of the zone (see Table
+  \ref{tbl:zonefocals}).}  \else
 \includegraphics[width=0.8\textwidth]{magic_focalsview_e}
 \caption[Agrupamiento de los espejos de \MAGIC en diferentes 
 zonas]{Los espejos de \MAGIC han sido agrupados en ocho zonas. Cada
   una de las zonas viene caracterizada por una distancia focal com'un
   para todos sus espejos. Esta distancia focal aumenta con el radio de
-  la zona.}  
-\fi
+  la zona (v'ease tabla \ref{tbl:zonefocals}).}  \fi
 \label{fig:zones}
 \end{figure}
 }
@@ -1318,9 +1366,8 @@ zonas]{Los espejos de \MAGIC han sido agrupados en ocho zonas. Cada
     \ifenglish
     \caption[Variation of $z$ with \QEo]{Variation of the quotient 
       $z=\sigma(\Nrand)/\sigma(\Ntrial)$ with different values of
-      \QEo, also in the case of $\Nphot=1000$. For another values of
-      \Nphot the curve is very similar.}  
-    \else
+      \QEo, also in the case of $\Nphot=1000$. The curve is very
+      similar for other values of \Nphot .}  \else
     \caption[Variaci'on de $z$ con \Qeo]{Variaci'on del cociente 
       $z=\sigma(\Nrand)/\sigma(\Ntrial)$ con el valor de \QEo, en el
       caso $\Nphot=1000$. Para otros valores de \Nphot la curva es muy
@@ -1339,17 +1386,17 @@ zonas]{Los espejos de \MAGIC han sido agrupados en ocho zonas. Cada
     \ifenglish
     \caption[Ilustration of the \emph{Acceptance-Rejection Method} (Von
     Neumann)]{Ilustration of the \emph{Acceptance-Rejection Method}
-      (Von Neumann). The pairs of random numbers $(x,y)$ will cover
-      the area below the line $y=C/(b-a)$. Only those below the curve
-      $S(x)$ will be accepted.}
-    \else
+      (Von Neumann), for an arbitrary probability density function.
+      The pairs of random numbers $(x,y)$ will cover the area below
+      the line $y=C/(b-a)$. Only those below the curve $S(x)$ will be
+      accepted.}  \else
     \caption[Ilustraci'on del \emph{M'etodo Aceptaci'on-Rechazo} 
     (o de Von Neumann)]{Ilustraci'on del \emph{M'etodo
-        Aceptaci'on-Rechazo} (o de Von Neumann). Los pares de n'umeros
+        Aceptaci'on-Rechazo} (o de Von Neumann), para una funci'on
+      densidad de probabilidad arbitraria. Los pares de n'umeros
       aleatorios $(x,y)$ cubren el area por debajo de la l'inea
       $y=C/(b-a)$. S'olo aquellos pares que caigan por debajo de la
-      curva $S(x)$ son aceptados.}
-    \fi
+      curva $S(x)$ son aceptados.}  \fi
     \label{fig:vonneumann} 
   \end{center} 
 \end{figure}
@@ -1397,6 +1444,22 @@ zonas]{Los espejos de \MAGIC han sido agrupados en ocho zonas. Cada
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\triganglefig{
+\begin{wrapfigure}[26]{r}{0.35\textwidth}
+\centering
+\vskip -10pt
+\ifenglish
+\includegraphics[width=0.34\textwidth]{trigangle}
+\caption{Skecth of the estimation of the optimal trigger radius for \MAGIC}
+\else 
+\includegraphics[width=0.34\textwidth]{trigangle_e}
+\caption{Esquema de la estimaci'on del radio de \trigger 'optimo para \MAGIC}
+\fi
+\label{fig:trigangle}
+\end{wrapfigure}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\trigareafig{
 \begin{figure}[t]
 \centering
@@ -1440,10 +1503,10 @@ zonas]{Los espejos de \MAGIC han sido agrupados en ocho zonas. Cada
 \ifenglish
 \caption[Different trigger patterns used in the simulation program]%
 {Different trigger patterns used in the simulation programs: (a) 3
-  pixels, next-neighbour, \emph{closed packet}; (b) simple group of 3
-  pixels, next-neighbour; (c) 4 pixels, next-neighbour, \emph{closed
-    packet}; (d) simple group of 4 pixels, next-neighbour; (e) 5
-  pixels, next-neighbour, \emph{closed packet}; (f) simple group of 5
+  pixels, next-neighbour, \emph{\closepack}; (b) simple group of 3
+  pixels, next-neighbour; (c) 4 pixels, next-neighbour,
+  \emph{\closepack}; (d) simple group of 4 pixels, next-neighbour; (e)
+  5 pixels, next-neighbour, \emph{\closepack}; (f) simple group of 5
   pixels, next-neighbour. Note that the patterns are defined assuming
   that there is already a pixel (the central one in this figures)
   which already has a charge greater or equal to $q_0$} 
@@ -1467,10 +1530,9 @@ zonas]{Los espejos de \MAGIC han sido agrupados en ocho zonas. Cada
 \centering
 \includegraphics[width=0.85\linewidth]{areaeffidea}
 \ifenglish
-\caption[Representation of the idea of \emph{Effective Collection 
-  Area}]{Representation of the idea of \emph{Effective Collection
-    Area. The showers A to D will be detected. The shower E will not.}}
-\else
+\caption[Skecth on the \emph{Effective Collection 
+  Area}]{A simple sketch on the \emph{Effective Collection Area. The
+    showers A to D will be detected. The shower E will not.}}  \else
 \caption[Representaci'on de la idea de \emph{'Area 
   efectiva}]{Representaci'on de la idea de \emph{'Area efectiva}. Las
   cascadas A a D serán detectadas, no así la E.}  
