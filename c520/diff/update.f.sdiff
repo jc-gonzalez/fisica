@@ -1,0 +1,460 @@
+      SUBROUTINE UPDATE( HNEW,THCKHN,IPAS )			      SUBROUTINE UPDATE( HNEW,THCKHN,IPAS )
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  UPDATE(S PARTICLE PARAMETERS)				C  UPDATE(S PARTICLE PARAMETERS)
+C								C
+C  UPDATES PARTICLE PARAMETERS TO OBSERVATION LEVEL WITH NUMB	C  UPDATES PARTICLE PARAMETERS TO OBSERVATION LEVEL WITH NUMB
+C                           OR TO POINT OF INTERACTION OR DEC	C                           OR TO POINT OF INTERACTION OR DEC
+C  FOR CHARGED PARTICLES THE ENERGY LOSS IS COMPUTED FOR THE 	C  FOR CHARGED PARTICLES THE ENERGY LOSS IS COMPUTED FOR THE 
+C  SUBDIVIDED BY THE BOUNDARIES OF THE ATMOSPHERIC LAYERS.	C  SUBDIVIDED BY THE BOUNDARIES OF THE ATMOSPHERIC LAYERS.
+C  THE PARTICLE IS FLYING THE 1ST HALF (DH/2) WITH INITIAL EN	C  THE PARTICLE IS FLYING THE 1ST HALF (DH/2) WITH INITIAL EN
+C  AND ANGLE AND THE 2ND HALF WITH FINAL ENERGY AND ANGLE.	C  AND ANGLE AND THE 2ND HALF WITH FINAL ENERGY AND ANGLE.
+C  THE TIME CALCULATION FOLLOWS THIS SIMPLIFICATION.		C  THE TIME CALCULATION FOLLOWS THIS SIMPLIFICATION.
+C  CHARGED PARTICLES ARE DEFLECTED IN THE EARTH MAGNETIC FIEL	C  CHARGED PARTICLES ARE DEFLECTED IN THE EARTH MAGNETIC FIEL
+C  THE ANGLE OF DEFLECTION BY MULTIPLE SCATTERING IS COMPUTED	C  THE ANGLE OF DEFLECTION BY MULTIPLE SCATTERING IS COMPUTED
+C  FOR MUONS AND ONLY ONCE FOR THE WHOLE STEP.			C  FOR MUONS AND ONLY ONCE FOR THE WHOLE STEP.
+C  IF PARTICLES COME TO REST BY STOPPING, THEIR PATH TO THE S	C  IF PARTICLES COME TO REST BY STOPPING, THEIR PATH TO THE S
+C  POINT IS CALCULATED.						C  POINT IS CALCULATED.
+C  CERENKOV RADIATION IS CALCULATED ONLY FOR LOWEST OBSERVATI	C  CERENKOV RADIATION IS CALCULATED ONLY FOR LOWEST OBSERVATI
+C  THIS SUBROUTINE IS CALLED FROM MAIN, BOX3, AND MUTRAC	C  THIS SUBROUTINE IS CALLED FROM MAIN, BOX3, AND MUTRAC
+C  ARGUMENTS:							C  ARGUMENTS:
+C   HNEW   = ALTITUDE OF PARTICLE AFTER UPDATE			C   HNEW   = ALTITUDE OF PARTICLE AFTER UPDATE
+C   THCKHN = THICKNESS OF HNEW					C   THCKHN = THICKNESS OF HNEW
+C   IPAS   = 0  TRANSPORT TO END OF RANGE OF PARTICLE		C   IPAS   = 0  TRANSPORT TO END OF RANGE OF PARTICLE
+C       .NE. 0  TRANSPORT TO PASSAGE OF OBSERVATION LEVEL IPA	C       .NE. 0  TRANSPORT TO PASSAGE OF OBSERVATION LEVEL IPA
+C								C
+C  REDESIGN: D. HECK    IK3  FZK KARLSRUHE			C  REDESIGN: D. HECK    IK3  FZK KARLSRUHE
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,ATMOS2.							*KEEP,ATMOS2.
+      COMMON /ATMOS2/  HLAY,THICKL				      COMMON /ATMOS2/  HLAY,THICKL
+      DOUBLE PRECISION HLAY(5),THICKL(5)			      DOUBLE PRECISION HLAY(5),THICKL(5)
+*KEEP,CONST.							*KEEP,CONST.
+      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER			      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER
+      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER			      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER
+*KEEP,ELABCT.							*KEEP,ELABCT.
+      COMMON /ELABCT/  ELCUT					      COMMON /ELABCT/  ELCUT
+      DOUBLE PRECISION ELCUT(4)					      DOUBLE PRECISION ELCUT(4)
+*KEEP,GENER.							*KEEP,GENER.
+      COMMON /GENER/   GEN,ALEVEL				      COMMON /GENER/   GEN,ALEVEL
+      DOUBLE PRECISION GEN,ALEVEL				      DOUBLE PRECISION GEN,ALEVEL
+*KEEP,IRET.							*KEEP,IRET.
+      COMMON /IRET/    IRET1,IRET2				      COMMON /IRET/    IRET1,IRET2
+      INTEGER          IRET1,IRET2				      INTEGER          IRET1,IRET2
+*KEEP,MAGNET.							*KEEP,MAGNET.
+      COMMON /MAGNET/  BX,BZ,BVAL,BNORMC,BNORM,COSB,SINB,BLIM	      COMMON /MAGNET/  BX,BZ,BVAL,BNORMC,BNORM,COSB,SINB,BLIM
+      DOUBLE PRECISION BX,BZ,BVAL,BNORMC			      DOUBLE PRECISION BX,BZ,BVAL,BNORMC
+      REAL             BNORM,COSB,SINB,BLIMIT			      REAL             BNORM,COSB,SINB,BLIMIT
+*KEEP,MUMULT.							*KEEP,MUMULT.
+      COMMON /MUMULT/  CHC,OMC,FMOLI				      COMMON /MUMULT/  CHC,OMC,FMOLI
+      DOUBLE PRECISION CHC,OMC					      DOUBLE PRECISION CHC,OMC
+      LOGICAL          FMOLI					      LOGICAL          FMOLI
+*KEEP,OBSPAR.							*KEEP,OBSPAR.
+      COMMON /OBSPAR/  OBSLEV,THCKOB,XOFF,YOFF,THETAP,PHIP,	      COMMON /OBSPAR/  OBSLEV,THCKOB,XOFF,YOFF,THETAP,PHIP,
+     *                 THETPR,PHIPR,NOBSLV			     *                 THETPR,PHIPR,NOBSLV
+      DOUBLE PRECISION OBSLEV(10),THCKOB(10),XOFF(10),YOFF(10	      DOUBLE PRECISION OBSLEV(10),THCKOB(10),XOFF(10),YOFF(10
+     *                 THETAP,THETPR(2),PHIP,PHIPR(2)		     *                 THETAP,THETPR(2),PHIP,PHIPR(2)
+      INTEGER          NOBSLV					      INTEGER          NOBSLV
+*KEEP,PAM.							*KEEP,PAM.
+      COMMON /PAM/     PAMA,SIGNUM				      COMMON /PAM/     PAMA,SIGNUM
+      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)			      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)
+*KEEP,PARPAR.							*KEEP,PARPAR.
+      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,		      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,
+     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE	     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE
+      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA	      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA
+     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH	     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH
+      INTEGER          ITYPE,LEVL				      INTEGER          ITYPE,LEVL
+*KEEP,PARPAE.							*KEEP,PARPAE.
+      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,	      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,
+      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)	      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)
+     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )	     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )
+     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )	     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )
+     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )	     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )
+     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )	     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )
+     *                 (CURPAR(12),ECM )			     *                 (CURPAR(12),ECM )
+*KEEP,RANDPA.							*KEEP,RANDPA.
+      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR		      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR
+      DOUBLE PRECISION FAC,U1,U2				      DOUBLE PRECISION FAC,U1,U2
+      REAL             RD(3000)					      REAL             RD(3000)
+      INTEGER          ISEED(103,10),NSEQ			      INTEGER          ISEED(103,10),NSEQ
+      LOGICAL          KNOR					      LOGICAL          KNOR
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEEP,CERHDR.							*KEEP,CERHDR.
+      COMMON/CERHDR/   TPART,UPART,VPART,WPART,XPART,YPART,ZP	      COMMON/CERHDR/   TPART,UPART,VPART,WPART,XPART,YPART,ZP
+      DOUBLE PRECISION TPART,UPART,VPART,WPART,XPART,YPART,ZP	      DOUBLE PRECISION TPART,UPART,VPART,WPART,XPART,YPART,ZP
+*KEND.								*KEND.
+ 								 
+      DOUBLE PRECISION ALPHA1,ALPHA2,BETAN,DENS,DH,DR,DTHICK,	      DOUBLE PRECISION ALPHA1,ALPHA2,BETAN,DENS,DH,DR,DTHICK,
+     *                 FNORM1,FNORM2,F1COS1,F1COS2,F1SIN1,F1S	     *                 FNORM1,FNORM2,F1COS1,F1COS2,F1SIN1,F1S
+     *                 GAMMAN,GAMSQ,GLCUT,GMSQM1,GAM0,HMIDDL,	     *                 GAMMAN,GAMSQ,GLCUT,GMSQM1,GAM0,HMIDDL,
+     *                 PHISCT,PHI1,RADINV,RANNOR,RHOF,		     *                 PHISCT,PHI1,RADINV,RANNOR,RHOF,
+     *                 SINTH1,SINTH2,SN,SN1,SN2,SN3,SN4,	     *                 SINTH1,SINTH2,SN,SN1,SN2,SN3,SN4,
+     *                 THCKHN,TH0,U10,U12,U20,U22,V,VSCAT,VVV	     *                 THCKHN,TH0,U10,U12,U20,U22,V,VSCAT,VVV
+     *                 V10,V12,V20,V22,W10,W12,W20,W22		     *                 V10,V12,V20,V22,W10,W12,W20,W22
+      INTEGER          I,IL,ILAY,IPAS				      INTEGER          I,IL,ILAY,IPAS
+      LOGICAL          MUS					      LOGICAL          MUS
+      SAVE             VSCAT,PHISCT				      SAVE             VSCAT,PHISCT
+      EXTERNAL         RANNOR,RHOF				      EXTERNAL         RANNOR,RHOF
+      DOUBLE PRECISION CHIT,DT,GAMK,HEIGH,HNEWC,RATIO,THCKHC	      DOUBLE PRECISION CHIT,DT,GAMK,HEIGH,HNEWC,RATIO,THCKHC
+      INTEGER          ICRNKV					      INTEGER          ICRNKV
+      LOGICAL          TFLAG					      LOGICAL          TFLAG
+      EXTERNAL         HEIGH					      EXTERNAL         HEIGH
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF (DEBUG) WRITE(MDEBUG,457) (CURPAR(I),I=1,9),HNEW	      IF (DEBUG) WRITE(MDEBUG,457) (CURPAR(I),I=1,9),HNEW
+  457 FORMAT(' UPDATE: CURPAR=',1P,9E10.3/			  457 FORMAT(' UPDATE: CURPAR=',1P,9E10.3/
+     *       '         TO HEIGHT ',0P,F11.1)			     *       '         TO HEIGHT ',0P,F11.1)
+ 								 
+      IRET2  = 1						      IRET2  = 1
+C  TOTAL HEIGHT DIFFERENCE					C  TOTAL HEIGHT DIFFERENCE
+      DH     = MAX( H - HNEW, 1.D-10 )				      DH     = MAX( H - HNEW, 1.D-10 )
+C  ATMOSPHERE THICKNESS TRAVERSED				C  ATMOSPHERE THICKNESS TRAVERSED
+      DTHICK = (THCKHN - THICKH) / COSTHE			      DTHICK = (THCKHN - THICKH) / COSTHE
+C  TOTAL PATH FOR UNDEFLECTED PARTICLE				C  TOTAL PATH FOR UNDEFLECTED PARTICLE
+      SN     = DH / COSTHE					      SN     = DH / COSTHE
+      SN1    = 0.25D0 * SN					      SN1    = 0.25D0 * SN
+ 								 
+ 								 
+C  CALCULATE KINETIC ENERGY CUT					C  CALCULATE KINETIC ENERGY CUT
+      IF ( ITYPE .EQ. 5 .OR. ITYPE .EQ. 6 ) THEN		      IF ( ITYPE .EQ. 5 .OR. ITYPE .EQ. 6 ) THEN
+        MUS   = .TRUE.						        MUS   = .TRUE.
+        GLCUT = ELCUT(2) / PAMA(ITYPE) + 1.D0			        GLCUT = ELCUT(2) / PAMA(ITYPE) + 1.D0
+      ELSE							      ELSE
+        MUS   = .FALSE.						        MUS   = .FALSE.
+        GLCUT = ELCUT(1) / PAMA(ITYPE) + 1.D0			        GLCUT = ELCUT(1) / PAMA(ITYPE) + 1.D0
+      ENDIF							      ENDIF
+ 								 
+C  CALCULATE THE ENERGY LOSS FOR CHARGED PARTICLES		C  CALCULATE THE ENERGY LOSS FOR CHARGED PARTICLES
+      IF ( SIGNUM(ITYPE) .NE. 0.D0 ) THEN			      IF ( SIGNUM(ITYPE) .NE. 0.D0 ) THEN
+C  LOOK WITHIN WHICH LAYER THE PARTICLE STARTS			C  LOOK WITHIN WHICH LAYER THE PARTICLE STARTS
+        IF     ( H .LE. HLAY(2) ) THEN				        IF     ( H .LE. HLAY(2) ) THEN
+          ILAY = 1						          ILAY = 1
+          TH0  = THICKH						          TH0  = THICKH
+        ELSEIF ( H .LE. HLAY(3) ) THEN				        ELSEIF ( H .LE. HLAY(3) ) THEN
+          ILAY = 2						          ILAY = 2
+          TH0  = THICKH						          TH0  = THICKH
+        ELSEIF ( H .LE. HLAY(4) ) THEN				        ELSEIF ( H .LE. HLAY(4) ) THEN
+          ILAY = 3						          ILAY = 3
+          TH0  = THICKH						          TH0  = THICKH
+        ELSE							        ELSE
+          ILAY = 4						          ILAY = 4
+          TH0    = MAX( THICKH, 2.D-4 )				          TH0    = MAX( THICKH, 2.D-4 )
+        ENDIF							        ENDIF
+C  SET START VALUES FOR ITERATION				C  SET START VALUES FOR ITERATION
+        GAM0   = GAMMA						        GAM0   = GAMMA
+        IL     = ILAY						        IL     = ILAY
+ 1      CONTINUE						 1      CONTINUE
+        GAM0   = MAX( GAM0, 1.0001D0 )				        GAM0   = MAX( GAM0, 1.0001D0 )
+        GAMSQ  = GAM0**2					        GAMSQ  = GAM0**2
+        GMSQM1 = GAMSQ - 1.D0					        GMSQM1 = GAMSQ - 1.D0
+C  ENERGY LOSS BY IONIZATION					C  ENERGY LOSS BY IONIZATION
+        ELOSS  = SIGNUM(ITYPE)**2 * C(22) *			        ELOSS  = SIGNUM(ITYPE)**2 * C(22) *
+     *              ( GAMSQ * (LOG(GMSQM1) + C(23)) / GMSQM1 	     *              ( GAMSQ * (LOG(GMSQM1) + C(23)) / GMSQM1 
+C  LOOK WETHER PARTICLE PENETRATES LAYER BOUNDARY		C  LOOK WETHER PARTICLE PENETRATES LAYER BOUNDARY
+        IF ( THICKL(IL) .LT. THCKHN  .AND.  IL .GT. 1 ) THEN	        IF ( THICKL(IL) .LT. THCKHN  .AND.  IL .GT. 1 ) THEN
+C  CALCULATE NEW START VALUES AT LAYER BOUNDARY			C  CALCULATE NEW START VALUES AT LAYER BOUNDARY
+          GAM0 = GAM0 - ELOSS * (THICKL(IL) - TH0)		          GAM0 = GAM0 - ELOSS * (THICKL(IL) - TH0)
+     *                              / (PAMA(ITYPE)*COSTHE)	     *                              / (PAMA(ITYPE)*COSTHE)
+          IF ( GAM0 .LE. 1.D0 ) THEN				          IF ( GAM0 .LE. 1.D0 ) THEN
+            GAMMAN = 1.0001D0					            GAMMAN = 1.0001D0
+            GOTO 3						            GOTO 3
+          ENDIF							          ENDIF
+          TH0  = THICKL(IL)					          TH0  = THICKL(IL)
+          IL   = IL - 1						          IL   = IL - 1
+          GOTO 1						          GOTO 1
+        ENDIF							        ENDIF
+C  GAMMA VALUE FOR CHARGED PARTICLES AT END OF STEP		C  GAMMA VALUE FOR CHARGED PARTICLES AT END OF STEP
+        GAMMAN = GAM0 - ELOSS * (THCKHN-TH0) / (PAMA(ITYPE)*C	        GAMMAN = GAM0 - ELOSS * (THCKHN-TH0) / (PAMA(ITYPE)*C
+ 3      CONTINUE						 3      CONTINUE
+ 								 
+      ELSE							      ELSE
+C  NO LOSS FOR NEUTRAL PARTICLES				C  NO LOSS FOR NEUTRAL PARTICLES
+        GAMMAN = GAMMA						        GAMMAN = GAMMA
+      ENDIF							      ENDIF
+ 								 
+C  PARTICLE HAS TO BE TRACKED TO THE CUTOFF ENERGY FOR CERENK	C  PARTICLE HAS TO BE TRACKED TO THE CUTOFF ENERGY FOR CERENK
+C  (AS NEUTRAL DO NOT LOOSE ENERGY IN UPDATE, THIS CONDITION 	C  (AS NEUTRAL DO NOT LOOSE ENERGY IN UPDATE, THIS CONDITION 
+C  FULFILLED BY CHARGED PARTICLES ONLY)				C  FULFILLED BY CHARGED PARTICLES ONLY)
+C  (AS CERENKOV RUNS NOT WITH HORIZONT, NO PROGRAMMING FOR HO	C  (AS CERENKOV RUNS NOT WITH HORIZONT, NO PROGRAMMING FOR HO
+      IF ( GAMMAN .LT. GLCUT ) THEN				      IF ( GAMMAN .LT. GLCUT ) THEN
+        GAMMAN = 0.9D0 + GLCUT * 0.1D0				        GAMMAN = 0.9D0 + GLCUT * 0.1D0
+ 								 
+C  SET START VALUES FOR ITERATION				C  SET START VALUES FOR ITERATION
+        IL     = ILAY						        IL     = ILAY
+        CHIT   = 0.D0						        CHIT   = 0.D0
+        GAM0   = GAMMA						        GAM0   = GAMMA
+        TH0    = MAX( THICKH, 2.D-4 )				        TH0    = MAX( THICKH, 2.D-4 )
+ 2      CONTINUE						 2      CONTINUE
+        GAM0   = MAX( GAM0, 1.0001D0 )				        GAM0   = MAX( GAM0, 1.0001D0 )
+        GAMSQ  = GAM0**2					        GAMSQ  = GAM0**2
+        GMSQM1 = GAMSQ - 1.D0					        GMSQM1 = GAMSQ - 1.D0
+C  ENERGY LOSS BY IONIZATION					C  ENERGY LOSS BY IONIZATION
+        ELOSS  = SIGNUM(ITYPE)**2 * C(22) *			        ELOSS  = SIGNUM(ITYPE)**2 * C(22) *
+     *             ( GAMSQ * (LOG(GMSQM1) + C(23)) / GMSQM1 -	     *             ( GAMSQ * (LOG(GMSQM1) + C(23)) / GMSQM1 -
+        ELOSS  =  ELOSS / (PAMA(ITYPE) * COSTHE)		        ELOSS  =  ELOSS / (PAMA(ITYPE) * COSTHE)
+        GAMK   = GAM0 - ELOSS * (THICKL(ILAY) - TH0)		        GAMK   = GAM0 - ELOSS * (THICKL(ILAY) - TH0)
+C  LOOK WETHER PARTICLE PENETRATES LAYER BOUNDARY		C  LOOK WETHER PARTICLE PENETRATES LAYER BOUNDARY
+        IF (GAMMAN .LT. GAMK .AND. IL. GT. 1 ) THEN		        IF (GAMMAN .LT. GAMK .AND. IL. GT. 1 ) THEN
+C  CALCULATE PORTION OF RANGE AND NEW START VALUES AT LAYER B	C  CALCULATE PORTION OF RANGE AND NEW START VALUES AT LAYER B
+          CHIT = CHIT + (THICKL(IL) - TH0) / COSTHE		          CHIT = CHIT + (THICKL(IL) - TH0) / COSTHE
+          GAM0 = GAMK						          GAM0 = GAMK
+          TH0  = THICKL(IL)					          TH0  = THICKL(IL)
+          IL   = IL - 1						          IL   = IL - 1
+          GOTO 2						          GOTO 2
+        ENDIF							        ENDIF
+C  PENETRATED MATTER THICKNESS					C  PENETRATED MATTER THICKNESS
+        CHI    = CHIT + (GAM0 - GAMMAN) / (ELOSS*COSTHE)	        CHI    = CHIT + (GAM0 - GAMMAN) / (ELOSS*COSTHE)
+        IF ( DEBUG ) WRITE(MDEBUG,*)'UPDATE: GAMMAN,CHI=',	        IF ( DEBUG ) WRITE(MDEBUG,*)'UPDATE: GAMMAN,CHI=',
+     *                                  SNGL(GAMMAN),SNGL(CHI	     *                                  SNGL(GAMMAN),SNGL(CHI
+C  CALCULATE CORRECTED PATH PARAMETERS				C  CALCULATE CORRECTED PATH PARAMETERS
+        THCKHC = THICKH + COSTHE * CHI				        THCKHC = THICKH + COSTHE * CHI
+        HNEWC  = HEIGH(THCKHC)					        HNEWC  = HEIGH(THCKHC)
+        DT     = SN / (C(25) * BETA * GAMMA)			        DT     = SN / (C(25) * BETA * GAMMA)
+        RATIO  = .5D0 * (H-HNEWC) / DH				        RATIO  = .5D0 * (H-HNEWC) / DH
+        DH     = H - HNEWC					        DH     = H - HNEWC
+        SN     = DH / COSTHE					        SN     = DH / COSTHE
+        SN1    = 0.25D0 * SN					        SN1    = 0.25D0 * SN
+        TFLAG  = .TRUE.						        TFLAG  = .TRUE.
+      ELSE							      ELSE
+        TFLAG  = .FALSE.					        TFLAG  = .FALSE.
+      ENDIF							      ENDIF
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+      IF ( IPAS .EQ. 0 ) THEN					      IF ( IPAS .EQ. 0 ) THEN
+C  UPDATE TO THE END POINT OF THE TRACK				C  UPDATE TO THE END POINT OF THE TRACK
+ 								 
+        IF ( MUS ) THEN						        IF ( MUS ) THEN
+C  COULOMB SCATTERING ANGLE (FOR MUONS ONLY)			C  COULOMB SCATTERING ANGLE (FOR MUONS ONLY)
+          IF ( FMOLI) THEN					          IF ( FMOLI) THEN
+C  TREAT MUON MULTIPLE SCATTERING BY MOLIERE THEORY (SEE GEAN	C  TREAT MUON MULTIPLE SCATTERING BY MOLIERE THEORY (SEE GEAN
+C  CALCULATE AVERAGE DENSITY AND NUMBER OF SCATTERING (OMEGA)	C  CALCULATE AVERAGE DENSITY AND NUMBER OF SCATTERING (OMEGA)
+            DENS   = CHI/DH * COSTHE				            DENS   = CHI/DH * COSTHE
+            OMEGA  = OMC * CHI /  BETA**2			            OMEGA  = OMC * CHI /  BETA**2
+            IF ( OMEGA .LE. 20.D0 ) THEN			            IF ( OMEGA .LE. 20.D0 ) THEN
+C  FEW SCATTERING EVENTS, APPLY PLURAL COULOMB SCATTERING	C  FEW SCATTERING EVENTS, APPLY PLURAL COULOMB SCATTERING
+              CALL MUCOUL(OMEGA,DENS,VSCAT)			              CALL MUCOUL(OMEGA,DENS,VSCAT)
+            ELSE						            ELSE
+C  ENOUGH SCATTERING EVENTS, APPLY MOLIERE'S THEORY		C  ENOUGH SCATTERING EVENTS, APPLY MOLIERE'S THEORY
+              CALL MMOLIE(OMEGA,DENS,VSCAT)			              CALL MMOLIE(OMEGA,DENS,VSCAT)
+            ENDIF						            ENDIF
+          ELSE							          ELSE
+C  TREAT MUON MULTIPLE SCATTERING BY GAUSS DISTRIBUTION		C  TREAT MUON MULTIPLE SCATTERING BY GAUSS DISTRIBUTION
+            VSCAT = RANNOR( 0.D0, C(30) * SQRT( CHI/C(21) )	            VSCAT = RANNOR( 0.D0, C(30) * SQRT( CHI/C(21) )
+     *                          / (PAMA(5) * GAMMA * BETA**2)	     *                          / (PAMA(5) * GAMMA * BETA**2)
+          ENDIF							          ENDIF
+          V = VSCAT						          V = VSCAT
+          CALL RMMAR( RD,1,1 )					          CALL RMMAR( RD,1,1 )
+          PHISCT = RD(1) * PI2					          PHISCT = RD(1) * PI2
+          IF(DEBUG)WRITE(MDEBUG,*)'UPDATE: VSCAT=',SNGL(VSCAT	          IF(DEBUG)WRITE(MDEBUG,*)'UPDATE: VSCAT=',SNGL(VSCAT
+     *                                  ' PHISCT=',SNGL(PHISC	     *                                  ' PHISCT=',SNGL(PHISC
+        ENDIF							        ENDIF
+ 								 
+C  CERENKOV RADIATION: LOOK, WHETHER PATH ENDS ABOVE LOWEST O	C  CERENKOV RADIATION: LOOK, WHETHER PATH ENDS ABOVE LOWEST O
+        IF ( TFLAG ) THEN					        IF ( TFLAG ) THEN
+          HNEW   = HNEWC					          HNEW   = HNEWC
+          THCKHN = THCKHC					          THCKHN = THCKHC
+          IF (DEBUG) WRITE(MDEBUG,*)'UPDATE: CHANGED HNEW =',	          IF (DEBUG) WRITE(MDEBUG,*)'UPDATE: CHANGED HNEW =',
+        ENDIF							        ENDIF
+        IF ( HNEW .GT. OBSLEV(NOBSLV) ) THEN			        IF ( HNEW .GT. OBSLEV(NOBSLV) ) THEN
+          ICRNKV = 1						          ICRNKV = 1
+        ELSE							        ELSE
+          ICRNKV = 0						          ICRNKV = 0
+        ENDIF							        ENDIF
+ 								 
+C  UPDATE TO THE OBSERVATION LEVELS				C  UPDATE TO THE OBSERVATION LEVELS
+      ELSE							      ELSE
+        IF ( MUS ) THEN						        IF ( MUS ) THEN
+C  COULOMB SCATTERING ANGLE (FOR MUONS ONLY)			C  COULOMB SCATTERING ANGLE (FOR MUONS ONLY)
+          V = VSCAT * SQRT( DTHICK / CHI )			          V = VSCAT * SQRT( DTHICK / CHI )
+        ENDIF							        ENDIF
+ 								 
+C  CERENKOV RADIATION: LOOK, WHETHER LOWEST OBSERVATION LEVEL	C  CERENKOV RADIATION: LOOK, WHETHER LOWEST OBSERVATION LEVEL
+        IF ( IPAS .EQ. NOBSLV ) THEN				        IF ( IPAS .EQ. NOBSLV ) THEN
+          ICRNKV = 1						          ICRNKV = 1
+        ELSE							        ELSE
+          ICRNKV = 0						          ICRNKV = 0
+        ENDIF							        ENDIF
+      ENDIF							      ENDIF
+ 								 
+C  REJECT ALL PARTICLES IF BELOW KINETIC ENERGY CUT		C  REJECT ALL PARTICLES IF BELOW KINETIC ENERGY CUT
+      IF ( GAMMAN .LT. GLCUT .AND. ICRNKV .EQ. 0 ) THEN		      IF ( GAMMAN .LT. GLCUT .AND. ICRNKV .EQ. 0 ) THEN
+        IF (DEBUG)						        IF (DEBUG)
+     *    WRITE(MDEBUG,*) 'UPDATE: PARTICLE ',ITYPE,' BELOW E	     *    WRITE(MDEBUG,*) 'UPDATE: PARTICLE ',ITYPE,' BELOW E
+     *                   ,' CERENKOV LIGHT NOT CALCULATED'	     *                   ,' CERENKOV LIGHT NOT CALCULATED'
+        RETURN							        RETURN
+      ENDIF							      ENDIF
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  CHARGED PARTICLES SUFFER IONIZATION LOSS, DEFLECTION IN MA	C  CHARGED PARTICLES SUFFER IONIZATION LOSS, DEFLECTION IN MA
+C  FIELD AND MUONS IN ADDITION DO MULTIPLE COULOMB SCATTERING	C  FIELD AND MUONS IN ADDITION DO MULTIPLE COULOMB SCATTERING
+ 								 
+      IF ( SIGNUM(ITYPE) .NE. 0.D0 ) THEN			      IF ( SIGNUM(ITYPE) .NE. 0.D0 ) THEN
+C  DEFLECTION IN EARTH MAGNETIC FIELD ON FIRST HALF OF STEP	C  DEFLECTION IN EARTH MAGNETIC FIELD ON FIRST HALF OF STEP
+        ALPHA1 = SIGNUM(ITYPE) *				        ALPHA1 = SIGNUM(ITYPE) *
+     *         MIN( 1.D0, 2.D0*SN1*BNORMC /(PAMA(ITYPE)*BETA*	     *         MIN( 1.D0, 2.D0*SN1*BNORMC /(PAMA(ITYPE)*BETA*
+        SINTH1 = SQRT( 1.D0 - COSTHE**2 )			        SINTH1 = SQRT( 1.D0 - COSTHE**2 )
+        U10    = SINTH1 * COS(-PHI)				        U10    = SINTH1 * COS(-PHI)
+        V10    = SINTH1 * SIN(-PHI)				        V10    = SINTH1 * SIN(-PHI)
+        W10    = COSTHE						        W10    = COSTHE
+        FNORM1 = 1.D0 - 0.5D0*ALPHA1**2 * (1.D0 - 0.75D0*ALPH	        FNORM1 = 1.D0 - 0.5D0*ALPHA1**2 * (1.D0 - 0.75D0*ALPH
+        F1COS1 = ( 1.D0 - FNORM1 ) * COSB			        F1COS1 = ( 1.D0 - FNORM1 ) * COSB
+        F1SIN1 = ( 1.D0 - FNORM1 ) * SINB			        F1SIN1 = ( 1.D0 - FNORM1 ) * SINB
+        VVV = V10 * ALPHA1 * FNORM1				        VVV = V10 * ALPHA1 * FNORM1
+        U12 = U10 * (1.D0 - F1SIN1*SINB) + W10*F1SIN1*COSB + 	        U12 = U10 * (1.D0 - F1SIN1*SINB) + W10*F1SIN1*COSB + 
+        V12 = FNORM1 * ( V10 - ALPHA1 * (U10 * SINB - W10 * C	        V12 = FNORM1 * ( V10 - ALPHA1 * (U10 * SINB - W10 * C
+        W12 = W10 * (1.D0 - F1COS1*COSB) + U10*F1COS1*SINB - 	        W12 = W10 * (1.D0 - F1COS1*COSB) + U10*F1COS1*SINB - 
+        RADINV = 1.5D0 - 0.5D0 * ( U12**2 + V12**2 + W12**2 )	        RADINV = 1.5D0 - 0.5D0 * ( U12**2 + V12**2 + W12**2 )
+        W12 = MIN( 1.D0, RADINV * W12 )				        W12 = MIN( 1.D0, RADINV * W12 )
+        IF ( W12 .LE. C(29) ) THEN				        IF ( W12 .LE. C(29) ) THEN
+          IF (DEBUG)						          IF (DEBUG)
+     *    WRITE(MDEBUG,*) 'UPDATE: PARTICLE ',ITYPE,' BELOW A	     *    WRITE(MDEBUG,*) 'UPDATE: PARTICLE ',ITYPE,' BELOW A
+          RETURN						          RETURN
+        ENDIF							        ENDIF
+        SN2 = 0.25D0 * DH / W12					        SN2 = 0.25D0 * DH / W12
+        U12 = RADINV * U12					        U12 = RADINV * U12
+        V12 = RADINV * V12					        V12 = RADINV * V12
+        IF ( U12**2 + V12**2 .GT. 3.D-38 ) THEN			        IF ( U12**2 + V12**2 .GT. 3.D-38 ) THEN
+          PHI1 = -ATAN2( V12, U12 )				          PHI1 = -ATAN2( V12, U12 )
+        ELSE							        ELSE
+          PHI1 = 0.D0						          PHI1 = 0.D0
+        ENDIF							        ENDIF
+C  CERENKOV RADIATION: FILL PARTICLE COORDINATES INTO COMMON 	C  CERENKOV RADIATION: FILL PARTICLE COORDINATES INTO COMMON 
+        IF ( ICRNKV .EQ. 1 ) THEN				        IF ( ICRNKV .EQ. 1 ) THEN
+          XPART = X + SN1 * U10 + SN2 * U12			          XPART = X + SN1 * U10 + SN2 * U12
+          YPART = Y - SN1 * V10 - SN2 * V12			          YPART = Y - SN1 * V10 - SN2 * V12
+          TPART = T + ( SN1 + SN2 ) / ( C(25) * BETA )		          TPART = T + ( SN1 + SN2 ) / ( C(25) * BETA )
+          ZPART = H - DH * 0.5D0				          ZPART = H - DH * 0.5D0
+          WPART = W12						          WPART = W12
+          UPART = U12						          UPART = U12
+          VPART = -V12						          VPART = -V12
+          CALL CERENH( SN1+SN2, BETA )				          CALL CERENH( SN1+SN2, BETA )
+        ENDIF							        ENDIF
+ 								 
+C  CHANGE DIRECTION BY COULOMB SCATTERING (FOR MUONS ONLY)	C  CHANGE DIRECTION BY COULOMB SCATTERING (FOR MUONS ONLY)
+C  BEFORE SCATTERING : DIRECTION COSINES ARE U12,V12,W12	C  BEFORE SCATTERING : DIRECTION COSINES ARE U12,V12,W12
+C  AFTER  SCATTERING : DIRECTION COSINES ARE U20,V20,W20	C  AFTER  SCATTERING : DIRECTION COSINES ARE U20,V20,W20
+        IF ( MUS ) THEN						        IF ( MUS ) THEN
+          CALL ADDANG( W12,PHI1, COS(V),PHISCT, W20,PHI1 )	          CALL ADDANG( W12,PHI1, COS(V),PHISCT, W20,PHI1 )
+          IF ( W20 .LT. C(29) ) THEN				          IF ( W20 .LT. C(29) ) THEN
+            IF (DEBUG) WRITE(MDEBUG,*) 'UPDATE: MUON BELOW AN	            IF (DEBUG) WRITE(MDEBUG,*) 'UPDATE: MUON BELOW AN
+            RETURN						            RETURN
+          ENDIF							          ENDIF
+          SINTH2 = SQRT( 1.D0 - W20**2 )			          SINTH2 = SQRT( 1.D0 - W20**2 )
+          U20    = SINTH2 * COS( -PHI1 )			          U20    = SINTH2 * COS( -PHI1 )
+          V20    = SINTH2 * SIN( -PHI1 )			          V20    = SINTH2 * SIN( -PHI1 )
+        ELSE							        ELSE
+          U20    = U12						          U20    = U12
+          V20    = V12						          V20    = V12
+          W20    = W12						          W20    = W12
+        ENDIF							        ENDIF
+ 								 
+C  NEW PATH LENGTH, NEW BETA VALUE BECAUSE OF IONIZATION ENER	C  NEW PATH LENGTH, NEW BETA VALUE BECAUSE OF IONIZATION ENER
+        SN3    = 0.25D0 * DH / W20				        SN3    = 0.25D0 * DH / W20
+        BETAN  = SQRT( GAMMAN**2 - 1.D0 ) / GAMMAN		        BETAN  = SQRT( GAMMAN**2 - 1.D0 ) / GAMMAN
+C  DEFLECTION IN EARTH MAGNETIC FIELD ON SECOND HALF OF STEP	C  DEFLECTION IN EARTH MAGNETIC FIELD ON SECOND HALF OF STEP
+        ALPHA2 = SIGNUM(ITYPE) *				        ALPHA2 = SIGNUM(ITYPE) *
+     *           MIN(1.D0,2.D0*SN3*BNORMC / (PAMA(ITYPE)*BETA	     *           MIN(1.D0,2.D0*SN3*BNORMC / (PAMA(ITYPE)*BETA
+        FNORM2 = 1.D0 - 0.5D0*ALPHA2**2 * (1.D0 - 0.75D0*ALPH	        FNORM2 = 1.D0 - 0.5D0*ALPHA2**2 * (1.D0 - 0.75D0*ALPH
+        F1SIN2 = ( 1.D0 - FNORM2 ) * SINB			        F1SIN2 = ( 1.D0 - FNORM2 ) * SINB
+        F1COS2 = ( 1.D0 - FNORM2 ) * COSB			        F1COS2 = ( 1.D0 - FNORM2 ) * COSB
+        VVV = V20 * ALPHA2 * FNORM2				        VVV = V20 * ALPHA2 * FNORM2
+        U22 = U20*(1.D0 - F1SIN2*SINB) + W20*F1SIN2*COSB + VV	        U22 = U20*(1.D0 - F1SIN2*SINB) + W20*F1SIN2*COSB + VV
+        V22 = FNORM2 * ( V20 - ALPHA2 * (U20 * SINB - W20 * C	        V22 = FNORM2 * ( V20 - ALPHA2 * (U20 * SINB - W20 * C
+        W22 = W20*(1.D0 - F1COS2*COSB) + U20*F1COS2*SINB - VV	        W22 = W20*(1.D0 - F1COS2*COSB) + U20*F1COS2*SINB - VV
+        RADINV = 1.5D0 - 0.5D0 * ( U22**2 + V22**2 + W22**2 )	        RADINV = 1.5D0 - 0.5D0 * ( U22**2 + V22**2 + W22**2 )
+        W22 = MIN( 1.D0, RADINV * W22 )				        W22 = MIN( 1.D0, RADINV * W22 )
+        IF ( W22 .LT. C(29) ) THEN				        IF ( W22 .LT. C(29) ) THEN
+          IF (DEBUG)						          IF (DEBUG)
+     *    WRITE(MDEBUG,*) 'UPDATE: PARTICLE ',ITYPE,' BELOW A	     *    WRITE(MDEBUG,*) 'UPDATE: PARTICLE ',ITYPE,' BELOW A
+          RETURN						          RETURN
+        ENDIF							        ENDIF
+        SN4 = 0.25D0 * DH / W22					        SN4 = 0.25D0 * DH / W22
+        U22 = RADINV * U22					        U22 = RADINV * U22
+        V22 = RADINV * V22					        V22 = RADINV * V22
+        OUTPAR(3) = W22						        OUTPAR(3) = W22
+        IF ( U22**2 + V22**2 .GT. 3.D-38 ) THEN			        IF ( U22**2 + V22**2 .GT. 3.D-38 ) THEN
+          OUTPAR(4) = -ATAN2( V22, U22 )			          OUTPAR(4) = -ATAN2( V22, U22 )
+        ELSE							        ELSE
+          OUTPAR(4) = 0.D0					          OUTPAR(4) = 0.D0
+        ENDIF							        ENDIF
+C  UPDATE COORDINATES AND TIME TO THE END OF DISTANCE		C  UPDATE COORDINATES AND TIME TO THE END OF DISTANCE
+        IF ( TFLAG ) THEN					        IF ( TFLAG ) THEN
+          OUTPAR(6) = T + DT* ( RATIO*GAMMA + (1.D0-RATIO)*GA	          OUTPAR(6) = T + DT* ( RATIO*GAMMA + (1.D0-RATIO)*GA
+        ELSE							        ELSE
+          OUTPAR(6) = T + (SN1 + SN2)/(BETA *C(25)) +		          OUTPAR(6) = T + (SN1 + SN2)/(BETA *C(25)) +
+     *                    (SN3 + SN4)/(BETAN*C(25))		     *                    (SN3 + SN4)/(BETAN*C(25))
+        ENDIF							        ENDIF
+        OUTPAR(7) = X + SN1*U10 + SN2*U12 + SN3*U20 + SN4*U22	        OUTPAR(7) = X + SN1*U10 + SN2*U12 + SN3*U20 + SN4*U22
+        OUTPAR(8) = Y - SN1*V10 - SN2*V12 - SN3*V20 - SN4*V22	        OUTPAR(8) = Y - SN1*V10 - SN2*V12 - SN3*V20 - SN4*V22
+C  CERENKOV RADIATION: FILL PARTICLE COORDINATES INTO COMMON 	C  CERENKOV RADIATION: FILL PARTICLE COORDINATES INTO COMMON 
+        IF ( ICRNKV .EQ. 1 ) THEN				        IF ( ICRNKV .EQ. 1 ) THEN
+          XPART = OUTPAR(7)					          XPART = OUTPAR(7)
+          YPART = OUTPAR(8)					          YPART = OUTPAR(8)
+          ZPART = HNEW						          ZPART = HNEW
+          TPART = OUTPAR(6)					          TPART = OUTPAR(6)
+          WPART = W22						          WPART = W22
+          UPART = U22						          UPART = U22
+          VPART = -V22						          VPART = -V22
+          CALL CERENH( SN3+SN4, BETAN )				          CALL CERENH( SN3+SN4, BETAN )
+C  REJECT PARTICLES AFTER PRODUCTION OF CERENKOV LIGHT		C  REJECT PARTICLES AFTER PRODUCTION OF CERENKOV LIGHT
+          IF ( GAMMAN .LT. GLCUT ) THEN				          IF ( GAMMAN .LT. GLCUT ) THEN
+            IF (DEBUG) WRITE(MDEBUG,*) 'UPDATE: PARTICLE ',IT	            IF (DEBUG) WRITE(MDEBUG,*) 'UPDATE: PARTICLE ',IT
+     *           ' BELOW ENERGY CUT AFTER CREATION OF CERENKO	     *           ' BELOW ENERGY CUT AFTER CREATION OF CERENKO
+            RETURN						            RETURN
+          ENDIF							          ENDIF
+        ENDIF							        ENDIF
+      ELSE							      ELSE
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  NEUTRAL PARTICLES						C  NEUTRAL PARTICLES
+C  NO COULOMB SCATTERING, NO DEFLECTION IN MAGNETIC FIELD	C  NO COULOMB SCATTERING, NO DEFLECTION IN MAGNETIC FIELD
+ 								 
+C  HORIZONTAL PATH LENGTH					C  HORIZONTAL PATH LENGTH
+        DR        = SN * SQRT( 1.D0 - COSTHE**2 )		        DR        = SN * SQRT( 1.D0 - COSTHE**2 )
+C  UPDATE COORDINATES AND TIME					C  UPDATE COORDINATES AND TIME
+        OUTPAR(3) = COSTHE					        OUTPAR(3) = COSTHE
+        OUTPAR(4) = PHI						        OUTPAR(4) = PHI
+        OUTPAR(6) = T + SN / ( C(25) * BETA )			        OUTPAR(6) = T + SN / ( C(25) * BETA )
+        OUTPAR(7) = X + DR * COS(PHI)				        OUTPAR(7) = X + DR * COS(PHI)
+        OUTPAR(8) = Y + DR * SIN(PHI)				        OUTPAR(8) = Y + DR * SIN(PHI)
+      ENDIF							      ENDIF
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+      OUTPAR( 1) = CURPAR(1)					      OUTPAR( 1) = CURPAR(1)
+      OUTPAR( 2) = GAMMAN					      OUTPAR( 2) = GAMMAN
+      OUTPAR( 5) = HNEW						      OUTPAR( 5) = HNEW
+      OUTPAR( 9) = GEN						      OUTPAR( 9) = GEN
+      OUTPAR(10) = ALEVEL					      OUTPAR(10) = ALEVEL
+ 								 
+C  REGULAR END OF UPDATE					C  REGULAR END OF UPDATE
+      IRET2 = 0							      IRET2 = 0
+ 								 
+ 								 
+      IF (DEBUG) WRITE(MDEBUG,458) (OUTPAR(I),I=1,9)		      IF (DEBUG) WRITE(MDEBUG,458) (OUTPAR(I),I=1,9)
+  458 FORMAT(' UPDATE: OUTPAR=',1P,9E10.3)			  458 FORMAT(' UPDATE: OUTPAR=',1P,9E10.3)
+ 								 
+      RETURN							      RETURN
+      END							      END

@@ -1,0 +1,48 @@
+41c41
+<  
+---
+> 
+43,45c43,44
+<       INTEGER          IJAHR,MONAT,ITAGE,ISTUN,IMINU,ISEK,ISECO
+<       REAL             SECNDS
+<       character*80 line
+---
+>       INTEGER ID, IT, ISL1, ISL2, ISL3, ISL4, ISL5, ISL6
+> 
+48,65c47,54
+< c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+< c Forget all this: we just call a routine in C
+< c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+< c      CALL IDATE( MONAT,ITAGE,IJAHR )
+< c      ISECO   = INT(SECNDS(0.0))
+< c      TTIME = MOD(IJAHR,100)*10000 + MONAT*100 + ITAGE
+< C  SECONDS, MINUTS, HOURS, YEAR
+< c      ISEK  = MOD(ISECO,60)
+< c      ISECO = ISECO/60
+< c      IMINU = MOD(ISECO,60)
+< c      ISECO = ISECO/60
+< c      ISTUN = MOD(ISECO,24)
+< c      WRITE(MONIOU,100) ITAGE,MONAT,IJAHR,ISTUN,IMINU,ISEK
+< c 100  FORMAT(' PRESENT TIME : ',I2,'.',I2,'.',I4,I4,':',I2,':',I2)
+< 
+<       ttime = 0.0
+<       call jcdate
+< c>      write(MONIOU,*) line
+---
+> C call jcdate (modified version 13-10-98)
+>       CALL jcdate(ID, IT, ISL1, ISL2, ISL3, ISL4, ISL5, ISL6)
+>       ttime = DBLE(ID)
+>       
+> C format dd, mm, yy, hh, mm, ss
+>       WRITE(MONIOU,100) ISL3,ISL2,ISL1,ISL4,ISL5,ISL6
+>  100  FORMAT(' PRESENT TIME : ',
+>      *     I2,'.',I2.2,'.',I2.2,I4,':',I2.2,':',I2.2)
+70a60,67
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 

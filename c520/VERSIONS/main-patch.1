@@ -1,0 +1,25 @@
+Only in .: main-patch.1
+diff -C 2 ../old/main.f ./main.f
+*** ../old/main.f	Tue Jul 28 11:37:07 1998
+--- ./main.f	Tue Jul 28 11:36:57 1998
+***************
+*** 454,462 ****
+       +     '   Rmin = ',F10.0,'   Rmax = ',F10.0)
+          DO 4438 I=1,ICERML
+!           CALL RMMAR( RD,2,3 )
+!           CERXOS(I) = (XSCATT+(YSCATT-XSCATT)*RD(1))*
+!      +         COS(RD(2)*6.28318530718)
+!           CERYOS(I) = (XSCATT+(YSCATT-XSCATT)*RD(1))*
+!      +         SIN(RD(2)*6.28318530718)
+            WRITE(MONIOU,4437) I,CERXOS(I),CERYOS(I)
+   4437     FORMAT('    CORE OF EVENT ',I2,'  AT  ',2F12.2)
+--- 454,462 ----
+       +     '   Rmin = ',F10.0,'   Rmax = ',F10.0)
+          DO 4438 I=1,ICERML
+!  5226     CALL RMMAR( RD,2,3 )
+!           CERXOS(I) = 2.0*YSCATT*(RD(1)-0.5)
+!           CERYOS(I) = 2.0*YSCATT*(RD(1)-0.5)
+!           R=SQRT(CERXOS(I)**2+CERYOS(I)**2)
+!           IF ((R.LT.XSCATT).OR.(R.GT.YSCATT)) GOTO 5226
+            WRITE(MONIOU,4437) I,CERXOS(I),CERYOS(I)
+   4437     FORMAT('    CORE OF EVENT ',I2,'  AT  ',2F12.2)

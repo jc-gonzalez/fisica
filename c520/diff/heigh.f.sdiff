@@ -1,0 +1,113 @@
+C============================================================	C============================================================
+
+      DOUBLE PRECISION FUNCTION HEIGH( ARG )			      DOUBLE PRECISION FUNCTION HEIGH( ARG )
+
+C------------------------------------------------------------	C------------------------------------------------------------
+C  HEIGH(T AS FUNCTION OF THICKNESS)				C  HEIGH(T AS FUNCTION OF THICKNESS)
+C								C
+C  CALCULATES HEIGHT DEPENDING ON THICKNESS OF ATMOSPHERE	C  CALCULATES HEIGHT DEPENDING ON THICKNESS OF ATMOSPHERE
+C  (US STANDARD ATMOSPHERE)					C  (US STANDARD ATMOSPHERE)
+C  THIS FUNCTION IS CALLED FROM MAIN, BOX2, BOX3, ININKG, INP	C  THIS FUNCTION IS CALLED FROM MAIN, BOX2, BOX3, ININKG, INP
+C  MUTRAC, AND UPDATE						C  MUTRAC, AND UPDATE
+C  ARGUMENT:							C  ARGUMENT:
+C   ARG    = MASS OVERLAY IN G/CM**2				C   ARG    = MASS OVERLAY IN G/CM**2
+C------------------------------------------------------------	C------------------------------------------------------------
+
+      IMPLICIT NONE						      IMPLICIT NONE
+
+*KEEP,ATMOS.							*KEEP,ATMOS.
+      COMMON /ATMOS/   AATM,BATM,CATM,DATM			      COMMON /ATMOS/   AATM,BATM,CATM,DATM
+      DOUBLE PRECISION AATM(5),BATM(5),CATM(5),DATM(5)		      DOUBLE PRECISION AATM(5),BATM(5),CATM(5),DATM(5)
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+c Try								c Try
+c------------------------------------------------------------	c------------------------------------------------------------
+*KEEP,PARPAR.							*KEEP,PARPAR.
+      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,		      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,
+     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE	     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE
+      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA	      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA
+     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH	     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH
+      INTEGER          ITYPE,LEVL				      INTEGER          ITYPE,LEVL
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+*KEND.								*KEND.
+C************************************************************	C************************************************************
+C     Modificado por Aitor (5-febrero-98)			C     Modificado por Aitor (5-febrero-98)
+      								      
+      common /aitor/   aitoth					      common /aitor/   aitoth
+      double precision aitoth					      double precision aitoth
+C************************************************************	C************************************************************
+
+
+      DOUBLE PRECISION ARG,H,R,RT				      DOUBLE PRECISION ARG,H,R,RT
+      PARAMETER (RT=6348.0D5)					      PARAMETER (RT=6348.0D5)
+
+C------------------------------------------------------------	C------------------------------------------------------------
+
+CC    IF ( DEBUG ) WRITE(MDEBUG,*) 'HEIGH : ARG=',SNGL(ARG)	CC    IF ( DEBUG ) WRITE(MDEBUG,*) 'HEIGH : ARG=',SNGL(ARG)
+
+							      >
+							      >	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+							      >	c>> Modification (HZA trick) cancelled >>>>>>>>>>>>>>>>>>>>>>
+							      >	c>> JCG Wed Sep 21 10:49:14 MET DST 1998 >>>>>>>>>>>>>>>>>>>>
+							      >	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+      IF     ( ARG .GT. 631.1D0 ) THEN				      IF     ( ARG .GT. 631.1D0 ) THEN
+        H = CATM(1) * LOG ( BATM(1) / (ARG - AATM(1)) )	      |	        HEIGH = CATM(1) * LOG ( BATM(1) / (ARG - AATM(1)) )
+      ELSEIF ( ARG .GT. 271.7D0 ) THEN				      ELSEIF ( ARG .GT. 271.7D0 ) THEN
+        H = CATM(2) * LOG ( BATM(2) / (ARG - AATM(2)) )	      |	        HEIGH = CATM(2) * LOG ( BATM(2) / (ARG - AATM(2)) )
+      ELSEIF ( ARG .GT. 3.0395D0 ) THEN				      ELSEIF ( ARG .GT. 3.0395D0 ) THEN
+        H = CATM(3) * LOG ( BATM(3) / (ARG - AATM(3)) )	      |	        HEIGH = CATM(3) * LOG ( BATM(3) / (ARG - AATM(3)) )
+      ELSEIF ( ARG .GT. 0.00128292D0 ) THEN			      ELSEIF ( ARG .GT. 0.00128292D0 ) THEN
+        H = CATM(4) * LOG ( BATM(4) / (ARG - AATM(4)) )	      |	        HEIGH = CATM(4) * LOG ( BATM(4) / (ARG - AATM(4)) )
+      ELSE							      ELSE
+        H = (AATM(5) - ARG) * DATM(5)			      |	        HEIGH = (AATM(5) - ARG) * DATM(5)
+      ENDIF							      ENDIF
+ 							      |	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+C************************************************************ |	c      IF     ( ARG .GT. 631.1D0 ) THEN
+C     Modificacion hecha por Aitor (5-febrero-98)	      |	c        H = CATM(1) * LOG ( BATM(1) / (ARG - AATM(1)) )
+							      |	c      ELSEIF ( ARG .GT. 271.7D0 ) THEN
+      HEIGH = (COS(aitoth))**2 * (-RT + SQRT(RT**2 + 	      |	c        H = CATM(2) * LOG ( BATM(2) / (ARG - AATM(2)) )
+     * ((H**2 + (2.0D0*RT*H))/(COS(aitoth))**2)))	      |	c      ELSEIF ( ARG .GT. 3.0395D0 ) THEN
+							      >	c        H = CATM(3) * LOG ( BATM(3) / (ARG - AATM(3)) )
+							      >	c      ELSEIF ( ARG .GT. 0.00128292D0 ) THEN
+							      >	c        H = CATM(4) * LOG ( BATM(4) / (ARG - AATM(4)) )
+							      >	c      ELSE
+							      >	c        H = (AATM(5) - ARG) * DATM(5)
+							      >	c      ENDIF
+							      >	c
+							      >	cC***********************************************************
+							      >	cC     Modificacion hecha por Aitor (5-febrero-98)
+							      >	c
+							      >	c      HEIGH = (COS(aitoth))**2 * (-RT + SQRT(RT**2 + 
+							      >	c     * ((H**2 + (2.0D0*RT*H))/(COS(aitoth))**2)))
+							      >	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+C************************************************************	C************************************************************
+
+C      R = SQRT(CURPAR(7)**2+CURPAR(8)**2)			C      R = SQRT(CURPAR(7)**2+CURPAR(8)**2)
+C      HEIGH = SQRT((RT+H)**2-R**2)-RT				C      HEIGH = SQRT((RT+H)**2-R**2)-RT
+c      print *,'HEIGH>>',ARG,r,heigh,curpar(7),curpar(8)	c      print *,'HEIGH>>',ARG,r,heigh,curpar(7),curpar(8)
+
+      RETURN							      RETURN
+      END							      END

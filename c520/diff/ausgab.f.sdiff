@@ -1,0 +1,87 @@
+      SUBROUTINE AUSGAB						      SUBROUTINE AUSGAB
+C								C
+C************************************************************	C************************************************************
+C  DESIGN  : D. HECK   IK3  FZK KARLSRUHE			C  DESIGN  : D. HECK   IK3  FZK KARLSRUHE
+C************************************************************	C************************************************************
+C  WE USE AUSGAB TO FILL OUTPAR WITH PARTICLE COORDINATES.	C  WE USE AUSGAB TO FILL OUTPAR WITH PARTICLE COORDINATES.
+C************************************************************	C************************************************************
+*KEEP,GENER.							*KEEP,GENER.
+      COMMON /GENER/   GEN,ALEVEL				      COMMON /GENER/   GEN,ALEVEL
+      DOUBLE PRECISION GEN,ALEVEL				      DOUBLE PRECISION GEN,ALEVEL
+*KEND.								*KEND.
+      COMMON/MISC/KMPI,KMPO,DUNIT,NOSCAT,MED(6),RHOR(6),IRAYL	      COMMON/MISC/KMPI,KMPO,DUNIT,NOSCAT,MED(6),RHOR(6),IRAYL
+*KEEP,PARPAR.							*KEEP,PARPAR.
+      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,		      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,
+     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE	     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE
+      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA	      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA
+     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH	     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH
+      INTEGER          ITYPE,LEVL				      INTEGER          ITYPE,LEVL
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEEP,STACKE.							*KEEP,STACKE.
+      COMMON/STACKE/   E,TIME,X,Y,Z,U,V,W,DNEAR,IQ,IGEN,IR,IO	      COMMON/STACKE/   E,TIME,X,Y,Z,U,V,W,DNEAR,IQ,IGEN,IR,IO
+      DOUBLE PRECISION E(60),TIME(60)				      DOUBLE PRECISION E(60),TIME(60)
+      REAL             X(60),Y(60),Z(60),U(60),V(60),W(60),DN	      REAL             X(60),Y(60),Z(60),U(60),V(60),W(60),DN
+      INTEGER          IQ(60),IGEN(60),IR(60),IOBS(60),LPCTE(	      INTEGER          IQ(60),IGEN(60),IR(60),IOBS(60),LPCTE(
+*KEND.								*KEND.
+      COMMON/UPHIOT/THETA,SINTHE,COSTHE,SINPHI, COSPHI,PI,TWO	      COMMON/UPHIOT/THETA,SINTHE,COSTHE,SINPHI, COSPHI,PI,TWO
+      DOUBLE PRECISION PZERO,PRM,PRMT2,RMI,VC			      DOUBLE PRECISION PZERO,PRM,PRMT2,RMI,VC
+      COMMON/USEFUL/PZERO,PRM,PRMT2,RMI,VC,RM,MEDIUM,MEDOLD,I	      COMMON/USEFUL/PZERO,PRM,PRMT2,RMI,VC,RM,MEDIUM,MEDOLD,I
+      COMMON/ACLOCK/NCLOCK,JCLOCK				      COMMON/ACLOCK/NCLOCK,JCLOCK
+      NOBS=IOBS(NP)						      NOBS=IOBS(NP)
+C*** ANGLE WITH RESPECT TO X AXIS				C*** ANGLE WITH RESPECT TO X AXIS
+      IF (U(NP)**2+V(NP)**2.GT.3.E-38) THEN			      IF (U(NP)**2+V(NP)**2.GT.3.E-38) THEN
+       ANGLEX = -ATAN2(V(NP),U(NP))				       ANGLEX = -ATAN2(V(NP),U(NP))
+      ELSE							      ELSE
+       ANGLEX = 0.						       ANGLEX = 0.
+      END IF							      END IF
+C***  PARTICLE IS WRITTEN IN OUTPUT BUFFER ARRAY		C***  PARTICLE IS WRITTEN IN OUTPUT BUFFER ARRAY
+      OUTPAR(1)=IQ(NP)						      OUTPAR(1)=IQ(NP)
+      OUTPAR(2)=E(NP)*0.001D0					      OUTPAR(2)=E(NP)*0.001D0
+      OUTPAR(3)=W(NP)						      OUTPAR(3)=W(NP)
+      OUTPAR(4)=ANGLEX						      OUTPAR(4)=ANGLEX
+      OUTPAR(5)=-Z(NP)						      OUTPAR(5)=-Z(NP)
+      OUTPAR(6)=TIME(NP)					      OUTPAR(6)=TIME(NP)
+      OUTPAR(7)=X(NP)						      OUTPAR(7)=X(NP)
+      OUTPAR(8)=-Y(NP)						      OUTPAR(8)=-Y(NP)
+      OUTPAR(9)=IGEN(NP)					      OUTPAR(9)=IGEN(NP)
+      OUTPAR(10)=ALEVEL						      OUTPAR(10)=ALEVEL
+      LEVL=NOBS							      LEVL=NOBS
+      CALL OUTPUT						      CALL OUTPUT
+      IF (DEBUG.OR.(JCLOCK.GT.1 .AND. NCLOCK.GT.JCLOCK)) THEN	      IF (DEBUG.OR.(JCLOCK.GT.1 .AND. NCLOCK.GT.JCLOCK)) THEN
+       WRITE(MDEBUG,* )'AUSGAB: NP=',NP,' IR=',IR(NP),' IOBS=	       WRITE(MDEBUG,* )'AUSGAB: NP=',NP,' IR=',IR(NP),' IOBS=
+       XX=X(NP)							       XX=X(NP)
+       YY=-Y(NP)						       YY=-Y(NP)
+       ZZ=-Z(NP)						       ZZ=-Z(NP)
+       ANGLEZ=W(NP)						       ANGLEZ=W(NP)
+       ANGLX=ANGLEX						       ANGLX=ANGLEX
+       ETOT=E(NP)*.001						       ETOT=E(NP)*.001
+       WRITE(KMPO,170) IQ(NP),ETOT,ANGLEZ,ANGLX,ZZ,TIME(NP)*1	       WRITE(KMPO,170) IQ(NP),ETOT,ANGLEZ,ANGLX,ZZ,TIME(NP)*1
+     *  IGEN(NP)						     *  IGEN(NP)
+170    FORMAT(' AUSGAB:',10X,I4,1X,F10.4,1X,F7.4,1X,F7.4,1X,F	170    FORMAT(' AUSGAB:',10X,I4,1X,F10.4,1X,F7.4,1X,F7.4,1X,F
+     *   1X,F10.1,1X,F10.1,1X,I3				     *   1X,F10.1,1X,F10.1,1X,I3
+     * )							     * )
+      END IF							      END IF
+      RETURN							      RETURN
+      END							      END

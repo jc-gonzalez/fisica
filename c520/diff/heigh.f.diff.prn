@@ -1,0 +1,55 @@
+heigh.f.diff
+=========================================================
+69a70,74
+> 
+> c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+> c>> Modification (HZA trick) cancelled >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+> c>> JCG Wed Sep 21 10:49:14 MET DST 1998 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+> c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+71c76
+<         H = CATM(1) * LOG ( BATM(1) / (ARG - AATM(1)) )
+---
+>         HEIGH = CATM(1) * LOG ( BATM(1) / (ARG - AATM(1)) )
+73c78
+<         H = CATM(2) * LOG ( BATM(2) / (ARG - AATM(2)) )
+---
+>         HEIGH = CATM(2) * LOG ( BATM(2) / (ARG - AATM(2)) )
+75c80
+<         H = CATM(3) * LOG ( BATM(3) / (ARG - AATM(3)) )
+---
+>         HEIGH = CATM(3) * LOG ( BATM(3) / (ARG - AATM(3)) )
+77c82
+<         H = CATM(4) * LOG ( BATM(4) / (ARG - AATM(4)) )
+---
+>         HEIGH = CATM(4) * LOG ( BATM(4) / (ARG - AATM(4)) )
+79c84
+<         H = (AATM(5) - ARG) * DATM(5)
+---
+>         HEIGH = (AATM(5) - ARG) * DATM(5)
+81,86c86,104
+<  
+< C************************************************************************
+< C     Modificacion hecha por Aitor (5-febrero-98)
+< 
+<       HEIGH = (COS(aitoth))**2 * (-RT + SQRT(RT**2 + 
+<      * ((H**2 + (2.0D0*RT*H))/(COS(aitoth))**2)))
+---
+> c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+> c      IF     ( ARG .GT. 631.1D0 ) THEN
+> c        H = CATM(1) * LOG ( BATM(1) / (ARG - AATM(1)) )
+> c      ELSEIF ( ARG .GT. 271.7D0 ) THEN
+> c        H = CATM(2) * LOG ( BATM(2) / (ARG - AATM(2)) )
+> c      ELSEIF ( ARG .GT. 3.0395D0 ) THEN
+> c        H = CATM(3) * LOG ( BATM(3) / (ARG - AATM(3)) )
+> c      ELSEIF ( ARG .GT. 0.00128292D0 ) THEN
+> c        H = CATM(4) * LOG ( BATM(4) / (ARG - AATM(4)) )
+> c      ELSE
+> c        H = (AATM(5) - ARG) * DATM(5)
+> c      ENDIF
+> c
+> cC************************************************************************
+> cC     Modificacion hecha por Aitor (5-febrero-98)
+> c
+> c      HEIGH = (COS(aitoth))**2 * (-RT + SQRT(RT**2 + 
+> c     * ((H**2 + (2.0D0*RT*H))/(COS(aitoth))**2)))
+> c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

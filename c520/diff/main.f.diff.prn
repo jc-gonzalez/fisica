@@ -1,0 +1,57 @@
+main.f.diff
+=========================================================
+14d13
+<       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+25c24
+< 
+---
+>       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+329,335c328
+< *********************************************************
+< * Modificacion hecha para sacar el valor de la energia del 
+< * electron y del gamma despues de la primera interaccion.
+< *  Aitor 7-marzo-2000
+<       COMMON/ENEBRE/aitcoun
+<       INTEGER aitcoun
+< **********************************************************
+---
+> 
+448,453c441
+< **********************************************************
+< * Modificacion hecha para sacar el valor de la energia del 
+< * electron y del gamma despues de la primera interaccion.
+< *  Aitor 7-marzo-2000
+<         aitcoun = 1
+< ***********************************************************
+---
+>  
+485c473
+<           if (prmpar(1).eq.1.and.(r.gt.0.0)) then
+---
+>           if (prmpar(1) .eq. 1) then
+753c741
+<         spinthe = RD(2)*spinxi*pi/180.
+---
+>         spinthe = RD(2)*spinxi*pi/180
+776c764
+< c>> Modification (HZA trick) not cancelled >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+---
+> c>> Modification (HZA trick) cancelled >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+781c769
+<         aitoth = THETAP
+---
+> c         aitoth = THETAP
+797d784
+<         print *,'ENERGY_1 = ',PRMPAR(2)
+802d788
+<         print *,'ENERGY_2 = ',PRMPAR(2)
+924,928d909
+< C********* Aitor Ibarra Ibaibarriaga 7-4-2000***********************
+< C  CORSIKA Bug detected by Dieter Heck. This error was important for 
+< C  the longitudinal development (variable llongi).
+<           if ( llongi ) lpct1 = 1
+< C*********** END ************
+1310c1291
+< 
+---
+>  

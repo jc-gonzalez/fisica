@@ -1,0 +1,16 @@
+      SUBROUTINE UCOPY (A,B,N)					      SUBROUTINE UCOPY (A,B,N)
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C CERN PROGLIB# V301    UCOPY           .VERSION KERNFOR  1.0	C CERN PROGLIB# V301    UCOPY           .VERSION KERNFOR  1.0
+C ORIG. 01/01/65 JZ						C ORIG. 01/01/65 JZ
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      DIMENSION A(*),B(*)					      DIMENSION A(*),B(*)
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+C                  NO OVERLAP  OR  BEGINNING OF A ON END OF B	C                  NO OVERLAP  OR  BEGINNING OF A ON END OF B
+      IF (N.EQ.0) RETURN					      IF (N.EQ.0) RETURN
+         DO 21 I=1,N						         DO 21 I=1,N
+   21 B(I)=A(I)							   21 B(I)=A(I)
+      RETURN							      RETURN
+      END							      END

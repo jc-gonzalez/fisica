@@ -1,0 +1,57 @@
+      SUBROUTINE ISTACK						      SUBROUTINE ISTACK
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  I(NITIALIZE) STACK						C  I(NITIALIZE) STACK
+C								C
+C  PREPARES STACK AND EXTERNAL DISK FILE			C  PREPARES STACK AND EXTERNAL DISK FILE
+C  THIS SUBROUTINE IS CALLED FROM MAIN				C  THIS SUBROUTINE IS CALLED FROM MAIN
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,ETHMAP.							*KEEP,ETHMAP.
+      COMMON /ETHMAP/  ECTMAP,ELEFT				      COMMON /ETHMAP/  ECTMAP,ELEFT
+      DOUBLE PRECISION ECTMAP,ELEFT				      DOUBLE PRECISION ECTMAP,ELEFT
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEEP,STACKF.							*KEEP,STACKF.
+      COMMON /STACKF/  STACK,STACKP,EXST,NSHIFT,NOUREC,ICOUNT	      COMMON /STACKF/  STACK,STACKP,EXST,NSHIFT,NOUREC,ICOUNT
+      INTEGER          MAXSTK					      INTEGER          MAXSTK
+      PARAMETER        (MAXSTK = 12*340*2)			      PARAMETER        (MAXSTK = 12*340*2)
+      DOUBLE PRECISION STACK(MAXSTK)				      DOUBLE PRECISION STACK(MAXSTK)
+      INTEGER          STACKP,EXST,NSHIFT,NOUREC,ICOUNT,NTO,N	      INTEGER          STACKP,EXST,NSHIFT,NOUREC,ICOUNT,NTO,N
+*KEND.								*KEND.
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,*) 'ISTACK:'			      IF ( DEBUG ) WRITE(MDEBUG,*) 'ISTACK:'
+ 								 
+      NTO    = 0						      NTO    = 0
+      NFROM  = 0						      NFROM  = 0
+      NOUREC = 0						      NOUREC = 0
+      NSHIFT = 0						      NSHIFT = 0
+      STACKP = 0						      STACKP = 0
+      ELEFT  = 0.D0						      ELEFT  = 0.D0
+      ICOUNT = 1						      ICOUNT = 1
+      RETURN							      RETURN
+      END							      END

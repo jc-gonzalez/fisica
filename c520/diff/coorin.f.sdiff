@@ -1,0 +1,67 @@
+      SUBROUTINE COORIN( HEIGHT )				      SUBROUTINE COORIN( HEIGHT )
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  COOR(DINATE) IN(ITIALIZATION)				C  COOR(DINATE) IN(ITIALIZATION)
+C								C
+C  INITIALIZES COORDINATE CORRECTION FOR EACH OBSERVATION LEV	C  INITIALIZES COORDINATE CORRECTION FOR EACH OBSERVATION LEV
+C  ROUTINE SHOULD BE CALLED AFTER HEIGHT OF FIRST INTERACTION	C  ROUTINE SHOULD BE CALLED AFTER HEIGHT OF FIRST INTERACTION
+C  DETERMINED. X,Y COORDINATES OF 1. INERACTION ARE ASSUMED T	C  DETERMINED. X,Y COORDINATES OF 1. INERACTION ARE ASSUMED T
+C  THIS SUBROUTINE IS CALLED FROM MAIN, ELECTR, AND PHOTON	C  THIS SUBROUTINE IS CALLED FROM MAIN, ELECTR, AND PHOTON
+C  ARGUMENT:							C  ARGUMENT:
+C   HEIGHT = HEIGHT OF 1. INTERACTION				C   HEIGHT = HEIGHT OF 1. INTERACTION
+C								C
+C  AUTHOR  : J. KNAPP   IK1  FZK KARLSRUHE			C  AUTHOR  : J. KNAPP   IK1  FZK KARLSRUHE
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,OBSPAR.							*KEEP,OBSPAR.
+      COMMON /OBSPAR/  OBSLEV,THCKOB,XOFF,YOFF,THETAP,PHIP,	      COMMON /OBSPAR/  OBSLEV,THCKOB,XOFF,YOFF,THETAP,PHIP,
+     *                 THETPR,PHIPR,NOBSLV			     *                 THETPR,PHIPR,NOBSLV
+      DOUBLE PRECISION OBSLEV(10),THCKOB(10),XOFF(10),YOFF(10	      DOUBLE PRECISION OBSLEV(10),THCKOB(10),XOFF(10),YOFF(10
+     *                 THETAP,THETPR(2),PHIP,PHIPR(2)		     *                 THETAP,THETPR(2),PHIP,PHIPR(2)
+      INTEGER          NOBSLV					      INTEGER          NOBSLV
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEND.								*KEND.
+ 								 
+      DOUBLE PRECISION DXY,HEIGHT,TANTE				      DOUBLE PRECISION DXY,HEIGHT,TANTE
+      INTEGER          I					      INTEGER          I
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,*) 'COORIN: HEIGHT,THETA,PHI 	      IF ( DEBUG ) WRITE(MDEBUG,*) 'COORIN: HEIGHT,THETA,PHI 
+     *                     SNGL(HEIGHT),SNGL(THETAP),SNGL(PHI	     *                     SNGL(HEIGHT),SNGL(THETAP),SNGL(PHI
+ 								 
+      TANTE = TAN( THETAP )					      TANTE = TAN( THETAP )
+      DO  1  I = 1,NOBSLV					      DO  1  I = 1,NOBSLV
+        DXY     = TANTE * ( HEIGHT - OBSLEV(I) )		        DXY     = TANTE * ( HEIGHT - OBSLEV(I) )
+        XOFF(I) = COS( PHIP ) * DXY				        XOFF(I) = COS( PHIP ) * DXY
+        YOFF(I) = SIN( PHIP ) * DXY				        YOFF(I) = SIN( PHIP ) * DXY
+    1 CONTINUE							    1 CONTINUE
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,100)				      IF ( DEBUG ) WRITE(MDEBUG,100)
+     *                    (OBSLEV(I),XOFF(I),YOFF(I),I=1,NOBS	     *                    (OBSLEV(I),XOFF(I),YOFF(I),I=1,NOBS
+  100 FORMAT(' COORIN: OBSLVL,XOFF,YOFF= ',1P,3E12.4)		  100 FORMAT(' COORIN: OBSLVL,XOFF,YOFF= ',1P,3E12.4)
+ 								 
+      RETURN							      RETURN
+      END							      END

@@ -1,0 +1,163 @@
+      SUBROUTINE STRDEC						      SUBROUTINE STRDEC
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  STR(ANGE BARYON) DEC(AY)					C  STR(ANGE BARYON) DEC(AY)
+C								C
+C  ROUTINE TREATES DECAY OF STRANGE BARYONS (LAMBDA, SIGMA, X	C  ROUTINE TREATES DECAY OF STRANGE BARYONS (LAMBDA, SIGMA, X
+C  DECAY WITH FULL KINEMATIC, ENERGY AND MOMENTA CONSERVED	C  DECAY WITH FULL KINEMATIC, ENERGY AND MOMENTA CONSERVED
+C  THIS SUBROUTINE IS CALLED FORM NUCINT			C  THIS SUBROUTINE IS CALLED FORM NUCINT
+C								C
+C  DESIGN  : D. HECK    IK3  FZK KARLSRUHE			C  DESIGN  : D. HECK    IK3  FZK KARLSRUHE
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,IRET.							*KEEP,IRET.
+      COMMON /IRET/    IRET1,IRET2				      COMMON /IRET/    IRET1,IRET2
+      INTEGER          IRET1,IRET2				      INTEGER          IRET1,IRET2
+*KEEP,PARPAR.							*KEEP,PARPAR.
+      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,		      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,
+     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE	     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE
+      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA	      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA
+     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH	     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH
+      INTEGER          ITYPE,LEVL				      INTEGER          ITYPE,LEVL
+*KEEP,PARPAE.							*KEEP,PARPAE.
+      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,	      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,
+      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)	      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)
+     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )	     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )
+     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )	     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )
+     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )	     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )
+     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )	     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )
+     *                 (CURPAR(12),ECM )			     *                 (CURPAR(12),ECM )
+*KEEP,RANDPA.							*KEEP,RANDPA.
+      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR		      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR
+      DOUBLE PRECISION FAC,U1,U2				      DOUBLE PRECISION FAC,U1,U2
+      REAL             RD(3000)					      REAL             RD(3000)
+      INTEGER          ISEED(103,10),NSEQ			      INTEGER          ISEED(103,10),NSEQ
+      LOGICAL          KNOR					      LOGICAL          KNOR
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEEP,STRBAR.							*KEEP,STRBAR.
+      COMMON /STRBAR/  CSTRBA					      COMMON /STRBAR/  CSTRBA
+      DOUBLE PRECISION CSTRBA(11)				      DOUBLE PRECISION CSTRBA(11)
+*KEND.								*KEND.
+ 								 
+      INTEGER  I,J						      INTEGER  I,J
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,444) (CURPAR(I),I=1,9)		      IF ( DEBUG ) WRITE(MDEBUG,444) (CURPAR(I),I=1,9)
+ 444  FORMAT(' STRDEC: CURPAR=',1P,9E10.3)			 444  FORMAT(' STRDEC: CURPAR=',1P,9E10.3)
+ 								 
+C  COPY COORDINATES INTO SECPAR					C  COPY COORDINATES INTO SECPAR
+      DO  1  J = 5,8						      DO  1  J = 5,8
+        SECPAR(J) = CURPAR(J)					        SECPAR(J) = CURPAR(J)
+   1  CONTINUE							   1  CONTINUE
+ 								 
+      IF     ( ITYPE .EQ. 18 ) THEN				      IF     ( ITYPE .EQ. 18 ) THEN
+        CALL RMMAR( RD,1,1 )					        CALL RMMAR( RD,1,1 )
+        IF ( RD(1) .LT. CSTRBA(5) ) THEN			        IF ( RD(1) .LT. CSTRBA(5) ) THEN
+C  DECAY LAMBDA  --->  P + PI(-)				C  DECAY LAMBDA  --->  P + PI(-)
+          CALL DECAY1( ITYPE, 14, 9 )				          CALL DECAY1( ITYPE, 14, 9 )
+        ELSE							        ELSE
+C  DECAY LAMBDA  --->  N + PI(0)				C  DECAY LAMBDA  --->  N + PI(0)
+          CALL DECAY1( ITYPE, 13, 7 )				          CALL DECAY1( ITYPE, 13, 7 )
+        ENDIF							        ENDIF
+ 								 
+      ELSEIF ( ITYPE .EQ. 19 ) THEN				      ELSEIF ( ITYPE .EQ. 19 ) THEN
+        CALL RMMAR( RD,1,1 )					        CALL RMMAR( RD,1,1 )
+        IF ( RD(1) .LT. CSTRBA(6) ) THEN			        IF ( RD(1) .LT. CSTRBA(6) ) THEN
+C  DECAY SIGMA(+)  --->  P + PI(0)				C  DECAY SIGMA(+)  --->  P + PI(0)
+          CALL DECAY1( ITYPE, 14, 7 )				          CALL DECAY1( ITYPE, 14, 7 )
+        ELSE							        ELSE
+C  DECAY SIGMA(+)  --->  N + PI(+)				C  DECAY SIGMA(+)  --->  N + PI(+)
+          CALL DECAY1( ITYPE, 13, 8 )				          CALL DECAY1( ITYPE, 13, 8 )
+        ENDIF							        ENDIF
+ 								 
+      ELSEIF ( ITYPE .EQ. 20  .OR.  ITYPE .EQ. 28 ) THEN	      ELSEIF ( ITYPE .EQ. 20  .OR.  ITYPE .EQ. 28 ) THEN
+C  DECAY      SIGMA(0)  --->       LAMBDA + GAMMA		C  DECAY      SIGMA(0)  --->       LAMBDA + GAMMA
+C  DECAY ANTI-SIGMA(0)  --->  ANTI-LAMBDA + GAMMA		C  DECAY ANTI-SIGMA(0)  --->  ANTI-LAMBDA + GAMMA
+        CALL DECAY1( ITYPE, ITYPE-2, 1 )			        CALL DECAY1( ITYPE, ITYPE-2, 1 )
+ 								 
+      ELSEIF ( ITYPE .EQ. 21 ) THEN				      ELSEIF ( ITYPE .EQ. 21 ) THEN
+C  DECAY SIGMA(-)  --->  N + PI(-)				C  DECAY SIGMA(-)  --->  N + PI(-)
+        CALL DECAY1( ITYPE, 13, 9 )				        CALL DECAY1( ITYPE, 13, 9 )
+ 								 
+      ELSEIF ( ITYPE .EQ. 22  .OR.  ITYPE .EQ. 30 ) THEN	      ELSEIF ( ITYPE .EQ. 22  .OR.  ITYPE .EQ. 30 ) THEN
+C  DECAY      XI(0)  --->       LAMBDA + PI(0)			C  DECAY      XI(0)  --->       LAMBDA + PI(0)
+C  DECAY ANTI-XI(0)  --->  ANTI-LAMBDA + PI(0)			C  DECAY ANTI-XI(0)  --->  ANTI-LAMBDA + PI(0)
+        CALL DECAY1( ITYPE, ITYPE-4, 7 )			        CALL DECAY1( ITYPE, ITYPE-4, 7 )
+ 								 
+      ELSEIF ( ITYPE .EQ. 23 ) THEN				      ELSEIF ( ITYPE .EQ. 23 ) THEN
+C  DECAY XI(-)  --->  LAMBDA + PI(-)				C  DECAY XI(-)  --->  LAMBDA + PI(-)
+        CALL DECAY1( ITYPE, 18, 9 )				        CALL DECAY1( ITYPE, 18, 9 )
+ 								 
+      ELSEIF ( ITYPE .EQ. 24  .OR.  ITYPE .EQ. 32 ) THEN	      ELSEIF ( ITYPE .EQ. 24  .OR.  ITYPE .EQ. 32 ) THEN
+        CALL RMMAR( RD,1,1 )					        CALL RMMAR( RD,1,1 )
+        IF     ( RD(1) .LT. CSTRBA(10) ) THEN			        IF     ( RD(1) .LT. CSTRBA(10) ) THEN
+C  DECAY      OMEGA(-)  --->       LAMBDA + K(-)		C  DECAY      OMEGA(-)  --->       LAMBDA + K(-)
+C  DECAY ANTI-OMEGA(+)  --->  ANTI-LAMBDA + K(+)		C  DECAY ANTI-OMEGA(+)  --->  ANTI-LAMBDA + K(+)
+          CALL DECAY1( ITYPE, ITYPE-6, 15-ITYPE/8 )		          CALL DECAY1( ITYPE, ITYPE-6, 15-ITYPE/8 )
+        ELSEIF ( RD(1) .LT. CSTRBA(11) ) THEN			        ELSEIF ( RD(1) .LT. CSTRBA(11) ) THEN
+C  DECAY      OMEGA(-)  --->       XI(0) + PI(-)		C  DECAY      OMEGA(-)  --->       XI(0) + PI(-)
+C  DECAY ANTI-OMEGA(+)  --->  ANTI-XI(0) + PI(+)		C  DECAY ANTI-OMEGA(+)  --->  ANTI-XI(0) + PI(+)
+          CALL DECAY1( ITYPE, ITYPE-2, 12-ITYPE/8 )		          CALL DECAY1( ITYPE, ITYPE-2, 12-ITYPE/8 )
+        ELSE							        ELSE
+C  DECAY      OMEGA(-)  --->       XI(-) + PI(0)		C  DECAY      OMEGA(-)  --->       XI(-) + PI(0)
+C  DECAY ANTI-OMEGA(+)  --->  ANTI-XI(+) + PI(0)		C  DECAY ANTI-OMEGA(+)  --->  ANTI-XI(+) + PI(0)
+          CALL DECAY1( ITYPE, ITYPE-1, 7 )			          CALL DECAY1( ITYPE, ITYPE-1, 7 )
+        ENDIF							        ENDIF
+ 								 
+      ELSEIF ( ITYPE .EQ. 26 ) THEN				      ELSEIF ( ITYPE .EQ. 26 ) THEN
+        CALL RMMAR( RD,1,1 )					        CALL RMMAR( RD,1,1 )
+        IF ( RD(1) .LT. CSTRBA(5) ) THEN			        IF ( RD(1) .LT. CSTRBA(5) ) THEN
+C  DECAY ANTI-LAMBDA  --->  ANTI-P + PI(+)			C  DECAY ANTI-LAMBDA  --->  ANTI-P + PI(+)
+          CALL DECAY1( ITYPE, 15, 8 )				          CALL DECAY1( ITYPE, 15, 8 )
+        ELSE							        ELSE
+C  DECAY ANTI-LAMBDA  --->  ANTI-N + PI(0)			C  DECAY ANTI-LAMBDA  --->  ANTI-N + PI(0)
+          CALL DECAY1( ITYPE, 25, 7 )				          CALL DECAY1( ITYPE, 25, 7 )
+        ENDIF							        ENDIF
+ 								 
+      ELSEIF ( ITYPE .EQ. 27 ) THEN				      ELSEIF ( ITYPE .EQ. 27 ) THEN
+        CALL RMMAR( RD,1,1 )					        CALL RMMAR( RD,1,1 )
+        IF ( RD(1) .LT. CSTRBA(6) ) THEN			        IF ( RD(1) .LT. CSTRBA(6) ) THEN
+C  DECAY ANTI-SIGMA(-)  --->  ANTI-P + PI(0)			C  DECAY ANTI-SIGMA(-)  --->  ANTI-P + PI(0)
+          CALL DECAY1( ITYPE, 15, 7 )				          CALL DECAY1( ITYPE, 15, 7 )
+        ELSE							        ELSE
+C  DECAY ANTI-SIGMA(-)  --->  ANTI-N + PI(-)			C  DECAY ANTI-SIGMA(-)  --->  ANTI-N + PI(-)
+          CALL DECAY1( ITYPE, 25, 9 )				          CALL DECAY1( ITYPE, 25, 9 )
+        ENDIF							        ENDIF
+ 								 
+      ELSEIF ( ITYPE .EQ. 29 ) THEN				      ELSEIF ( ITYPE .EQ. 29 ) THEN
+C  DECAY ANTI-SIGMA(+)  --->  ANTI-N + PI(+)			C  DECAY ANTI-SIGMA(+)  --->  ANTI-N + PI(+)
+        CALL DECAY1( ITYPE, 25, 8 )				        CALL DECAY1( ITYPE, 25, 8 )
+ 								 
+      ELSEIF ( ITYPE .EQ. 31 ) THEN				      ELSEIF ( ITYPE .EQ. 31 ) THEN
+C  DECAY ANTI-XI(+)  --->  ANTI-LAMBDA + PI(+)			C  DECAY ANTI-XI(+)  --->  ANTI-LAMBDA + PI(+)
+        CALL DECAY1( ITYPE, 26, 8 )				        CALL DECAY1( ITYPE, 26, 8 )
+ 								 
+      ELSE							      ELSE
+        WRITE(MONIOU,*) 'STRDEC: UNFORESEEN PARTICLE CODE =',	        WRITE(MONIOU,*) 'STRDEC: UNFORESEEN PARTICLE CODE =',
+      ENDIF							      ENDIF
+      IRET1 = 1							      IRET1 = 1
+      RETURN							      RETURN
+      END							      END

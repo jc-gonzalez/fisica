@@ -1,0 +1,1196 @@
+C============================================================	C============================================================
+
+      SUBROUTINE CERENE( STEPCR )				      SUBROUTINE CERENE( STEPCR )
+
+C------------------------------------------------------------	C------------------------------------------------------------
+C  CEREN(KOV RADIATION FROM) E(LECTRONS)			C  CEREN(KOV RADIATION FROM) E(LECTRONS)
+C								C
+C  CREATION OF CERENKOV PHOTONS ALONG A TRACK OF ELECTRONS	C  CREATION OF CERENKOV PHOTONS ALONG A TRACK OF ELECTRONS
+C  CERENKOV RADIATION IS ONLY CALCULATED FOR LOWEST OBSERVATI	C  CERENKOV RADIATION IS ONLY CALCULATED FOR LOWEST OBSERVATI
+C  THE COORDINATES ON EGS-STACK ARE AT THE END OF STEP EXCEPT	C  THE COORDINATES ON EGS-STACK ARE AT THE END OF STEP EXCEPT
+C  WHICH IS AT THE BEGINNING OF STEP				C  WHICH IS AT THE BEGINNING OF STEP
+C  THIS SUBROUTINE IS CALLED FROM ELECTR			C  THIS SUBROUTINE IS CALLED FROM ELECTR
+C  ARGUMENT:							C  ARGUMENT:
+C   STEPCR = STEP LENGTH FOR ELECTRON OR POSITRON (REAL*4)	C   STEPCR = STEP LENGTH FOR ELECTRON OR POSITRON (REAL*4)
+C								C
+C  AUTHOR  : M. ROZANSKA  UNIVERSITY OF KRAKOW			C  AUTHOR  : M. ROZANSKA  UNIVERSITY OF KRAKOW
+C            S. MARTINEZ  UNIVERSITY OF MADRID			C            S. MARTINEZ  UNIVERSITY OF MADRID
+C            F. ARQUEROS  UNIVERSITY OF MADRID			C            F. ARQUEROS  UNIVERSITY OF MADRID
+C  CHANGES : D. HECK    IK3  FZK KARLSRUHE			C  CHANGES : D. HECK    IK3  FZK KARLSRUHE
+C            R. ATTALLAH  UNIVERSITY OF PERPIGNAN		C            R. ATTALLAH  UNIVERSITY OF PERPIGNAN
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+      parameter (xct=1)						      parameter (xct=1)
+      parameter (yct=2)						      parameter (yct=2)
+      parameter (zct=3)						      parameter (zct=3)
+      parameter (ctthet=4)					      parameter (ctthet=4)
+      parameter (ctphi=5)					      parameter (ctphi=5)
+      parameter (ctdiam=6)					      parameter (ctdiam=6)
+      parameter (ctfoc=7)					      parameter (ctfoc=7)
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+c      IMPLICIT NONE						c      IMPLICIT NONE
+*KEEP,BUFFS.							*KEEP,BUFFS.
+      COMMON /BUFFS/   RUNH,RUNE,EVTH,EVTE,DATAB,LH		      COMMON /BUFFS/   RUNH,RUNE,EVTH,EVTE,DATAB,LH
+      INTEGER          MAXBUF,MAXLEN				      INTEGER          MAXBUF,MAXLEN
+      PARAMETER        (MAXBUF=39*7)				      PARAMETER        (MAXBUF=39*7)
+      PARAMETER        (MAXLEN=12)				      PARAMETER        (MAXLEN=12)
+      REAL             RUNH(MAXBUF),EVTH(MAXBUF),EVTE(MAXBUF)	      REAL             RUNH(MAXBUF),EVTH(MAXBUF),EVTE(MAXBUF)
+     *                 RUNE(MAXBUF),DATAB(MAXBUF)		     *                 RUNE(MAXBUF),DATAB(MAXBUF)
+      INTEGER          LH					      INTEGER          LH
+      CHARACTER*4      CRUNH,CRUNE,CEVTH,CEVTE			      CHARACTER*4      CRUNH,CRUNE,CEVTH,CEVTE
+      EQUIVALENCE      (RUNH(1),CRUNH), (RUNE(1),CRUNE)		      EQUIVALENCE      (RUNH(1),CRUNH), (RUNE(1),CRUNE)
+      EQUIVALENCE      (EVTH(1),CEVTH), (EVTE(1),CEVTE)		      EQUIVALENCE      (EVTH(1),CEVTH), (EVTE(1),CEVTE)
+*KEEP,CONST.							*KEEP,CONST.
+      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER			      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER
+      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER			      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER
+*KEEP,EPCONT.							*KEEP,EPCONT.
+      COMMON/EPCONT/   EDEP,RATIO,TSTEP,TUSTEP,USTEP,TVSTEP,V	      COMMON/EPCONT/   EDEP,RATIO,TSTEP,TUSTEP,USTEP,TVSTEP,V
+     *                 IROLD,IRNEW,RHOFAC, EOLD,ENEW,EKE,ELKE	     *                 IROLD,IRNEW,RHOFAC, EOLD,ENEW,EKE,ELKE
+     *                 TSCAT,IAUSFL				     *                 TSCAT,IAUSFL
+      DOUBLE PRECISION EDEP,RATIO				      DOUBLE PRECISION EDEP,RATIO
+      REAL             TSTEP,TUSTEP,USTEP,TVSTEP,VSTEP,RHOFAC	      REAL             TSTEP,TUSTEP,USTEP,TVSTEP,VSTEP,RHOFAC
+     *                 EKE,ELKE,BETA2,GLE,TSCAT			     *                 EKE,ELKE,BETA2,GLE,TSCAT
+      INTEGER          IDISC,IROLD,IRNEW,IAUSFL(29)		      INTEGER          IDISC,IROLD,IRNEW,IAUSFL(29)
+*KEEP,LONGI.							*KEEP,LONGI.
+      COMMON /LONGI/   APLONG,HLONG,PLONG,SPLONG,THSTEP,THSTP	      COMMON /LONGI/   APLONG,HLONG,PLONG,SPLONG,THSTEP,THSTP
+     *                 NSTEP,LLONGI,FLGFIT			     *                 NSTEP,LLONGI,FLGFIT
+      DOUBLE PRECISION APLONG(0:1040,9),HLONG(0:1024),PLONG(0	      DOUBLE PRECISION APLONG(0:1040,9),HLONG(0:1024),PLONG(0
+     *                 SPLONG(0:1040,9),THSTEP,THSTPI		     *                 SPLONG(0:1040,9),THSTEP,THSTPI
+      INTEGER          NSTEP					      INTEGER          NSTEP
+      LOGICAL          LLONGI,FLGFIT				      LOGICAL          LLONGI,FLGFIT
+*KEEP,MAGANG.							*KEEP,MAGANG.
+      COMMON /MAGANG/  ARRANG,ARRANR,COSANG,SINANG		      COMMON /MAGANG/  ARRANG,ARRANR,COSANG,SINANG
+      DOUBLE PRECISION ARRANG,ARRANR,COSANG,SINANG		      DOUBLE PRECISION ARRANG,ARRANR,COSANG,SINANG
+*KEEP,OBSPAR.							*KEEP,OBSPAR.
+      COMMON /OBSPAR/  OBSLEV,THCKOB,XOFF,YOFF,THETAP,PHIP,	      COMMON /OBSPAR/  OBSLEV,THCKOB,XOFF,YOFF,THETAP,PHIP,
+     *                 THETPR,PHIPR,NOBSLV			     *                 THETPR,PHIPR,NOBSLV
+      DOUBLE PRECISION OBSLEV(10),THCKOB(10),XOFF(10),YOFF(10	      DOUBLE PRECISION OBSLEV(10),THCKOB(10),XOFF(10),YOFF(10
+     *                 THETAP,THETPR(2),PHIP,PHIPR(2)		     *                 THETAP,THETPR(2),PHIP,PHIPR(2)
+      INTEGER          NOBSLV					      INTEGER          NOBSLV
+*KEEP,PAM.							*KEEP,PAM.
+      COMMON /PAM/     PAMA,SIGNUM				      COMMON /PAM/     PAMA,SIGNUM
+      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)			      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)
+*KEEP,PARPAR.							*KEEP,PARPAR.
+      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,		      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,
+     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE	     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE
+      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA	      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA
+     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH	     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH
+      INTEGER          ITYPE,LEVL				      INTEGER          ITYPE,LEVL
+*KEEP,RANDPA.							*KEEP,RANDPA.
+      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR		      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR
+      DOUBLE PRECISION FAC,U1,U2				      DOUBLE PRECISION FAC,U1,U2
+      REAL             RD(3000)					      REAL             RD(3000)
+      INTEGER          ISEED(103,10),NSEQ			      INTEGER          ISEED(103,10),NSEQ
+      LOGICAL          KNOR					      LOGICAL          KNOR
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEEP,STACKE.							*KEEP,STACKE.
+      COMMON/STACKE/   E,TIME,X,Y,Z,U,V,W,DNEAR,IQ,IGEN,IR,IO	      COMMON/STACKE/   E,TIME,X,Y,Z,U,V,W,DNEAR,IQ,IGEN,IR,IO
+      DOUBLE PRECISION E(60),TIME(60)				      DOUBLE PRECISION E(60),TIME(60)
+      REAL             X(60),Y(60),Z(60),U(60),V(60),W(60),DN	      REAL             X(60),Y(60),Z(60),U(60),V(60),W(60),DN
+      INTEGER          IQ(60),IGEN(60),IR(60),IOBS(60),LPCTE(	      INTEGER          IQ(60),IGEN(60),IR(60),IOBS(60),LPCTE(
+*KEEP,CEREN1.							*KEEP,CEREN1.
+      COMMON /CEREN1/  CERELE,CERHAD,ETADSN,WAVLGL,WAVLGU,CYI	      COMMON /CEREN1/  CERELE,CERHAD,ETADSN,WAVLGL,WAVLGU,CYI
+     *                 CERSIZ,LCERFI				     *                 CERSIZ,LCERFI
+      DOUBLE PRECISION CERELE,CERHAD,ETADSN,WAVLGL,WAVLGU,CYI	      DOUBLE PRECISION CERELE,CERHAD,ETADSN,WAVLGL,WAVLGU,CYI
+      REAL             CERSIZ					      REAL             CERSIZ
+      LOGICAL          LCERFI					      LOGICAL          LCERFI
+*KEEP,CEREN2.							*KEEP,CEREN2.
+      COMMON /CEREN2/  PHOTCM,XCER,YCER,UEMIS,VEMIS,CARTIM,ZE	      COMMON /CEREN2/  PHOTCM,XCER,YCER,UEMIS,VEMIS,CARTIM,ZE
+     *                 DCERX,DCERY,ACERX,ACERY,			     *                 DCERX,DCERY,ACERX,ACERY,
+     *                 XCMAX,YCMAX,EPSX,EPSY,			     *                 XCMAX,YCMAX,EPSX,EPSY,
+     *                 DCERXI,DCERYI,FCERX,FCERY,		     *                 DCERXI,DCERYI,FCERX,FCERY,
+     *                 XSCATT,YSCATT,CERXOS,CERYOS,		     *                 XSCATT,YSCATT,CERXOS,CERYOS,
+     *                 NCERX,NCERY,ICERML			     *                 NCERX,NCERY,ICERML
+      REAL             PHOTCM,XCER,YCER,UEMIS,VEMIS,CARTIM,ZE	      REAL             PHOTCM,XCER,YCER,UEMIS,VEMIS,CARTIM,ZE
+     *                 DCERX,DCERY,ACERX,ACERY,			     *                 DCERX,DCERY,ACERX,ACERY,
+     *                 XCMAX,YCMAX,EPSX,EPSY,			     *                 XCMAX,YCMAX,EPSX,EPSY,
+     *                 DCERXI,DCERYI,FCERX,FCERY,		     *                 DCERXI,DCERYI,FCERX,FCERY,
+     *                 XSCATT,YSCATT,CERXOS(20),CERYOS(20)	     *                 XSCATT,YSCATT,CERXOS(20),CERYOS(20)
+      INTEGER          NCERX,NCERY,ICERML			      INTEGER          NCERX,NCERY,ICERML
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+*keep,certel.							*keep,certel.
+      common /certel/  cormxd,cord,coralp,ctpars,omega,		      common /certel/  cormxd,cord,coralp,ctpars,omega,
+     +                 photn,photnp,phpt,pht,vphot,		     +                 photn,photnp,phpt,pht,vphot,
+     +                 vchi,veta,vzeta,vchim,vetam,vzetam,	     +                 vchi,veta,vzeta,vchim,vetam,vzetam,
+     +                 lambda,mu,nu,nctels,ncph			     +                 lambda,mu,nu,nctels,ncph
+      double precision cormxd,cord,coralp,ctpars(20,7),omega(	      double precision cormxd,cord,coralp,ctpars(20,7),omega(
+     +                 photn(3),photnp(3),phpt(3),pht,vphot(3	     +                 photn(3),photnp(3),phpt(3),pht,vphot(3
+     +                 vchi(3),veta(3),vzeta(3),vchim,vetam,v	     +                 vchi(3),veta(3),vzeta(3),vchim,vetam,v
+     +                 lambda,mu,nu				     +                 lambda,mu,nu
+      integer          nctels,ncph(5)				      integer          nctels,ncph(5)
+      double precision xg,yg,zg,xgp,ygp,zgp,up,vp,wp,xpcut,yp	      double precision xg,yg,zg,xgp,ygp,zgp,up,vp,wp,xpcut,yp
+      equivalence (photn(1) ,xg)   ,(photn(2) ,yg)   ,(photn(	      equivalence (photn(1) ,xg)   ,(photn(2) ,yg)   ,(photn(
+     +            (photnp(1),xgp)  ,(photnp(2),ygp)  ,(photnp	     +            (photnp(1),xgp)  ,(photnp(2),ygp)  ,(photnp
+     +            (phpt(1)  ,xpcut),(phpt(2)  ,ypcut),(phpt(3	     +            (phpt(1)  ,xpcut),(phpt(2)  ,ypcut),(phpt(3
+     +            (vphot(1) ,up)   ,(vphot(2) ,vp)   ,(vphot(	     +            (vphot(1) ,up)   ,(vphot(2) ,vp)   ,(vphot(
+      character *72 ctfile					      character *72 ctfile
+*keep,graal1.							*keep,graal1.
+      common /graal1/ wavelength ! (nm)				      common /graal1/ wavelength ! (nm)
+      real wavelength						      real wavelength
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+*KEND.								*KEND.
+
+      COMMON /ACLOCK/  NCLOCK,JCLOCK				      COMMON /ACLOCK/  NCLOCK,JCLOCK
+      DOUBLE PRECISION BETAE,BETAF,BETAI,CTHETA,DBETA,ECR,	      DOUBLE PRECISION BETAE,BETAF,BETAI,CTHETA,DBETA,ECR,
+     *                 ETA1,E1,STHETA,STHETF,STHETI		     *                 ETA1,E1,STHETA,STHETF,STHETI
+      DOUBLE PRECISION RHOF,THICK				      DOUBLE PRECISION RHOF,THICK
+      REAL             A,B,CC,COSCR,COSDEL,DVCOR,DXXX,DYYY,FS	      REAL             A,B,CC,COSCR,COSDEL,DVCOR,DXXX,DYYY,FS
+     *                 HTOP,H2,PATHCR,PHICER,PHOTCT,RADINV,	     *                 HTOP,H2,PATHCR,PHICER,PHOTCT,RADINV,
+     *                 SINCR,SINDEL,SINPSI,SINPS2,STEPCR,UEMI	     *                 SINCR,SINDEL,SINPSI,SINPS2,STEPCR,UEMI
+     *                 VEMIS2,VS,WEMIS,XCER1,XCER2,XEMIS,XXX,	     *                 VEMIS2,VS,WEMIS,XCER1,XCER2,XEMIS,XXX,
+     *                 YCER1,YCER2,YEMIS,YYY			     *                 YCER1,YCER2,YEMIS,YYY
+      INTEGER          I,ISTC,I1,JCLOCK,LPCT1,NCLOCK,NSTEPC	      INTEGER          I,ISTC,I1,JCLOCK,LPCT1,NCLOCK,NSTEPC
+      EXTERNAL         RHOF,THICK				      EXTERNAL         RHOF,THICK
+C------------------------------------------------------------	C------------------------------------------------------------
+C_____IF (NCLOCK.GT.JCLOCK) THEN				C_____IF (NCLOCK.GT.JCLOCK) THEN
+C______WRITE(MDEBUG,*)'CERENE: NP=',NP,' IR=',IR(NP),' IOBS='	C______WRITE(MDEBUG,*)'CERENE: NP=',NP,' IR=',IR(NP),' IOBS='
+C______CALL AUSGB2						C______CALL AUSGB2
+C_____ENDIF							C_____ENDIF
+
+C------------------------------------------------------------	C------------------------------------------------------------
+
+C  SKIP PARTICLES OUT OF ZENITH ANGULAR CUT			C  SKIP PARTICLES OUT OF ZENITH ANGULAR CUT
+      IF ( W(NP) .LT. C(29) ) RETURN				      IF ( W(NP) .LT. C(29) ) RETURN
+C  E(NP) IS ENERGY AT BEGIN OF STEP				C  E(NP) IS ENERGY AT BEGIN OF STEP
+      E1 = E(NP)						      E1 = E(NP)
+
+C  LOOK WETHER CERENKOV CONDITION IS FULFILLED AT BEGIN OF ST	C  LOOK WETHER CERENKOV CONDITION IS FULFILLED AT BEGIN OF ST
+      BETAI  = SQRT( 1.D0 - (PAMA(2)*1.D3/E1)**2 )		      BETAI  = SQRT( 1.D0 - (PAMA(2)*1.D3/E1)**2 )
+C  REFRACTIVE INDEX PARAMETRISATION: N=1+ETA = ETA1		C  REFRACTIVE INDEX PARAMETRISATION: N=1+ETA = ETA1
+      H2     = -Z(NP)						      H2     = -Z(NP)
+      HTOP   = H2 + VSTEP * W(NP)				      HTOP   = H2 + VSTEP * W(NP)
+      ETA1   = 1.D0 + ETADSN * RHOF(DBLE(HTOP))			      ETA1   = 1.D0 + ETADSN * RHOF(DBLE(HTOP))
+      CTHETA = 1.D0 /( ETA1 * BETAI)				      CTHETA = 1.D0 /( ETA1 * BETAI)
+      STHETI = 1.D0 - CTHETA**2					      STHETI = 1.D0 - CTHETA**2
+      IF ( STHETI .GT. 0.D0 ) THEN				      IF ( STHETI .GT. 0.D0 ) THEN
+C  PARTICLE IS ABOVE ENERGY THRESHOLD IF EMISSION ANGLE IS >0	C  PARTICLE IS ABOVE ENERGY THRESHOLD IF EMISSION ANGLE IS >0
+        PHOTCT = CYIELD * STEPCR * STHETI			        PHOTCT = CYIELD * STEPCR * STHETI
+        NSTEPC = PHOTCT / CERSIZ + 1				        NSTEPC = PHOTCT / CERSIZ + 1
+        IF ( NSTEPC .LT. 1 ) RETURN				        IF ( NSTEPC .LT. 1 ) RETURN
+        FSTEPI = 1. / REAL(NSTEPC)				        FSTEPI = 1. / REAL(NSTEPC)
+C  CALCULATE INCREMENTS AND START VALUES FOR POSITION AND VEL	C  CALCULATE INCREMENTS AND START VALUES FOR POSITION AND VEL
+        DVCOR  = -VSTEP * FSTEPI				        DVCOR  = -VSTEP * FSTEPI
+        VCOR   = VSTEP - 0.5 * DVCOR				        VCOR   = VSTEP - 0.5 * DVCOR
+        DBETA  = -2.D0*FSTEPI*EDEP*(PAMA(2)*1.D3)**2 / (E1**3	        DBETA  = -2.D0*FSTEPI*EDEP*(PAMA(2)*1.D3)**2 / (E1**3
+        BETAE  = BETAI - 0.5D0 * DBETA				        BETAE  = BETAI - 0.5D0 * DBETA
+      ELSE							      ELSE
+        							        
+C  LOOK WETHER CERENKOV CONDITION IS FULFILLED AT END OF STEP	C  LOOK WETHER CERENKOV CONDITION IS FULFILLED AT END OF STEP
+C  AT THE BEGINNING. THIS MAY HAPPEN ONLY ABOVE ABOUT 22 KM	C  AT THE BEGINNING. THIS MAY HAPPEN ONLY ABOVE ABOUT 22 KM
+        IF ( HTOP .LT. 22.E5 ) RETURN				        IF ( HTOP .LT. 22.E5 ) RETURN
+C  ENERGY AT END OF STEP IS ENEW (FROM COMMON EPCONT)		C  ENERGY AT END OF STEP IS ENEW (FROM COMMON EPCONT)
+        BETAF  = SQRT( 1.D0 - (PAMA(2)*1.D3/ENEW)**2 )		        BETAF  = SQRT( 1.D0 - (PAMA(2)*1.D3/ENEW)**2 )
+C  REFRACTIVE INDEX PARAMETRISATION: N=1+ETA = ETA1		C  REFRACTIVE INDEX PARAMETRISATION: N=1+ETA = ETA1
+        ETA1   = 1.D0 + ETADSN * RHOF( DBLE(H2) )		        ETA1   = 1.D0 + ETADSN * RHOF( DBLE(H2) )
+        CTHETA = 1.D0 /( ETA1 * BETAF)				        CTHETA = 1.D0 /( ETA1 * BETAF)
+        STHETF = 1.D0 - CTHETA**2				        STHETF = 1.D0 - CTHETA**2
+C  PARTICLE IS BELOW ENERGY THRESHOLD IF EMISSION ANGLE IS 0	C  PARTICLE IS BELOW ENERGY THRESHOLD IF EMISSION ANGLE IS 0
+        IF ( STHETF .LE. 0.D0 ) RETURN				        IF ( STHETF .LE. 0.D0 ) RETURN
+        PHOTCT = CYIELD * STEPCR * STHETF			        PHOTCT = CYIELD * STEPCR * STHETF
+        NSTEPC = PHOTCT / CERSIZ + 1				        NSTEPC = PHOTCT / CERSIZ + 1
+        IF ( NSTEPC .LT. 1 ) RETURN				        IF ( NSTEPC .LT. 1 ) RETURN
+        FSTEPI = 1. / REAL(NSTEPC)				        FSTEPI = 1. / REAL(NSTEPC)
+C  CALCULATE INCREMENTS AND START VALUES FOR POSITION AND VEL	C  CALCULATE INCREMENTS AND START VALUES FOR POSITION AND VEL
+C  LOOP 1000 RUNS FROM BOTTOM TO TOP OF STEP			C  LOOP 1000 RUNS FROM BOTTOM TO TOP OF STEP
+        DVCOR  = VSTEP * FSTEPI					        DVCOR  = VSTEP * FSTEPI
+        VCOR   = -0.5 * DVCOR					        VCOR   = -0.5 * DVCOR
+        DBETA  = 2.D0*FSTEPI*EDEP*(PAMA(2)*1.D3)**2 / (ENEW**	        DBETA  = 2.D0*FSTEPI*EDEP*(PAMA(2)*1.D3)**2 / (ENEW**
+        BETAE  = BETAF - 0.5D0 * DBETA				        BETAE  = BETAF - 0.5D0 * DBETA
+      ENDIF							      ENDIF
+
+C  LOOP OVER SUBSTEPS						C  LOOP OVER SUBSTEPS
+      DO 1000  ISTC = 1,NSTEPC					      DO 1000  ISTC = 1,NSTEPC
+        VCOR   = VCOR + DVCOR					        VCOR   = VCOR + DVCOR
+        ZEMIS  = H2 + VCOR * W(NP)				        ZEMIS  = H2 + VCOR * W(NP)
+        ETA1   = 1.D0 + ETADSN * RHOF(DBLE(ZEMIS))		        ETA1   = 1.D0 + ETADSN * RHOF(DBLE(ZEMIS))
+C  VELOCITY IN THE MIDDLE OF SUBSTEP				C  VELOCITY IN THE MIDDLE OF SUBSTEP
+        BETAE  =  BETAE + DBETA					        BETAE  =  BETAE + DBETA
+        CTHETA = 1.D0 / (ETA1*BETAE)				        CTHETA = 1.D0 / (ETA1*BETAE)
+        STHETA = 1.D0 - CTHETA**2				        STHETA = 1.D0 - CTHETA**2
+C  PARTICLE IS AT ENERGY THRESHOLD IF EMISSION ANGLE BECOMES 	C  PARTICLE IS AT ENERGY THRESHOLD IF EMISSION ANGLE BECOMES 
+        IF ( STHETA .LE. 0.D0 ) RETURN				        IF ( STHETA .LE. 0.D0 ) RETURN
+C  NUMBER OF EMITTED PHOTONS ON DISTANCE DVCOR			C  NUMBER OF EMITTED PHOTONS ON DISTANCE DVCOR
+        PHOTCM = CYIELD * STHETA * STEPCR * FSTEPI		        PHOTCM = CYIELD * STHETA * STEPCR * FSTEPI
+        STHETA = SQRT(STHETA)					        STHETA = SQRT(STHETA)
+C  ASSUME EMISSION POINT OF ALL PHOTONS IN THE MIDDLE OF THE 	C  ASSUME EMISSION POINT OF ALL PHOTONS IN THE MIDDLE OF THE 
+        XEMIS  =  X(NP) - VCOR * U(NP)				        XEMIS  =  X(NP) - VCOR * U(NP)
+        YEMIS  = -Y(NP) + VCOR * V(NP)				        YEMIS  = -Y(NP) + VCOR * V(NP)
+C>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	C>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+C GENERATE RANDOM WAVELENGTH FOR SINGLE C-PHOTON.		C GENERATE RANDOM WAVELENGTH FOR SINGLE C-PHOTON.
+        CALL RMMAR( RD,1,3 )					        CALL RMMAR( RD,1,3 )
+        WAVELENGTH = 1. / (1/WAVLGL - 				        WAVELENGTH = 1. / (1/WAVLGL - 
+     +       RD(1)/(WAVLGL*WAVLGU/(WAVLGU-WAVLGL)))		     +       RD(1)/(WAVLGL*WAVLGU/(WAVLGU-WAVLGL)))
+C>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	C>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+C  CALCULATE PHOTON DIRECTION IN THE CORSIKA COORDINATE FRAME	C  CALCULATE PHOTON DIRECTION IN THE CORSIKA COORDINATE FRAME
+        CALL RMMAR( RD,1,3 )					        CALL RMMAR( RD,1,3 )
+        PHICER = RD(1) * PI2					        PHICER = RD(1) * PI2
+        SINCR  = SIN(PHICER)					        SINCR  = SIN(PHICER)
+        COSCR  = COS(PHICER)					        COSCR  = COS(PHICER)
+        A =  U(NP)						        A =  U(NP)
+        B = -V(NP)						        B = -V(NP)
+        CC = W(NP)						        CC = W(NP)
+        SINPS2 = A**2 + B**2					        SINPS2 = A**2 + B**2
+        IF ( SINPS2 .LT. 1.E-10 ) THEN				        IF ( SINPS2 .LT. 1.E-10 ) THEN
+          UEMIS  = STHETA * COSCR				          UEMIS  = STHETA * COSCR
+          VEMIS  = STHETA * SINCR				          VEMIS  = STHETA * SINCR
+          WEMIS  = CTHETA * CC					          WEMIS  = CTHETA * CC
+        ELSE							        ELSE
+          SINPSI = SQRT(SINPS2)					          SINPSI = SQRT(SINPS2)
+          US     = STHETA * COSCR				          US     = STHETA * COSCR
+          VS     = STHETA * SINCR				          VS     = STHETA * SINCR
+          SINDEL = B * (1./SINPSI)				          SINDEL = B * (1./SINPSI)
+          COSDEL = A * (1./SINPSI)				          COSDEL = A * (1./SINPSI)
+          UEMIS  = CC * COSDEL * US - SINDEL * VS + A * CTHET	          UEMIS  = CC * COSDEL * US - SINDEL * VS + A * CTHET
+          VEMIS  = CC * SINDEL * US + COSDEL * VS + B * CTHET	          VEMIS  = CC * SINDEL * US + COSDEL * VS + B * CTHET
+          WEMIS  =     -SINPSI * US              + CC * CTHET	          WEMIS  =     -SINPSI * US              + CC * CTHET
+        ENDIF							        ENDIF
+C  EMISSION ANGLE WITHIN ZENITH ANGULAR CUT?			C  EMISSION ANGLE WITHIN ZENITH ANGULAR CUT?
+        IF ( WEMIS .LT. C(29) ) GOTO 1000			        IF ( WEMIS .LT. C(29) ) GOTO 1000
+        RADINV = 1.5 - 0.5 * ( UEMIS**2 + VEMIS**2 + WEMIS**2	        RADINV = 1.5 - 0.5 * ( UEMIS**2 + VEMIS**2 + WEMIS**2
+        UEMIS2 = UEMIS * RADINV					        UEMIS2 = UEMIS * RADINV
+        VEMIS2 = VEMIS * RADINV					        VEMIS2 = VEMIS * RADINV
+        WEMIS  = WEMIS * RADINV					        WEMIS  = WEMIS * RADINV
+
+C  CALCULATE DISTANCE FROM SHOWER AXIS AT THE DETECTOR LEVEL	C  CALCULATE DISTANCE FROM SHOWER AXIS AT THE DETECTOR LEVEL
+        PATHCR = ( ZEMIS - OBSLEV(NOBSLV) ) / WEMIS		        PATHCR = ( ZEMIS - OBSLEV(NOBSLV) ) / WEMIS
+        XCER2  = XEMIS + PATHCR * UEMIS2 - XOFF(NOBSLV)		        XCER2  = XEMIS + PATHCR * UEMIS2 - XOFF(NOBSLV)
+        YCER2  = YEMIS + PATHCR * VEMIS2 - YOFF(NOBSLV)		        YCER2  = YEMIS + PATHCR * VEMIS2 - YOFF(NOBSLV)
+
+C  ADD THE CERENKOV PHOTONS TO THE LONGITUDINAL DEVELOPMENT	C  ADD THE CERENKOV PHOTONS TO THE LONGITUDINAL DEVELOPMENT
+        IF ( LLONGI ) THEN					        IF ( LLONGI ) THEN
+C  IF STARTING POINT BELOW LOWEST LEVEL THEN DON'T CHECK	C  IF STARTING POINT BELOW LOWEST LEVEL THEN DON'T CHECK
+          IF ( HLONG(NSTEP) .LE. ZEMIS ) THEN			          IF ( HLONG(NSTEP) .LE. ZEMIS ) THEN
+C  FIND FIRST THE EQUIVALENT LEVELS				C  FIND FIRST THE EQUIVALENT LEVELS
+            LPCT1 = LPCTE(NP)					            LPCT1 = LPCTE(NP)
+C  ZEMIS IS ONLY LITTLE BELOW Z OLD, THEREFORE INCREMENTAL SE	C  ZEMIS IS ONLY LITTLE BELOW Z OLD, THEREFORE INCREMENTAL SE
+C  (REMEBER: LPCTE IS AT START OF ELECTRON STEP)		C  (REMEBER: LPCTE IS AT START OF ELECTRON STEP)
+            DO 6002 I1 = LPCT1,NSTEP				            DO 6002 I1 = LPCT1,NSTEP
+              IF ( HLONG(I1) .LT. ZEMIS ) GOTO 6003		              IF ( HLONG(I1) .LT. ZEMIS ) GOTO 6003
+ 6002       CONTINUE						 6002       CONTINUE
+            I1 = NSTEP + 1					            I1 = NSTEP + 1
+ 6003       CONTINUE						 6003       CONTINUE
+            DO 4862 I=I1,NSTEP					            DO 4862 I=I1,NSTEP
+                PLONG(I,9) = PLONG(I,9) + PHOTCM		                PLONG(I,9) = PLONG(I,9) + PHOTCM
+ 4862       CONTINUE						 4862       CONTINUE
+          ENDIF							          ENDIF
+        ENDIF							        ENDIF
+
+C  TAKE INTO ACCOUNT A ROTATION OF ARRAY RELATIVE TO MAGNETIC	C  TAKE INTO ACCOUNT A ROTATION OF ARRAY RELATIVE TO MAGNETIC
+        XCER  = XCER2  * COSANG + YCER2  * SINANG		        XCER  = XCER2  * COSANG + YCER2  * SINANG
+        YCER  = YCER2  * COSANG - XCER2  * SINANG		        YCER  = YCER2  * COSANG - XCER2  * SINANG
+        UEMIS = UEMIS2 * COSANG + VEMIS2 * SINANG		        UEMIS = UEMIS2 * COSANG + VEMIS2 * SINANG
+        VEMIS = VEMIS2 * COSANG - UEMIS2 * SINANG		        VEMIS = VEMIS2 * COSANG - UEMIS2 * SINANG
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        CERELE = CERELE + PHOTCM				        CERELE = CERELE + PHOTCM
+        DO 7001 I=1,ICERML					        DO 7001 I=1,ICERML
+          DO 101 NCT=1,NCTELS					          DO 101 NCT=1,NCTELS
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+c>> Modification to implement sphere algorithm >>>>>>>>>>>>>>	c>> Modification to implement sphere algorithm >>>>>>>>>>>>>>
+c>> JCG Wed Sep 21 10:49:14 MET DST 1998 >>>>>>>>>>>>>>>>>>>>	c>> JCG Wed Sep 21 10:49:14 MET DST 1998 >>>>>>>>>>>>>>>>>>>>
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+c>>>>> this is the last (simple) check <<<<<			c>>>>> this is the last (simple) check <<<<<
+C  changes to ct frame						C  changes to ct frame
+c            XG = XCER - CERXOS(I) - CTPARS(NCT,XCT) 		c            XG = XCER - CERXOS(I) - CTPARS(NCT,XCT) 
+c            YG = YCER - CERYOS(I) - CTPARS(NCT,YCT) 		c            YG = YCER - CERYOS(I) - CTPARS(NCT,YCT) 
+c            ZG =  0.0 - CTPARS(NCT,ZCT)			c            ZG =  0.0 - CTPARS(NCT,ZCT)
+c            DIST2 = SQRT( XG**2 + YG**2 )			c            DIST2 = SQRT( XG**2 + YG**2 )
+c            IF ( DIST2 .LT. (CTPARS(NCT,CTDIAM)/2.) ) GOTO 1	c            IF ( DIST2 .LT. (CTPARS(NCT,CTDIAM)/2.) ) GOTO 1
+c>> New check >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>> New check >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            XG = XCER - CERXOS(I) 				            XG = XCER - CERXOS(I) 
+            YG = YCER - CERYOS(I)				            YG = YCER - CERYOS(I)
+            ZG = 0.0						            ZG = 0.0
+            DIST2 = 						            DIST2 = 
+     >          SQRT((VEMIS*(-CTPARS(NCT,XCT) + XG) - 		     >          SQRT((VEMIS*(-CTPARS(NCT,XCT) + XG) - 
+     >          UEMIS*(-CTPARS(NCT,YCT) + YG))**2 + 		     >          UEMIS*(-CTPARS(NCT,YCT) + YG))**2 + 
+     >          (-(SQRT(1 - UEMIS**2 - VEMIS**2)*		     >          (-(SQRT(1 - UEMIS**2 - VEMIS**2)*
+     >          (-CTPARS(NCT,XCT) + XG)) + 			     >          (-CTPARS(NCT,XCT) + XG)) + 
+     >          UEMIS*(-CTPARS(NCT,ZCT) + ZG))**2 + 		     >          UEMIS*(-CTPARS(NCT,ZCT) + ZG))**2 + 
+     >          (SQRT(1 - UEMIS**2 - VEMIS**2)*			     >          (SQRT(1 - UEMIS**2 - VEMIS**2)*
+     >          (-CTPARS(NCT,YCT) + YG) - 			     >          (-CTPARS(NCT,YCT) + YG) - 
+     >          VEMIS*(-CTPARS(NCT,ZCT) + ZG))**2)		     >          VEMIS*(-CTPARS(NCT,ZCT) + ZG))**2)
+            IF ( DIST2 .LT. (CTPARS(NCT,CTDIAM)/2.) ) GOTO 10	            IF ( DIST2 .LT. (CTPARS(NCT,CTDIAM)/2.) ) GOTO 10
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            							            
+ 101      CONTINUE						 101      CONTINUE
+          							          
+          GOTO 7001						          GOTO 7001
+          							          
+C   BUNCH FALLS ON A DETECTOR, CALCULATE ARRIVAL TIME (NSEC)	C   BUNCH FALLS ON A DETECTOR, CALCULATE ARRIVAL TIME (NSEC)
+          							          
+ 102      CARTIM = ((ETADSN*(THCKOB(NOBSLV)-THICK(DBLE(ZEMIS)	 102      CARTIM = ((ETADSN*(THCKOB(NOBSLV)-THICK(DBLE(ZEMIS)
+     *         /WEMIS+PATHCR-VCOR/BETAE)/C(25)+TIME(NP))* 1.E	     *         /WEMIS+PATHCR-VCOR/BETAE)/C(25)+TIME(NP))* 1.E
+          							          
+c          CALL OUTPT2(IQ(NP),I)				c          CALL OUTPT2(IQ(NP),I)
+          CALL OUTPT2(NCT,I)					          CALL OUTPT2(NCT,I)
+
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>				c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+          call jctime(cartim)					          call jctime(cartim)
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>				c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+          GOTO 1000						          GOTO 1000
+          							          
+ 7001   CONTINUE						 7001   CONTINUE
+ 1000 CONTINUE							 1000 CONTINUE
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+      RETURN							      RETURN
+      END							      END
+
+C============================================================	C============================================================
+
+      SUBROUTINE CERENH( STEPCR,BETACR )			      SUBROUTINE CERENH( STEPCR,BETACR )
+
+C------------------------------------------------------------	C------------------------------------------------------------
+C  CEREN(KOV RADIATION FROM) H(ADRONS)				C  CEREN(KOV RADIATION FROM) H(ADRONS)
+C								C
+C  CERENKOV RADIATION FROM HADRONS				C  CERENKOV RADIATION FROM HADRONS
+C  CERENKOV RADIATION IS ONLY CALCULATED FOR LOWEST OBSERVATI	C  CERENKOV RADIATION IS ONLY CALCULATED FOR LOWEST OBSERVATI
+C  THIS SUBROUTINE IS CALLED FROM UPDATE			C  THIS SUBROUTINE IS CALLED FROM UPDATE
+C  ARGUMENTS:							C  ARGUMENTS:
+C   STEPCR = STEP LENGTH FOR ELECTRON OR POSITRON		C   STEPCR = STEP LENGTH FOR ELECTRON OR POSITRON
+C   BETACR = VELOCITY OF PARTICLE IN UNITS OF SPEED OF LIGHT	C   BETACR = VELOCITY OF PARTICLE IN UNITS OF SPEED OF LIGHT
+C								C
+C  AUTHOR  : M. ROZANSKA  UNIVERSITY OF KRAKOW			C  AUTHOR  : M. ROZANSKA  UNIVERSITY OF KRAKOW
+C            S. MARTINEZ  UNIVERSITY OF MADRID			C            S. MARTINEZ  UNIVERSITY OF MADRID
+C            F. ARQUEROS  UNIVERSITY OF MADRID			C            F. ARQUEROS  UNIVERSITY OF MADRID
+C  CHANGES : D. HECK    IK3  FZK KARLSRUHE			C  CHANGES : D. HECK    IK3  FZK KARLSRUHE
+C------------------------------------------------------------	C------------------------------------------------------------
+
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+      parameter (xct=1)						      parameter (xct=1)
+      parameter (yct=2)						      parameter (yct=2)
+      parameter (zct=3)						      parameter (zct=3)
+      parameter (ctthet=4)					      parameter (ctthet=4)
+      parameter (ctphi=5)					      parameter (ctphi=5)
+      parameter (ctdiam=6)					      parameter (ctdiam=6)
+      parameter (ctfoc=7)					      parameter (ctfoc=7)
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+c      IMPLICIT NONE						c      IMPLICIT NONE
+*KEEP,BUFFS.							*KEEP,BUFFS.
+      COMMON /BUFFS/   RUNH,RUNE,EVTH,EVTE,DATAB,LH		      COMMON /BUFFS/   RUNH,RUNE,EVTH,EVTE,DATAB,LH
+      INTEGER          MAXBUF,MAXLEN				      INTEGER          MAXBUF,MAXLEN
+      PARAMETER        (MAXBUF=39*7)				      PARAMETER        (MAXBUF=39*7)
+      PARAMETER        (MAXLEN=12)				      PARAMETER        (MAXLEN=12)
+      REAL             RUNH(MAXBUF),EVTH(MAXBUF),EVTE(MAXBUF)	      REAL             RUNH(MAXBUF),EVTH(MAXBUF),EVTE(MAXBUF)
+     *                 RUNE(MAXBUF),DATAB(MAXBUF)		     *                 RUNE(MAXBUF),DATAB(MAXBUF)
+      INTEGER          LH					      INTEGER          LH
+      CHARACTER*4      CRUNH,CRUNE,CEVTH,CEVTE			      CHARACTER*4      CRUNH,CRUNE,CEVTH,CEVTE
+      EQUIVALENCE      (RUNH(1),CRUNH), (RUNE(1),CRUNE)		      EQUIVALENCE      (RUNH(1),CRUNH), (RUNE(1),CRUNE)
+      EQUIVALENCE      (EVTH(1),CEVTH), (EVTE(1),CEVTE)		      EQUIVALENCE      (EVTH(1),CEVTH), (EVTE(1),CEVTE)
+*KEEP,CONST.							*KEEP,CONST.
+      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER			      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER
+      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER			      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER
+*KEEP,EPCONT.							*KEEP,EPCONT.
+      COMMON/EPCONT/   EDEP,RATIO,TSTEP,TUSTEP,USTEP,TVSTEP,V	      COMMON/EPCONT/   EDEP,RATIO,TSTEP,TUSTEP,USTEP,TVSTEP,V
+     *                 IROLD,IRNEW,RHOFAC, EOLD,ENEW,EKE,ELKE	     *                 IROLD,IRNEW,RHOFAC, EOLD,ENEW,EKE,ELKE
+     *                 TSCAT,IAUSFL				     *                 TSCAT,IAUSFL
+      DOUBLE PRECISION EDEP,RATIO				      DOUBLE PRECISION EDEP,RATIO
+      REAL             TSTEP,TUSTEP,USTEP,TVSTEP,VSTEP,RHOFAC	      REAL             TSTEP,TUSTEP,USTEP,TVSTEP,VSTEP,RHOFAC
+     *                 EKE,ELKE,BETA2,GLE,TSCAT			     *                 EKE,ELKE,BETA2,GLE,TSCAT
+      INTEGER          IDISC,IROLD,IRNEW,IAUSFL(29)		      INTEGER          IDISC,IROLD,IRNEW,IAUSFL(29)
+*KEEP,LONGI.							*KEEP,LONGI.
+      COMMON /LONGI/   APLONG,HLONG,PLONG,SPLONG,THSTEP,THSTP	      COMMON /LONGI/   APLONG,HLONG,PLONG,SPLONG,THSTEP,THSTP
+     *                 NSTEP,LLONGI,FLGFIT			     *                 NSTEP,LLONGI,FLGFIT
+      DOUBLE PRECISION APLONG(0:1040,9),HLONG(0:1024),PLONG(0	      DOUBLE PRECISION APLONG(0:1040,9),HLONG(0:1024),PLONG(0
+     *                 SPLONG(0:1040,9),THSTEP,THSTPI		     *                 SPLONG(0:1040,9),THSTEP,THSTPI
+      INTEGER          NSTEP					      INTEGER          NSTEP
+      LOGICAL          LLONGI,FLGFIT				      LOGICAL          LLONGI,FLGFIT
+*KEEP,MAGANG.							*KEEP,MAGANG.
+      COMMON /MAGANG/  ARRANG,ARRANR,COSANG,SINANG		      COMMON /MAGANG/  ARRANG,ARRANR,COSANG,SINANG
+      DOUBLE PRECISION ARRANG,ARRANR,COSANG,SINANG		      DOUBLE PRECISION ARRANG,ARRANR,COSANG,SINANG
+*KEEP,OBSPAR.							*KEEP,OBSPAR.
+      COMMON /OBSPAR/  OBSLEV,THCKOB,XOFF,YOFF,THETAP,PHIP,	      COMMON /OBSPAR/  OBSLEV,THCKOB,XOFF,YOFF,THETAP,PHIP,
+     *                 THETPR,PHIPR,NOBSLV			     *                 THETPR,PHIPR,NOBSLV
+      DOUBLE PRECISION OBSLEV(10),THCKOB(10),XOFF(10),YOFF(10	      DOUBLE PRECISION OBSLEV(10),THCKOB(10),XOFF(10),YOFF(10
+     *                 THETAP,THETPR(2),PHIP,PHIPR(2)		     *                 THETAP,THETPR(2),PHIP,PHIPR(2)
+      INTEGER          NOBSLV					      INTEGER          NOBSLV
+*KEEP,PAM.							*KEEP,PAM.
+      COMMON /PAM/     PAMA,SIGNUM				      COMMON /PAM/     PAMA,SIGNUM
+      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)			      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)
+*KEEP,PARPAR.							*KEEP,PARPAR.
+      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,		      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,
+     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE	     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE
+      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA	      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA
+     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH	     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH
+      INTEGER          ITYPE,LEVL				      INTEGER          ITYPE,LEVL
+*KEEP,PARPAE.							*KEEP,PARPAE.
+      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,	      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,
+      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)	      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)
+     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )	     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )
+     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )	     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )
+     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )	     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )
+     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )	     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )
+     *                 (CURPAR(12),ECM )			     *                 (CURPAR(12),ECM )
+*KEEP,RANDPA.							*KEEP,RANDPA.
+      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR		      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR
+      DOUBLE PRECISION FAC,U1,U2				      DOUBLE PRECISION FAC,U1,U2
+      REAL             RD(3000)					      REAL             RD(3000)
+      INTEGER          ISEED(103,10),NSEQ			      INTEGER          ISEED(103,10),NSEQ
+      LOGICAL          KNOR					      LOGICAL          KNOR
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEEP,CEREN1.							*KEEP,CEREN1.
+      COMMON /CEREN1/  CERELE,CERHAD,ETADSN,WAVLGL,WAVLGU,CYI	      COMMON /CEREN1/  CERELE,CERHAD,ETADSN,WAVLGL,WAVLGU,CYI
+     *                 CERSIZ,LCERFI				     *                 CERSIZ,LCERFI
+      DOUBLE PRECISION CERELE,CERHAD,ETADSN,WAVLGL,WAVLGU,CYI	      DOUBLE PRECISION CERELE,CERHAD,ETADSN,WAVLGL,WAVLGU,CYI
+      REAL             CERSIZ					      REAL             CERSIZ
+      LOGICAL          LCERFI					      LOGICAL          LCERFI
+*KEEP,CEREN2.							*KEEP,CEREN2.
+      COMMON /CEREN2/  PHOTCM,XCER,YCER,UEMIS,VEMIS,CARTIM,ZE	      COMMON /CEREN2/  PHOTCM,XCER,YCER,UEMIS,VEMIS,CARTIM,ZE
+     *                 DCERX,DCERY,ACERX,ACERY,			     *                 DCERX,DCERY,ACERX,ACERY,
+     *                 XCMAX,YCMAX,EPSX,EPSY,			     *                 XCMAX,YCMAX,EPSX,EPSY,
+     *                 DCERXI,DCERYI,FCERX,FCERY,		     *                 DCERXI,DCERYI,FCERX,FCERY,
+     *                 XSCATT,YSCATT,CERXOS,CERYOS,		     *                 XSCATT,YSCATT,CERXOS,CERYOS,
+     *                 NCERX,NCERY,ICERML			     *                 NCERX,NCERY,ICERML
+      REAL             PHOTCM,XCER,YCER,UEMIS,VEMIS,CARTIM,ZE	      REAL             PHOTCM,XCER,YCER,UEMIS,VEMIS,CARTIM,ZE
+     *                 DCERX,DCERY,ACERX,ACERY,			     *                 DCERX,DCERY,ACERX,ACERY,
+     *                 XCMAX,YCMAX,EPSX,EPSY,			     *                 XCMAX,YCMAX,EPSX,EPSY,
+     *                 DCERXI,DCERYI,FCERX,FCERY,		     *                 DCERXI,DCERYI,FCERX,FCERY,
+     *                 XSCATT,YSCATT,CERXOS(20),CERYOS(20)	     *                 XSCATT,YSCATT,CERXOS(20),CERYOS(20)
+      INTEGER          NCERX,NCERY,ICERML			      INTEGER          NCERX,NCERY,ICERML
+*KEEP,CERHDR.							*KEEP,CERHDR.
+      COMMON/CERHDR/   TPART,UPART,VPART,WPART,XPART,YPART,ZP	      COMMON/CERHDR/   TPART,UPART,VPART,WPART,XPART,YPART,ZP
+      DOUBLE PRECISION TPART,UPART,VPART,WPART,XPART,YPART,ZP	      DOUBLE PRECISION TPART,UPART,VPART,WPART,XPART,YPART,ZP
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+*keep,certel.							*keep,certel.
+      common /certel/  cormxd,cord,coralp,ctpars,omega,		      common /certel/  cormxd,cord,coralp,ctpars,omega,
+     +                 photn,photnp,phpt,pht,vphot,		     +                 photn,photnp,phpt,pht,vphot,
+     +                 vchi,veta,vzeta,vchim,vetam,vzetam,	     +                 vchi,veta,vzeta,vchim,vetam,vzetam,
+     +                 lambda,mu,nu,nctels,ncph			     +                 lambda,mu,nu,nctels,ncph
+      double precision cormxd,cord,coralp,ctpars(20,7),omega(	      double precision cormxd,cord,coralp,ctpars(20,7),omega(
+     +                 photn(3),photnp(3),phpt(3),pht,vphot(3	     +                 photn(3),photnp(3),phpt(3),pht,vphot(3
+     +                 vchi(3),veta(3),vzeta(3),vchim,vetam,v	     +                 vchi(3),veta(3),vzeta(3),vchim,vetam,v
+     +                 lambda,mu,nu				     +                 lambda,mu,nu
+      integer          nctels,ncph(5)				      integer          nctels,ncph(5)
+      double precision xg,yg,zg,xgp,ygp,zgp,up,vp,wp,xpcut,yp	      double precision xg,yg,zg,xgp,ygp,zgp,up,vp,wp,xpcut,yp
+      equivalence (photn(1) ,xg)   ,(photn(2) ,yg)   ,(photn(	      equivalence (photn(1) ,xg)   ,(photn(2) ,yg)   ,(photn(
+     +            (photnp(1),xgp)  ,(photnp(2),ygp)  ,(photnp	     +            (photnp(1),xgp)  ,(photnp(2),ygp)  ,(photnp
+     +            (phpt(1)  ,xpcut),(phpt(2)  ,ypcut),(phpt(3	     +            (phpt(1)  ,xpcut),(phpt(2)  ,ypcut),(phpt(3
+     +            (vphot(1) ,up)   ,(vphot(2) ,vp)   ,(vphot(	     +            (vphot(1) ,up)   ,(vphot(2) ,vp)   ,(vphot(
+      character *72 ctfile					      character *72 ctfile
+*keep,graal1.							*keep,graal1.
+      common /graal1/ wavelength ! (nm)				      common /graal1/ wavelength ! (nm)
+      real wavelength						      real wavelength
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+*KEND.								*KEND.
+
+      DOUBLE PRECISION BETACR,CINTEN,CTHETA,ETA,ETA1,HMID,PHO	      DOUBLE PRECISION BETACR,CINTEN,CTHETA,ETA,ETA1,HMID,PHO
+     *                 RHOF,STEPCR,STHETA,THICK			     *                 RHOF,STEPCR,STHETA,THICK
+      REAL             A,B,CC,COSCR,COSDEL,DVCOR,DXXX,DYYY,FS	      REAL             A,B,CC,COSCR,COSDEL,DVCOR,DXXX,DYYY,FS
+     *                 PATHCR,PHICER,RADINV,SINCR,SINDEL,SINP	     *                 PATHCR,PHICER,RADINV,SINCR,SINDEL,SINP
+     *                 UEMIS2,US,VEMIS2,VCOR,VS,WEMIS,XCER1,X	     *                 UEMIS2,US,VEMIS2,VCOR,VS,WEMIS,XCER1,X
+     *                 XXX,YCER1,YCER2,YEMIS,YYY		     *                 XXX,YCER1,YCER2,YEMIS,YYY
+      INTEGER          I,II,ISTC,I1,I2,NSTEPC			      INTEGER          I,II,ISTC,I1,I2,NSTEPC
+      EXTERNAL         RHOF,THICK				      EXTERNAL         RHOF,THICK
+C------------------------------------------------------------	C------------------------------------------------------------
+
+c      IF ( DEBUG ) WRITE(MDEBUG,*) 'CERENH: ZPART=',SNGL(ZPA	c      IF ( DEBUG ) WRITE(MDEBUG,*) 'CERENH: ZPART=',SNGL(ZPA
+c     *    ' STEPCR=',SNGL(STEPCR),' BETACR=',SNGL(BETACR)	c     *    ' STEPCR=',SNGL(STEPCR),' BETACR=',SNGL(BETACR)
+
+C  SKIP PARTICLE OUT OF ANGULAR ACCEPTANCE RANGE		C  SKIP PARTICLE OUT OF ANGULAR ACCEPTANCE RANGE
+      IF ( WPART .LT. C(29) ) RETURN				      IF ( WPART .LT. C(29) ) RETURN
+C  CERENKOV INTENSITY FACTOR DEPENDS ON CHARGE STATE OF HEAVY	C  CERENKOV INTENSITY FACTOR DEPENDS ON CHARGE STATE OF HEAVY
+      CINTEN = CYIELD * ABS(SIGNUM(INT(CURPAR(1))))		      CINTEN = CYIELD * ABS(SIGNUM(INT(CURPAR(1))))
+
+C  REFRACTIVE INDEX PARAMETRISATION: N=1+ETA			C  REFRACTIVE INDEX PARAMETRISATION: N=1+ETA
+      HMID   = ZPART + 0.5D0 * STEPCR * WPART			      HMID   = ZPART + 0.5D0 * STEPCR * WPART
+      ETA1   = 1.D0 + ETADSN * RHOF(DBLE(HMID))			      ETA1   = 1.D0 + ETADSN * RHOF(DBLE(HMID))
+      CTHETA = 1.D0 / ( ETA1 * BETACR )				      CTHETA = 1.D0 / ( ETA1 * BETACR )
+      STHETA = 1.D0 - CTHETA**2					      STHETA = 1.D0 - CTHETA**2
+      IF ( STHETA .LE. 0.D0 ) RETURN				      IF ( STHETA .LE. 0.D0 ) RETURN
+
+      PHOTCT = CINTEN * STHETA * STEPCR				      PHOTCT = CINTEN * STHETA * STEPCR
+      NSTEPC = PHOTCT / CERSIZ + 1				      NSTEPC = PHOTCT / CERSIZ + 1
+      IF ( NSTEPC .LT. 1 ) RETURN				      IF ( NSTEPC .LT. 1 ) RETURN
+      FSTEPI = 1. / REAL(NSTEPC)				      FSTEPI = 1. / REAL(NSTEPC)
+      VCOR   = -0.5 * STEPCR * FSTEPI				      VCOR   = -0.5 * STEPCR * FSTEPI
+      DVCOR  = -2. * VCOR					      DVCOR  = -2. * VCOR
+C  CERENKOV RADIATION IS ONLY CALCULATED FOR LOWEST OBSERVATI	C  CERENKOV RADIATION IS ONLY CALCULATED FOR LOWEST OBSERVATI
+      DO  1000  ISTC = 1,NSTEPC					      DO  1000  ISTC = 1,NSTEPC
+        VCOR   = VCOR + DVCOR					        VCOR   = VCOR + DVCOR
+        ZEMIS  = ZPART + VCOR * WPART				        ZEMIS  = ZPART + VCOR * WPART
+        ETA    = ETADSN * RHOF(DBLE(ZEMIS))			        ETA    = ETADSN * RHOF(DBLE(ZEMIS))
+        ETA1   = 1.D0 + ETA					        ETA1   = 1.D0 + ETA
+        CTHETA = 1.D0 / ( ETA1 * BETACR )			        CTHETA = 1.D0 / ( ETA1 * BETACR )
+        STHETA = 1.D0 - CTHETA**2				        STHETA = 1.D0 - CTHETA**2
+        IF ( STHETA .LE. 0.D0 ) RETURN				        IF ( STHETA .LE. 0.D0 ) RETURN
+
+C  NUMBER OF EMITTED PHOTONS ON DISTANCE STEPCR			C  NUMBER OF EMITTED PHOTONS ON DISTANCE STEPCR
+        PHOTCM = CINTEN * STHETA * STEPCR * FSTEPI		        PHOTCM = CINTEN * STHETA * STEPCR * FSTEPI
+        STHETA = SQRT(STHETA)					        STHETA = SQRT(STHETA)
+
+C  ASSUME EMISSION POINT OF ALL PHOTONS IN THE MIDDLE OF THE 	C  ASSUME EMISSION POINT OF ALL PHOTONS IN THE MIDDLE OF THE 
+C  HAS TO BE CHECKED IF STEPS ARE NOT TOO LONG			C  HAS TO BE CHECKED IF STEPS ARE NOT TOO LONG
+        XEMIS = XPART - VCOR * UPART				        XEMIS = XPART - VCOR * UPART
+        YEMIS = YPART - VCOR * VPART				        YEMIS = YPART - VCOR * VPART
+
+C>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	C>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+C GENERATE RANDOM WAVELENGTH FOR SINGLE C-PHOTON.		C GENERATE RANDOM WAVELENGTH FOR SINGLE C-PHOTON.
+        CALL RMMAR( RD,1,3 )					        CALL RMMAR( RD,1,3 )
+        WAVELENGTH = 1. / (1/WAVLGL - 				        WAVELENGTH = 1. / (1/WAVLGL - 
+     +       RD(1)/(WAVLGL*WAVLGU/(WAVLGU-WAVLGL)))		     +       RD(1)/(WAVLGL*WAVLGU/(WAVLGU-WAVLGL)))
+C>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	C>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+C  CALCULATE PHOTON DIRECTION IN THE OVERALL COORDINATE FRAME	C  CALCULATE PHOTON DIRECTION IN THE OVERALL COORDINATE FRAME
+        CALL RMMAR( RD,1,3 )					        CALL RMMAR( RD,1,3 )
+        PHICER = RD(1) * PI2					        PHICER = RD(1) * PI2
+        SINCR  = SIN(PHICER)					        SINCR  = SIN(PHICER)
+        COSCR  = COS(PHICER)					        COSCR  = COS(PHICER)
+        A  = UPART						        A  = UPART
+        B  = VPART						        B  = VPART
+        CC = WPART						        CC = WPART
+        SINPS2 = A**2 + B**2					        SINPS2 = A**2 + B**2
+        IF ( SINPS2 .LT. 1.E-10 ) THEN				        IF ( SINPS2 .LT. 1.E-10 ) THEN
+          UEMIS  = STHETA * COSCR				          UEMIS  = STHETA * COSCR
+          VEMIS  = STHETA * SINCR				          VEMIS  = STHETA * SINCR
+          WEMIS  = CTHETA * CC					          WEMIS  = CTHETA * CC
+        ELSE							        ELSE
+          SINPSI = SQRT(SINPS2)					          SINPSI = SQRT(SINPS2)
+          US = STHETA * COSCR					          US = STHETA * COSCR
+          VS = STHETA * SINCR					          VS = STHETA * SINCR
+          SINDEL = B * (1./SINPSI)				          SINDEL = B * (1./SINPSI)
+          COSDEL = A * (1./SINPSI)				          COSDEL = A * (1./SINPSI)
+          UEMIS  = CC * COSDEL * US - SINDEL * VS + A * CTHET	          UEMIS  = CC * COSDEL * US - SINDEL * VS + A * CTHET
+          VEMIS  = CC * SINDEL * US + COSDEL * VS + B * CTHET	          VEMIS  = CC * SINDEL * US + COSDEL * VS + B * CTHET
+          WEMIS  =     -SINPSI * US              + CC * CTHET	          WEMIS  =     -SINPSI * US              + CC * CTHET
+        ENDIF							        ENDIF
+C  EMISSION ANGLE WITHIN ZENITH ANGULAR CUT?			C  EMISSION ANGLE WITHIN ZENITH ANGULAR CUT?
+        IF ( WEMIS .LT. C(29) ) GOTO 1000			        IF ( WEMIS .LT. C(29) ) GOTO 1000
+        RADINV = 1.5 - 0.5 * ( UEMIS**2 + VEMIS**2 + WEMIS**2	        RADINV = 1.5 - 0.5 * ( UEMIS**2 + VEMIS**2 + WEMIS**2
+        UEMIS2 = UEMIS * RADINV					        UEMIS2 = UEMIS * RADINV
+        VEMIS2 = VEMIS * RADINV					        VEMIS2 = VEMIS * RADINV
+        WEMIS  = WEMIS * RADINV					        WEMIS  = WEMIS * RADINV
+
+C  CALCULATE DISTANCE FROM SHOWER AXIS AT THE DETECTOR LEVEL	C  CALCULATE DISTANCE FROM SHOWER AXIS AT THE DETECTOR LEVEL
+        PATHCR = ( ZEMIS - OBSLEV(NOBSLV) ) / WEMIS		        PATHCR = ( ZEMIS - OBSLEV(NOBSLV) ) / WEMIS
+        XCER2  = XEMIS + PATHCR * UEMIS2 - XOFF(NOBSLV)		        XCER2  = XEMIS + PATHCR * UEMIS2 - XOFF(NOBSLV)
+        YCER2  = YEMIS + PATHCR * VEMIS2 - YOFF(NOBSLV)		        YCER2  = YEMIS + PATHCR * VEMIS2 - YOFF(NOBSLV)
+
+C  ADD THE CERENKOV PHOTONS TO THE LONGITUDINAL DEVELOPMENT	C  ADD THE CERENKOV PHOTONS TO THE LONGITUDINAL DEVELOPMENT
+        IF ( LLONGI ) THEN					        IF ( LLONGI ) THEN
+C  IF STARTING POINT BELOW LOWEST LEVEL THEN DON'T CHECK	C  IF STARTING POINT BELOW LOWEST LEVEL THEN DON'T CHECK
+          IF ( HLONG(NSTEP) .LE. ZEMIS ) THEN			          IF ( HLONG(NSTEP) .LE. ZEMIS ) THEN
+C  FIND FIRST THE EQUIVALENT LEVELS				C  FIND FIRST THE EQUIVALENT LEVELS
+            I1 = 0						            I1 = 0
+            I2 = NSTEP						            I2 = NSTEP
+ 6001       CONTINUE						 6001       CONTINUE
+            II = (I1+I2)/2					            II = (I1+I2)/2
+            IF ( HLONG(II) .LT. ZEMIS ) THEN			            IF ( HLONG(II) .LT. ZEMIS ) THEN
+              I2 = II						              I2 = II
+            ELSE						            ELSE
+              I1 = II						              I1 = II
+            ENDIF						            ENDIF
+            IF ( I2-I1 .GT. 1 ) GOTO 6001			            IF ( I2-I1 .GT. 1 ) GOTO 6001
+            DO 4862 I=I2,NSTEP					            DO 4862 I=I2,NSTEP
+                PLONG(I,9) = PLONG(I,9) + PHOTCM		                PLONG(I,9) = PLONG(I,9) + PHOTCM
+ 4862       CONTINUE						 4862       CONTINUE
+          ENDIF							          ENDIF
+        ENDIF							        ENDIF
+
+C  TAKE INTO ACCOUNT A ROTATION OF ARRAY RELATIVE TO MAGNETIC	C  TAKE INTO ACCOUNT A ROTATION OF ARRAY RELATIVE TO MAGNETIC
+        XCER  = XCER2  * COSANG + YCER2  * SINANG		        XCER  = XCER2  * COSANG + YCER2  * SINANG
+        YCER  = YCER2  * COSANG - XCER2  * SINANG		        YCER  = YCER2  * COSANG - XCER2  * SINANG
+        UEMIS = UEMIS2 * COSANG + VEMIS2 * SINANG		        UEMIS = UEMIS2 * COSANG + VEMIS2 * SINANG
+        VEMIS = VEMIS2 * COSANG - UEMIS2 * SINANG		        VEMIS = VEMIS2 * COSANG - UEMIS2 * SINANG
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        CERHAD = CERHAD + PHOTCM				        CERHAD = CERHAD + PHOTCM
+        DO 7001 I=1,ICERML					        DO 7001 I=1,ICERML
+          DO 101 NCT=1,NCTELS					          DO 101 NCT=1,NCTELS
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+c>> Modification to implement sphere algorithm >>>>>>>>>>>>>>	c>> Modification to implement sphere algorithm >>>>>>>>>>>>>>
+c>> JCG Wed Sep 21 10:49:14 MET DST 1998 >>>>>>>>>>>>>>>>>>>>	c>> JCG Wed Sep 21 10:49:14 MET DST 1998 >>>>>>>>>>>>>>>>>>>>
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+c>>>>> this is the last (simple) check <<<<<			c>>>>> this is the last (simple) check <<<<<
+C  changes to ct frame						C  changes to ct frame
+c            XG = XCER - CERXOS(I) - CTPARS(NCT,XCT) 		c            XG = XCER - CERXOS(I) - CTPARS(NCT,XCT) 
+c            YG = YCER - CERYOS(I) - CTPARS(NCT,YCT) 		c            YG = YCER - CERYOS(I) - CTPARS(NCT,YCT) 
+c            ZG =  0.0 - CTPARS(NCT,ZCT)			c            ZG =  0.0 - CTPARS(NCT,ZCT)
+c            DIST2 = SQRT( XG**2 + YG**2 )			c            DIST2 = SQRT( XG**2 + YG**2 )
+c            IF ( DIST2 .LT. (CTPARS(NCT,CTDIAM)/2.) ) GOTO 1	c            IF ( DIST2 .LT. (CTPARS(NCT,CTDIAM)/2.) ) GOTO 1
+c>> New check >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>> New check >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            XG = XCER - CERXOS(I) 				            XG = XCER - CERXOS(I) 
+            YG = YCER - CERYOS(I)				            YG = YCER - CERYOS(I)
+            ZG = 0.0						            ZG = 0.0
+            DIST2 = 						            DIST2 = 
+     >          SQRT((VEMIS*(-CTPARS(NCT,XCT) + XG) - 		     >          SQRT((VEMIS*(-CTPARS(NCT,XCT) + XG) - 
+     >          UEMIS*(-CTPARS(NCT,YCT) + YG))**2 + 		     >          UEMIS*(-CTPARS(NCT,YCT) + YG))**2 + 
+     >          (-(SQRT(1 - UEMIS**2 - VEMIS**2)*		     >          (-(SQRT(1 - UEMIS**2 - VEMIS**2)*
+     >          (-CTPARS(NCT,XCT) + XG)) + 			     >          (-CTPARS(NCT,XCT) + XG)) + 
+     >          UEMIS*(-CTPARS(NCT,ZCT) + ZG))**2 + 		     >          UEMIS*(-CTPARS(NCT,ZCT) + ZG))**2 + 
+     >          (SQRT(1 - UEMIS**2 - VEMIS**2)*			     >          (SQRT(1 - UEMIS**2 - VEMIS**2)*
+     >          (-CTPARS(NCT,YCT) + YG) - 			     >          (-CTPARS(NCT,YCT) + YG) - 
+     >          VEMIS*(-CTPARS(NCT,ZCT) + ZG))**2)		     >          VEMIS*(-CTPARS(NCT,ZCT) + ZG))**2)
+            IF ( DIST2 .LT. (CTPARS(NCT,CTDIAM)/2.) ) GOTO 10	            IF ( DIST2 .LT. (CTPARS(NCT,CTDIAM)/2.) ) GOTO 10
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ 101      CONTINUE						 101      CONTINUE
+          							          
+          GOTO 7001						          GOTO 7001
+          							          
+C   BUNCH FALLS ON A DETECTOR, CALCULATE ARRIVAL TIME (NSEC)	C   BUNCH FALLS ON A DETECTOR, CALCULATE ARRIVAL TIME (NSEC)
+          							          
+ 102      CARTIM = ((ETADSN*(THCKOB(NOBSLV)-THICK(DBLE(ZEMIS)	 102      CARTIM = ((ETADSN*(THCKOB(NOBSLV)-THICK(DBLE(ZEMIS)
+     *         /WEMIS+PATHCR-VCOR/BETACR)/C(25)+TPART)*1.E9	     *         /WEMIS+PATHCR-VCOR/BETACR)/C(25)+TPART)*1.E9
+
+c          CALL OUTPT2(INT(CURPAR(1)),I)			c          CALL OUTPT2(INT(CURPAR(1)),I)
+          CALL OUTPT2(NCT,I)					          CALL OUTPT2(NCT,I)
+
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>				c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+          call jctime(cartim)					          call jctime(cartim)
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>				c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+          GOTO 1000						          GOTO 1000
+          							          
+ 7001   CONTINUE						 7001   CONTINUE
+ 1000 CONTINUE							 1000 CONTINUE
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+      RETURN							      RETURN
+      END							      END
+
+C============================================================	C============================================================
+
+      SUBROUTINE GETBUS( IPARTI,ENERGY,THETA,CERSZE )		      SUBROUTINE GETBUS( IPARTI,ENERGY,THETA,CERSZE )
+
+C------------------------------------------------------------	C------------------------------------------------------------
+C  GET BU(NCH) S(IZE)						C  GET BU(NCH) S(IZE)
+C								C
+C  CALCULATES OPTIMAL BUNCH SIZE FOR CERENKOV PHOTONS. CERENK	C  CALCULATES OPTIMAL BUNCH SIZE FOR CERENKOV PHOTONS. CERENK
+C  ARE GROUPED IN BUNCHES IN ORDER TO ACCELERATE COMPUTING TI	C  ARE GROUPED IN BUNCHES IN ORDER TO ACCELERATE COMPUTING TI
+C  HOWEVER, WE SET A MAXIMAL VALUE FOR THE GROUPING OF CERENK	C  HOWEVER, WE SET A MAXIMAL VALUE FOR THE GROUPING OF CERENK
+C  SO THAT WE GET AT LEAST 100 BUNCHES/M**2 AT A CERENKOV FLU	C  SO THAT WE GET AT LEAST 100 BUNCHES/M**2 AT A CERENKOV FLU
+C  PHOTONS/M**2. THIS IS THE MINIMUM CERENKOV FLUX WHICH CAN 	C  PHOTONS/M**2. THIS IS THE MINIMUM CERENKOV FLUX WHICH CAN 
+C  DISTINGUISHED FROM THE NIGHT SKY LIGHT BACKGROUND IN THE H	C  DISTINGUISHED FROM THE NIGHT SKY LIGHT BACKGROUND IN THE H
+C  EXPERIMENT AT THE ISLAND LA PALMA. SO THE PARAMETRIZATION 	C  EXPERIMENT AT THE ISLAND LA PALMA. SO THE PARAMETRIZATION 
+C  CERENKOV BUNCH AS CALCULATED IN THIS SUBROUTINE IS VALID F	C  CERENKOV BUNCH AS CALCULATED IN THIS SUBROUTINE IS VALID F
+C  OBSERVATION LEVELS SIMILAR TO THAT OF THE HEGRA EXPERIMENT	C  OBSERVATION LEVELS SIMILAR TO THAT OF THE HEGRA EXPERIMENT
+C     FOR A GIVEN PRIMARY PARTICLE, INCIDENT ENERGY AND ANGLE	C     FOR A GIVEN PRIMARY PARTICLE, INCIDENT ENERGY AND ANGLE
+C  OPTIMAL BUNCH SIZE IS CALCULATED BY INTERPOLATION IN A TAB	C  OPTIMAL BUNCH SIZE IS CALCULATED BY INTERPOLATION IN A TAB
+C  WHERE WE HAVE CHOSEN AN ENERGY RANGE UP TO 1000 TEV, INCID	C  WHERE WE HAVE CHOSEN AN ENERGY RANGE UP TO 1000 TEV, INCID
+C  ANGLES 0 AND 40 DEGREES, AND 4 TYPES OF PRIMARIS: GAMMAS,	C  ANGLES 0 AND 40 DEGREES, AND 4 TYPES OF PRIMARIS: GAMMAS,
+C  PROTONS, NITROGEN, AND IRON.					C  PROTONS, NITROGEN, AND IRON.
+C  THIS SUBROUTINE IS CALLED FROM MAIN				C  THIS SUBROUTINE IS CALLED FROM MAIN
+C  ARGUMENTS:							C  ARGUMENTS:
+C   IPARTI      = TYPE OF PRIMARY PARTICLE			C   IPARTI      = TYPE OF PRIMARY PARTICLE
+C   ENERGY (R4) = PARTICLES ENERGY IN GEV			C   ENERGY (R4) = PARTICLES ENERGY IN GEV
+C   THETA  (R4) = ANGLE IN RAD					C   THETA  (R4) = ANGLE IN RAD
+C   CERSZE (R4) = SIZE OF CERENKOV BUNCH			C   CERSZE (R4) = SIZE OF CERENKOV BUNCH
+C								C
+C  AUTHORS : S. MARTINEZ  UNIVERSITY OF MADRID			C  AUTHORS : S. MARTINEZ  UNIVERSITY OF MADRID
+C            F. ARQUEROS  UNIVERSITY OF MADRID			C            F. ARQUEROS  UNIVERSITY OF MADRID
+C------------------------------------------------------------	C------------------------------------------------------------
+
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,CONST.							*KEEP,CONST.
+      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER			      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER
+      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER			      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEND.								*KEND.
+
+      REAL    ANGLE(2),ENGAM(3),ENHAD(3),ENNIT(2),		      REAL    ANGLE(2),ENGAM(3),ENHAD(3),ENNIT(2),
+     *        SIFE(3,2),SIGAM(3,2),SINIT(2),SIPRO(3,2)		     *        SIFE(3,2),SIGAM(3,2),SINIT(2),SIPRO(3,2)
+      REAL    CERS1F,CERS1P,ENERGY,CERSZE,S1,S2,THETA		      REAL    CERS1F,CERS1P,ENERGY,CERSZE,S1,S2,THETA
+      INTEGER I,IANFE,IANP,IATNUM,IPARTI,I1,I2			      INTEGER I,IANFE,IANP,IATNUM,IPARTI,I1,I2
+
+      DATA ANGLE /  0., 40. /					      DATA ANGLE /  0., 40. /
+      DATA ENGAM /  100.,  200.,  500. /			      DATA ENGAM /  100.,  200.,  500. /
+      DATA ENHAD /  100.,  200.,  1000. /			      DATA ENHAD /  100.,  200.,  1000. /
+      DATA ENNIT /  200.,  1000. /				      DATA ENNIT /  200.,  1000. /
+      DATA ( SIFE (I,1),I=1,3 ) /  30.,  30.,  140. /		      DATA ( SIFE (I,1),I=1,3 ) /  30.,  30.,  140. /
+      DATA ( SIFE (I,2),I=1,3 ) /  30.,  30.,  110. /		      DATA ( SIFE (I,2),I=1,3 ) /  30.,  30.,  110. /
+      DATA ( SIGAM(I,1),I=1,3 ) /  30.,  45.,  100. /		      DATA ( SIGAM(I,1),I=1,3 ) /  30.,  45.,  100. /
+      DATA ( SIGAM(I,2),I=1,3 ) /  30.,  40.,  100. /		      DATA ( SIGAM(I,2),I=1,3 ) /  30.,  40.,  100. /
+      DATA SINIT /  30.,  150. /				      DATA SINIT /  30.,  150. /
+      DATA ( SIPRO(I,1),I=1,3 ) /  30.,  30.,  120. /		      DATA ( SIPRO(I,1),I=1,3 ) /  30.,  30.,  120. /
+      DATA ( SIPRO(I,2),I=1,3 ) /  30.,  30.,  160. /		      DATA ( SIPRO(I,2),I=1,3 ) /  30.,  30.,  160. /
+      DATA IANP   / 1 /, IANFE / 26 /				      DATA IANP   / 1 /, IANFE / 26 /
+C------------------------------------------------------------	C------------------------------------------------------------
+
+c      IF ( DEBUG ) WRITE(MDEBUG,100) IPARTI,SNGL(ENERGY),SNG	c      IF ( DEBUG ) WRITE(MDEBUG,100) IPARTI,SNGL(ENERGY),SNG
+c 100  FORMAT(' GETBUS: INPUT PARTICLE = ',I5,1P,2E10.3)	c 100  FORMAT(' GETBUS: INPUT PARTICLE = ',I5,1P,2E10.3)
+
+C  DEFAULT VALUE						C  DEFAULT VALUE
+      CERSZE = 100.						      CERSZE = 100.
+
+      ENERGY = ENERGY / 1000.					      ENERGY = ENERGY / 1000.
+      IF ( ENERGY .LE. 100. ) THEN				      IF ( ENERGY .LE. 100. ) THEN
+        CERSZE = 30.						        CERSZE = 30.
+        IF ( DEBUG ) WRITE(MDEBUG,101) CERSZE			        IF ( DEBUG ) WRITE(MDEBUG,101) CERSZE
+        RETURN							        RETURN
+      ENDIF							      ENDIF
+
+      THETA  = THETA / PI * 180.				      THETA  = THETA / PI * 180.
+
+C------------------------------------------------------------	C------------------------------------------------------------
+C  PHOTON, ELECTRON OR POSITRON AS PRIMARY PARTICLE		C  PHOTON, ELECTRON OR POSITRON AS PRIMARY PARTICLE
+      IF ( IPARTI .LE. 3 ) THEN					      IF ( IPARTI .LE. 3 ) THEN
+C  FIND ENERGY BIN FOR INTERPOLATION				C  FIND ENERGY BIN FOR INTERPOLATION
+        IF ( ENERGY .LE. ENGAM(2) ) THEN			        IF ( ENERGY .LE. ENGAM(2) ) THEN
+          I1 = 1						          I1 = 1
+          I2 = 2						          I2 = 2
+        ELSE							        ELSE
+          I1 = 2						          I1 = 2
+          I2 = 3						          I2 = 3
+        ENDIF							        ENDIF
+        S1 = SIGAM(I1,1) + (ENERGY - ENGAM(I1))			        S1 = SIGAM(I1,1) + (ENERGY - ENGAM(I1))
+     *       / (ENGAM(I2) - ENGAM(I1))				     *       / (ENGAM(I2) - ENGAM(I1))
+     *       * (SIGAM(I2,1) - SIGAM(I1,1))			     *       * (SIGAM(I2,1) - SIGAM(I1,1))
+        S2 = SIGAM(I1,2) + (ENERGY - ENGAM(I1))			        S2 = SIGAM(I1,2) + (ENERGY - ENGAM(I1))
+     *       / (ENGAM(I2) - ENGAM(I1))				     *       / (ENGAM(I2) - ENGAM(I1))
+     *       * (SIGAM(I2,2) - SIGAM(I1,2))			     *       * (SIGAM(I2,2) - SIGAM(I1,2))
+        CERSZE = S1 + (THETA-ANGLE(1))/(ANGLE(2)-ANGLE(1)) * 	        CERSZE = S1 + (THETA-ANGLE(1))/(ANGLE(2)-ANGLE(1)) * 
+        IF ( DEBUG ) WRITE(MDEBUG,101) CERSZE			        IF ( DEBUG ) WRITE(MDEBUG,101) CERSZE
+        RETURN							        RETURN
+      ENDIF							      ENDIF
+
+C------------------------------------------------------------	C------------------------------------------------------------
+C  NITROGEN AS PRIMARY PARTICLE AND VERTICAL INCIDENCE		C  NITROGEN AS PRIMARY PARTICLE AND VERTICAL INCIDENCE
+CJOK WHY SPECIAL TREATMENT FOR NITROGEN ????			CJOK WHY SPECIAL TREATMENT FOR NITROGEN ????
+CJOK WHY ONLY VERTICAL INCIDENCE ????				CJOK WHY ONLY VERTICAL INCIDENCE ????
+      IF ( IPARTI .EQ. 1407  .AND.  ABS(THETA) .LT. 1.E-1 ) T	      IF ( IPARTI .EQ. 1407  .AND.  ABS(THETA) .LT. 1.E-1 ) T
+        IF ( ENERGY .LT. 200. ) THEN				        IF ( ENERGY .LT. 200. ) THEN
+          CERSZE = 30.						          CERSZE = 30.
+        ELSE							        ELSE
+          CERSZE = SINIT(1) + (ENERGY-ENNIT(1))			          CERSZE = SINIT(1) + (ENERGY-ENNIT(1))
+     *             / (ENNIT(2)-ENNIT(1)) * (SINIT(2)-SINIT(1)	     *             / (ENNIT(2)-ENNIT(1)) * (SINIT(2)-SINIT(1)
+        ENDIF							        ENDIF
+        IF ( DEBUG ) WRITE(MDEBUG,101) CERSZE			        IF ( DEBUG ) WRITE(MDEBUG,101) CERSZE
+        RETURN							        RETURN
+      ENDIF							      ENDIF
+
+C------------------------------------------------------------	C------------------------------------------------------------
+C  GET THE ATOMIC NUMBER OF THE NUCLEUS				C  GET THE ATOMIC NUMBER OF THE NUCLEUS
+C  Z IS 1,  IF PROTON						C  Z IS 1,  IF PROTON
+      IF     ( IPARTI .EQ. 14  ) THEN				      IF     ( IPARTI .EQ. 14  ) THEN
+        IATNUM = 1						        IATNUM = 1
+C  REST OF POSSIBLE NUCLEI					C  REST OF POSSIBLE NUCLEI
+      ELSEIF ( IPARTI .GT. 100 ) THEN				      ELSEIF ( IPARTI .GT. 100 ) THEN
+        IATNUM = MOD(IPARTI,100)				        IATNUM = MOD(IPARTI,100)
+        IF ( IATNUM .GT. 26 ) THEN				        IF ( IATNUM .GT. 26 ) THEN
+          WRITE(MONIOU,*) 'GETBUS: UNEXPECTED PARTICLE CODE'	          WRITE(MONIOU,*) 'GETBUS: UNEXPECTED PARTICLE CODE'
+          RETURN						          RETURN
+        ENDIF							        ENDIF
+      ELSE							      ELSE
+        WRITE(MONIOU,*) 'GETBUS: UNEXPECTED PARTICLE CODE'	        WRITE(MONIOU,*) 'GETBUS: UNEXPECTED PARTICLE CODE'
+        RETURN							        RETURN
+      ENDIF							      ENDIF
+
+C  FIND ENERGY BIN FOR INTERPOLATION IN CASE OF HADRONIC PRIM	C  FIND ENERGY BIN FOR INTERPOLATION IN CASE OF HADRONIC PRIM
+      IF ( ENERGY .LE. ENHAD(2) ) THEN				      IF ( ENERGY .LE. ENHAD(2) ) THEN
+        I1 = 1							        I1 = 1
+        I2 = 2							        I2 = 2
+      ELSE							      ELSE
+        I1 = 2							        I1 = 2
+        I2 = 3							        I2 = 3
+      ENDIF							      ENDIF
+
+C  INTERPOLATION FOR HADRONS					C  INTERPOLATION FOR HADRONS
+      S1 = SIPRO(I1,1) + (ENERGY-ENHAD(I1))			      S1 = SIPRO(I1,1) + (ENERGY-ENHAD(I1))
+     *       / (ENHAD(I2)-ENHAD(I1)) * (SIPRO(I2,1)-SIPRO(I1,	     *       / (ENHAD(I2)-ENHAD(I1)) * (SIPRO(I2,1)-SIPRO(I1,
+      S2 = SIPRO(I1,2) + (ENERGY-ENHAD(I1))			      S2 = SIPRO(I1,2) + (ENERGY-ENHAD(I1))
+     *       / (ENHAD(I2)-ENHAD(I1)) * (SIPRO(I2,2)-SIPRO(I1,	     *       / (ENHAD(I2)-ENHAD(I1)) * (SIPRO(I2,2)-SIPRO(I1,
+      CERS1P = S1 + (THETA-ANGLE(1)) / (ANGLE(2)-ANGLE(1)) * 	      CERS1P = S1 + (THETA-ANGLE(1)) / (ANGLE(2)-ANGLE(1)) * 
+
+      S1 = SIFE(I1,1) + (ENERGY-ENHAD(I1)) / (ENHAD(I2)-ENHAD	      S1 = SIFE(I1,1) + (ENERGY-ENHAD(I1)) / (ENHAD(I2)-ENHAD
+     *                * (SIFE(I2,1)-SIFE(I1,1))			     *                * (SIFE(I2,1)-SIFE(I1,1))
+      S2 = SIFE(I1,2) + (ENERGY-ENHAD(I1)) / (ENHAD(I2)-ENHAD	      S2 = SIFE(I1,2) + (ENERGY-ENHAD(I1)) / (ENHAD(I2)-ENHAD
+     *                * (SIFE(I2,2)-SIFE(I1,2))			     *                * (SIFE(I2,2)-SIFE(I1,2))
+      CERS1F = S1 + (THETA-ANGLE(1)) / (ANGLE(2)-ANGLE(1)) * 	      CERS1F = S1 + (THETA-ANGLE(1)) / (ANGLE(2)-ANGLE(1)) * 
+
+      CERSZE = CERS1P + (IATNUM-IANP) * (CERS1F-CERS1P) / (IA	      CERSZE = CERS1P + (IATNUM-IANP) * (CERS1F-CERS1P) / (IA
+
+      IF ( DEBUG ) WRITE(MDEBUG,101) CERSZE			      IF ( DEBUG ) WRITE(MDEBUG,101) CERSZE
+ 101  FORMAT(' GETBUS: BUNCH SIZE = ',1P,1E10.3)		 101  FORMAT(' GETBUS: BUNCH SIZE = ',1P,1E10.3)
+
+      RETURN							      RETURN
+      END							      END
+
+C============================================================	C============================================================
+
+      SUBROUTINE OUTND2						      SUBROUTINE OUTND2
+
+C------------------------------------------------------------	C------------------------------------------------------------
+C  OUT(PUT AT E)ND (OF SHOWER)					C  OUT(PUT AT E)ND (OF SHOWER)
+C								C
+C  WRITE REST OF PARTICLES TO OUTPUT BUFFER			C  WRITE REST OF PARTICLES TO OUTPUT BUFFER
+C  OUTND2 IS CALLED FROM MAIN					C  OUTND2 IS CALLED FROM MAIN
+C								C
+C  AUTHORS : S. MARTINEZ, UNIVERSITY OF MADRID			C  AUTHORS : S. MARTINEZ, UNIVERSITY OF MADRID
+C            F. ARQUEROS, UNIVERSITY OF MADRID			C            F. ARQUEROS, UNIVERSITY OF MADRID
+C------------------------------------------------------------	C------------------------------------------------------------
+
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEEP,CEREN2.							*KEEP,CEREN2.
+      COMMON /CEREN2/  PHOTCM,XCER,YCER,UEMIS,VEMIS,CARTIM,ZE	      COMMON /CEREN2/  PHOTCM,XCER,YCER,UEMIS,VEMIS,CARTIM,ZE
+     *                 DCERX,DCERY,ACERX,ACERY,			     *                 DCERX,DCERY,ACERX,ACERY,
+     *                 XCMAX,YCMAX,EPSX,EPSY,			     *                 XCMAX,YCMAX,EPSX,EPSY,
+     *                 DCERXI,DCERYI,FCERX,FCERY,		     *                 DCERXI,DCERYI,FCERX,FCERY,
+     *                 XSCATT,YSCATT,CERXOS,CERYOS,		     *                 XSCATT,YSCATT,CERXOS,CERYOS,
+     *                 NCERX,NCERY,ICERML			     *                 NCERX,NCERY,ICERML
+      REAL             PHOTCM,XCER,YCER,UEMIS,VEMIS,CARTIM,ZE	      REAL             PHOTCM,XCER,YCER,UEMIS,VEMIS,CARTIM,ZE
+     *                 DCERX,DCERY,ACERX,ACERY,			     *                 DCERX,DCERY,ACERX,ACERY,
+     *                 XCMAX,YCMAX,EPSX,EPSY,			     *                 XCMAX,YCMAX,EPSX,EPSY,
+     *                 DCERXI,DCERYI,FCERX,FCERY,		     *                 DCERXI,DCERYI,FCERX,FCERY,
+     *                 XSCATT,YSCATT,CERXOS(20),CERYOS(20)	     *                 XSCATT,YSCATT,CERXOS(20),CERYOS(20)
+      INTEGER          NCERX,NCERY,ICERML			      INTEGER          NCERX,NCERY,ICERML
+*KEEP,CEREN3.							*KEEP,CEREN3.
+      COMMON /CEREN3/  CERCNT,DATAB2,LHCER			      COMMON /CEREN3/  CERCNT,DATAB2,LHCER
+      INTEGER          MAXBF2					      INTEGER          MAXBF2
+      PARAMETER        (MAXBF2 = 39 * 7)			      PARAMETER        (MAXBF2 = 39 * 7)
+      DOUBLE PRECISION CERCNT					      DOUBLE PRECISION CERCNT
+      REAL             DATAB2(MAXBF2)				      REAL             DATAB2(MAXBF2)
+      INTEGER          LHCER					      INTEGER          LHCER
+*KEND.								*KEND.
+
+      INTEGER I							      INTEGER I
+C------------------------------------------------------------	C------------------------------------------------------------
+
+      IF ( LHCER .GT. 0 ) THEN					      IF ( LHCER .GT. 0 ) THEN
+        CALL TOBUFC( DATAB2,1 )					        CALL TOBUFC( DATAB2,1 )
+        DO  2  I = 1,MAXBF2					        DO  2  I = 1,MAXBF2
+          DATAB2(I) = 0.					          DATAB2(I) = 0.
+    2   CONTINUE						    2   CONTINUE
+      ELSE							      ELSE
+        CALL TOBUFC( DATAB2,2 )					        CALL TOBUFC( DATAB2,2 )
+      ENDIF							      ENDIF
+
+      WRITE(MONIOU,*) 'CERCNT = ',SNGL( CERCNT )		      WRITE(MONIOU,*) 'CERCNT = ',SNGL( CERCNT )
+      CERCNT = 0.D0						      CERCNT = 0.D0
+      LHCER  = 0						      LHCER  = 0
+
+      RETURN							      RETURN
+      END							      END
+
+C============================================================	C============================================================
+
+      SUBROUTINE OUTPT2(J,IMOV)					      SUBROUTINE OUTPT2(J,IMOV)
+
+C------------------------------------------------------------	C------------------------------------------------------------
+C  (WRITE CERENKOV RADIATION) OUTP(U)T				C  (WRITE CERENKOV RADIATION) OUTP(U)T
+C								C
+C  OUTPUT ROUTINE FOR CERENKOV PHOTONS				C  OUTPUT ROUTINE FOR CERENKOV PHOTONS
+C  THIS SUBROUTINE IS CALLED FROM CERENE AND CERENH		C  THIS SUBROUTINE IS CALLED FROM CERENE AND CERENH
+C								C
+C  AUTHORS : S. MARTINEZ, UNIVERSITY OF MADRID			C  AUTHORS : S. MARTINEZ, UNIVERSITY OF MADRID
+C            F. ARQUEROS, UNIVERSITY OF MADRID			C            F. ARQUEROS, UNIVERSITY OF MADRID
+C------------------------------------------------------------	C------------------------------------------------------------
+
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,BUFFS.							*KEEP,BUFFS.
+      COMMON /BUFFS/   RUNH,RUNE,EVTH,EVTE,DATAB,LH		      COMMON /BUFFS/   RUNH,RUNE,EVTH,EVTE,DATAB,LH
+      INTEGER          MAXBUF,MAXLEN				      INTEGER          MAXBUF,MAXLEN
+      PARAMETER        (MAXBUF=39*7)				      PARAMETER        (MAXBUF=39*7)
+      PARAMETER        (MAXLEN=12)				      PARAMETER        (MAXLEN=12)
+      REAL             RUNH(MAXBUF),EVTH(MAXBUF),EVTE(MAXBUF)	      REAL             RUNH(MAXBUF),EVTH(MAXBUF),EVTE(MAXBUF)
+     *                 RUNE(MAXBUF),DATAB(MAXBUF)		     *                 RUNE(MAXBUF),DATAB(MAXBUF)
+      INTEGER          LH					      INTEGER          LH
+      CHARACTER*4      CRUNH,CRUNE,CEVTH,CEVTE			      CHARACTER*4      CRUNH,CRUNE,CEVTH,CEVTE
+      EQUIVALENCE      (RUNH(1),CRUNH), (RUNE(1),CRUNE)		      EQUIVALENCE      (RUNH(1),CRUNH), (RUNE(1),CRUNE)
+      EQUIVALENCE      (EVTH(1),CEVTH), (EVTE(1),CEVTE)		      EQUIVALENCE      (EVTH(1),CEVTH), (EVTE(1),CEVTE)
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEEP,CEREN1.							*KEEP,CEREN1.
+      COMMON /CEREN1/  CERELE,CERHAD,ETADSN,WAVLGL,WAVLGU,CYI	      COMMON /CEREN1/  CERELE,CERHAD,ETADSN,WAVLGL,WAVLGU,CYI
+     *                 CERSIZ,LCERFI				     *                 CERSIZ,LCERFI
+      DOUBLE PRECISION CERELE,CERHAD,ETADSN,WAVLGL,WAVLGU,CYI	      DOUBLE PRECISION CERELE,CERHAD,ETADSN,WAVLGL,WAVLGU,CYI
+      REAL             CERSIZ					      REAL             CERSIZ
+      LOGICAL          LCERFI					      LOGICAL          LCERFI
+*KEEP,CEREN2.							*KEEP,CEREN2.
+      COMMON /CEREN2/  PHOTCM,XCER,YCER,UEMIS,VEMIS,CARTIM,ZE	      COMMON /CEREN2/  PHOTCM,XCER,YCER,UEMIS,VEMIS,CARTIM,ZE
+     *                 DCERX,DCERY,ACERX,ACERY,			     *                 DCERX,DCERY,ACERX,ACERY,
+     *                 XCMAX,YCMAX,EPSX,EPSY,			     *                 XCMAX,YCMAX,EPSX,EPSY,
+     *                 DCERXI,DCERYI,FCERX,FCERY,		     *                 DCERXI,DCERYI,FCERX,FCERY,
+     *                 XSCATT,YSCATT,CERXOS,CERYOS,		     *                 XSCATT,YSCATT,CERXOS,CERYOS,
+     *                 NCERX,NCERY,ICERML			     *                 NCERX,NCERY,ICERML
+      REAL             PHOTCM,XCER,YCER,UEMIS,VEMIS,CARTIM,ZE	      REAL             PHOTCM,XCER,YCER,UEMIS,VEMIS,CARTIM,ZE
+     *                 DCERX,DCERY,ACERX,ACERY,			     *                 DCERX,DCERY,ACERX,ACERY,
+     *                 XCMAX,YCMAX,EPSX,EPSY,			     *                 XCMAX,YCMAX,EPSX,EPSY,
+     *                 DCERXI,DCERYI,FCERX,FCERY,		     *                 DCERXI,DCERYI,FCERX,FCERY,
+     *                 XSCATT,YSCATT,CERXOS(20),CERYOS(20)	     *                 XSCATT,YSCATT,CERXOS(20),CERYOS(20)
+      INTEGER          NCERX,NCERY,ICERML			      INTEGER          NCERX,NCERY,ICERML
+*KEEP,CEREN3.							*KEEP,CEREN3.
+      COMMON /CEREN3/  CERCNT,DATAB2,LHCER			      COMMON /CEREN3/  CERCNT,DATAB2,LHCER
+      INTEGER          MAXBF2					      INTEGER          MAXBF2
+      PARAMETER        (MAXBF2 = 39 * 7)			      PARAMETER        (MAXBF2 = 39 * 7)
+      DOUBLE PRECISION CERCNT					      DOUBLE PRECISION CERCNT
+      REAL             DATAB2(MAXBF2)				      REAL             DATAB2(MAXBF2)
+      INTEGER          LHCER					      INTEGER          LHCER
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+      COMMON /GRAAL1/  WAVELENGTH ! (NM)			      COMMON /GRAAL1/  WAVELENGTH ! (NM)
+      REAL WAVELENGTH						      REAL WAVELENGTH
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+*KEND.								*KEND.
+
+      INTEGER I,J,IMOV						      INTEGER I,J,IMOV
+C------------------------------------------------------------	C------------------------------------------------------------
+
+      IF(DEBUG)WRITE(MDEBUG,3)PHOTCM,XCER,YCER,UEMIS,VEMIS,CA	      IF(DEBUG)WRITE(MDEBUG,3)PHOTCM,XCER,YCER,UEMIS,VEMIS,CA
+  3   FORMAT(' OUTPT2: ',1P,8E10.3)				  3   FORMAT(' OUTPT2: ',1P,8E10.3)
+C  WRITE A BLOCK OF 39 PARTICLES TO THE CERENKOV OUTPUT BUFFE	C  WRITE A BLOCK OF 39 PARTICLES TO THE CERENKOV OUTPUT BUFFE
+C  CLEAR FIELD							C  CLEAR FIELD
+      IF ( LCERFI ) THEN					      IF ( LCERFI ) THEN
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+c        DATAB2(LHCER+1) = PHOTCM				c        DATAB2(LHCER+1) = PHOTCM
+cc        DATAB2(LHCER+1) = WAVELENGTH + J*1000.		cc        DATAB2(LHCER+1) = WAVELENGTH + J*1000.
+        DATAB2(LHCER+1) = J*100000. + IMOV*1000. + WAVELENGTH	        DATAB2(LHCER+1) = J*100000. + IMOV*1000. + WAVELENGTH
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        DATAB2(LHCER+2) = XCER					        DATAB2(LHCER+2) = XCER
+        DATAB2(LHCER+3) = YCER					        DATAB2(LHCER+3) = YCER
+        DATAB2(LHCER+4) = UEMIS					        DATAB2(LHCER+4) = UEMIS
+        DATAB2(LHCER+5) = VEMIS					        DATAB2(LHCER+5) = VEMIS
+        DATAB2(LHCER+6) = CARTIM				        DATAB2(LHCER+6) = CARTIM
+        DATAB2(LHCER+7) = ZEMIS					        DATAB2(LHCER+7) = ZEMIS
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+c        CERCNT = CERCNT + DBLE( PHOTCM )			c        CERCNT = CERCNT + DBLE( PHOTCM )
+        CERCNT = CERCNT + 1					        CERCNT = CERCNT + 1
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        LHCER  = LHCER + 7					        LHCER  = LHCER + 7
+        IF ( LHCER .GE. MAXBF2 ) THEN				        IF ( LHCER .GE. MAXBF2 ) THEN
+          CALL TOBUFC( DATAB2,0 )				          CALL TOBUFC( DATAB2,0 )
+          DO  1  I = 1,MAXBF2					          DO  1  I = 1,MAXBF2
+            DATAB2(I) = 0.					            DATAB2(I) = 0.
+    1     CONTINUE						    1     CONTINUE
+          LHCER = 0						          LHCER = 0
+        ENDIF							        ENDIF
+      ELSE							      ELSE
+C  WRITE A BLOCK OF 39 PARTICLES TO THE PARTICLE OUTPUT BUFFE	C  WRITE A BLOCK OF 39 PARTICLES TO THE PARTICLE OUTPUT BUFFE
+C  CLEAR FIELD							C  CLEAR FIELD
+        DATAB(LH+1) = 99.E5 + NINT(PHOTCM)*10. + 1.		        DATAB(LH+1) = 99.E5 + NINT(PHOTCM)*10. + 1.
+        DATAB(LH+2) = XCER					        DATAB(LH+2) = XCER
+        DATAB(LH+3) = YCER					        DATAB(LH+3) = YCER
+        DATAB(LH+4) = UEMIS					        DATAB(LH+4) = UEMIS
+        DATAB(LH+5) = VEMIS					        DATAB(LH+5) = VEMIS
+        DATAB(LH+6) = CARTIM					        DATAB(LH+6) = CARTIM
+        DATAB(LH+7) = ZEMIS					        DATAB(LH+7) = ZEMIS
+        LH     = LH + 7						        LH     = LH + 7
+        NOPART = NOPART + 1					        NOPART = NOPART + 1
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+c        CERCNT = CERCNT + DBLE( PHOTCM )			c        CERCNT = CERCNT + DBLE( PHOTCM )
+        CERCNT = CERCNT + 1					        CERCNT = CERCNT + 1
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        IF ( LH .GE. MAXBUF ) THEN				        IF ( LH .GE. MAXBUF ) THEN
+          CALL TOBUF( DATAB,0 )					          CALL TOBUF( DATAB,0 )
+          DO  2  I = 1,MAXBUF					          DO  2  I = 1,MAXBUF
+            DATAB(I) = 0.					            DATAB(I) = 0.
+    2     CONTINUE						    2     CONTINUE
+          LH = 0						          LH = 0
+        ENDIF							        ENDIF
+      ENDIF							      ENDIF
+
+      RETURN							      RETURN
+      END							      END
+
+C============================================================	C============================================================
+
+      SUBROUTINE TOBUFC( A,IFL )				      SUBROUTINE TOBUFC( A,IFL )
+
+C------------------------------------------------------------	C------------------------------------------------------------
+C  (WRITE) TO BUF(FER) C(ERENKOV DATA)				C  (WRITE) TO BUF(FER) C(ERENKOV DATA)
+C								C
+C  COPY TO BUFFER CERENKOV DATA					C  COPY TO BUFFER CERENKOV DATA
+C  THIS SUBROUTINE IS CALLED FROM MAIN, INPRM, ELECTR, PHOTON	C  THIS SUBROUTINE IS CALLED FROM MAIN, INPRM, ELECTR, PHOTON
+C  AND OUTPT2							C  AND OUTPT2
+C  ARGUMENTS:							C  ARGUMENTS:
+C   A      = ARRAY TO BE WRITTEN TO TAPE			C   A      = ARRAY TO BE WRITTEN TO TAPE
+C   IFL    = STARTING OF FINAL OUTPUT				C   IFL    = STARTING OF FINAL OUTPUT
+C          = 0  NORMAL BLOCK					C          = 0  NORMAL BLOCK
+C          = 1  NORMAL BLOCK WITH END OF OUTPUT			C          = 1  NORMAL BLOCK WITH END OF OUTPUT
+C          = 2  ONLY END OF OUTPUT				C          = 2  ONLY END OF OUTPUT
+C------------------------------------------------------------	C------------------------------------------------------------
+
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,BUFFS.							*KEEP,BUFFS.
+      COMMON /BUFFS/   RUNH,RUNE,EVTH,EVTE,DATAB,LH		      COMMON /BUFFS/   RUNH,RUNE,EVTH,EVTE,DATAB,LH
+      INTEGER          MAXBUF,MAXLEN				      INTEGER          MAXBUF,MAXLEN
+      PARAMETER        (MAXBUF=39*7)				      PARAMETER        (MAXBUF=39*7)
+      PARAMETER        (MAXLEN=12)				      PARAMETER        (MAXLEN=12)
+      REAL             RUNH(MAXBUF),EVTH(MAXBUF),EVTE(MAXBUF)	      REAL             RUNH(MAXBUF),EVTH(MAXBUF),EVTE(MAXBUF)
+     *                 RUNE(MAXBUF),DATAB(MAXBUF)		     *                 RUNE(MAXBUF),DATAB(MAXBUF)
+      INTEGER          LH					      INTEGER          LH
+      CHARACTER*4      CRUNH,CRUNE,CEVTH,CEVTE			      CHARACTER*4      CRUNH,CRUNE,CEVTH,CEVTE
+      EQUIVALENCE      (RUNH(1),CRUNH), (RUNE(1),CRUNE)		      EQUIVALENCE      (RUNH(1),CRUNH), (RUNE(1),CRUNE)
+      EQUIVALENCE      (EVTH(1),CEVTH), (EVTE(1),CEVTE)		      EQUIVALENCE      (EVTH(1),CEVTH), (EVTE(1),CEVTE)
+*KEEP,RECORD.							*KEEP,RECORD.
+      COMMON /RECORD/  IRECOR					      COMMON /RECORD/  IRECOR
+      INTEGER          IRECOR					      INTEGER          IRECOR
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEEP,CEREN3.							*KEEP,CEREN3.
+      COMMON /CEREN3/  CERCNT,DATAB2,LHCER			      COMMON /CEREN3/  CERCNT,DATAB2,LHCER
+      INTEGER          MAXBF2					      INTEGER          MAXBF2
+      PARAMETER        (MAXBF2 = 39 * 7)			      PARAMETER        (MAXBF2 = 39 * 7)
+      DOUBLE PRECISION CERCNT					      DOUBLE PRECISION CERCNT
+      REAL             DATAB2(MAXBF2)				      REAL             DATAB2(MAXBF2)
+      INTEGER          LHCER					      INTEGER          LHCER
+*KEEP,CEREN4.							*KEEP,CEREN4.
+      COMMON /CEREN4/  NRECER					      COMMON /CEREN4/  NRECER
+      INTEGER          NRECER					      INTEGER          NRECER
+*KEND.								*KEND.
+
+      INTEGER   NSUBBL						      INTEGER   NSUBBL
+      PARAMETER (NSUBBL=21)					      PARAMETER (NSUBBL=21)
+      REAL      A(*)						      REAL      A(*)
+C  NSUBBL IS NUMBER OF SUBBLOCKS IN ONE OUTPUT RECORD		C  NSUBBL IS NUMBER OF SUBBLOCKS IN ONE OUTPUT RECORD
+C  (OUTPUT RECORD LENGTH = NSUBBL * 39 * 7 * 4 BYTES  <= 2293	C  (OUTPUT RECORD LENGTH = NSUBBL * 39 * 7 * 4 BYTES  <= 2293
+C  IBLK2 IS COUNTER FOR SUBBLOCKS OF CERENKOV OUTPUT		C  IBLK2 IS COUNTER FOR SUBBLOCKS OF CERENKOV OUTPUT
+C  OUTPUT BUFFER FOR CERENKOV OUTPUT				C  OUTPUT BUFFER FOR CERENKOV OUTPUT
+      REAL      OUTBF2(MAXBF2,NSUBBL)				      REAL      OUTBF2(MAXBF2,NSUBBL)
+      SAVE      OUTBF2						      SAVE      OUTBF2
+      INTEGER   I,IBLK2,IFL,K					      INTEGER   I,IBLK2,IFL,K
+      DATA      IBLK2 / 0 /					      DATA      IBLK2 / 0 /
+C------------------------------------------------------------	C------------------------------------------------------------
+
+      IF ( IFL .LE. 1 ) THEN					      IF ( IFL .LE. 1 ) THEN
+        IBLK2 = IBLK2 + 1					        IBLK2 = IBLK2 + 1
+        DO  3  I = 1,MAXBF2					        DO  3  I = 1,MAXBF2
+          OUTBF2(I,IBLK2) = A(I)				          OUTBF2(I,IBLK2) = A(I)
+    3   CONTINUE						    3   CONTINUE
+      ENDIF							      ENDIF
+
+C  WRITE TO TAPE IF BLOCK IS FULL OR IF IFL IS 1		C  WRITE TO TAPE IF BLOCK IS FULL OR IF IFL IS 1
+      IF ( IFL .GE. 1  .OR.  IBLK2 .EQ. NSUBBL ) THEN		      IF ( IFL .GE. 1  .OR.  IBLK2 .EQ. NSUBBL ) THEN
+        NRECER = NRECER + 1					        NRECER = NRECER + 1
+
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+c        WRITE(CETAPE)            ((OUTBF2(I,K),I=1,MAXBF2),K	c        WRITE(CETAPE)            ((OUTBF2(I,K),I=1,MAXBF2),K
+        call jccersave(outbf2)					        call jccersave(outbf2)
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        IBLK2 = 0						        IBLK2 = 0
+        DO  4  K = 1,NSUBBL					        DO  4  K = 1,NSUBBL
+        DO  4  I = 1,MAXBF2					        DO  4  I = 1,MAXBF2
+          OUTBF2(I,K) = 0.0					          OUTBF2(I,K) = 0.0
+   4    CONTINUE						   4    CONTINUE
+      ENDIF							      ENDIF
+
+      RETURN							      RETURN
+      END							      END

@@ -1,0 +1,204 @@
+      SUBROUTINE PARRAP						      SUBROUTINE PARRAP
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  PAR(TICLE) RAP(IDITY)					C  PAR(TICLE) RAP(IDITY)
+C								C
+C  ROUTINE GIVES THE NEW PARTICLES OF HDPM THEIR RAPIDITIES	C  ROUTINE GIVES THE NEW PARTICLES OF HDPM THEIR RAPIDITIES
+C  THIS SUBROUTINE IS CALLED FROM HDPM				C  THIS SUBROUTINE IS CALLED FROM HDPM
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)			      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+*KEEP,INTER.							*KEEP,INTER.
+      COMMON /INTER/   AVCH,AVCH3,DC0,DLOG,DMLOG,ECMDIF,ECMDP	      COMMON /INTER/   AVCH,AVCH3,DC0,DLOG,DMLOG,ECMDIF,ECMDP
+     *                 FNEUT,FNEUT2,GNU,PLAB,POSC2,POSC3,POSN	     *                 FNEUT,FNEUT2,GNU,PLAB,POSC2,POSC3,POSN
+     *                 RC3TO2,S,SEUGF,SEUGP,SLOG,SLOGSQ,SMLOG	     *                 RC3TO2,S,SEUGF,SEUGP,SLOG,SLOGSQ,SMLOG
+     *                 WIDC2,WIDC3,WIDN2,WIDN3,YCM,YY0,ZN,	     *                 WIDC2,WIDC3,WIDN2,WIDN3,YCM,YY0,ZN,
+     *                 IDIF,ITAR				     *                 IDIF,ITAR
+      DOUBLE PRECISION AVCH,AVCH3,DC0,DLOG,DMLOG,ECMDIF,ECMDP	      DOUBLE PRECISION AVCH,AVCH3,DC0,DLOG,DMLOG,ECMDIF,ECMDP
+     *                 FNEUT,FNEUT2,GNU,PLAB,POSC2,POSC3,POSN	     *                 FNEUT,FNEUT2,GNU,PLAB,POSC2,POSC3,POSN
+     *                 RC3TO2,S,SEUGF,SEUGP,SLOG,SLOGSQ,SMLOG	     *                 RC3TO2,S,SEUGF,SEUGP,SLOG,SLOGSQ,SMLOG
+     *                 WIDC2,WIDC3,WIDN2,WIDN3,YCM,YY0,ZN	     *                 WIDC2,WIDC3,WIDN2,WIDN3,YCM,YY0,ZN
+      INTEGER          IDIF,ITAR				      INTEGER          IDIF,ITAR
+*KEEP,NEWPAR.							*KEEP,NEWPAR.
+      COMMON /NEWPAR/  EA,PT2,PX,PY,TMAS,YR,ITYP,		      COMMON /NEWPAR/  EA,PT2,PX,PY,TMAS,YR,ITYP,
+     *                 IA1,IA2,IB1,IB2,IC1,IC2,ID1,ID2,IE1,IE	     *                 IA1,IA2,IB1,IB2,IC1,IC2,ID1,ID2,IE1,IE
+     *                 IG1,IG2,IH1,IH2,II1,II2,IJ1,NTOT		     *                 IG1,IG2,IH1,IH2,II1,II2,IJ1,NTOT
+      DOUBLE PRECISION EA(3000),PT2(3000),PX(3000),PY(3000),T	      DOUBLE PRECISION EA(3000),PT2(3000),PX(3000),PY(3000),T
+     *                 YR(3000)					     *                 YR(3000)
+      INTEGER          ITYP(3000),				      INTEGER          ITYP(3000),
+     *                 IA1,IA2,IB1,IB2,IC1,IC2,ID1,ID2,IE1,IE	     *                 IA1,IA2,IB1,IB2,IC1,IC2,ID1,ID2,IE1,IE
+     *                 IG1,IG2,IH1,IH2,II1,II2,IJ1,NTOT		     *                 IG1,IG2,IH1,IH2,II1,II2,IJ1,NTOT
+*KEEP,RANDPA.							*KEEP,RANDPA.
+      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR		      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR
+      DOUBLE PRECISION FAC,U1,U2				      DOUBLE PRECISION FAC,U1,U2
+      REAL             RD(3000)					      REAL             RD(3000)
+      INTEGER          ISEED(103,10),NSEQ			      INTEGER          ISEED(103,10),NSEQ
+      LOGICAL          KNOR					      LOGICAL          KNOR
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEND.								*KEND.
+ 								 
+      REAL RAND(3000)						      REAL RAND(3000)
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,*) 'PARRAP: NTOT=',NTOT		      IF ( DEBUG ) WRITE(MDEBUG,*) 'PARRAP: NTOT=',NTOT
+ 								 
+C  PROTON ANTIPROTON PAIRS					C  PROTON ANTIPROTON PAIRS
+      CALL RMMAR( RAND(3),IJ1-2,1 )				      CALL RMMAR( RAND(3),IJ1-2,1 )
+      DO 1013  K = 3,IB1					      DO 1013  K = 3,IB1
+C  GENERATION OF RAPIDITY FOR EXTRA PARTICLES FROM TARGET.	C  GENERATION OF RAPIDITY FOR EXTRA PARTICLES FROM TARGET.
+        IF ( K .LE. IA2 ) THEN					        IF ( K .LE. IA2 ) THEN
+          YR(K) = RANNOR(-POSC3,WIDC3)				          YR(K) = RANNOR(-POSC3,WIDC3)
+        ELSE							        ELSE
+C  GENERATION OF RAPIDITY FOR PARTICLES FROM PP-COLLISION AND	C  GENERATION OF RAPIDITY FOR PARTICLES FROM PP-COLLISION AND
+          IF ( RAND(K) .LE. 0.5 ) THEN				          IF ( RAND(K) .LE. 0.5 ) THEN
+            YR(K) = RANNOR(POSC2,WIDC2)				            YR(K) = RANNOR(POSC2,WIDC2)
+          ELSE							          ELSE
+            YR(K) = RANNOR(-POSC2,WIDC2)			            YR(K) = RANNOR(-POSC2,WIDC2)
+          ENDIF							          ENDIF
+        ENDIF							        ENDIF
+ 1013 CONTINUE							 1013 CONTINUE
+ 								 
+C  K+ K- PAIRS							C  K+ K- PAIRS
+      DO 1014  K = IB1+1,IC1					      DO 1014  K = IB1+1,IC1
+        IF ( K .LE. IB2 ) THEN					        IF ( K .LE. IB2 ) THEN
+C  GENERATION OF RAPIDITY FOR EXTRA PARTICLES FROM TARGET.	C  GENERATION OF RAPIDITY FOR EXTRA PARTICLES FROM TARGET.
+          YR(K) = RANNOR(-POSC3,WIDC3)				          YR(K) = RANNOR(-POSC3,WIDC3)
+        ELSE							        ELSE
+C  GENERATION OF RAPIDITY FOR PARTICLES FROM PP-COLLISION AND	C  GENERATION OF RAPIDITY FOR PARTICLES FROM PP-COLLISION AND
+          IF ( RAND(K) .LE. 0.5 ) THEN				          IF ( RAND(K) .LE. 0.5 ) THEN
+            YR(K) = RANNOR(POSC2,WIDC2)				            YR(K) = RANNOR(POSC2,WIDC2)
+          ELSE							          ELSE
+            YR(K) = RANNOR(-POSC2,WIDC2)			            YR(K) = RANNOR(-POSC2,WIDC2)
+          ENDIF							          ENDIF
+        ENDIF							        ENDIF
+ 1014 CONTINUE							 1014 CONTINUE
+ 								 
+C  CHARGED HYPERON PAIRS					C  CHARGED HYPERON PAIRS
+      DO 1015  K = IC1+1,ID1					      DO 1015  K = IC1+1,ID1
+        IF ( K .LE. IC2 ) THEN					        IF ( K .LE. IC2 ) THEN
+C  GENERATION OF RAPIDITY FOR EXTRA PARTICLES FROM TARGET.	C  GENERATION OF RAPIDITY FOR EXTRA PARTICLES FROM TARGET.
+          YR(K) = RANNOR(-POSC3,WIDC3)				          YR(K) = RANNOR(-POSC3,WIDC3)
+        ELSE							        ELSE
+C  GENERATION OF RAPIDITY FOR PARTICLES FROM PP-COLLISION AND	C  GENERATION OF RAPIDITY FOR PARTICLES FROM PP-COLLISION AND
+          IF ( RAND(K) .LE. 0.5 ) THEN				          IF ( RAND(K) .LE. 0.5 ) THEN
+            YR(K) = RANNOR(POSC2,WIDC2)				            YR(K) = RANNOR(POSC2,WIDC2)
+          ELSE							          ELSE
+            YR(K) = RANNOR(-POSC2,WIDC2)			            YR(K) = RANNOR(-POSC2,WIDC2)
+          ENDIF							          ENDIF
+        ENDIF							        ENDIF
+ 1015 CONTINUE							 1015 CONTINUE
+ 								 
+C  PI +-							C  PI +-
+      DO 1017  K = ID1+1,IE1					      DO 1017  K = ID1+1,IE1
+        IF ( K .LE. ID2 ) THEN					        IF ( K .LE. ID2 ) THEN
+C  GENERATION OF RAPIDITY FOR EXTRA PARTICLES FROM TARGET.	C  GENERATION OF RAPIDITY FOR EXTRA PARTICLES FROM TARGET.
+          YR(K) = RANNOR(-POSC3,WIDC3)				          YR(K) = RANNOR(-POSC3,WIDC3)
+        ELSE							        ELSE
+C  GENERATION OF RAPIDITY FOR PARTICLES FROM PP-COLLISION AND	C  GENERATION OF RAPIDITY FOR PARTICLES FROM PP-COLLISION AND
+          IF ( RAND(K) .LE. 0.5 ) THEN				          IF ( RAND(K) .LE. 0.5 ) THEN
+            YR(K) = RANNOR(POSC2,WIDC2)				            YR(K) = RANNOR(POSC2,WIDC2)
+          ELSE							          ELSE
+            YR(K) = RANNOR(-POSC2,WIDC2)			            YR(K) = RANNOR(-POSC2,WIDC2)
+          ENDIF							          ENDIF
+        ENDIF							        ENDIF
+ 1017 CONTINUE							 1017 CONTINUE
+ 								 
+C  NEUTRON ANTINEUTRON PAIRS					C  NEUTRON ANTINEUTRON PAIRS
+      DO 1021  K = IE1+1,IF1					      DO 1021  K = IE1+1,IF1
+        IF ( K .LE. IE2 ) THEN					        IF ( K .LE. IE2 ) THEN
+C  GENERATION OF RAPIDITY FOR EXTRA PARTICLES FROM TARGET.	C  GENERATION OF RAPIDITY FOR EXTRA PARTICLES FROM TARGET.
+          YR(K) = RANNOR(-POSC3,WIDC3)				          YR(K) = RANNOR(-POSC3,WIDC3)
+        ELSE							        ELSE
+C  GENERATION OF RAPIDITY FOR PARTICLES FROM PP-COLLISION AND	C  GENERATION OF RAPIDITY FOR PARTICLES FROM PP-COLLISION AND
+          IF ( RAND(K) .LE. 0.5 ) THEN				          IF ( RAND(K) .LE. 0.5 ) THEN
+            YR(K) = RANNOR(POSC2,WIDC2)				            YR(K) = RANNOR(POSC2,WIDC2)
+          ELSE							          ELSE
+            YR(K) = RANNOR(-POSC2,WIDC2)			            YR(K) = RANNOR(-POSC2,WIDC2)
+          ENDIF							          ENDIF
+        ENDIF							        ENDIF
+ 1021 CONTINUE							 1021 CONTINUE
+ 								 
+C  K0L K0S PAIRS						C  K0L K0S PAIRS
+      DO 1022  K = IF1+1,IG1					      DO 1022  K = IF1+1,IG1
+        IF ( K .LE. IF2 ) THEN					        IF ( K .LE. IF2 ) THEN
+C  GENERATION OF RAPIDITY FOR EXTRA PARTICLES FROM TARGET.	C  GENERATION OF RAPIDITY FOR EXTRA PARTICLES FROM TARGET.
+          YR(K) = RANNOR(-POSC3,WIDC3)				          YR(K) = RANNOR(-POSC3,WIDC3)
+        ELSE							        ELSE
+C  GENERATION OF RAPIDITY FOR PARTICLES FROM PP-COLLISION AND	C  GENERATION OF RAPIDITY FOR PARTICLES FROM PP-COLLISION AND
+          IF ( RAND(K) .LE. 0.5 ) THEN				          IF ( RAND(K) .LE. 0.5 ) THEN
+            YR(K) = RANNOR(POSC2,WIDC2)				            YR(K) = RANNOR(POSC2,WIDC2)
+          ELSE							          ELSE
+            YR(K) = RANNOR(-POSC2,WIDC2)			            YR(K) = RANNOR(-POSC2,WIDC2)
+          ENDIF							          ENDIF
+        ENDIF							        ENDIF
+ 1022 CONTINUE							 1022 CONTINUE
+ 								 
+C  NEUTRAL HYPERON PAIRS					C  NEUTRAL HYPERON PAIRS
+      DO 1023  K = IG1+1,IH1					      DO 1023  K = IG1+1,IH1
+        IF ( K .LE. IG2 ) THEN					        IF ( K .LE. IG2 ) THEN
+C  GENERATION OF RAPIDITY FOR EXTRA PARTICLES FROM TARGET.	C  GENERATION OF RAPIDITY FOR EXTRA PARTICLES FROM TARGET.
+          YR(K) = RANNOR(-POSC3,WIDC3)				          YR(K) = RANNOR(-POSC3,WIDC3)
+        ELSE							        ELSE
+C  GENERATION OF RAPIDITY FOR PARTICLES FROM PP-COLLISION AND	C  GENERATION OF RAPIDITY FOR PARTICLES FROM PP-COLLISION AND
+          IF ( RAND(K) .LE. 0.5 ) THEN				          IF ( RAND(K) .LE. 0.5 ) THEN
+            YR(K) = RANNOR(POSC2,WIDC2)				            YR(K) = RANNOR(POSC2,WIDC2)
+          ELSE							          ELSE
+            YR(K) = RANNOR(-POSC2,WIDC2)			            YR(K) = RANNOR(-POSC2,WIDC2)
+          ENDIF							          ENDIF
+        ENDIF							        ENDIF
+ 1023 CONTINUE							 1023 CONTINUE
+ 								 
+C  ETA								C  ETA
+      DO 1025  K = IH1+1,II1					      DO 1025  K = IH1+1,II1
+        IF ( K .LE. IH2 ) THEN					        IF ( K .LE. IH2 ) THEN
+C  GENERATION OF RAPIDITY FOR EXTRA PARTICLES FROM TARGET.	C  GENERATION OF RAPIDITY FOR EXTRA PARTICLES FROM TARGET.
+          YR(K) = RANNOR(-POSN3,WIDN3)				          YR(K) = RANNOR(-POSN3,WIDN3)
+        ELSE							        ELSE
+C  GENERATION OF RAPIDITY FOR PARTICLES FROM PP-COLLISION AND	C  GENERATION OF RAPIDITY FOR PARTICLES FROM PP-COLLISION AND
+          IF ( RAND(K) .LE. 0.5 ) THEN				          IF ( RAND(K) .LE. 0.5 ) THEN
+            YR(K) = RANNOR(POSN2,WIDN2)				            YR(K) = RANNOR(POSN2,WIDN2)
+          ELSE							          ELSE
+            YR(K) = RANNOR(-POSN2,WIDN2)			            YR(K) = RANNOR(-POSN2,WIDN2)
+          ENDIF							          ENDIF
+        ENDIF							        ENDIF
+ 1025 CONTINUE							 1025 CONTINUE
+ 								 
+C PI(0)								C PI(0)
+      DO 1026  K = II1+1,IJ1					      DO 1026  K = II1+1,IJ1
+        IF ( K .LE. II2 ) THEN					        IF ( K .LE. II2 ) THEN
+C  GENERATION OF RAPIDITY FOR EXTRA PARTICLES FROM TARGET.	C  GENERATION OF RAPIDITY FOR EXTRA PARTICLES FROM TARGET.
+          YR(K) = RANNOR(-POSN3,WIDN3)				          YR(K) = RANNOR(-POSN3,WIDN3)
+        ELSE							        ELSE
+C  GENERATION OF RAPIDITY FOR PARTICLES FROM PP-COLLISION AND	C  GENERATION OF RAPIDITY FOR PARTICLES FROM PP-COLLISION AND
+          IF ( RAND(K) .LE. 0.5 ) THEN				          IF ( RAND(K) .LE. 0.5 ) THEN
+            YR(K) = RANNOR(POSN2,WIDN2)				            YR(K) = RANNOR(POSN2,WIDN2)
+          ELSE							          ELSE
+            YR(K) = RANNOR(-POSN2,WIDN2)			            YR(K) = RANNOR(-POSN2,WIDN2)
+          ENDIF							          ENDIF
+        ENDIF							        ENDIF
+ 1026 CONTINUE							 1026 CONTINUE
+ 								 
+      RETURN							      RETURN
+      END							      END

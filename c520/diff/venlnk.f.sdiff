@@ -1,0 +1,501 @@
+      SUBROUTINE VENLNK						      SUBROUTINE VENLNK
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  VEN(US) L(I)NK (TO CORSIKA)					C  VEN(US) L(I)NK (TO CORSIKA)
+C								C
+C  LINKS VENUS PACKAGE TO CORSIKA, NEEDS FIRST CALL OF VENINI	C  LINKS VENUS PACKAGE TO CORSIKA, NEEDS FIRST CALL OF VENINI
+C  THIS SUBROUTINE IS CALLED FROM SDPM				C  THIS SUBROUTINE IS CALLED FROM SDPM
+C								C
+C  DESIGN   : D. HECK    IK3  FZK KARLSRUHE			C  DESIGN   : D. HECK    IK3  FZK KARLSRUHE
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+*KEEP,INTER.							*KEEP,INTER.
+      COMMON /INTER/   AVCH,AVCH3,DC0,DLOG,DMLOG,ECMDIF,ECMDP	      COMMON /INTER/   AVCH,AVCH3,DC0,DLOG,DMLOG,ECMDIF,ECMDP
+     *                 FNEUT,FNEUT2,GNU,PLAB,POSC2,POSC3,POSN	     *                 FNEUT,FNEUT2,GNU,PLAB,POSC2,POSC3,POSN
+     *                 RC3TO2,S,SEUGF,SEUGP,SLOG,SLOGSQ,SMLOG	     *                 RC3TO2,S,SEUGF,SEUGP,SLOG,SLOGSQ,SMLOG
+     *                 WIDC2,WIDC3,WIDN2,WIDN3,YCM,YY0,ZN,	     *                 WIDC2,WIDC3,WIDN2,WIDN3,YCM,YY0,ZN,
+     *                 IDIF,ITAR				     *                 IDIF,ITAR
+      DOUBLE PRECISION AVCH,AVCH3,DC0,DLOG,DMLOG,ECMDIF,ECMDP	      DOUBLE PRECISION AVCH,AVCH3,DC0,DLOG,DMLOG,ECMDIF,ECMDP
+     *                 FNEUT,FNEUT2,GNU,PLAB,POSC2,POSC3,POSN	     *                 FNEUT,FNEUT2,GNU,PLAB,POSC2,POSC3,POSN
+     *                 RC3TO2,S,SEUGF,SEUGP,SLOG,SLOGSQ,SMLOG	     *                 RC3TO2,S,SEUGF,SEUGP,SLOG,SLOGSQ,SMLOG
+     *                 WIDC2,WIDC3,WIDN2,WIDN3,YCM,YY0,ZN	     *                 WIDC2,WIDC3,WIDN2,WIDN3,YCM,YY0,ZN
+      INTEGER          IDIF,ITAR				      INTEGER          IDIF,ITAR
+*KEEP,PAM.							*KEEP,PAM.
+      COMMON /PAM/     PAMA,SIGNUM				      COMMON /PAM/     PAMA,SIGNUM
+      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)			      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)
+*KEEP,PARPAR.							*KEEP,PARPAR.
+      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,		      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,
+     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE	     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE
+      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA	      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA
+     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH	     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH
+      INTEGER          ITYPE,LEVL				      INTEGER          ITYPE,LEVL
+*KEEP,PARPAE.							*KEEP,PARPAE.
+      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,	      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,
+      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)	      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)
+     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )	     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )
+     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )	     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )
+     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )	     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )
+     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )	     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )
+     *                 (CURPAR(12),ECM )			     *                 (CURPAR(12),ECM )
+*KEEP,RANDPA.							*KEEP,RANDPA.
+      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR		      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR
+      DOUBLE PRECISION FAC,U1,U2				      DOUBLE PRECISION FAC,U1,U2
+      REAL             RD(3000)					      REAL             RD(3000)
+      INTEGER          ISEED(103,10),NSEQ			      INTEGER          ISEED(103,10),NSEQ
+      LOGICAL          KNOR					      LOGICAL          KNOR
+*KEEP,REST.							*KEEP,REST.
+      COMMON /REST/    CONTNE,TAR,LT				      COMMON /REST/    CONTNE,TAR,LT
+      DOUBLE PRECISION CONTNE(3),TAR				      DOUBLE PRECISION CONTNE(3),TAR
+      INTEGER          LT					      INTEGER          LT
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEEP,VENUS.							*KEEP,VENUS.
+      COMMON /VENUS/   ISH0,IVERVN,MTAR99,FVENUS,FVENSG		      COMMON /VENUS/   ISH0,IVERVN,MTAR99,FVENUS,FVENSG
+      INTEGER          ISH0,IVERVN,MTAR99			      INTEGER          ISH0,IVERVN,MTAR99
+      LOGICAL          FVENUS,FVENSG				      LOGICAL          FVENUS,FVENSG
+*KEND.								*KEND.
+ 								 
+      PARAMETER (KOLLMX=2500)					      PARAMETER (KOLLMX=2500)
+      PARAMETER (MXEPS=10)					      PARAMETER (MXEPS=10)
+      PARAMETER (NDEP=129)					      PARAMETER (NDEP=129)
+      PARAMETER (NDET=129)					      PARAMETER (NDET=129)
+      PARAMETER (NPRBMS=20)					      PARAMETER (NPRBMS=20)
+      PARAMETER (NPTQ=129)					      PARAMETER (NPTQ=129)
+      PARAMETER (NSTRU=2049)					      PARAMETER (NSTRU=2049)
+      COMMON /ACCUM/   AMSAC,ILAMAS,IMSG,INOIAC,IPAGE,JERR,NA	      COMMON /ACCUM/   AMSAC,ILAMAS,IMSG,INOIAC,IPAGE,JERR,NA
+     *                ,NRPTL,NRSTR,NTEVT			     *                ,NRPTL,NRSTR,NTEVT
+      COMMON /CDEN/    MASSNR,RMX,R0				      COMMON /CDEN/    MASSNR,RMX,R0
+      COMMON /CIPIO/   IPIO					      COMMON /CIPIO/   IPIO
+      COMMON /CNSTA/   AINFIN,PI,PIOM,PROM			      COMMON /CNSTA/   AINFIN,PI,PIOM,PROM
+      COMMON /COL/     BIMP,BMAX,COORD(4,KOLLMX),DISTCE(KOLLM	      COMMON /COL/     BIMP,BMAX,COORD(4,KOLLMX),DISTCE(KOLLM
+     *                ,QDEP(NDEP),QDET14(NDET),QDET16(NDET),Q	     *                ,QDEP(NDEP),QDET14(NDET),QDET16(NDET),Q
+     *                ,QDET99(NDET),RMPROJ,RMTARG(4),XDEP(NDE	     *                ,QDET99(NDET),RMPROJ,RMTARG(4),XDEP(NDE
+     *                ,XDET14(NDET),XDET16(NDET),XDET40(NDET)	     *                ,XDET14(NDET),XDET16(NDET),XDET40(NDET)
+     *                ,XDET99(NDET)				     *                ,XDET99(NDET)
+     *                ,KOLL,LTARG,NORD(KOLLMX),NPROJ,NRPROJ(K	     *                ,KOLL,LTARG,NORD(KOLLMX),NPROJ,NRPROJ(K
+     *                ,NRTARG(KOLLMX),NTARG			     *                ,NRTARG(KOLLMX),NTARG
+      COMMON /CPRBMS/  PRBMS(NPRBMS)				      COMMON /CPRBMS/  PRBMS(NPRBMS)
+      COMMON /CPTQ/    QPTH(NPTQ),QPTQ(NPTQ),XPTQ(NPTQ),QPTQM	      COMMON /CPTQ/    QPTH(NPTQ),QPTQ(NPTQ),XPTQ(NPTQ),QPTQM
+      DOUBLE PRECISION SEEDC,SEEDI				      DOUBLE PRECISION SEEDC,SEEDI
+      COMMON /CSEED/   SEEDC,SEEDI				      COMMON /CSEED/   SEEDC,SEEDI
+      COMMON /FILES/   IFCH,IFDT,IFHI,IFMT,IFOP			      COMMON /FILES/   IFCH,IFDT,IFHI,IFMT,IFOP
+      COMMON /NEVNT/   NEVNT					      COMMON /NEVNT/   NEVNT
+      COMMON /PARO1/   AMPRIF,AMSIAC,BMAXIM,BMINIM,CORE,CUTMS	      COMMON /PARO1/   AMPRIF,AMSIAC,BMAXIM,BMINIM,CORE,CUTMS
+     *                ,DELMSS,DELREM,FCTRMX,GAUMX,OVERLP,PARE	     *                ,DELMSS,DELREM,FCTRMX,GAUMX,OVERLP,PARE
+     *                ,PHARD,PSPINL,PSPINH,PISPN,PTF,PTH,PTMX	     *                ,PHARD,PSPINL,PSPINH,PISPN,PTF,PTH,PTMX
+     *                ,PVALEN,QSEPC,QSETC,QMUST,QVAPC,QVATC,R	     *                ,PVALEN,QSEPC,QSETC,QMUST,QVAPC,QVATC,R
+     *                ,RADIAS,RSTRAS,SIGJ,SIGPPI,TAUMAX,TAUMI	     *                ,RADIAS,RSTRAS,SIGJ,SIGPPI,TAUMAX,TAUMI
+     *                ,TAUMX,TAUNLL,TENSN,THEMAS,WPROJ,WTARG,	     *                ,TAUMX,TAUNLL,TENSN,THEMAS,WPROJ,WTARG,
+     *                ,WTSTEP,XCUT				     *                ,WTSTEP,XCUT
+     *                ,IAQU,IFRADE,IOJINT,IOPBRK,IOPENT,IOPEN	     *                ,IAQU,IFRADE,IOJINT,IOPBRK,IOPENT,IOPEN
+     *                ,IOPTF,IOPTQ,IRESCL,IWCENT,KENTRO,KO1KO	     *                ,IOPTF,IOPTQ,IRESCL,IWCENT,KENTRO,KO1KO
+     *                ,LABSYS,MAXRES,NCLEAN,NCOLMX,NDECAW,NEQ	     *                ,LABSYS,MAXRES,NCLEAN,NCOLMX,NDECAW,NEQ
+     *                ,NSTTAU,NTRYMX,NUMTAU			     *                ,NSTTAU,NTRYMX,NUMTAU
+      COMMON /PARO2/   AMPROJ,AMTARG,ANGMUE,ELEPTI,ELEPTO,ENG	      COMMON /PARO2/   AMPROJ,AMTARG,ANGMUE,ELEPTI,ELEPTO,ENG
+     *                ,PNLL,PNLLX,PROB(99),PROSEA,RHOPHI,TAUR	     *                ,PNLL,PNLLX,PROB(99),PROSEA,RHOPHI,TAUR
+     *                ,YHAHA,YMXIMI,YPJTL			     *                ,YHAHA,YMXIMI,YPJTL
+     *                ,ICBAC(99,2),ICFOR(99,2),ICHOIC,ICLHIS,	     *                ,ICBAC(99,2),ICFOR(99,2),ICHOIC,ICLHIS,
+     *                ,IDPROJ,IDTARG,IENTRO,IJPHIS,IMIHIS,IPA	     *                ,IDPROJ,IDTARG,IENTRO,IJPHIS,IMIHIS,IPA
+     *                ,ISHEVT,ISHSUB,ISPALL,ISPHIS,ISTMAX,ISU	     *                ,ISHEVT,ISHSUB,ISPALL,ISPHIS,ISTMAX,ISU
+     *                ,JPSI,JPSIFI,KUTDIQ,LAPROJ,LATARG,MAPRO	     *                ,JPSI,JPSIFI,KUTDIQ,LAPROJ,LATARG,MAPRO
+     *                ,MODSHO,NDECAX,NDECAY,NEVENT		     *                ,MODSHO,NDECAX,NDECAY,NEVENT
+      COMMON /PARO3/   ASUHAX(7),ASUHAY(7),OMEGA,SIGPPD,SIGPP	      COMMON /PARO3/   ASUHAX(7),ASUHAY(7),OMEGA,SIGPPD,SIGPP
+     *                ,IWZZZZ					     *                ,IWZZZZ
+      COMMON /PARO4/   GRICEL,GRIDEL,GRIGAM,GRIRSQ,GRISLO	      COMMON /PARO4/   GRICEL,GRIDEL,GRIGAM,GRIRSQ,GRISLO
+      COMMON /PARO5/   DELEPS,DELVOL				      COMMON /PARO5/   DELEPS,DELVOL
+      COMMON /QUARKM/  SMAS,SSMAS,USMAS,UUMAS			      COMMON /QUARKM/  SMAS,SSMAS,USMAS,UUMAS
+      COMMON /STRU/    QSEP(NSTRU),QSET(NSTRU),QVAP(NSTRU)	      COMMON /STRU/    QSEP(NSTRU),QSET(NSTRU),QVAP(NSTRU)
+     *                ,QVAT(NSTRU),XCUTAR,XSTRU(NSTRU)		     *                ,QVAT(NSTRU),XCUTAR,XSTRU(NSTRU)
+     *                ,IDTG					     *                ,IDTG
+      COMMON /STRU2/   DELTA0,DELTA1,QSEH(NSTRU),QSEPI(NSTRU)	      COMMON /STRU2/   DELTA0,DELTA1,QSEH(NSTRU),QSEPI(NSTRU)
+     *                ,QVAH(NSTRU),QVAPI(NSTRU),XSE(NSTRU),XV	     *                ,QVAH(NSTRU),QVAPI(NSTRU),XSE(NSTRU),XV
+ 								 
+      DOUBLE PRECISION ERRER,VALUE				      DOUBLE PRECISION ERRER,VALUE
+      INTEGER          IFLAG					      INTEGER          IFLAG
+ 								 
+      COMMON /VENLIN/  PTQ1,PTQ2,PTQ3,QMUST1,QMUST2,QMUST3	      COMMON /VENLIN/  PTQ1,PTQ2,PTQ3,QMUST1,QMUST2,QMUST3
+     *                ,IDTABL(100)				     *                ,IDTABL(100)
+ 								 
+      EXTERNAL         SDENSI,SPTQ,SSE0,SVA0,SVA1		      EXTERNAL         SDENSI,SPTQ,SSE0,SVA0,SVA1
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,*) 'VENLNK: TAR',SNGL(TAR)	      IF ( DEBUG ) WRITE(MDEBUG,*) 'VENLNK: TAR',SNGL(TAR)
+ 								 
+      NSTRUC = NSTRU						      NSTRUC = NSTRU
+      IF ( DEBUG ) THEN						      IF ( DEBUG ) THEN
+        ISH  = ISH0						        ISH  = ISH0
+      ELSE							      ELSE
+        ISH  = 0						        ISH  = 0
+      ENDIF							      ENDIF
+      NEVNT = SHOWNO						      NEVNT = SHOWNO
+C  SET RANDOM NUMBER GENERATOR STATUS				C  SET RANDOM NUMBER GENERATOR STATUS
+      SEEDC=ISEED(2,1)+1.D9*ISEED(3,1)				      SEEDC=ISEED(2,1)+1.D9*ISEED(3,1)
+C  CALCULATE ENERGY IN LAB SYSTEM FOR ELASTICITY FOR VARIOUS 	C  CALCULATE ENERGY IN LAB SYSTEM FOR ELASTICITY FOR VARIOUS 
+      IF     ( ITYPE .EQ. 1 ) THEN				      IF     ( ITYPE .EQ. 1 ) THEN
+C  TREAT PHOTON PROJECTILES (FROM EGS)				C  TREAT PHOTON PROJECTILES (FROM EGS)
+        CALL RMMAR(RD,1,1)					        CALL RMMAR(RD,1,1)
+        IF ( RD(1) .LE. 0.5 ) THEN				        IF ( RD(1) .LE. 0.5 ) THEN
+          ITYPE = 7						          ITYPE = 7
+        ELSE							        ELSE
+          ITYPE = 17						          ITYPE = 17
+        ENDIF							        ENDIF
+        ELAB  = CURPAR(2)					        ELAB  = CURPAR(2)
+        CURPAR(2) = ELAB / PAMA(ITYPE)				        CURPAR(2) = ELAB / PAMA(ITYPE)
+      ELSEIF ( ITYPE .LT. 100 ) THEN				      ELSEIF ( ITYPE .LT. 100 ) THEN
+C  TREAT ORDINARY PROJECTILES					C  TREAT ORDINARY PROJECTILES
+        ELAB  = CURPAR(2) * PAMA(ITYPE)				        ELAB  = CURPAR(2) * PAMA(ITYPE)
+      ELSE							      ELSE
+C  TREAT NUCLEI PROJECTILES					C  TREAT NUCLEI PROJECTILES
+        NPROT = MOD(ITYPE,100)					        NPROT = MOD(ITYPE,100)
+        NNEUT = ITYPE/100 - NPROT				        NNEUT = ITYPE/100 - NPROT
+        ELAB  = CURPAR(2) * ( PAMA(14)*NPROT + PAMA(13)*NNEUT	        ELAB  = CURPAR(2) * ( PAMA(14)*NPROT + PAMA(13)*NNEUT
+      ENDIF							      ENDIF
+C  SET TARGET PARAMETERS					C  SET TARGET PARAMETERS
+      MATARG = NINT(TAR)					      MATARG = NINT(TAR)
+      IDTARG = 1120						      IDTARG = 1120
+      AMTARG = PAMA(14)						      AMTARG = PAMA(14)
+      IF     ( TAR. EQ. 14.D0 ) THEN				      IF     ( TAR. EQ. 14.D0 ) THEN
+        LTARG  = 1						        LTARG  = 1
+        LATARG = 7						        LATARG = 7
+      ELSEIF ( TAR .EQ. 16.D0 ) THEN				      ELSEIF ( TAR .EQ. 16.D0 ) THEN
+        LTARG  = 2						        LTARG  = 2
+        LATARG = 8						        LATARG = 8
+      ELSEIF ( TAR .EQ. 40.D0 ) THEN				      ELSEIF ( TAR .EQ. 40.D0 ) THEN
+        LTARG  = 3						        LTARG  = 3
+        LATARG = 18						        LATARG = 18
+      ELSE							      ELSE
+        WRITE(MONIOU,*)'VENLNK: UNDEFINED TARGET TAR=',SNGL(T	        WRITE(MONIOU,*)'VENLNK: UNDEFINED TARGET TAR=',SNGL(T
+      ENDIF							      ENDIF
+ 								 
+C  FOR THE CASE OF AN ARBITRARY TARGET (NOT AIR)		C  FOR THE CASE OF AN ARBITRARY TARGET (NOT AIR)
+      IF ( LTARG .GT. 3 ) THEN					      IF ( LTARG .GT. 3 ) THEN
+        MASSNR = MATARG						        MASSNR = MATARG
+        IF ( MASSNR .GT. 1 ) THEN				        IF ( MASSNR .GT. 1 ) THEN
+          IF ( MASSNR .NE. MTAR99 ) THEN			          IF ( MASSNR .NE. MTAR99 ) THEN
+            R0 = 1.19*MASSNR**(.3333333) -1.61*MASSNR**(-.333	            R0 = 1.19*MASSNR**(.3333333) -1.61*MASSNR**(-.333
+            CX = R0+FCTRMX*0.54					            CX = R0+FCTRMX*0.54
+            RMTARG(4) = CX					            RMTARG(4) = CX
+            CALL UTQUAF(SDENSI,NDET,XDET99,QDET99,0.,.33*CX,.	            CALL UTQUAF(SDENSI,NDET,XDET99,QDET99,0.,.33*CX,.
+            MTAR99 = MATARG					            MTAR99 = MATARG
+          ENDIF							          ENDIF
+        ELSE							        ELSE
+          RMTARG(4) = 0.					          RMTARG(4) = 0.
+        ENDIF							        ENDIF
+      ENDIF							      ENDIF
+ 								 
+C  SET PROJECTILE PARAMETERS					C  SET PROJECTILE PARAMETERS
+      IF ( ITYPE .LT. 100 ) THEN				      IF ( ITYPE .LT. 100 ) THEN
+        IDPROJ = IDTABL(ITYPE)					        IDPROJ = IDTABL(ITYPE)
+        IF     ( IDPROJ .EQ. 20  .OR.  IDPROJ .EQ. -20 ) THEN	        IF     ( IDPROJ .EQ. 20  .OR.  IDPROJ .EQ. -20 ) THEN
+C  TREAT NEUTRAL KAONS  (K(0)S AND K(0)L)			C  TREAT NEUTRAL KAONS  (K(0)S AND K(0)L)
+          CALL RMMAR(RD,1,1)					          CALL RMMAR(RD,1,1)
+          IF ( RD(1) .LE. 0.5 ) THEN				          IF ( RD(1) .LE. 0.5 ) THEN
+            IDPROJ = 230					            IDPROJ = 230
+          ELSE							          ELSE
+            IDPROJ = -230					            IDPROJ = -230
+          ENDIF							          ENDIF
+        ELSEIF ( IDPROJ .EQ. 2130 ) THEN			        ELSEIF ( IDPROJ .EQ. 2130 ) THEN
+C  VENUS CANNOT TREAT LAMBDA, TAKE INSTEAD SIGMA(0))		C  VENUS CANNOT TREAT LAMBDA, TAKE INSTEAD SIGMA(0))
+          IDPROJ = 1230						          IDPROJ = 1230
+        ELSEIF ( IDPROJ .EQ. -2130 ) THEN			        ELSEIF ( IDPROJ .EQ. -2130 ) THEN
+C  VENUS CANNOT TREAT ANTI-LAMBDA, TAKE INSTEAD ANTI-SIGMA(0)	C  VENUS CANNOT TREAT ANTI-LAMBDA, TAKE INSTEAD ANTI-SIGMA(0)
+          IDPROJ = -1230					          IDPROJ = -1230
+        ENDIF							        ENDIF
+C  ALL OTHER PARTICLE CODES UNCHANGED				C  ALL OTHER PARTICLE CODES UNCHANGED
+        CALL IDMASS(IDPROJ,AMPROJ)				        CALL IDMASS(IDPROJ,AMPROJ)
+        LAPROJ = -1						        LAPROJ = -1
+        MAPROJ = 1						        MAPROJ = 1
+        PNLL   = CURPAR(2)*AMPROJ				        PNLL   = CURPAR(2)*AMPROJ
+      ELSE							      ELSE
+C  PROJECTILE IS NUCLEUS					C  PROJECTILE IS NUCLEUS
+        IDPROJ = 1120						        IDPROJ = 1120
+        CALL IDMASS(IDPROJ,AMPROJ)				        CALL IDMASS(IDPROJ,AMPROJ)
+        LAPROJ = MOD(ITYPE,100)					        LAPROJ = MOD(ITYPE,100)
+        MAPROJ = ITYPE/100					        MAPROJ = ITYPE/100
+        PNLL   = CURPAR(2)*(PAMA(14)+PAMA(13))*0.5		        PNLL   = CURPAR(2)*(PAMA(14)+PAMA(13))*0.5
+      ENDIF							      ENDIF
+ 								 
+      IF ( ABS(IDPROJ) .LT. 1000 ) THEN				      IF ( ABS(IDPROJ) .LT. 1000 ) THEN
+        IF ( ABS(IDPROJ) .EQ. 230  .OR.  ABS(IDPROJ) .EQ. 130	        IF ( ABS(IDPROJ) .EQ. 230  .OR.  ABS(IDPROJ) .EQ. 130
+C  DIFFRACTIVE PROBABILITY FOR KAON PROJECTILES			C  DIFFRACTIVE PROBABILITY FOR KAON PROJECTILES
+          WPROJ = 0.24						          WPROJ = 0.24
+        ELSE							        ELSE
+C  DIFFRACTIVE PROBABILITY FOR PION PROJECTILES			C  DIFFRACTIVE PROBABILITY FOR PION PROJECTILES
+          WPROJ = 0.20						          WPROJ = 0.20
+        ENDIF							        ENDIF
+      ELSE							      ELSE
+C  DIFFRACTIVE PROBABILITY FOR BARYON PROJECTILES		C  DIFFRACTIVE PROBABILITY FOR BARYON PROJECTILES
+        WPROJ = 0.32						        WPROJ = 0.32
+      ENDIF							      ENDIF
+C  DIFFRACTIVE PROBABILITY FOR TARGET (ALWAYS NUCLEONS)		C  DIFFRACTIVE PROBABILITY FOR TARGET (ALWAYS NUCLEONS)
+      WTARG = 0.32						      WTARG = 0.32
+ 								 
+      ENGY = SQRT( 2.*SQRT(PNLL**2+AMPROJ**2)*AMTARG+AMTARG**	      ENGY = SQRT( 2.*SQRT(PNLL**2+AMPROJ**2)*AMTARG+AMTARG**
+     *                     +AMPROJ**2 )				     *                     +AMPROJ**2 )
+      IF ( DEBUG ) WRITE(MDEBUG,*)'VENLNK: ELAB = ',PNLL,	      IF ( DEBUG ) WRITE(MDEBUG,*)'VENLNK: ELAB = ',PNLL,
+     *                                   ' ENGY = ',ENGY	     *                                   ' ENGY = ',ENGY
+CDH   IF ( ENGY .LT. 12. ) THEN					CDH   IF ( ENGY .LT. 12. ) THEN
+      IF ( ENGY .LT. 9.5 ) THEN					      IF ( ENGY .LT. 9.5 ) THEN
+        WRITE (IFMT,*)'VENLNK: ENGY, IDPROJ=',ENGY,IDPROJ	        WRITE (IFMT,*)'VENLNK: ENGY, IDPROJ=',ENGY,IDPROJ
+        CALL UTSTOP('VENLNK: INCIDENT ENERGY TOO SMALL       	        CALL UTSTOP('VENLNK: INCIDENT ENERGY TOO SMALL       
+      ENDIF							      ENDIF
+      ENGYI = ENGY						      ENGYI = ENGY
+      PNLLI = PNLL						      PNLLI = PNLL
+      IF ( PNLL .LT. 1.E2 * AMPROJ ) THEN			      IF ( PNLL .LT. 1.E2 * AMPROJ ) THEN
+        TRM  = SQRT(PNLL**2+AMPROJ**2)				        TRM  = SQRT(PNLL**2+AMPROJ**2)
+        ENGY = SQRT((TRM+AMTARG-PNLL)*(TRM+AMTARG+PNLL))	        ENGY = SQRT((TRM+AMTARG-PNLL)*(TRM+AMTARG+PNLL))
+      ELSE							      ELSE
+        TRM  = AMPROJ**2*0.5/PNLL+AMTARG			        TRM  = AMPROJ**2*0.5/PNLL+AMTARG
+        ENGY = SQRT(TRM*(2.*PNLL+TRM))				        ENGY = SQRT(TRM*(2.*PNLL+TRM))
+      ENDIF							      ENDIF
+      D1 = ABS(PNLLI-PNLL)/PNLL					      D1 = ABS(PNLLI-PNLL)/PNLL
+      D2 = ABS(ENGYI-ENGY)/ENGY					      D2 = ABS(ENGYI-ENGY)/ENGY
+      IF ( D1 .GT. 1.E-3  .OR.  D2 .GT. 1.E-3 ) THEN		      IF ( D1 .GT. 1.E-3  .OR.  D2 .GT. 1.E-3 ) THEN
+        IF ( ISH .GE. 0 ) THEN					        IF ( ISH .GE. 0 ) THEN
+          CALL UTMSG('VENLNK')					          CALL UTMSG('VENLNK')
+          WRITE(IFCH,*)'*****  PNLL,PNLLI:',PNLL,PNLLI		          WRITE(IFCH,*)'*****  PNLL,PNLLI:',PNLL,PNLLI
+          WRITE(IFCH,*)'*****  ENGY,ENGYI:',ENGY,ENGYI		          WRITE(IFCH,*)'*****  ENGY,ENGYI:',ENGY,ENGYI
+          CALL UTMSGF						          CALL UTMSGF
+        ENDIF							        ENDIF
+      ENDIF							      ENDIF
+      S = ENGY**2						      S = ENGY**2
+      SROOTI = 1./ENGY						      SROOTI = 1./ENGY
+      PNLLX = UTPCM(ENGY,AMPROJ,AMTARG)				      PNLLX = UTPCM(ENGY,AMPROJ,AMTARG)
+      YHAHA = LOG((SQRT(PNLL**2+S)+PNLL)/ENGY)			      YHAHA = LOG((SQRT(PNLL**2+S)+PNLL)/ENGY)
+      YPJTL = LOG((SQRT(PNLL**2+AMPROJ**2)+PNLL)/AMPROJ)	      YPJTL = LOG((SQRT(PNLL**2+AMPROJ**2)+PNLL)/AMPROJ)
+      IF ( ISH .GE. 91 ) WRITE(IFCH,*)'VENLNK: YPJTL=',YPJTL	      IF ( ISH .GE. 91 ) WRITE(IFCH,*)'VENLNK: YPJTL=',YPJTL
+ 								 
+      ENGYLG = LOG(ENGY)					      ENGYLG = LOG(ENGY)
+      QMUST = QMUST1+QMUST2*ENGYLG+QMUST3*ENGYLG**2		      QMUST = QMUST1+QMUST2*ENGYLG+QMUST3*ENGYLG**2
+      PTQ = PTQ1+PTQ2*ENGYLG+PTQ3*ENGYLG**2			      PTQ = PTQ1+PTQ2*ENGYLG+PTQ3*ENGYLG**2
+CDH   PHARD = 0.030+0.12*(LOG10(S)-LOG10(30.**2))		CDH   PHARD = 0.030+0.12*(LOG10(S)-LOG10(30.**2))
+      PHARD = 0.030+0.12*(LOG10(S)-2.9542425)			      PHARD = 0.030+0.12*(LOG10(S)-2.9542425)
+      PHARD = MIN(1.,PHARD)					      PHARD = MIN(1.,PHARD)
+      PHARD = MAX(0.030,PHARD)					      PHARD = MAX(0.030,PHARD)
+ 								 
+C  PROJECTILE							C  PROJECTILE
+      XCUT  = CUTMSQ*SROOTI					      XCUT  = CUTMSQ*SROOTI
+      XCUT2 = XCUT**2						      XCUT2 = XCUT**2
+      IF ( ABS(IDPROJ) .GE. 1000 ) THEN				      IF ( ABS(IDPROJ) .GE. 1000 ) THEN
+C  STRUCTURE FUNCTION INTEGRAL FOR BARYONS OF PROJECTILE	C  STRUCTURE FUNCTION INTEGRAL FOR BARYONS OF PROJECTILE
+        IPIO = 0						        IPIO = 0
+        CALL UINTEG(VALUE,SSE0,0.D0,1.D0,0.D0,1.D-5,1,ERRER,I	        CALL UINTEG(VALUE,SSE0,0.D0,1.D0,0.D0,1.D-5,1,ERRER,I
+        IF ( IFLAG .GT. 3  .AND.  ISH .GT. 0 )			        IF ( IFLAG .GT. 3  .AND.  ISH .GT. 0 )
+     *                      WRITE(IFCH,*)'VENLNK: SSE0:IFLAG=	     *                      WRITE(IFCH,*)'VENLNK: SSE0:IFLAG=
+        QSEPC = VALUE						        QSEPC = VALUE
+        CALL UINTEG(VALUE,SVA0,0.D0,1.D0,0.D0,1.D-5,1,ERRER,I	        CALL UINTEG(VALUE,SVA0,0.D0,1.D0,0.D0,1.D-5,1,ERRER,I
+        IF ( IFLAG .GT. 3  .AND.  ISH .GT. 0 )			        IF ( IFLAG .GT. 3  .AND.  ISH .GT. 0 )
+     *                      WRITE(IFCH,*)'VENLNK: SVA0:IFLAG=	     *                      WRITE(IFCH,*)'VENLNK: SVA0:IFLAG=
+        QVAPC = VALUE						        QVAPC = VALUE
+      ELSE							      ELSE
+C  STRUCTURE FUNCTION INTEGRAL FOR MESONS OF PROJECTILE		C  STRUCTURE FUNCTION INTEGRAL FOR MESONS OF PROJECTILE
+        IPIO = 1						        IPIO = 1
+        A0 = -5.0 + 6.6666667*XCUT2 - 0.53333333*XCUT2**2	        A0 = -5.0 + 6.6666667*XCUT2 - 0.53333333*XCUT2**2
+        A1 =  5.0 - 1.875*XCUT2					        A1 =  5.0 - 1.875*XCUT2
+        A2 = -3.3333333 + 0.26666667*XCUT2			        A2 = -3.3333333 + 0.26666667*XCUT2
+        A3 =  1.25						        A3 =  1.25
+        A4 = -0.2						        A4 = -0.2
+        ROOT  = SQRT(XCUT2+1.)					        ROOT  = SQRT(XCUT2+1.)
+        QSEPC = 0.9*( (1.-XCUT2*A1)*( LOG(1.+ROOT)-LOG(XCUT) 	        QSEPC = 0.9*( (1.-XCUT2*A1)*( LOG(1.+ROOT)-LOG(XCUT) 
+     *                   - XCUT*A0 + ROOT*(A0+A1+A2+A3+A4) )	     *                   - XCUT*A0 + ROOT*(A0+A1+A2+A3+A4) )
+        CALL UINTEG(VALUE,SVA1,0.D0,1.D0,0.D0,1.D-5,1,ERRER,I	        CALL UINTEG(VALUE,SVA1,0.D0,1.D0,0.D0,1.D-5,1,ERRER,I
+        IF ( IFLAG .GT. 3  .AND.  ISH .GT. 0 )			        IF ( IFLAG .GT. 3  .AND.  ISH .GT. 0 )
+     *                      WRITE(IFCH,*)'VENLNK: SVA1:IFLAG=	     *                      WRITE(IFCH,*)'VENLNK: SVA1:IFLAG=
+        QVAPC = VALUE						        QVAPC = VALUE
+      ENDIF							      ENDIF
+      IDTG = IPIO						      IDTG = IPIO
+ 								 
+C  TARGET							C  TARGET
+      IF ( IDTG .EQ. 1 ) THEN					      IF ( IDTG .EQ. 1 ) THEN
+        IF ( ABS(IDTARG) .GE. 1000 ) THEN			        IF ( ABS(IDTARG) .GE. 1000 ) THEN
+C  STRUCTURE FUNCTION INTEGRAL FOR BARYONS OF TARGET		C  STRUCTURE FUNCTION INTEGRAL FOR BARYONS OF TARGET
+          IPIO = 0						          IPIO = 0
+          CALL UINTEG(VALUE,SSE0,0.D0,1.D0,0.D0,1.D-5,1,ERRER	          CALL UINTEG(VALUE,SSE0,0.D0,1.D0,0.D0,1.D-5,1,ERRER
+          IF ( IFLAG .GT. 3  .AND.  ISH .GT. 0 )		          IF ( IFLAG .GT. 3  .AND.  ISH .GT. 0 )
+     *                        WRITE(IFCH,*)'VENLNK: SSE0:IFLA	     *                        WRITE(IFCH,*)'VENLNK: SSE0:IFLA
+          QSETC = VALUE						          QSETC = VALUE
+          CALL UINTEG(VALUE,SVA0,0.D0,1.D0,0.D0,1.D-5,1,ERRER	          CALL UINTEG(VALUE,SVA0,0.D0,1.D0,0.D0,1.D-5,1,ERRER
+          IF ( IFLAG .GT. 3  .AND.  ISH .GT. 0 )		          IF ( IFLAG .GT. 3  .AND.  ISH .GT. 0 )
+     *                        WRITE(IFCH,*)'VENLNK: SVA0:IFLA	     *                        WRITE(IFCH,*)'VENLNK: SVA0:IFLA
+          QVATC = VALUE						          QVATC = VALUE
+        ELSE							        ELSE
+          IPIO=1						          IPIO=1
+          QVATC = QVAPC						          QVATC = QVAPC
+          QSETC = QSEPC						          QSETC = QSEPC
+        ENDIF							        ENDIF
+      ELSE							      ELSE
+        IF ( ABS(IDTARG) .GE. 1000 ) THEN			        IF ( ABS(IDTARG) .GE. 1000 ) THEN
+          IPIO = 0						          IPIO = 0
+          QVATC = QVAPC						          QVATC = QVAPC
+          QSETC = QSEPC						          QSETC = QSEPC
+        ELSE							        ELSE
+C  STRUCTURE FUNCTION INTEGRAL FOR BARYONS OF TARGET		C  STRUCTURE FUNCTION INTEGRAL FOR BARYONS OF TARGET
+          IPIO=1						          IPIO=1
+          A0 = -5.0 + 6.6666667*XCUT2 - 0.53333333*XCUT2**2	          A0 = -5.0 + 6.6666667*XCUT2 - 0.53333333*XCUT2**2
+          A1 =  5.0 - 1.875*XCUT2				          A1 =  5.0 - 1.875*XCUT2
+          A2 = -3.3333333 + 0.26666667*XCUT2			          A2 = -3.3333333 + 0.26666667*XCUT2
+          A3 =  1.25						          A3 =  1.25
+          A4 = -0.2						          A4 = -0.2
+          ROOT  = SQRT(XCUT2+1.)				          ROOT  = SQRT(XCUT2+1.)
+          QSETC = 0.9*( (1.-XCUT2*A1)*( LOG(1.+ROOT)-LOG(XCUT	          QSETC = 0.9*( (1.-XCUT2*A1)*( LOG(1.+ROOT)-LOG(XCUT
+     *                     - XCUT*A0 + ROOT*(A0+A1+A2+A3+A4) 	     *                     - XCUT*A0 + ROOT*(A0+A1+A2+A3+A4) 
+          CALL UINTEG(VALUE,SVA1,0.D0,1.D0,0.D0,1.D-5,1,ERRER	          CALL UINTEG(VALUE,SVA1,0.D0,1.D0,0.D0,1.D-5,1,ERRER
+          IF ( IFLAG .GT. 3  .AND.  ISH .GT. 0 )		          IF ( IFLAG .GT. 3  .AND.  ISH .GT. 0 )
+     *                        WRITE(IFCH,*)'VENLNK: SVA1:IFLA	     *                        WRITE(IFCH,*)'VENLNK: SVA1:IFLA
+          QVATC = VALUE						          QVATC = VALUE
+        ENDIF							        ENDIF
+      ENDIF							      ENDIF
+      IF ( ISH .EQ. 16 .OR. DEBUG ) THEN			      IF ( ISH .EQ. 16 .OR. DEBUG ) THEN
+        WRITE(IFCH,301) QVAPC, QSEPC, QVATC, QSETC		        WRITE(IFCH,301) QVAPC, QSEPC, QVATC, QSETC
+ 301    FORMAT(' VENLNK: QVAPC, QSEPC, QVATC, QSETC=',4(F10.7	 301    FORMAT(' VENLNK: QVAPC, QSEPC, QVATC, QSETC=',4(F10.7
+      ENDIF							      ENDIF
+ 								 
+      IF ( PROSEA .GE. 0. ) THEN				      IF ( PROSEA .GE. 0. ) THEN
+        QVAPC = 1.0						        QVAPC = 1.0
+        QVATC = 1.0						        QVATC = 1.0
+        QSEPC = PROSEA						        QSEPC = PROSEA
+        QSETC = PROSEA						        QSETC = PROSEA
+      ENDIF							      ENDIF
+ 								 
+      XCUT = CUTMSS*SROOTI					      XCUT = CUTMSS*SROOTI
+      XCUTAR = XCUT						      XCUTAR = XCUT
+      B = MIN( 0.05, XCUT*500. )				      B = MIN( 0.05, XCUT*500. )
+      A = MIN( 0.2*B, XCUT*100. )				      A = MIN( 0.2*B, XCUT*100. )
+      PNLLLG = LOG(PNLL)					      PNLLLG = LOG(PNLL)
+      DELTA0 = EXP(-2.791922 - 0.2091742 * PNLLLG)		      DELTA0 = EXP(-2.791922 - 0.2091742 * PNLLLG)
+      DELTA1 = EXP(-3.885293 - 0.2029558 * PNLLLG)		      DELTA1 = EXP(-3.885293 - 0.2029558 * PNLLLG)
+      CALL UTQSEA(A,B,1.)					      CALL UTQSEA(A,B,1.)
+      IF ( XCUT .LT. 0.04  ) THEN				      IF ( XCUT .LT. 0.04  ) THEN
+        NEND=1.+REAL(NSTRUC)*2./PI*ACOS(1.-2./PI*ACOS(1.-25.*	        NEND=1.+REAL(NSTRUC)*2./PI*ACOS(1.-2./PI*ACOS(1.-25.*
+      ELSE							      ELSE
+        NEND = NSTRUC						        NEND = NSTRUC
+      ENDIF							      ENDIF
+ 								 
+      IF ( ABS(IDPROJ) .GE. 1000 ) THEN				      IF ( ABS(IDPROJ) .GE. 1000 ) THEN
+        IPIO = 0						        IPIO = 0
+        DO 203 N = 1,NSTRUC					        DO 203 N = 1,NSTRUC
+          QSEP(N) = QSEH(N)					          QSEP(N) = QSEH(N)
+ 203    CONTINUE						 203    CONTINUE
+        DO 2031 N = NEND,NSTRUC					        DO 2031 N = NEND,NSTRUC
+          QVAP(N) = QVAH(N) - DELTA0				          QVAP(N) = QVAH(N) - DELTA0
+ 2031   CONTINUE						 2031   CONTINUE
+      ELSE							      ELSE
+        IPIO = 1						        IPIO = 1
+        DO 204 N = 1,NSTRUC					        DO 204 N = 1,NSTRUC
+          QSEP(N) = QSEPI(N)					          QSEP(N) = QSEPI(N)
+ 204    CONTINUE						 204    CONTINUE
+        DO 2041 N = NEND,NSTRUC					        DO 2041 N = NEND,NSTRUC
+          QVAP(N) = QVAPI(N) - DELTA1				          QVAP(N) = QVAPI(N) - DELTA1
+ 2041   CONTINUE						 2041   CONTINUE
+      ENDIF							      ENDIF
+      CALL UTQVAL(QVAP,NEND)					      CALL UTQVAL(QVAP,NEND)
+ 								 
+      IF ( IDTG .EQ. 0 ) THEN					      IF ( IDTG .EQ. 0 ) THEN
+        IF ( ABS(IDTARG) .GE. 1000 ) THEN			        IF ( ABS(IDTARG) .GE. 1000 ) THEN
+          IPIO = 0						          IPIO = 0
+          DO 205 N=1,NSTRUC					          DO 205 N=1,NSTRUC
+            QSET(N) = QSEP(N)					            QSET(N) = QSEP(N)
+            QVAT(N) = QVAP(N)					            QVAT(N) = QVAP(N)
+ 205      CONTINUE						 205      CONTINUE
+        ELSE							        ELSE
+          IPIO = 1						          IPIO = 1
+          DO 209 N = 1,NSTRUC					          DO 209 N = 1,NSTRUC
+            QSET(N) = QSEPI(N)					            QSET(N) = QSEPI(N)
+ 209      CONTINUE						 209      CONTINUE
+          DO 2091 N = NEND,NSTRUC				          DO 2091 N = NEND,NSTRUC
+            QVAT(N) = QVAPI(N) - DELTA1				            QVAT(N) = QVAPI(N) - DELTA1
+ 2091     CONTINUE						 2091     CONTINUE
+          CALL UTQVAL(QVAT,NEND)				          CALL UTQVAL(QVAT,NEND)
+        ENDIF							        ENDIF
+ 								 
+      ELSE							      ELSE
+        IF ( ABS(IDTARG) .GE. 1000 ) THEN			        IF ( ABS(IDTARG) .GE. 1000 ) THEN
+          IPIO = 0						          IPIO = 0
+          DO 210 N = 1,NSTRUC					          DO 210 N = 1,NSTRUC
+            QSET(N) = QSEH(N)					            QSET(N) = QSEH(N)
+ 210      CONTINUE						 210      CONTINUE
+          DO 2101 N = NEND,NSTRUC				          DO 2101 N = NEND,NSTRUC
+            QVAT(N) = QVAH(N) - DELTA0				            QVAT(N) = QVAH(N) - DELTA0
+ 2101     CONTINUE						 2101     CONTINUE
+          CALL UTQVAL(QVAT,NEND)				          CALL UTQVAL(QVAT,NEND)
+ 								 
+        ELSE							        ELSE
+          IPIO = 1						          IPIO = 1
+          DO 216 N=1,NSTRUC					          DO 216 N=1,NSTRUC
+            QSET(N) = QSEP(N)					            QSET(N) = QSEP(N)
+            QVAT(N) = QVAP(N)					            QVAT(N) = QVAP(N)
+ 216      CONTINUE						 216      CONTINUE
+        ENDIF							        ENDIF
+      ENDIF							      ENDIF
+ 								 
+      IF ( ISH .EQ. 21 ) THEN					      IF ( ISH .EQ. 21 ) THEN
+        CALL UTHSEA						        CALL UTHSEA
+        CALL UTSTOP(' VENLNK:                                	        CALL UTSTOP(' VENLNK:                                
+      ENDIF							      ENDIF
+ 								 
+      QPTHMX = 0.5/PTH**2-PTH**2/(2.*(PTH**2+PTMX**2)**2)	      QPTHMX = 0.5/PTH**2-PTH**2/(2.*(PTH**2+PTMX**2)**2)
+      IF     ( IOPTQ .EQ. 2 ) THEN				      IF     ( IOPTQ .EQ. 2 ) THEN
+        QPTQMX = 1. - EXP(-PI*PTMX**2/(4.*PTQ**2) )		        QPTQMX = 1. - EXP(-PI*PTMX**2/(4.*PTQ**2) )
+      ELSEIF ( IOPTQ .EQ. 3 ) THEN				      ELSEIF ( IOPTQ .EQ. 3 ) THEN
+        QPTQMX = 1. - PTQ**2/(PTQ**2+PTMX**2)			        QPTQMX = 1. - PTQ**2/(PTQ**2+PTMX**2)
+      ELSE							      ELSE
+        CX = PTMX						        CX = PTMX
+        CALL UTQUAF(SPTQ,NPTQ,XPTQ,QPTQ,0.,.33*CX,.66*CX,CX)	        CALL UTQUAF(SPTQ,NPTQ,XPTQ,QPTQ,0.,.33*CX,.66*CX,CX)
+      ENDIF							      ENDIF
+ 								 
+      SIGPPI = -1.0						      SIGPPI = -1.0
+C  CALCULATE ENERGY DEPENDENT CROSS SECTION FOR BARYONS		C  CALCULATE ENERGY DEPENDENT CROSS SECTION FOR BARYONS
+      CALL RACPRO('GRI',QMUST,NPRBMS,PRBMS)			      CALL RACPRO('GRI',QMUST,NPRBMS,PRBMS)
+      IF     ( ABS(IDPROJ) .LE. 120  .OR.  ABS(IDPROJ) .EQ. 2	      IF     ( ABS(IDPROJ) .LE. 120  .OR.  ABS(IDPROJ) .EQ. 2
+C  CROSS SECTION FOR PIONS (OR ETA FOR PHOTONS FROM EGS)	C  CROSS SECTION FOR PIONS (OR ETA FOR PHOTONS FROM EGS)
+        SIGPPI = SIGPPI * 0.6667				        SIGPPI = SIGPPI * 0.6667
+      ELSEIF ( ABS(IDPROJ) .EQ. 130  .OR.  ABS(IDPROJ) .EQ. 2	      ELSEIF ( ABS(IDPROJ) .EQ. 130  .OR.  ABS(IDPROJ) .EQ. 2
+C  CROSS SECTION FOR KAONS					C  CROSS SECTION FOR KAONS
+        SIGPPI = SIGPPI * 0.5541				        SIGPPI = SIGPPI * 0.5541
+      ENDIF							      ENDIF
+ 								 
+      MASSNR = MAPROJ						      MASSNR = MAPROJ
+      RMPROJ = 0.						      RMPROJ = 0.
+      IF ( MASSNR .GT. 1 ) THEN					      IF ( MASSNR .GT. 1 ) THEN
+        R0 = 1.19*MASSNR**(.3333333) -1.61*MASSNR**(-.3333333	        R0 = 1.19*MASSNR**(.3333333) -1.61*MASSNR**(-.3333333
+        CX = R0+FCTRMX*0.54					        CX = R0+FCTRMX*0.54
+        RMPROJ = CX						        RMPROJ = CX
+        CALL UTQUAF(SDENSI,NDEP,XDEP,QDEP,0.,.33*CX,.66*CX,CX	        CALL UTQUAF(SDENSI,NDEP,XDEP,QDEP,0.,.33*CX,.66*CX,CX
+      ENDIF							      ENDIF
+ 								 
+      IF ( IDPM .EQ. 1 ) THEN					      IF ( IDPM .EQ. 1 ) THEN
+        QSEPC = 0.						        QSEPC = 0.
+        QSETC = 0.						        QSETC = 0.
+      ENDIF							      ENDIF
+      BMAX = RMPROJ+RMTARG(LTARG)				      BMAX = RMPROJ+RMTARG(LTARG)
+ 								 
+      IF ( ISH .GE. 91 ) WRITE(IFCH,*)'VENLNK: AVENUS IS NOW 	      IF ( ISH .GE. 91 ) WRITE(IFCH,*)'VENLNK: AVENUS IS NOW 
+      CALL AVENUS						      CALL AVENUS
+ 								 
+C  NOW BRING PARTICLES TO CORSIKA STACK				C  NOW BRING PARTICLES TO CORSIKA STACK
+      CALL VSTORE						      CALL VSTORE
+ 								 
+      IF ( ISH .GE. 91 ) WRITE(IFCH,*)'VENLNK: (EXIT)'		      IF ( ISH .GE. 91 ) WRITE(IFCH,*)'VENLNK: (EXIT)'
+      RETURN							      RETURN
+      END							      END

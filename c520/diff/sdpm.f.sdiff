@@ -1,0 +1,560 @@
+      SUBROUTINE SDPM						      SUBROUTINE SDPM
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  S(TARTING) D(UAL) P(ARTON) M(ODEL)				C  S(TARTING) D(UAL) P(ARTON) M(ODEL)
+C								C
+C  THIS ROUTINE DETERMINES THE TARGET NUCLEUS.			C  THIS ROUTINE DETERMINES THE TARGET NUCLEUS.
+C  IT CALLS ALSO THE VARIOUS INTERACTION MODELS.		C  IT CALLS ALSO THE VARIOUS INTERACTION MODELS.
+C  FOR HDPM, THIS ROUTINE LOOKS, HOW MANY NUCLEONS INTERACT A	C  FOR HDPM, THIS ROUTINE LOOKS, HOW MANY NUCLEONS INTERACT A
+C  RESIDUAL FRAGMENT OF THE PROJECTILE NUCLEUS REMAINS.		C  RESIDUAL FRAGMENT OF THE PROJECTILE NUCLEUS REMAINS.
+C  THIS SUBROUTINE IS CALLED FROM NUCINT AND PIGEN		C  THIS SUBROUTINE IS CALLED FROM NUCINT AND PIGEN
+C								C
+C  REDESIGN: D. HECK    IK3  FZK KARLSRUHE			C  REDESIGN: D. HECK    IK3  FZK KARLSRUHE
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,AIR.							*KEEP,AIR.
+      COMMON /AIR/     COMPOS,PROBTA,AVERAW,AVOGAD		      COMMON /AIR/     COMPOS,PROBTA,AVERAW,AVOGAD
+      DOUBLE PRECISION COMPOS(3),PROBTA(3),AVERAW,AVOGAD	      DOUBLE PRECISION COMPOS(3),PROBTA(3),AVERAW,AVOGAD
+*KEEP,CONST.							*KEEP,CONST.
+      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER			      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER
+      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER			      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER
+*KEEP,DPMFLG.							*KEEP,DPMFLG.
+      COMMON /DPMFLG/  NFLAIN,NFLDIF,NFLPI0,NFLCHE,NFLPIF,NFR	      COMMON /DPMFLG/  NFLAIN,NFLDIF,NFLPI0,NFLCHE,NFLPIF,NFR
+      INTEGER          NFLAIN,NFLDIF,NFLPI0,NFLCHE,NFLPIF,NFR	      INTEGER          NFLAIN,NFLDIF,NFLPI0,NFLCHE,NFLPIF,NFR
+*KEEP,GENER.							*KEEP,GENER.
+      COMMON /GENER/   GEN,ALEVEL				      COMMON /GENER/   GEN,ALEVEL
+      DOUBLE PRECISION GEN,ALEVEL				      DOUBLE PRECISION GEN,ALEVEL
+*KEEP,INTER.							*KEEP,INTER.
+      COMMON /INTER/   AVCH,AVCH3,DC0,DLOG,DMLOG,ECMDIF,ECMDP	      COMMON /INTER/   AVCH,AVCH3,DC0,DLOG,DMLOG,ECMDIF,ECMDP
+     *                 FNEUT,FNEUT2,GNU,PLAB,POSC2,POSC3,POSN	     *                 FNEUT,FNEUT2,GNU,PLAB,POSC2,POSC3,POSN
+     *                 RC3TO2,S,SEUGF,SEUGP,SLOG,SLOGSQ,SMLOG	     *                 RC3TO2,S,SEUGF,SEUGP,SLOG,SLOGSQ,SMLOG
+     *                 WIDC2,WIDC3,WIDN2,WIDN3,YCM,YY0,ZN,	     *                 WIDC2,WIDC3,WIDN2,WIDN3,YCM,YY0,ZN,
+     *                 IDIF,ITAR				     *                 IDIF,ITAR
+      DOUBLE PRECISION AVCH,AVCH3,DC0,DLOG,DMLOG,ECMDIF,ECMDP	      DOUBLE PRECISION AVCH,AVCH3,DC0,DLOG,DMLOG,ECMDIF,ECMDP
+     *                 FNEUT,FNEUT2,GNU,PLAB,POSC2,POSC3,POSN	     *                 FNEUT,FNEUT2,GNU,PLAB,POSC2,POSC3,POSN
+     *                 RC3TO2,S,SEUGF,SEUGP,SLOG,SLOGSQ,SMLOG	     *                 RC3TO2,S,SEUGF,SEUGP,SLOG,SLOGSQ,SMLOG
+     *                 WIDC2,WIDC3,WIDN2,WIDN3,YCM,YY0,ZN	     *                 WIDC2,WIDC3,WIDN2,WIDN3,YCM,YY0,ZN
+      INTEGER          IDIF,ITAR				      INTEGER          IDIF,ITAR
+*KEEP,ISTA.							*KEEP,ISTA.
+      COMMON /ISTA/    IFINET,IFINNU,IFINKA,IFINPI,IFINHY	      COMMON /ISTA/    IFINET,IFINNU,IFINKA,IFINPI,IFINHY
+      INTEGER          IFINET,IFINNU,IFINKA,IFINPI,IFINHY	      INTEGER          IFINET,IFINNU,IFINKA,IFINPI,IFINHY
+*KEEP,MULT.							*KEEP,MULT.
+      COMMON /MULT/    EKINL,MSMM,MULTMA,MULTOT			      COMMON /MULT/    EKINL,MSMM,MULTMA,MULTOT
+      DOUBLE PRECISION EKINL					      DOUBLE PRECISION EKINL
+      INTEGER          MSMM,MULTMA(37,13),MULTOT(37,13)		      INTEGER          MSMM,MULTMA(37,13),MULTOT(37,13)
+*KEEP,NCSNCS.							*KEEP,NCSNCS.
+      COMMON /NCSNCS/  SIGN30,SIGN45,SIGN60,SIGO30,SIGO45,SIG	      COMMON /NCSNCS/  SIGN30,SIGN45,SIGN60,SIGO30,SIGO45,SIG
+     *                 SIGA30,SIGA45,SIGA60,PNOA30,PNOA45,PNO	     *                 SIGA30,SIGA45,SIGA60,PNOA30,PNOA45,PNO
+     *                 SIG30A,SIG45A,SIG60A			     *                 SIG30A,SIG45A,SIG60A
+      DOUBLE PRECISION SIGN30(56),SIGN45(56),SIGN60(56),	      DOUBLE PRECISION SIGN30(56),SIGN45(56),SIGN60(56),
+     *                 SIGO30(56),SIGO45(56),SIGO60(56),	     *                 SIGO30(56),SIGO45(56),SIGO60(56),
+     *                 SIGA30(56),SIGA45(56),SIGA60(56),	     *                 SIGA30(56),SIGA45(56),SIGA60(56),
+     *                 PNOA30(1540,3),PNOA45(1540,3),PNOA60(1	     *                 PNOA30(1540,3),PNOA45(1540,3),PNOA60(1
+     *                 SIG30A(56),SIG45A(56),SIG60A(56)		     *                 SIG30A(56),SIG45A(56),SIG60A(56)
+*KEEP,PAM.							*KEEP,PAM.
+      COMMON /PAM/     PAMA,SIGNUM				      COMMON /PAM/     PAMA,SIGNUM
+      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)			      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)
+*KEEP,PARPAR.							*KEEP,PARPAR.
+      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,		      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,
+     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE	     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE
+      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA	      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA
+     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH	     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH
+      INTEGER          ITYPE,LEVL				      INTEGER          ITYPE,LEVL
+*KEEP,PARPAE.							*KEEP,PARPAE.
+      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,	      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,
+      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)	      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)
+     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )	     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )
+     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )	     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )
+     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )	     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )
+     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )	     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )
+     *                 (CURPAR(12),ECM )			     *                 (CURPAR(12),ECM )
+*KEEP,RANDPA.							*KEEP,RANDPA.
+      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR		      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR
+      DOUBLE PRECISION FAC,U1,U2				      DOUBLE PRECISION FAC,U1,U2
+      REAL             RD(3000)					      REAL             RD(3000)
+      INTEGER          ISEED(103,10),NSEQ			      INTEGER          ISEED(103,10),NSEQ
+      LOGICAL          KNOR					      LOGICAL          KNOR
+*KEEP,RANGE.							*KEEP,RANGE.
+      COMMON /RANGE/   CC					      COMMON /RANGE/   CC
+      DOUBLE PRECISION CC(20)					      DOUBLE PRECISION CC(20)
+*KEEP,REST.							*KEEP,REST.
+      COMMON /REST/    CONTNE,TAR,LT				      COMMON /REST/    CONTNE,TAR,LT
+      DOUBLE PRECISION CONTNE(3),TAR				      DOUBLE PRECISION CONTNE(3),TAR
+      INTEGER          LT					      INTEGER          LT
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEEP,SIGM.							*KEEP,SIGM.
+      COMMON /SIGM/    SIGMA,SIGANN,SIGAIR,FRACTN,FRCTNO	      COMMON /SIGM/    SIGMA,SIGANN,SIGAIR,FRACTN,FRCTNO
+      DOUBLE PRECISION SIGMA,SIGANN,SIGAIR,FRACTN,FRCTNO	      DOUBLE PRECISION SIGMA,SIGANN,SIGAIR,FRACTN,FRCTNO
+*KEEP,VKIN.							*KEEP,VKIN.
+      COMMON /VKIN/    BETACM					      COMMON /VKIN/    BETACM
+      DOUBLE PRECISION BETACM					      DOUBLE PRECISION BETACM
+*KEEP,VENUS.							*KEEP,VENUS.
+      COMMON /VENUS/   ISH0,IVERVN,MTAR99,FVENUS,FVENSG		      COMMON /VENUS/   ISH0,IVERVN,MTAR99,FVENUS,FVENSG
+      INTEGER          ISH0,IVERVN,MTAR99			      INTEGER          ISH0,IVERVN,MTAR99
+      LOGICAL          FVENUS,FVENSG				      LOGICAL          FVENUS,FVENSG
+*KEND.								*KEND.
+ 								 
+      DOUBLE PRECISION PFRX(60),PFRY(60)			      DOUBLE PRECISION PFRX(60),PFRY(60)
+      DOUBLE PRECISION COSTET,EA,P,PHIV,PTM,PT2,		      DOUBLE PRECISION COSTET,EA,P,PHIV,PTM,PT2,
+     *                 SIGMAA,SIGMAN,SIGMAO,SIG45,S45SQ,S4530	     *                 SIGMAA,SIGMAN,SIGMAO,SIG45,S45SQ,S4530
+      DOUBLE PRECISION CGHSIG,EKIN				      DOUBLE PRECISION CGHSIG,EKIN
+      EXTERNAL         CGHSIG					      EXTERNAL         CGHSIG
+      INTEGER          ITYP(60),I,IA,IANEW,INACTA,INACTZ,INDE	      INTEGER          ITYP(60),I,IA,IANEW,INACTA,INACTZ,INDE
+     *                 IZ,IZNEW,J,JFIN,KNEW,L,LL,NPRPRO,NNEPR	     *                 IZ,IZNEW,J,JFIN,KNEW,L,LL,NPRPRO,NNEPR
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,444) (CURPAR(I),I=1,9)		      IF ( DEBUG ) WRITE(MDEBUG,444) (CURPAR(I),I=1,9)
+  444 FORMAT(' SDPM  : CURPAR=',1P,9E10.3)			  444 FORMAT(' SDPM  : CURPAR=',1P,9E10.3)
+ 								 
+C  IA IS MASS NUMBER OF PROJECTILE				C  IA IS MASS NUMBER OF PROJECTILE
+      IA = ITYPE / 100						      IA = ITYPE / 100
+      IF ( IA .GT. 56 ) THEN					      IF ( IA .GT. 56 ) THEN
+        WRITE(MONIOU,*) 'SDPM  : NOT FORESEEN PARTICLE TYPE='	        WRITE(MONIOU,*) 'SDPM  : NOT FORESEEN PARTICLE TYPE='
+        STOP							        STOP
+      ENDIF							      ENDIF
+ 								 
+C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -	C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+C  TREATMENT OF GAMMAS COMING FROM EGS4 (PIGEN)			C  TREATMENT OF GAMMAS COMING FROM EGS4 (PIGEN)
+      IF     ( ITYPE .EQ. 1 ) THEN				      IF     ( ITYPE .EQ. 1 ) THEN
+C  RATIOS OF CROSS SECTIONS GO LIKE A**0.91			C  RATIOS OF CROSS SECTIONS GO LIKE A**0.91
+        FRACTN = COMPOS(1) * 11.04019D0				        FRACTN = COMPOS(1) * 11.04019D0
+        FRCTNO = FRACTN + COMPOS(2) * 12.46663D0		        FRCTNO = FRACTN + COMPOS(2) * 12.46663D0
+        SIGAIR = FRCTNO + COMPOS(3) * 28.69952D0		        SIGAIR = FRCTNO + COMPOS(3) * 28.69952D0
+C  TARGET IS CHOSEN AT RANDOM					C  TARGET IS CHOSEN AT RANDOM
+        CALL RMMAR( RD,1,1 )					        CALL RMMAR( RD,1,1 )
+        IF     ( RD(1)*SIGAIR .LE. FRACTN ) THEN		        IF     ( RD(1)*SIGAIR .LE. FRACTN ) THEN
+C  INTERACTION WITH NITROGEN					C  INTERACTION WITH NITROGEN
+          LT  = 1						          LT  = 1
+          TAR = 14.D0						          TAR = 14.D0
+        ELSEIF ( RD(1)*SIGAIR .LE. FRCTNO ) THEN		        ELSEIF ( RD(1)*SIGAIR .LE. FRCTNO ) THEN
+C  INTERACTION WITH OXYGEN					C  INTERACTION WITH OXYGEN
+          LT  = 2						          LT  = 2
+          TAR = 16.D0						          TAR = 16.D0
+        ELSE							        ELSE
+C  INTERACTION WITH ARGON					C  INTERACTION WITH ARGON
+          LT  = 3						          LT  = 3
+          TAR = 40.D0						          TAR = 40.D0
+        ENDIF							        ENDIF
+ 								 
+C  GAMMAS ARE TREATED BY VENUS, IF SUFFICIENT ENERGY		C  GAMMAS ARE TREATED BY VENUS, IF SUFFICIENT ENERGY
+        IF ( FVENUS  .AND.  CURPAR(2) .GT. HILOELB ) THEN	        IF ( FVENUS  .AND.  CURPAR(2) .GT. HILOELB ) THEN
+          CALL VENLNK						          CALL VENLNK
+        ELSE							        ELSE
+          CALL HDPM						          CALL HDPM
+        ENDIF							        ENDIF
+ 								 
+C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -	C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+C  NORMAL HADRON PROJECTILE					C  NORMAL HADRON PROJECTILE
+      ELSEIF ( ITYPE .LT. 100 ) THEN				      ELSEIF ( ITYPE .LT. 100 ) THEN
+ 								 
+C  WITH WHAT KIND OF TARGET DOES PROJECTILE INTERACT?		C  WITH WHAT KIND OF TARGET DOES PROJECTILE INTERACT?
+        IF ( FIXTAR ) THEN					        IF ( FIXTAR ) THEN
+C  TARGET OF FIRST INTERACTION IS FIXED				C  TARGET OF FIRST INTERACTION IS FIXED
+          LT = N1STTR						          LT = N1STTR
+          IF     ( N1STTR .EQ. 1 ) THEN				          IF     ( N1STTR .EQ. 1 ) THEN
+            TAR = 14.D0						            TAR = 14.D0
+          ELSEIF ( N1STTR .EQ. 2 ) THEN				          ELSEIF ( N1STTR .EQ. 2 ) THEN
+            TAR = 16.D0						            TAR = 16.D0
+          ELSE							          ELSE
+            TAR = 40.D0						            TAR = 40.D0
+          ENDIF							          ENDIF
+          FIXTAR = .FALSE.					          FIXTAR = .FALSE.
+        ELSE							        ELSE
+C  TARGET IS CHOSEN AT RANDOM ACCORDING TO CROSS SECTION	C  TARGET IS CHOSEN AT RANDOM ACCORDING TO CROSS SECTION
+C  SIGMA IS ENERGY DEPENDENT INELASTIC NUCLEON-NUCLEON CROSS 	C  SIGMA IS ENERGY DEPENDENT INELASTIC NUCLEON-NUCLEON CROSS 
+C  AND IS SET IN BOX2						C  AND IS SET IN BOX2
+C  AUXIL. QUANTITIES FOR INTERPOLATION				C  AUXIL. QUANTITIES FOR INTERPOLATION
+          SIG45  = SIGMA - 45.D0				          SIG45  = SIGMA - 45.D0
+          S45SQ  = SIG45**2 / 450.D0				          S45SQ  = SIG45**2 / 450.D0
+          S4530  = SIG45 / 30.D0				          S4530  = SIG45 / 30.D0
+C  INELASTIC CROSS SECTIONS FOR PROJECTICLE WITH MASS NUMBER 	C  INELASTIC CROSS SECTIONS FOR PROJECTICLE WITH MASS NUMBER 
+          SIGMAN = (1.D0 - 2.D0 * S45SQ) * SIGN45(1)		          SIGMAN = (1.D0 - 2.D0 * S45SQ) * SIGN45(1)
+     *                  +(S45SQ - S4530) * SIGN30(1)		     *                  +(S45SQ - S4530) * SIGN30(1)
+     *                  +(S45SQ + S4530) * SIGN60(1)		     *                  +(S45SQ + S4530) * SIGN60(1)
+          FRACTN = COMPOS(1) * SIGMAN				          FRACTN = COMPOS(1) * SIGMAN
+          SIGMAO = (1.D0 - 2.D0 * S45SQ) * SIGO45(1)		          SIGMAO = (1.D0 - 2.D0 * S45SQ) * SIGO45(1)
+     *                  +(S45SQ - S4530) * SIGO30(1)		     *                  +(S45SQ - S4530) * SIGO30(1)
+     *                  +(S45SQ + S4530) * SIGO60(1)		     *                  +(S45SQ + S4530) * SIGO60(1)
+          FRCTNO = FRACTN + COMPOS(2) * SIGMAO			          FRCTNO = FRACTN + COMPOS(2) * SIGMAO
+          SIGMAA = (1.D0 - 2.D0 * S45SQ) * SIGA45(1)		          SIGMAA = (1.D0 - 2.D0 * S45SQ) * SIGA45(1)
+     *                  +(S45SQ - S4530) * SIGA30(1)		     *                  +(S45SQ - S4530) * SIGA30(1)
+     *                  +(S45SQ + S4530) * SIGA60(1)		     *                  +(S45SQ + S4530) * SIGA60(1)
+C  INELASTIC CROSS SECTIONS OF AIR FOR PROJECTILE WITH MASS N	C  INELASTIC CROSS SECTIONS OF AIR FOR PROJECTILE WITH MASS N
+          SIGAIR = FRCTNO + COMPOS(3)*SIGMAA			          SIGAIR = FRCTNO + COMPOS(3)*SIGMAA
+ 333      CONTINUE						 333      CONTINUE
+          CALL RMMAR( RD,1,1 )					          CALL RMMAR( RD,1,1 )
+          IF(DEBUG)WRITE(MDEBUG,*)'SDPM  : FRACTN=',SNGL(FRAC	          IF(DEBUG)WRITE(MDEBUG,*)'SDPM  : FRACTN=',SNGL(FRAC
+     *      'FRCTNO=',SNGL(FRCTNO),'RD=',RD(1)			     *      'FRCTNO=',SNGL(FRCTNO),'RD=',RD(1)
+          IF     ( RD(1)*SIGAIR .LE. FRACTN ) THEN		          IF     ( RD(1)*SIGAIR .LE. FRACTN ) THEN
+C  INTERACTION WITH NITROGEN					C  INTERACTION WITH NITROGEN
+            LT  = 1						            LT  = 1
+            TAR = 14.D0						            TAR = 14.D0
+          ELSEIF ( RD(1)*SIGAIR .LE. FRCTNO ) THEN		          ELSEIF ( RD(1)*SIGAIR .LE. FRCTNO ) THEN
+C  INTERACTION WITH OXYGEN					C  INTERACTION WITH OXYGEN
+            LT  = 2						            LT  = 2
+            TAR = 16.D0						            TAR = 16.D0
+          ELSE							          ELSE
+C  INTERACTION WITH ARGON					C  INTERACTION WITH ARGON
+            LT  = 3						            LT  = 3
+            TAR = 40.D0						            TAR = 40.D0
+          ENDIF							          ENDIF
+        ENDIF							        ENDIF
+ 								 
+        IF ( FVENUS ) THEN					        IF ( FVENUS ) THEN
+C  MESONS, NUCLEONS AND STRANGE BARYONS ARE TREATED BY VENUS 	C  MESONS, NUCLEONS AND STRANGE BARYONS ARE TREATED BY VENUS 
+          IF ( (ITYPE .GE.  7  .AND.  ITYPE .LE. 16)  .OR.	          IF ( (ITYPE .GE.  7  .AND.  ITYPE .LE. 16)  .OR.
+     *         (ITYPE .GE. 18  .AND.  ITYPE .LE. 32)  )THEN	     *         (ITYPE .GE. 18  .AND.  ITYPE .LE. 32)  )THEN
+            CALL VENLNK						            CALL VENLNK
+          ELSE							          ELSE
+            CALL HDPM						            CALL HDPM
+          ENDIF							          ENDIF
+        ELSE							        ELSE
+          CALL HDPM						          CALL HDPM
+        ENDIF							        ENDIF
+ 								 
+C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -	C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+C  HEAVY PRIMARY INCIDENT WITH IA NUCLEONS			C  HEAVY PRIMARY INCIDENT WITH IA NUCLEONS
+      ELSEIF ( IA .LE. 56 ) THEN				      ELSEIF ( IA .LE. 56 ) THEN
+ 								 
+        IZ = MOD(ITYPE,100)					        IZ = MOD(ITYPE,100)
+C  WITH WHAT KIND OF TARGET DOES PROJECTILE INTERACT?		C  WITH WHAT KIND OF TARGET DOES PROJECTILE INTERACT?
+        IF ( FIXTAR ) THEN					        IF ( FIXTAR ) THEN
+C  TARGET OF FIRST INTERACTION IS FIXED				C  TARGET OF FIRST INTERACTION IS FIXED
+          LT = N1STTR						          LT = N1STTR
+          IF     ( N1STTR .EQ. 1 ) THEN				          IF     ( N1STTR .EQ. 1 ) THEN
+            TAR = 14.D0						            TAR = 14.D0
+          ELSEIF ( N1STTR .EQ. 2 ) THEN				          ELSEIF ( N1STTR .EQ. 2 ) THEN
+            TAR = 16.D0						            TAR = 16.D0
+          ELSE							          ELSE
+            TAR = 40.D0						            TAR = 40.D0
+          ENDIF							          ENDIF
+          FIXTAR = .FALSE.					          FIXTAR = .FALSE.
+          CALL RMMAR( RD,2,1 )					          CALL RMMAR( RD,2,1 )
+        ELSE							        ELSE
+C  ONLY INELASTIC INTERACTIONS WITH HEAVY PRIMARY/FRAGMENT	C  ONLY INELASTIC INTERACTIONS WITH HEAVY PRIMARY/FRAGMENT
+C  SIGMA IS ENERGY DEPENDENT INELASTIC NUCLEON-NUCLEON CROSS 	C  SIGMA IS ENERGY DEPENDENT INELASTIC NUCLEON-NUCLEON CROSS 
+C  AND IS SET IN BOX2						C  AND IS SET IN BOX2
+C  AUXIL. QUANTITIES FOR INTERPOLATION				C  AUXIL. QUANTITIES FOR INTERPOLATION
+          SIG45  = SIGMA - 45.D0				          SIG45  = SIGMA - 45.D0
+          S45SQ  = SIG45**2 / 450.D0				          S45SQ  = SIG45**2 / 450.D0
+          S4530  = SIG45 / 30.D0				          S4530  = SIG45 / 30.D0
+C  INELASTIC CROSS SECTIONS FOR PROJECTICLE WITH MASS NUMBER 	C  INELASTIC CROSS SECTIONS FOR PROJECTICLE WITH MASS NUMBER 
+          SIGMAN = (1.D0 - 2.D0 * S45SQ) * SIGN45(IA)		          SIGMAN = (1.D0 - 2.D0 * S45SQ) * SIGN45(IA)
+     *                  +(S45SQ - S4530) * SIGN30(IA)		     *                  +(S45SQ - S4530) * SIGN30(IA)
+     *                  +(S45SQ + S4530) * SIGN60(IA)		     *                  +(S45SQ + S4530) * SIGN60(IA)
+          FRACTN = COMPOS(1) * SIGMAN				          FRACTN = COMPOS(1) * SIGMAN
+          SIGMAO = (1.D0 - 2.D0 * S45SQ) * SIGO45(IA)		          SIGMAO = (1.D0 - 2.D0 * S45SQ) * SIGO45(IA)
+     *                  +(S45SQ - S4530) * SIGO30(IA)		     *                  +(S45SQ - S4530) * SIGO30(IA)
+     *                  +(S45SQ + S4530) * SIGO60(IA)		     *                  +(S45SQ + S4530) * SIGO60(IA)
+          FRCTNO = FRACTN + COMPOS(2) * SIGMAO			          FRCTNO = FRACTN + COMPOS(2) * SIGMAO
+          SIGMAA = (1.D0 - 2.D0 * S45SQ) * SIGA45(IA)		          SIGMAA = (1.D0 - 2.D0 * S45SQ) * SIGA45(IA)
+     *                  +(S45SQ - S4530) * SIGA30(IA)		     *                  +(S45SQ - S4530) * SIGA30(IA)
+     *                  +(S45SQ + S4530) * SIGA60(IA)		     *                  +(S45SQ + S4530) * SIGA60(IA)
+C  INELASTIC CROSS SECTIONS OF AIR FOR PROJECTILE WITH MASS N	C  INELASTIC CROSS SECTIONS OF AIR FOR PROJECTILE WITH MASS N
+          SIGAIR = FRCTNO +COMPOS(3)*SIGMAA			          SIGAIR = FRCTNO +COMPOS(3)*SIGMAA
+C  TARGET IS CHOSEN AT RANDOM					C  TARGET IS CHOSEN AT RANDOM
+          CALL RMMAR( RD,2,1 )					          CALL RMMAR( RD,2,1 )
+          IF(DEBUG)WRITE(MDEBUG,*)'SDPM  : FRACTN=',SNGL(FRAC	          IF(DEBUG)WRITE(MDEBUG,*)'SDPM  : FRACTN=',SNGL(FRAC
+     *      'FRCTNO=',SNGL(FRCTNO),'RD=',RD(1)			     *      'FRCTNO=',SNGL(FRCTNO),'RD=',RD(1)
+          IF     ( RD(1)*SIGAIR .LE. FRACTN ) THEN		          IF     ( RD(1)*SIGAIR .LE. FRACTN ) THEN
+C  INTERACTION WITH NITROGEN					C  INTERACTION WITH NITROGEN
+            LT  = 1						            LT  = 1
+            TAR = 14.D0						            TAR = 14.D0
+          ELSEIF ( RD(1)*SIGAIR .LE. FRCTNO ) THEN		          ELSEIF ( RD(1)*SIGAIR .LE. FRCTNO ) THEN
+C  INTERACTION WITH OXYGEN					C  INTERACTION WITH OXYGEN
+            LT  = 2						            LT  = 2
+            TAR = 16.D0						            TAR = 16.D0
+          ELSE							          ELSE
+C  INTERACTION WITH ARGON					C  INTERACTION WITH ARGON
+            LT  = 3						            LT  = 3
+            TAR = 40.D0						            TAR = 40.D0
+          ENDIF							          ENDIF
+        ENDIF							        ENDIF
+C  TREAT NUCLEUS BY VENUS, IF SELECTED AND ENERGY/NUCLEON HIG	C  TREAT NUCLEUS BY VENUS, IF SELECTED AND ENERGY/NUCLEON HIG
+        IF ( FVENUS .AND. PAMA(ITYPE)*GAMMA .GT. HILOELB*IA )	        IF ( FVENUS .AND. PAMA(ITYPE)*GAMMA .GT. HILOELB*IA )
+          CALL VENLNK						          CALL VENLNK
+          RETURN						          RETURN
+        ENDIF							        ENDIF
+ 								 
+C  TREATMENT OF NUCLEUS-NUCLEUS INTERACTION IN HDPM BY SUPERP	C  TREATMENT OF NUCLEUS-NUCLEUS INTERACTION IN HDPM BY SUPERP
+C								C
+C  INDEX CALCULATION 1<I=<56     NUCLEONS IN PROJECTILE		C  INDEX CALCULATION 1<I=<56     NUCLEONS IN PROJECTILE
+C                    1<J<I       INTERACTING NUCLEONS		C                    1<J<I       INTERACTING NUCLEONS
+C                    P(I,I)=1    CUMULATIVE PROBABILITIES	C                    P(I,I)=1    CUMULATIVE PROBABILITIES
+C                    P(I,J)  ---> P( I*(I-3)*0.5+J+1 )		C                    P(I,J)  ---> P( I*(I-3)*0.5+J+1 )
+C  IZ     IS NUMBER OF PROTONS IN PROJECTILE			C  IZ     IS NUMBER OF PROTONS IN PROJECTILE
+C  LT     IS INDEX FOR TARGET 1 = N, 2 = O, 3 = AR		C  LT     IS INDEX FOR TARGET 1 = N, 2 = O, 3 = AR
+C  INACTA IS NUMBER OF INTERACTING NUCLEONS			C  INACTA IS NUMBER OF INTERACTING NUCLEONS
+C  INACTZ IS NUMBER OF INTERACTING PROTONS			C  INACTZ IS NUMBER OF INTERACTING PROTONS
+ 								 
+C  LOOK, HOW MANY NUCLEONS INTERACT				C  LOOK, HOW MANY NUCLEONS INTERACT
+        DO 100  J = 1,IA-1					        DO 100  J = 1,IA-1
+          INACTA = J						          INACTA = J
+          INDEX  = IA * (IA-3) * 0.5 + 1 + J			          INDEX  = IA * (IA-3) * 0.5 + 1 + J
+          P = ( 1.D0 - S45SQ *2.D0 ) * PNOA45(INDEX,LT)		          P = ( 1.D0 - S45SQ *2.D0 ) * PNOA45(INDEX,LT)
+     *            +( S45SQ - S4530 ) * PNOA30(INDEX,LT)		     *            +( S45SQ - S4530 ) * PNOA30(INDEX,LT)
+     *            +( S45SQ + S4530 ) * PNOA60(INDEX,LT)		     *            +( S45SQ + S4530 ) * PNOA60(INDEX,LT)
+          IF ( RD(2) .LT. P ) GO TO 110				          IF ( RD(2) .LT. P ) GO TO 110
+  100   CONTINUE						  100   CONTINUE
+C  ALL NUCLEONS INTERACT  (INACTA EQUAL IA)			C  ALL NUCLEONS INTERACT  (INACTA EQUAL IA)
+        INACTA = INACTA + 1					        INACTA = INACTA + 1
+ 								 
+  110   CONTINUE						  110   CONTINUE
+        IANEW  = IA - INACTA					        IANEW  = IA - INACTA
+ 								 
+C  REMAINING PROJECTILE WITH IANEW NUCLEONS			C  REMAINING PROJECTILE WITH IANEW NUCLEONS
+        DO 120  L = 2,8						        DO 120  L = 2,8
+          SECPAR(L) = CURPAR(L)					          SECPAR(L) = CURPAR(L)
+  120   CONTINUE						  120   CONTINUE
+ 								 
+ 								 
+C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -	C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+C  PROJECTILE NUCLEUS FRAGMENTS COMPLETELY, WRITE SPECTATOR N	C  PROJECTILE NUCLEUS FRAGMENTS COMPLETELY, WRITE SPECTATOR N
+C  ONTO STACK							C  ONTO STACK
+        IF ( NFRAGM .EQ. 0 ) THEN				        IF ( NFRAGM .EQ. 0 ) THEN
+C  LOOK, HOW MANY PROTONS AND NEUTRONS ARE FORMED		C  LOOK, HOW MANY PROTONS AND NEUTRONS ARE FORMED
+          IZNEW  = IANEW / 2.15D0 + 0.7D0			          IZNEW  = IANEW / 2.15D0 + 0.7D0
+          INEUTR = IANEW - IZNEW				          INEUTR = IANEW - IZNEW
+          INACTZ = MAX( IZ-IZNEW, 0 )				          INACTZ = MAX( IZ-IZNEW, 0 )
+ 								 
+          IF ( IZNEW .GT. 0 ) THEN				          IF ( IZNEW .GT. 0 ) THEN
+C  PROTONS							C  PROTONS
+            SECPAR(1) = 14.D0					            SECPAR(1) = 14.D0
+            DO 300  L = 1,IZNEW					            DO 300  L = 1,IZNEW
+              CALL TSTACK					              CALL TSTACK
+  300       CONTINUE						  300       CONTINUE
+          ENDIF							          ENDIF
+          IF ( INEUTR .GT. 0 ) THEN				          IF ( INEUTR .GT. 0 ) THEN
+C  NEUTRONS							C  NEUTRONS
+            SECPAR(1) = 13.D0					            SECPAR(1) = 13.D0
+            DO 310  L = 1,INEUTR				            DO 310  L = 1,INEUTR
+              CALL TSTACK					              CALL TSTACK
+  310       CONTINUE						  310       CONTINUE
+          ENDIF							          ENDIF
+ 								 
+C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -	C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+C  NO FRAGMENTATION, BUT SUCCESSIVE ABRASION OF PROJECTILE NU	C  NO FRAGMENTATION, BUT SUCCESSIVE ABRASION OF PROJECTILE NU
+        ELSE							        ELSE
+          IF ( DEBUG ) WRITE( MDEBUG,111 ) TAR,INACTA,IANEW	          IF ( DEBUG ) WRITE( MDEBUG,111 ) TAR,INACTA,IANEW
+  111     FORMAT(' SDPM  : TARGET=',F4.0,' INACTA=',I4,' IANE	  111     FORMAT(' SDPM  : TARGET=',F4.0,' INACTA=',I4,' IANE
+ 								 
+C  ALL NUCLEONS INTERACT, NO RESIDUAL NUCLEUS			C  ALL NUCLEONS INTERACT, NO RESIDUAL NUCLEUS
+          IF     ( IANEW .EQ. 0 ) THEN				          IF     ( IANEW .EQ. 0 ) THEN
+            INACTZ    = IZ					            INACTZ    = IZ
+            IF ( DEBUG ) WRITE(MDEBUG,554) (CURPAR(I),I=1,9)	            IF ( DEBUG ) WRITE(MDEBUG,554) (CURPAR(I),I=1,9)
+  554       FORMAT (' SDPM  : CURPAR=',1P,9E10.3)		  554       FORMAT (' SDPM  : CURPAR=',1P,9E10.3)
+            KNEW = 0						            KNEW = 0
+ 								 
+C  REMAINING NUCLEUS IS A NUCLEON				C  REMAINING NUCLEUS IS A NUCLEON
+          ELSEIF ( IANEW .EQ. 1 ) THEN				          ELSEIF ( IANEW .EQ. 1 ) THEN
+            CALL RMMAR( RD,1,1 )				            CALL RMMAR( RD,1,1 )
+            IZNEW     = NINT(RD(1))				            IZNEW     = NINT(RD(1))
+            INACTZ    = IZ - IZNEW				            INACTZ    = IZ - IZNEW
+            KNEW      = 13 + IZNEW				            KNEW      = 13 + IZNEW
+ 								 
+C  REMAINING NUCLEUS GETS A CHARGE WHICH IS ABOUT HALF THE MA	C  REMAINING NUCLEUS GETS A CHARGE WHICH IS ABOUT HALF THE MA
+          ELSEIF ( IANEW .GT. 1 ) THEN				          ELSEIF ( IANEW .GT. 1 ) THEN
+            IZNEW = FLOAT(IANEW) / 2.15D0 + 0.7D0		            IZNEW = FLOAT(IANEW) / 2.15D0 + 0.7D0
+            INACTZ = MAX( IZ - IZNEW, 0 )			            INACTZ = MAX( IZ - IZNEW, 0 )
+            KNEW  = IANEW*100 + IZNEW				            KNEW  = IANEW*100 + IZNEW
+ 								 
+C  REMAINING NUCLEUS DEEXCITES BY EVAPORATION OF NUCLEONS/ALP	C  REMAINING NUCLEUS DEEXCITES BY EVAPORATION OF NUCLEONS/ALP
+            IF ( NFRAGM .GE. 2 ) THEN				            IF ( NFRAGM .GE. 2 ) THEN
+              JFIN=0						              JFIN=0
+              CALL VAPOR(IA,KNEW,JFIN,ITYP,PFRX,PFRY)		              CALL VAPOR(IA,KNEW,JFIN,ITYP,PFRX,PFRY)
+              IF ( JFIN .LE. 0 ) GOTO 190			              IF ( JFIN .LE. 0 ) GOTO 190
+              KNEW = 0						              KNEW = 0
+              DO  135 J=1,JFIN					              DO  135 J=1,JFIN
+                EA = GAMMA * PAMA(ITYP(J))			                EA = GAMMA * PAMA(ITYP(J))
+                IF (DEBUG) WRITE (MDEBUG,*)'SDPM  : J,ITYP,EA	                IF (DEBUG) WRITE (MDEBUG,*)'SDPM  : J,ITYP,EA
+     *                                              J,ITYP,SN	     *                                              J,ITYP,SN
+                PTM = EA**2 - PAMA(ITYP(J))**2			                PTM = EA**2 - PAMA(ITYP(J))**2
+                PT2 = PFRX(J)**2 + PFRY(J)**2			                PT2 = PFRX(J)**2 + PFRY(J)**2
+                IF ( PT2 .GE. PTM ) THEN			                IF ( PT2 .GE. PTM ) THEN
+                  IF (DEBUG) WRITE(MDEBUG,*)'SDPM  : PT REJEC	                  IF (DEBUG) WRITE(MDEBUG,*)'SDPM  : PT REJEC
+                  GOTO 135					                  GOTO 135
+                ENDIF						                ENDIF
+                IF ( PTM .GT. 0.D0 ) THEN			                IF ( PTM .GT. 0.D0 ) THEN
+                  COSTET = SQRT( 1.D0 - PT2/PTM )		                  COSTET = SQRT( 1.D0 - PT2/PTM )
+                ELSE						                ELSE
+                  COSTET = 1.D0					                  COSTET = 1.D0
+                ENDIF						                ENDIF
+                IF ( PFRX(J) .NE. 0.D0  .OR.  PFRY(J) .NE. 0.	                IF ( PFRX(J) .NE. 0.D0  .OR.  PFRY(J) .NE. 0.
+                  PHIV = ATAN2( PFRY(J), PFRX(J) )		                  PHIV = ATAN2( PFRY(J), PFRX(J) )
+                ELSE						                ELSE
+                  PHIV = 0.D0					                  PHIV = 0.D0
+                ENDIF						                ENDIF
+                CALL ADDANG( COSTHE,PHI, COSTET,PHIV,		                CALL ADDANG( COSTHE,PHI, COSTET,PHIV,
+     *                                           SECPAR(3),SE	     *                                           SECPAR(3),SE
+                IF ( SECPAR(3) .GE. C(29) ) THEN		                IF ( SECPAR(3) .GE. C(29) ) THEN
+                  IF ( J .LT. JFIN ) THEN			                  IF ( J .LT. JFIN ) THEN
+                    SECPAR(1) = ITYP(J)				                    SECPAR(1) = ITYP(J)
+                    CALL TSTACK					                    CALL TSTACK
+                  ELSE						                  ELSE
+                    KNEW  = ITYP(JFIN)				                    KNEW  = ITYP(JFIN)
+                    IANEW = KNEW/100				                    IANEW = KNEW/100
+                  ENDIF						                  ENDIF
+                ELSE						                ELSE
+                  IF (DEBUG) WRITE(MDEBUG,*)'SDPM  : ANGLE RE	                  IF (DEBUG) WRITE(MDEBUG,*)'SDPM  : ANGLE RE
+                ENDIF						                ENDIF
+ 135          CONTINUE						 135          CONTINUE
+            ENDIF						            ENDIF
+          ENDIF							          ENDIF
+ 								 
+C  REMAINING NUCLEUS: MASS 5 CANNOT BE TREATED IN BOX2		C  REMAINING NUCLEUS: MASS 5 CANNOT BE TREATED IN BOX2
+          IF     ( KNEW/100 .EQ. 5 ) THEN			          IF     ( KNEW/100 .EQ. 5 ) THEN
+            IF ( MOD(KNEW,100) .GE. 3 ) THEN			            IF ( MOD(KNEW,100) .GE. 3 ) THEN
+C  MASS 5: SPLIT OFF ONE PROTON					C  MASS 5: SPLIT OFF ONE PROTON
+              SECPAR(1) = 14.D0					              SECPAR(1) = 14.D0
+              CALL TSTACK					              CALL TSTACK
+              KNEW = KNEW - 101					              KNEW = KNEW - 101
+            ELSE						            ELSE
+C  MASS 5: SPLIT OFF ONE NEUTRON				C  MASS 5: SPLIT OFF ONE NEUTRON
+              SECPAR(1) = 13.D0					              SECPAR(1) = 13.D0
+              CALL TSTACK					              CALL TSTACK
+              KNEW = KNEW - 100					              KNEW = KNEW - 100
+            ENDIF						            ENDIF
+ 								 
+C  REMAINING NUCLEUS: MASS 8 CANNOT BE TREATED IN BOX2		C  REMAINING NUCLEUS: MASS 8 CANNOT BE TREATED IN BOX2
+          ELSEIF ( KNEW/100 .EQ. 8 ) THEN			          ELSEIF ( KNEW/100 .EQ. 8 ) THEN
+            IF     ( MOD(KNEW,100) .GE. 5 ) THEN		            IF     ( MOD(KNEW,100) .GE. 5 ) THEN
+C  MASS 8: SPLIT OFF ONE PROTON					C  MASS 8: SPLIT OFF ONE PROTON
+              SECPAR(1) = 14.D0					              SECPAR(1) = 14.D0
+              CALL TSTACK					              CALL TSTACK
+              KNEW = KNEW - 101					              KNEW = KNEW - 101
+            ELSEIF ( MOD(KNEW,100) .LE. 3 ) THEN		            ELSEIF ( MOD(KNEW,100) .LE. 3 ) THEN
+C  MASS 8: SPLIT OFF ONE NEUTRON				C  MASS 8: SPLIT OFF ONE NEUTRON
+              SECPAR(1) = 13.D0					              SECPAR(1) = 13.D0
+              CALL TSTACK					              CALL TSTACK
+              KNEW = KNEW - 100					              KNEW = KNEW - 100
+            ELSE						            ELSE
+C  MASS 8: SPLIT OFF ONE ALPHA PARTICLE				C  MASS 8: SPLIT OFF ONE ALPHA PARTICLE
+              SECPAR(1) = 402.D0				              SECPAR(1) = 402.D0
+              CALL TSTACK					              CALL TSTACK
+              KNEW = KNEW - 402					              KNEW = KNEW - 402
+            ENDIF						            ENDIF
+          ENDIF							          ENDIF
+ 								 
+          IF ( KNEW .GT. 0 ) THEN				          IF ( KNEW .GT. 0 ) THEN
+            SECPAR(1) = KNEW					            SECPAR(1) = KNEW
+              CALL TSTACK					              CALL TSTACK
+            IF ( DEBUG ) WRITE(MDEBUG,555) (SECPAR(I),I=1,9)	            IF ( DEBUG ) WRITE(MDEBUG,555) (SECPAR(I),I=1,9)
+ 555        FORMAT (' SDPM  : SECPAR=',1P,9E10.3)		 555        FORMAT (' SDPM  : SECPAR=',1P,9E10.3)
+          ENDIF							          ENDIF
+        ENDIF							        ENDIF
+ 								 
+C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -	C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+C  HERE THE REACTING NUCLEONS ARE TREATED			C  HERE THE REACTING NUCLEONS ARE TREATED
+ 190    NPRPRO = INACTZ						 190    NPRPRO = INACTZ
+        NNEPRO = INACTA - INACTZ				        NNEPRO = INACTA - INACTZ
+ 								 
+C  TREAT INTERACTING NEUTRONS FROM PROJECTILE			C  TREAT INTERACTING NEUTRONS FROM PROJECTILE
+        IF ( NNEPRO .GE. 1 ) THEN				        IF ( NNEPRO .GE. 1 ) THEN
+          CURPAR(1) = 13.D0					          CURPAR(1) = 13.D0
+          ITYPE     = 13					          ITYPE     = 13
+C  CALCULATE GAMMA, BETA AND ENERGY IN CENTER OF MASS		C  CALCULATE GAMMA, BETA AND ENERGY IN CENTER OF MASS
+          GCM       = SQRT( GAMMA * 0.5D0 + 0.5D0 )		          GCM       = SQRT( GAMMA * 0.5D0 + 0.5D0 )
+          ECM       = PAMA(ITYPE) * GCM * 2.D0			          ECM       = PAMA(ITYPE) * GCM * 2.D0
+          BETACM    = SQRT( 1.D0 - 1.D0 / GCM**2 )		          BETACM    = SQRT( 1.D0 - 1.D0 / GCM**2 )
+          DO 200  LL = 1,NNEPRO					          DO 200  LL = 1,NNEPRO
+C  USE GHEISHA IF THE CROSS SECTION HAS BEEN CALCULATED FOR G	C  USE GHEISHA IF THE CROSS SECTION HAS BEEN CALCULATED FOR G
+            IF (  GHEISH  .AND.  ECM .LE. HILOECM ) THEN	            IF (  GHEISH  .AND.  ECM .LE. HILOECM ) THEN
+              ELAB = PAMA(ITYPE) *  GAMMA			              ELAB = PAMA(ITYPE) *  GAMMA
+              PLAB = ELAB * BETA				              PLAB = ELAB * BETA
+              EKIN = ELAB - PAMA(ITYPE)				              EKIN = ELAB - PAMA(ITYPE)
+              SIGAIR = CGHSIG(SNGL(PLAB),SNGL(EKIN),ITYPE)	              SIGAIR = CGHSIG(SNGL(PLAB),SNGL(EKIN),ITYPE)
+              CALL CGHEI					              CALL CGHEI
+            ELSE						            ELSE
+C  DETERMINE TYPE OF INTERACTION FOR NUCLEONS AND ANTINUCLEON	C  DETERMINE TYPE OF INTERACTION FOR NUCLEONS AND ANTINUCLEON
+              IF     ( ECM .GT. CC(4) ) THEN			              IF     ( ECM .GT. CC(4) ) THEN
+C  DUAL PARTON MODEL						C  DUAL PARTON MODEL
+                CALL HDPM					                CALL HDPM
+              ELSEIF ( ECM .GT. CC(3) ) THEN			              ELSEIF ( ECM .GT. CC(3) ) THEN
+C  USE THE INTERACTION ROUTINES OF PKF GRIEDER			C  USE THE INTERACTION ROUTINES OF PKF GRIEDER
+C  2 HEAVY ISOBARS AND ANNIHILATION				C  2 HEAVY ISOBARS AND ANNIHILATION
+                CALL BOX63					                CALL BOX63
+              ELSEIF ( ECM .GT. CC(2) ) THEN			              ELSEIF ( ECM .GT. CC(2) ) THEN
+C  1 HEAVY ISOBAR + NUCLEON AND ANNIHILATION			C  1 HEAVY ISOBAR + NUCLEON AND ANNIHILATION
+                CALL BOX62					                CALL BOX62
+              ELSEIF ( ECM .GT. CC(1) ) THEN			              ELSEIF ( ECM .GT. CC(1) ) THEN
+C  1 LIGHT ISOBAR + NUCLEON AND ANNIHILATION			C  1 LIGHT ISOBAR + NUCLEON AND ANNIHILATION
+                CALL BOX61					                CALL BOX61
+              ELSE						              ELSE
+C  ELASTIC SCATTERING AND ANNIHILATION				C  ELASTIC SCATTERING AND ANNIHILATION
+                CALL BOX60					                CALL BOX60
+              ENDIF						              ENDIF
+            ENDIF						            ENDIF
+ 200      CONTINUE						 200      CONTINUE
+        ENDIF							        ENDIF
+ 								 
+C  TREAT INTERACTING PROTONS FROM PROJECTILE IN ROUTINE HDPM	C  TREAT INTERACTING PROTONS FROM PROJECTILE IN ROUTINE HDPM
+        IF ( NPRPRO .GE. 1 ) THEN				        IF ( NPRPRO .GE. 1 ) THEN
+          CURPAR(1) = 14.D0					          CURPAR(1) = 14.D0
+          ITYPE     = 14					          ITYPE     = 14
+C  CALCULATE GAMMA, BETA AND ENERGY IN CENTER OF MASS		C  CALCULATE GAMMA, BETA AND ENERGY IN CENTER OF MASS
+          GCM       = SQRT( GAMMA * 0.5D0 + 0.5D0 )		          GCM       = SQRT( GAMMA * 0.5D0 + 0.5D0 )
+          ECM       = PAMA(ITYPE) * GCM * 2.D0			          ECM       = PAMA(ITYPE) * GCM * 2.D0
+          BETACM    = SQRT( 1.D0 - 1.D0 / GCM**2 )		          BETACM    = SQRT( 1.D0 - 1.D0 / GCM**2 )
+          DO 210  LL = 1,NPRPRO					          DO 210  LL = 1,NPRPRO
+C  USE GHEISHA IF THE CROSS SECTION HAS BEEN CALCULATED FOR G	C  USE GHEISHA IF THE CROSS SECTION HAS BEEN CALCULATED FOR G
+            IF (  GHEISH  .AND.  ECM .LE. HILOECM ) THEN	            IF (  GHEISH  .AND.  ECM .LE. HILOECM ) THEN
+              ELAB = PAMA(ITYPE) *  GAMMA			              ELAB = PAMA(ITYPE) *  GAMMA
+              PLAB = ELAB * BETA				              PLAB = ELAB * BETA
+              EKIN = ELAB - PAMA(ITYPE)				              EKIN = ELAB - PAMA(ITYPE)
+              SIGAIR = CGHSIG(SNGL(PLAB),SNGL(EKIN),ITYPE)	              SIGAIR = CGHSIG(SNGL(PLAB),SNGL(EKIN),ITYPE)
+              CALL CGHEI					              CALL CGHEI
+            ELSE						            ELSE
+C  DETERMINE TYPE OF INTERACTION FOR NUCLEONS AND ANTINUCLEON	C  DETERMINE TYPE OF INTERACTION FOR NUCLEONS AND ANTINUCLEON
+              IF     ( ECM .GT. CC(4) ) THEN			              IF     ( ECM .GT. CC(4) ) THEN
+C  DUAL PARTON MODEL						C  DUAL PARTON MODEL
+                CALL HDPM					                CALL HDPM
+              ELSEIF ( ECM .GT. CC(3) ) THEN			              ELSEIF ( ECM .GT. CC(3) ) THEN
+C  USE THE INTERACTION ROUTINES OF PKF GRIEDER			C  USE THE INTERACTION ROUTINES OF PKF GRIEDER
+C  2 HEAVY ISOBARS AND ANNIHILATION				C  2 HEAVY ISOBARS AND ANNIHILATION
+                CALL BOX63					                CALL BOX63
+              ELSEIF ( ECM .GT. CC(2) ) THEN			              ELSEIF ( ECM .GT. CC(2) ) THEN
+C  1 HEAVY ISOBAR + NUCLEON AND ANNIHILATION			C  1 HEAVY ISOBAR + NUCLEON AND ANNIHILATION
+                CALL BOX62					                CALL BOX62
+              ELSEIF ( ECM .GT. CC(1) ) THEN			              ELSEIF ( ECM .GT. CC(1) ) THEN
+C  1 LIGHT ISOBAR + NUCLEON AND ANNIHILATION			C  1 LIGHT ISOBAR + NUCLEON AND ANNIHILATION
+                CALL BOX61					                CALL BOX61
+              ELSE						              ELSE
+C  ELASTIC SCATTERING AND ANNIHILATION				C  ELASTIC SCATTERING AND ANNIHILATION
+                CALL BOX60					                CALL BOX60
+              ENDIF						              ENDIF
+            ENDIF						            ENDIF
+ 210      CONTINUE						 210      CONTINUE
+        ENDIF							        ENDIF
+ 								 
+C  ALL PARTICLES, INCLUDING THE LEADING ONE, ARE NOW WRITTEN 	C  ALL PARTICLES, INCLUDING THE LEADING ONE, ARE NOW WRITTEN 
+ 								 
+      ELSE							      ELSE
+        WRITE(MONIOU,*) 'SDPM  : NOT FORESEEN PARTICLE TYPE='	        WRITE(MONIOU,*) 'SDPM  : NOT FORESEEN PARTICLE TYPE='
+        STOP							        STOP
+      ENDIF							      ENDIF
+ 								 
+      RETURN							      RETURN
+      END							      END

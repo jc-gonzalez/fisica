@@ -1,0 +1,282 @@
+      SUBROUTINE PARNUM( INUMFL )				      SUBROUTINE PARNUM( INUMFL )
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  PART(ICLE TYPE) NUM(BERS)					C  PART(ICLE TYPE) NUM(BERS)
+C								C
+C  DETERMINES THE NUMBERS OF SECONDARY PARTICLES FOR EACH TYP	C  DETERMINES THE NUMBERS OF SECONDARY PARTICLES FOR EACH TYP
+C  THIS SUBROUTINE IS CALLED FROM HDPM				C  THIS SUBROUTINE IS CALLED FROM HDPM
+C  ARGUMENT							C  ARGUMENT
+C   INUMFL = 0  CORRECT DETERMINATION OF PARTICLE NUMBERS	C   INUMFL = 0  CORRECT DETERMINATION OF PARTICLE NUMBERS
+C          = 1  SOMETHING WENT WRONG WITH NEUTRAL PARTICLE NU	C          = 1  SOMETHING WENT WRONG WITH NEUTRAL PARTICLE NU
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)			      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+*KEEP,CONST.							*KEEP,CONST.
+      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER			      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER
+      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER			      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER
+*KEEP,EDECAY.							*KEEP,EDECAY.
+      COMMON /EDECAY/  CETA					      COMMON /EDECAY/  CETA
+      DOUBLE PRECISION CETA(5)					      DOUBLE PRECISION CETA(5)
+*KEEP,INDICE.							*KEEP,INDICE.
+      COMMON /INDICE/  NNUCN,NKA0,NHYPN,NETA,NETAS,NPIZER,	      COMMON /INDICE/  NNUCN,NKA0,NHYPN,NETA,NETAS,NPIZER,
+     *                 NNC,NKC,NHC,NPC,NCH,NNN,NKN,NHN,NET,NP	     *                 NNC,NKC,NHC,NPC,NCH,NNN,NKN,NHN,NET,NP
+      INTEGER          NNUCN(2:3),NKA0(2:3),NHYPN(2:3),NETA(2	      INTEGER          NNUCN(2:3),NKA0(2:3),NHYPN(2:3),NETA(2
+     *                 NETAS(2:3),NPIZER(2:3),			     *                 NETAS(2:3),NPIZER(2:3),
+     *                 NNC,NKC,NHC,NPC,NCH,NNN,NKN,NHN,NET,NP	     *                 NNC,NKC,NHC,NPC,NCH,NNN,NKN,NHN,NET,NP
+*KEEP,INTER.							*KEEP,INTER.
+      COMMON /INTER/   AVCH,AVCH3,DC0,DLOG,DMLOG,ECMDIF,ECMDP	      COMMON /INTER/   AVCH,AVCH3,DC0,DLOG,DMLOG,ECMDIF,ECMDP
+     *                 FNEUT,FNEUT2,GNU,PLAB,POSC2,POSC3,POSN	     *                 FNEUT,FNEUT2,GNU,PLAB,POSC2,POSC3,POSN
+     *                 RC3TO2,S,SEUGF,SEUGP,SLOG,SLOGSQ,SMLOG	     *                 RC3TO2,S,SEUGF,SEUGP,SLOG,SLOGSQ,SMLOG
+     *                 WIDC2,WIDC3,WIDN2,WIDN3,YCM,YY0,ZN,	     *                 WIDC2,WIDC3,WIDN2,WIDN3,YCM,YY0,ZN,
+     *                 IDIF,ITAR				     *                 IDIF,ITAR
+      DOUBLE PRECISION AVCH,AVCH3,DC0,DLOG,DMLOG,ECMDIF,ECMDP	      DOUBLE PRECISION AVCH,AVCH3,DC0,DLOG,DMLOG,ECMDIF,ECMDP
+     *                 FNEUT,FNEUT2,GNU,PLAB,POSC2,POSC3,POSN	     *                 FNEUT,FNEUT2,GNU,PLAB,POSC2,POSC3,POSN
+     *                 RC3TO2,S,SEUGF,SEUGP,SLOG,SLOGSQ,SMLOG	     *                 RC3TO2,S,SEUGF,SEUGP,SLOG,SLOGSQ,SMLOG
+     *                 WIDC2,WIDC3,WIDN2,WIDN3,YCM,YY0,ZN	     *                 WIDC2,WIDC3,WIDN2,WIDN3,YCM,YY0,ZN
+      INTEGER          IDIF,ITAR				      INTEGER          IDIF,ITAR
+*KEEP,LEPAR.							*KEEP,LEPAR.
+      COMMON /LEPAR/   LEPAR1,LEPAR2,LASTPI,NRESPC,NRESPN,NCP	      COMMON /LEPAR/   LEPAR1,LEPAR2,LASTPI,NRESPC,NRESPN,NCP
+      INTEGER          LEPAR1,LEPAR2,LASTPI,NRESPC,NRESPN,NCP	      INTEGER          LEPAR1,LEPAR2,LASTPI,NRESPC,NRESPN,NCP
+*KEEP,RANDPA.							*KEEP,RANDPA.
+      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR		      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR
+      DOUBLE PRECISION FAC,U1,U2				      DOUBLE PRECISION FAC,U1,U2
+      REAL             RD(3000)					      REAL             RD(3000)
+      INTEGER          ISEED(103,10),NSEQ			      INTEGER          ISEED(103,10),NSEQ
+      LOGICAL          KNOR					      LOGICAL          KNOR
+*KEEP,RATIOS.							*KEEP,RATIOS.
+      COMMON /RATIOS/  RPI0R,RPIER,RPEKR,RPEKNR,PPICH,PPINCH,	      COMMON /RATIOS/  RPI0R,RPIER,RPEKR,RPEKNR,PPICH,PPINCH,
+     *                 ISEL,NEUTOT,NTOTEM			     *                 ISEL,NEUTOT,NTOTEM
+      DOUBLE PRECISION RPI0R,RPIER,RPEKR,RPEKNR,PPICH,PPINCH,	      DOUBLE PRECISION RPI0R,RPIER,RPEKR,RPEKNR,PPICH,PPINCH,
+      INTEGER          ISEL,NEUTOT,NTOTEM			      INTEGER          ISEL,NEUTOT,NTOTEM
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEND.								*KEND.
+ 								 
+      REAL RDETA						      REAL RDETA
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,*) 'PARNUM: NCH,NEUTOT,NTOTEM	      IF ( DEBUG ) WRITE(MDEBUG,*) 'PARNUM: NCH,NEUTOT,NTOTEM
+     *                                      NCH,NEUTOT,NTOTEM	     *                                      NCH,NEUTOT,NTOTEM
+ 								 
+      INUMFL = 0						      INUMFL = 0
+C  RESET PARTICLE NUMBERS					C  RESET PARTICLE NUMBERS
+      NNC = 0							      NNC = 0
+      NKC = 0							      NKC = 0
+      NHC = 0							      NHC = 0
+      NPC = 0							      NPC = 0
+C  ISEL IS 1 MEANS VERY LOW MULTIPLICITY			C  ISEL IS 1 MEANS VERY LOW MULTIPLICITY
+C  CREATE ONLY PIONS (TO RISKY TO CREATE OTHER PARTICLES)	C  CREATE ONLY PIONS (TO RISKY TO CREATE OTHER PARTICLES)
+      IF ( ISEL .EQ. 1 ) THEN					      IF ( ISEL .EQ. 1 ) THEN
+        NNN = 0							        NNN = 0
+        NKN = 0							        NKN = 0
+        NET = 0							        NET = 0
+        NHN = 0							        NHN = 0
+        NPN = 0							        NPN = 0
+        NETAS(2) = 0						        NETAS(2) = 0
+        NETAS(3) = 0						        NETAS(3) = 0
+C  CREATE RANDOM NUMBERS					C  CREATE RANDOM NUMBERS
+        CALL RMMAR( RD,NTOTEM,1 )				        CALL RMMAR( RD,NTOTEM,1 )
+        DO 1000  I = 1,NTOTEM					        DO 1000  I = 1,NTOTEM
+          IF ( RD(I) .LE. TB3 ) THEN				          IF ( RD(I) .LE. TB3 ) THEN
+            NPC = NPC + 1					            NPC = NPC + 1
+          ELSE							          ELSE
+            NPN = NPN + 1					            NPN = NPN + 1
+          ENDIF							          ENDIF
+ 1000   CONTINUE						 1000   CONTINUE
+C  NO NEUTRAL PARTICLES FOR THE 3RD STRING EXCEPT EVENTUALLY 	C  NO NEUTRAL PARTICLES FOR THE 3RD STRING EXCEPT EVENTUALLY 
+        NNUCN(3)  = 0						        NNUCN(3)  = 0
+        NKA0(3)   = 0						        NKA0(3)   = 0
+        NHYPN(3)  = 0						        NHYPN(3)  = 0
+        NETAS(3)  = 0						        NETAS(3)  = 0
+        NPIZER(3) = MAX( 0, NINT(RC3TO2/(1.D0+RC3TO2)*DBLE(NP	        NPIZER(3) = MAX( 0, NINT(RC3TO2/(1.D0+RC3TO2)*DBLE(NP
+        IF ( DEBUG ) WRITE(MDEBUG,*) '   ISEL=1, NTOTEM=',NTO	        IF ( DEBUG ) WRITE(MDEBUG,*) '   ISEL=1, NTOTEM=',NTO
+ 								 
+      ELSE							      ELSE
+ 								 
+C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -	C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+C  NOW THE CASE OF HAVING ENOUGH PARTICLES TO BE ABLE TO CREA	C  NOW THE CASE OF HAVING ENOUGH PARTICLES TO BE ABLE TO CREA
+C  KAONS, NUCLEONS, AND HYPERONS TOO.				C  KAONS, NUCLEONS, AND HYPERONS TOO.
+ 								 
+C  ...FOR NEUTRALS						C  ...FOR NEUTRALS
+        NCOUNT = 0						        NCOUNT = 0
+C  BEGIN OF REJECT LOOP						C  BEGIN OF REJECT LOOP
+ 1002   K = 1							 1002   K = 1
+        CALL RMMAR( RD,NEUTOT+3,1 )				        CALL RMMAR( RD,NEUTOT+3,1 )
+C  DETERMINE NUMBER OF PI(0), ETA, K0S/K0 PAIRS, NEUTRON/ANTI	C  DETERMINE NUMBER OF PI(0), ETA, K0S/K0 PAIRS, NEUTRON/ANTI
+C  PAIRS, AND NEUTRAL HYPERON PAIRS  AND SUM UP THE GAMMAS	C  PAIRS, AND NEUTRAL HYPERON PAIRS  AND SUM UP THE GAMMAS
+C  FOR 1ST + 2ND STRING: J IS 2;  FOR 3RD STRING: J IS 3	C  FOR 1ST + 2ND STRING: J IS 2;  FOR 3RD STRING: J IS 3
+        SGAMMA = 0.D0						        SGAMMA = 0.D0
+        DO 1010  J = 2,3					        DO 1010  J = 2,3
+          NNUCN(J)  = 0						          NNUCN(J)  = 0
+          NKA0(J)   = 0						          NKA0(J)   = 0
+          NHYPN(J)  = 0						          NHYPN(J)  = 0
+          NETA(J,1) = 0						          NETA(J,1) = 0
+          NETA(J,2) = 0						          NETA(J,2) = 0
+          NETA(J,3) = 0						          NETA(J,3) = 0
+          NETA(J,4) = 0						          NETA(J,4) = 0
+          NPIZER(J) = 0						          NPIZER(J) = 0
+          IF ( J .EQ. 2 ) THEN					          IF ( J .EQ. 2 ) THEN
+C  SET BOUNDARY FOR GAMMA SUM					C  SET BOUNDARY FOR GAMMA SUM
+            GABOU = SEUGF					            GABOU = SEUGF
+            NNTOT = INT(FNEUT2)					            NNTOT = INT(FNEUT2)
+C  CALCULATE BOUNDARY NNTOT OF PARTICLE LOOP RATHER AT RANDOM	C  CALCULATE BOUNDARY NNTOT OF PARTICLE LOOP RATHER AT RANDOM
+C  ROUNDING OF FNEUT2 TO AVOID DIGITIZING EFFECTS ON THE NEUT	C  ROUNDING OF FNEUT2 TO AVOID DIGITIZING EFFECTS ON THE NEUT
+C  PARTICLE COMPOSITION AT COLLISIONS WITH LOW MULTIPLICITY	C  PARTICLE COMPOSITION AT COLLISIONS WITH LOW MULTIPLICITY
+            IF ( NNTOT+RD(NEUTOT+2) .GE. FNEUT2 ) NNTOT = NNT	            IF ( NNTOT+RD(NEUTOT+2) .GE. FNEUT2 ) NNTOT = NNT
+          ELSE							          ELSE
+            IF ( RC3TO2 .LE. 0.D0 ) GOTO 1010			            IF ( RC3TO2 .LE. 0.D0 ) GOTO 1010
+            GABOU = GABOU + SEUGF* RC3TO2			            GABOU = GABOU + SEUGF* RC3TO2
+            NNTOT = INT(FNEUT)					            NNTOT = INT(FNEUT)
+            IF ( NNTOT+RD(NEUTOT+3) .GE. FNEUT ) NNTOT = NNTO	            IF ( NNTOT+RD(NEUTOT+3) .GE. FNEUT ) NNTOT = NNTO
+          ENDIF							          ENDIF
+          IF ( DEBUG ) WRITE(MDEBUG,*) '   J,NNTOT=',J,NNTOT	          IF ( DEBUG ) WRITE(MDEBUG,*) '   J,NNTOT=',J,NNTOT
+C  START NEUTRAL PARTICLE PRODUCTION LOOP			C  START NEUTRAL PARTICLE PRODUCTION LOOP
+ 1003     CONTINUE						 1003     CONTINUE
+          IF     ( K .LT. NNTOT ) THEN				          IF     ( K .LT. NNTOT ) THEN
+            RNDM = RD(K)					            RNDM = RD(K)
+          ELSEIF ( K .EQ. NNTOT ) THEN				          ELSEIF ( K .EQ. NNTOT ) THEN
+C  RENORMALIZE THE RANDOM NUMBER, THAT ONLY PI(0) OR ETA IS P	C  RENORMALIZE THE RANDOM NUMBER, THAT ONLY PI(0) OR ETA IS P
+C  BUT PAIR PRODUCTION BECOMES IMPOSSIBLE			C  BUT PAIR PRODUCTION BECOMES IMPOSSIBLE
+            RNDM = RD(K) * RPIER				            RNDM = RD(K) * RPIER
+          ELSEIF ( K .GT. NNTOT ) THEN				          ELSEIF ( K .GT. NNTOT ) THEN
+            GOTO 1010						            GOTO 1010
+          ENDIF							          ENDIF
+          IF     ( RNDM .LE. RPI0R ) THEN			          IF     ( RNDM .LE. RPI0R ) THEN
+C  PI(0)							C  PI(0)
+            SGAMMA    = SGAMMA + 2.D0				            SGAMMA    = SGAMMA + 2.D0
+            NPIZER(J) = NPIZER(J) + 1				            NPIZER(J) = NPIZER(J) + 1
+            K = K + 1						            K = K + 1
+ 								 
+          ELSEIF ( RNDM .LE. RPIER ) THEN			          ELSEIF ( RNDM .LE. RPIER ) THEN
+C  ETA								C  ETA
+            CALL RMMAR( RDETA,1,1 )				            CALL RMMAR( RDETA,1,1 )
+            IF     ( RDETA .LE. CETA(1) ) THEN			            IF     ( RDETA .LE. CETA(1) ) THEN
+              SGAMMA    = SGAMMA + 2.D0				              SGAMMA    = SGAMMA + 2.D0
+              NETA(J,1) = NETA(J,1) + 1				              NETA(J,1) = NETA(J,1) + 1
+            ELSEIF ( RDETA .LE. CETA(2) ) THEN			            ELSEIF ( RDETA .LE. CETA(2) ) THEN
+              SGAMMA    = SGAMMA + 6.D0				              SGAMMA    = SGAMMA + 6.D0
+              NETA(J,2) = NETA(J,2) + 1				              NETA(J,2) = NETA(J,2) + 1
+            ELSEIF ( RDETA .LE. CETA(3) ) THEN			            ELSEIF ( RDETA .LE. CETA(3) ) THEN
+              SGAMMA    = SGAMMA + 2.D0				              SGAMMA    = SGAMMA + 2.D0
+              NETA(J,3) = NETA(J,3) + 1				              NETA(J,3) = NETA(J,3) + 1
+            ELSE						            ELSE
+              SGAMMA    = SGAMMA + 1.D0				              SGAMMA    = SGAMMA + 1.D0
+              NETA(J,4) = NETA(J,4) + 1				              NETA(J,4) = NETA(J,4) + 1
+            ENDIF						            ENDIF
+            K = K + 1						            K = K + 1
+ 								 
+          ELSEIF ( RNDM .LE. RPEKR ) THEN			          ELSEIF ( RNDM .LE. RPEKR ) THEN
+C  K0S/K0L PAIR; RPEKR IS NORMALIZED FOR K0 PAIR FORMATION	C  K0S/K0L PAIR; RPEKR IS NORMALIZED FOR K0 PAIR FORMATION
+C  THE UA5 GAMMA YIELD DOES NOT INCLUDE GAMMAS FROM K DECAY !	C  THE UA5 GAMMA YIELD DOES NOT INCLUDE GAMMAS FROM K DECAY !
+C  SEE: ANSORGE ET AL., Z. PHYS. C43 (1989) 75			C  SEE: ANSORGE ET AL., Z. PHYS. C43 (1989) 75
+            NKA0(J) = NKA0(J) + 1				            NKA0(J) = NKA0(J) + 1
+            K = K + 2						            K = K + 2
+          ELSEIF ( RNDM .LE. RPEKNR ) THEN			          ELSEIF ( RNDM .LE. RPEKNR ) THEN
+C  NEUTRON-ANTINEUTRON PAIR					C  NEUTRON-ANTINEUTRON PAIR
+            NNUCN(J) = NNUCN(J) + 1				            NNUCN(J) = NNUCN(J) + 1
+            K = K + 2						            K = K + 2
+          ELSE							          ELSE
+C  HYPERON-ANTIHYPERON PAIR					C  HYPERON-ANTIHYPERON PAIR
+C  AVERAGE NEUTRAL HYPERON PAIR L0 --> .357*2 GAMMAS = 0.714 	C  AVERAGE NEUTRAL HYPERON PAIR L0 --> .357*2 GAMMAS = 0.714 
+C                               S0 --> L0 + 1 GAMMA  = 1.714 	C                               S0 --> L0 + 1 GAMMA  = 1.714 
+C  THEY ARE INCLUDED IN UA5 GAMMA MULTIPLICITIES, THEREFORE C	C  THEY ARE INCLUDED IN UA5 GAMMA MULTIPLICITIES, THEREFORE C
+            SGAMMA   = SGAMMA + 2.428D0				            SGAMMA   = SGAMMA + 2.428D0
+            NHYPN(J) = NHYPN(J) + 1				            NHYPN(J) = NHYPN(J) + 1
+            K = K + 2						            K = K + 2
+          ENDIF							          ENDIF
+          GOTO 1003						          GOTO 1003
+ 1010   CONTINUE						 1010   CONTINUE
+        IF ( DEBUG ) WRITE(MDEBUG,1020) ( 2*NNUCN(J),2*NKA0(J	        IF ( DEBUG ) WRITE(MDEBUG,1020) ( 2*NNUCN(J),2*NKA0(J
+     *            2*NHYPN(J),NETA(J,1),NETA(J,2),NETA(J,3),NE	     *            2*NHYPN(J),NETA(J,1),NETA(J,2),NETA(J,3),NE
+     *            NPIZER(J),J=2,3 ), NNTOT,GABOU,SGAMMA,SGAMM	     *            NPIZER(J),J=2,3 ), NNTOT,GABOU,SGAMMA,SGAMM
+ 1020   FORMAT(' PARNUM: NEUTRALS (1.,2.STRING)=',8I5,/		 1020   FORMAT(' PARNUM: NEUTRALS (1.,2.STRING)=',8I5,/
+     *         '         NEUTRALS (3. STRING)  =',8I5,/		     *         '         NEUTRALS (3. STRING)  =',8I5,/
+     *         '  NNTOT,SEUGF2+3,SGAMMA,RATIO=',I6,3(2X,F10.5	     *         '  NNTOT,SEUGF2+3,SGAMMA,RATIO=',I6,3(2X,F10.5
+C  REJECT ALL NEUTRALS, IF SUM OF GAMMAS DEVIATES BY MORE THA	C  REJECT ALL NEUTRALS, IF SUM OF GAMMAS DEVIATES BY MORE THA
+        IF ( (SGAMMA - GABOU)**2 .GT. GABOU ) THEN		        IF ( (SGAMMA - GABOU)**2 .GT. GABOU ) THEN
+          NCOUNT = NCOUNT + 1					          NCOUNT = NCOUNT + 1
+C  AFTER 20 TRIES SET FLAG INUMFL TO 1 AND RETURN		C  AFTER 20 TRIES SET FLAG INUMFL TO 1 AND RETURN
+          IF ( NCOUNT .LE. 20 ) GOTO 1002			          IF ( NCOUNT .LE. 20 ) GOTO 1002
+          INUMFL = 1						          INUMFL = 1
+          RETURN						          RETURN
+        ENDIF							        ENDIF
+C  ALL NEUTRALS							C  ALL NEUTRALS
+        NNN = NNUCN(2)  + NNUCN(3)				        NNN = NNUCN(2)  + NNUCN(3)
+        NKN = NKA0(2)   + NKA0(3)				        NKN = NKA0(2)   + NKA0(3)
+        NHN = NHYPN(2)  + NHYPN(3)				        NHN = NHYPN(2)  + NHYPN(3)
+        NETAS(2) = NETA(2,1) + NETA(2,2) + NETA(2,3) + NETA(2	        NETAS(2) = NETA(2,1) + NETA(2,2) + NETA(2,3) + NETA(2
+        NETAS(3) = NETA(3,1) + NETA(3,2) + NETA(3,3) + NETA(3	        NETAS(3) = NETA(3,1) + NETA(3,2) + NETA(3,3) + NETA(3
+        NET = NETAS(2)  + NETAS(3)				        NET = NETAS(2)  + NETAS(3)
+        NPN = NPIZER(2) + NPIZER(3)				        NPN = NPIZER(2) + NPIZER(3)
+ 								 
+C  ...FOR CHARGED						C  ...FOR CHARGED
+        I = 1							        I = 1
+        CALL RMMAR( RD,NCH-1,1 )				        CALL RMMAR( RD,NCH-1,1 )
+C  START CHARGED PARTICLE PRODUCTION LOOP			C  START CHARGED PARTICLE PRODUCTION LOOP
+ 1101   CONTINUE						 1101   CONTINUE
+        RNDM = RD(I)						        RNDM = RD(I)
+        IF     ( RNDM .LT. PPICH  ) THEN			        IF     ( RNDM .LT. PPICH  ) THEN
+C  PI(+-)							C  PI(+-)
+          NPC = NPC + 1						          NPC = NPC + 1
+          I   = I + 1						          I   = I + 1
+        ELSEIF ( RNDM .LT. PPINCH ) THEN			        ELSEIF ( RNDM .LT. PPINCH ) THEN
+C  PROTON/ANTIPROTON PAIR					C  PROTON/ANTIPROTON PAIR
+          NNC = NNC + 1						          NNC = NNC + 1
+          I   = I + 2						          I   = I + 2
+        ELSEIF ( RNDM .LT. PPNKCH ) THEN			        ELSEIF ( RNDM .LT. PPNKCH ) THEN
+C  KAON(+,-) PAIR						C  KAON(+,-) PAIR
+          NKC = NKC + 1						          NKC = NKC + 1
+          I   = I + 2						          I   = I + 2
+        ELSE							        ELSE
+C  CHARGED HYPERON/ANTIHYPERON PAIR				C  CHARGED HYPERON/ANTIHYPERON PAIR
+          NHC = NHC + 1						          NHC = NHC + 1
+          I   = I + 2						          I   = I + 2
+        ENDIF							        ENDIF
+        IF     ( I .LT. NCH ) THEN				        IF     ( I .LT. NCH ) THEN
+          GOTO 1101						          GOTO 1101
+        ELSEIF ( I .EQ. NCH ) THEN				        ELSEIF ( I .EQ. NCH ) THEN
+C  ONLY 1 CHARGED PARTICLE TO BE PRODUCED WHICH IS PI(+-)	C  ONLY 1 CHARGED PARTICLE TO BE PRODUCED WHICH IS PI(+-)
+          NPC = NPC + 1						          NPC = NPC + 1
+        ENDIF							        ENDIF
+C  CORRECT CHARGED PION NUMBER FOR DECAY OF ETA'S		C  CORRECT CHARGED PION NUMBER FOR DECAY OF ETA'S
+        NCORR = 2 * ( NETA(2,3) + NETA(2,4) + NETA(3,3) + NET	        NCORR = 2 * ( NETA(2,3) + NETA(2,4) + NETA(3,3) + NET
+        NPC   = MAX( 0, NPC - NCORR )				        NPC   = MAX( 0, NPC - NCORR )
+        IF ( DEBUG ) WRITE(MDEBUG,*) '   NPC,NPN,NCORR,LASTPI	        IF ( DEBUG ) WRITE(MDEBUG,*) '   NPC,NPN,NCORR,LASTPI
+     *                                   NPC,NPN,NCORR,LASTPI	     *                                   NPC,NPN,NCORR,LASTPI
+      ENDIF							      ENDIF
+C  CORRECT NUMBER OF CHARGED AND NEUTRAL PIONS FOR RESONANCE 	C  CORRECT NUMBER OF CHARGED AND NEUTRAL PIONS FOR RESONANCE 
+C  (NRESPC, NRESPN)						C  (NRESPC, NRESPN)
+      NPC = MAX( 0, NPC - NRESPC + LASTPI )			      NPC = MAX( 0, NPC - NRESPC + LASTPI )
+C  INCREASE NPN ADDITIONALLY BY 1 TO MEET UA5 DATA, WHICH REP	C  INCREASE NPN ADDITIONALLY BY 1 TO MEET UA5 DATA, WHICH REP
+C  AVERAGE ONE EXCHANGED CHARGE (LASTPI = +1).			C  AVERAGE ONE EXCHANGED CHARGE (LASTPI = +1).
+      NPN = MAX( 0, NPN - NRESPN - LASTPI + 1 )			      NPN = MAX( 0, NPN - NRESPN - LASTPI + 1 )
+C  TOTAL NUMBER OF CHARGED PARTICLES				C  TOTAL NUMBER OF CHARGED PARTICLES
+      NCH = (NNC + NKC + NHC) * 2 + NPC				      NCH = (NNC + NKC + NHC) * 2 + NPC
+C  NOW ALL PARTICLES ARE DETERMINED				C  NOW ALL PARTICLES ARE DETERMINED
+      IF ( DEBUG ) WRITE(MDEBUG,*)				      IF ( DEBUG ) WRITE(MDEBUG,*)
+     *             'PARNUM: TOT.CHARGED=',2*NNC,2*NKC,2*NHC,N	     *             'PARNUM: TOT.CHARGED=',2*NNC,2*NKC,2*NHC,N
+     *             'PARNUM: TOT.NEUTRAL=',2*NNN,2*NKN,2*NHN,N	     *             'PARNUM: TOT.NEUTRAL=',2*NNN,2*NKN,2*NHN,N
+ 								 
+      RETURN							      RETURN
+      END							      END

@@ -1,0 +1,190 @@
+      SUBROUTINE MMOLIE(OMEGA,DENS,VSCAT)			      SUBROUTINE MMOLIE(OMEGA,DENS,VSCAT)
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C   M(UON) MOLIE(RE MULTIPLE SCATTERING)			C   M(UON) MOLIE(RE MULTIPLE SCATTERING)
+C								C
+C  TREATES MOLIERE MULTIPLE SCATTERING FOR MUONS		C  TREATES MOLIERE MULTIPLE SCATTERING FOR MUONS
+C  CORRECTED FOR FINITE ANGLE SCATTERING			C  CORRECTED FOR FINITE ANGLE SCATTERING
+C  THIS SUBROUTINE IS IN ANALOGY WITH SUBROUTINE GMOLIE		C  THIS SUBROUTINE IS IN ANALOGY WITH SUBROUTINE GMOLIE
+C  (AUTHOR: M.S.DIXIT, NRCC, OTTAWA) OF GEANT321		C  (AUTHOR: M.S.DIXIT, NRCC, OTTAWA) OF GEANT321
+C  SEE CERN PROGRAM LIBRARY LONG WRITEUP W5013			C  SEE CERN PROGRAM LIBRARY LONG WRITEUP W5013
+C  THIS SUBROUTINE IS CALLED FROM UPDATE			C  THIS SUBROUTINE IS CALLED FROM UPDATE
+C  ARGUMENTS:							C  ARGUMENTS:
+C   OMEGA = NUMBER OF SCATTERINGS FOR THE STEP			C   OMEGA = NUMBER OF SCATTERINGS FOR THE STEP
+C   DENS  = LOCAL DENSITY					C   DENS  = LOCAL DENSITY
+C   VSCAT = SCATTERING ANGLE					C   VSCAT = SCATTERING ANGLE
+C								C
+C  REDESIGN: D. HECK    IK3  FZK KARLSRUHE			C  REDESIGN: D. HECK    IK3  FZK KARLSRUHE
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,CONST.							*KEEP,CONST.
+      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER			      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER
+      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER			      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER
+*KEEP,MUMULT.							*KEEP,MUMULT.
+      COMMON /MUMULT/  CHC,OMC,FMOLI				      COMMON /MUMULT/  CHC,OMC,FMOLI
+      DOUBLE PRECISION CHC,OMC					      DOUBLE PRECISION CHC,OMC
+      LOGICAL          FMOLI					      LOGICAL          FMOLI
+*KEEP,PAM.							*KEEP,PAM.
+      COMMON /PAM/     PAMA,SIGNUM				      COMMON /PAM/     PAMA,SIGNUM
+      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)			      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)
+*KEEP,PARPAR.							*KEEP,PARPAR.
+      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,		      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,
+     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE	     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE
+      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA	      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA
+     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH	     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH
+      INTEGER          ITYPE,LEVL				      INTEGER          ITYPE,LEVL
+*KEEP,PARPAE.							*KEEP,PARPAE.
+      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,	      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,
+      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)	      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)
+     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )	     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )
+     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )	     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )
+     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )	     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )
+     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )	     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )
+     *                 (CURPAR(12),ECM )			     *                 (CURPAR(12),ECM )
+*KEEP,RANDPA.							*KEEP,RANDPA.
+      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR		      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR
+      DOUBLE PRECISION FAC,U1,U2				      DOUBLE PRECISION FAC,U1,U2
+      REAL             RD(3000)					      REAL             RD(3000)
+      INTEGER          ISEED(103,10),NSEQ			      INTEGER          ISEED(103,10),NSEQ
+      LOGICAL          KNOR					      LOGICAL          KNOR
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEND.								*KEND.
+ 								 
+      DOUBLE PRECISION TINT(40),B,BINV,CHIC,CNST,DB,DENS,OMEG	      DOUBLE PRECISION TINT(40),B,BINV,CHIC,CNST,DB,DENS,OMEG
+     *                 TEST,TMP,VSCAT				     *                 TEST,TMP,VSCAT
+      REAL             ARG(4),F0I(40),F1I(40),F2I(40),		      REAL             ARG(4),F0I(40),F1I(40),F2I(40),
+     *                 THRED(40),VAL(4),DIN(3),F,THRI,XINT	     *                 THRED(40),VAL(4),DIN(3),F,THRI,XINT
+      INTEGER          IER,JA,L,M,NA,NA3,NA3M,NMAX		      INTEGER          IER,JA,L,M,NA,NA3,NA3M,NMAX
+      DATA THRED/  0.00, 0.10, 0.20, 0.30			      DATA THRED/  0.00, 0.10, 0.20, 0.30
+     +          ,  0.40, 0.50, 0.60, 0.70			     +          ,  0.40, 0.50, 0.60, 0.70
+     +          ,  0.80, 0.90, 1.00, 1.10			     +          ,  0.80, 0.90, 1.00, 1.10
+     +          ,  1.20, 1.30, 1.40, 1.50			     +          ,  1.20, 1.30, 1.40, 1.50
+     +          ,  1.60, 1.70, 1.80, 1.90			     +          ,  1.60, 1.70, 1.80, 1.90
+     +          ,  2.00, 2.20, 2.40, 2.60			     +          ,  2.00, 2.20, 2.40, 2.60
+     +          ,  2.80, 3.00, 3.20, 3.40			     +          ,  2.80, 3.00, 3.20, 3.40
+     +          ,  3.60, 3.80, 4.00, 5.00			     +          ,  3.60, 3.80, 4.00, 5.00
+     +          ,  6.00, 7.00, 8.00, 9.00			     +          ,  6.00, 7.00, 8.00, 9.00
+     +          , 10.00,11.00,12.00,13.00 /			     +          , 10.00,11.00,12.00,13.00 /
+      DATA F0I/							      DATA F0I/
+     +  0.000000E+00 ,0.995016E-02 ,0.392106E-01 ,0.860688E-0	     +  0.000000E+00 ,0.995016E-02 ,0.392106E-01 ,0.860688E-0
+     + ,0.147856E+00 ,0.221199E+00 ,0.302324E+00 ,0.387374E+0	     + ,0.147856E+00 ,0.221199E+00 ,0.302324E+00 ,0.387374E+0
+     + ,0.472708E+00 ,0.555142E+00 ,0.632121E+00 ,0.701803E+0	     + ,0.472708E+00 ,0.555142E+00 ,0.632121E+00 ,0.701803E+0
+     + ,0.763072E+00 ,0.815480E+00 ,0.859142E+00 ,0.894601E+0	     + ,0.763072E+00 ,0.815480E+00 ,0.859142E+00 ,0.894601E+0
+     + ,0.922695E+00 ,0.944424E+00 ,0.960836E+00 ,0.972948E+0	     + ,0.922695E+00 ,0.944424E+00 ,0.960836E+00 ,0.972948E+0
+     + ,0.981684E+00 ,0.992093E+00 ,0.996849E+00 ,0.998841E+0	     + ,0.981684E+00 ,0.992093E+00 ,0.996849E+00 ,0.998841E+0
+     + ,0.999606E+00 ,0.999877E+00 ,0.999964E+00 ,0.999990E+0	     + ,0.999606E+00 ,0.999877E+00 ,0.999964E+00 ,0.999990E+0
+     + ,0.999998E+00 ,0.999999E+00 ,0.100000E+01 ,0.100000E+0	     + ,0.999998E+00 ,0.999999E+00 ,0.100000E+01 ,0.100000E+0
+     + ,0.100000E+01 ,0.100000E+01 ,0.100000E+01 ,0.100000E+0	     + ,0.100000E+01 ,0.100000E+01 ,0.100000E+01 ,0.100000E+0
+     + ,1.000000E+00 ,1.000000E+00 ,1.000000E+00 ,1.000000E+0	     + ,1.000000E+00 ,1.000000E+00 ,1.000000E+00 ,1.000000E+0
+      DATA F1I/							      DATA F1I/
+     +   0.000000E+00, 0.414985E-02, 0.154894E-01, 0.310312E-	     +   0.000000E+00, 0.414985E-02, 0.154894E-01, 0.310312E-
+     + , 0.464438E-01, 0.569008E-01, 0.580763E-01, 0.468264E-	     + , 0.464438E-01, 0.569008E-01, 0.580763E-01, 0.468264E-
+     + , 0.217924E-01,-0.163419E-01,-0.651205E-01,-0.120503E+	     + , 0.217924E-01,-0.163419E-01,-0.651205E-01,-0.120503E+
+     + ,-0.178272E+00,-0.233580E+00,-0.282442E+00,-0.321901E+	     + ,-0.178272E+00,-0.233580E+00,-0.282442E+00,-0.321901E+
+     + ,-0.350115E+00,-0.366534E+00,-0.371831E+00,-0.367378E+	     + ,-0.350115E+00,-0.366534E+00,-0.371831E+00,-0.367378E+
+     + ,-0.354994E+00,-0.314803E+00,-0.266539E+00,-0.220551E+	     + ,-0.354994E+00,-0.314803E+00,-0.266539E+00,-0.220551E+
+     + ,-0.181546E+00,-0.150427E+00,-0.126404E+00,-0.107830E+	     + ,-0.181546E+00,-0.150427E+00,-0.126404E+00,-0.107830E+
+     + ,-0.933106E-01,-0.817375E-01,-0.723389E-01,-0.436650E-	     + ,-0.933106E-01,-0.817375E-01,-0.723389E-01,-0.436650E-
+     + ,-0.294700E-01,-0.212940E-01,-0.161406E-01,-0.126604E-	     + ,-0.294700E-01,-0.212940E-01,-0.161406E-01,-0.126604E-
+     + ,-0.102042E-01,-0.840465E-02,-0.704261E-02,-0.598886E-	     + ,-0.102042E-01,-0.840465E-02,-0.704261E-02,-0.598886E-
+      DATA F2I/							      DATA F2I/
+     +   0.000000    , 0.121500E-01, 0.454999E-01, 0.913000E-	     +   0.000000    , 0.121500E-01, 0.454999E-01, 0.913000E-
+     + , 0.137300E+00, 0.171400E+00, 0.183900E+00, 0.170300E+	     + , 0.137300E+00, 0.171400E+00, 0.183900E+00, 0.170300E+
+     + , 0.132200E+00, 0.763000E-01, 0.126500E-01,-0.473500E-	     + , 0.132200E+00, 0.763000E-01, 0.126500E-01,-0.473500E-
+     + ,-0.936000E-01,-0.119750E+00,-0.123450E+00,-0.106300E+	     + ,-0.936000E-01,-0.119750E+00,-0.123450E+00,-0.106300E+
+     + ,-0.732800E-01,-0.312400E-01, 0.128450E-01, 0.528800E-	     + ,-0.732800E-01,-0.312400E-01, 0.128450E-01, 0.528800E-
+     + , 0.844100E-01, 0.114710E+00, 0.106200E+00, 0.765830E-	     + , 0.844100E-01, 0.114710E+00, 0.106200E+00, 0.765830E-
+     + , 0.435800E-01, 0.173950E-01, 0.695001E-03,-0.809500E-	     + , 0.435800E-01, 0.173950E-01, 0.695001E-03,-0.809500E-
+     + ,-0.117355E-01,-0.125449E-01,-0.120280E-01,-0.686530E-	     + ,-0.117355E-01,-0.125449E-01,-0.120280E-01,-0.686530E-
+     + ,-0.385275E-02,-0.231115E-02,-0.147056E-02,-0.982480E-	     + ,-0.385275E-02,-0.231115E-02,-0.147056E-02,-0.982480E-
+     + ,-0.682440E-03,-0.489715E-03,-0.361190E-03,-0.272582E-	     + ,-0.682440E-03,-0.489715E-03,-0.361190E-03,-0.272582E-
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,*)'MMOLIE: OMEGA=',SNGL(OMEGA	      IF ( DEBUG ) WRITE(MDEBUG,*)'MMOLIE: OMEGA=',SNGL(OMEGA
+     *                                    ' DENS=',SNGL(DENS)	     *                                    ' DENS=',SNGL(DENS)
+ 								 
+C  COMPUTE VSCAT ANGLE FROM MOLIERE DISTRIBUTION		C  COMPUTE VSCAT ANGLE FROM MOLIERE DISTRIBUTION
+      VSCAT = 0.D0						      VSCAT = 0.D0
+      IF ( OMEGA .LE. ENEPER ) RETURN				      IF ( OMEGA .LE. ENEPER ) RETURN
+      CNST  = LOG(OMEGA)					      CNST  = LOG(OMEGA)
+      B     = 5.D0						      B     = 5.D0
+      DO 10 L = 1,10						      DO 10 L = 1,10
+        IF ( ABS(B) .LT. 1.D-10 ) THEN				        IF ( ABS(B) .LT. 1.D-10 ) THEN
+          B = 1.D-10						          B = 1.D-10
+        ENDIF							        ENDIF
+        DB = - (B - LOG(ABS(B)) - CNST)/(1.D0 - 1.D0/B)		        DB = - (B - LOG(ABS(B)) - CNST)/(1.D0 - 1.D0/B)
+        B  = B + DB						        B  = B + DB
+        IF ( ABS(DB) .LE. 0.0001D0 ) GOTO 20			        IF ( ABS(DB) .LE. 0.0001D0 ) GOTO 20
+ 10   CONTINUE							 10   CONTINUE
+      RETURN							      RETURN
+ 20   CONTINUE							 20   CONTINUE
+      IF ( B .LE. 0.D0 ) RETURN					      IF ( B .LE. 0.D0 ) RETURN
+C  CHC IS DEFINED DIFFERENTLY FROM GEANT			C  CHC IS DEFINED DIFFERENTLY FROM GEANT
+      CHIC = CHC*SQRT(CHI)/(PAMA(5)*GAMMA*BETA**2)		      CHIC = CHC*SQRT(CHI)/(PAMA(5)*GAMMA*BETA**2)
+      BINV = 1.D0/B						      BINV = 1.D0/B
+      TINT(1) = 0.D0						      TINT(1) = 0.D0
+      DO 30   JA = 2,4						      DO 30   JA = 2,4
+        TINT(JA) = F0I(JA) + ( F1I(JA) + F2I(JA)*BINV ) * BIN	        TINT(JA) = F0I(JA) + ( F1I(JA) + F2I(JA)*BINV ) * BIN
+ 30   CONTINUE							 30   CONTINUE
+      NMAX = 4							      NMAX = 4
+ 40   CONTINUE							 40   CONTINUE
+      CALL RMMAR(RD,2,1)					      CALL RMMAR(RD,2,1)
+      XINT = RD(2)						      XINT = RD(2)
+      DO 50 NA = 3,40						      DO 50 NA = 3,40
+        IF ( NA .GT. NMAX ) THEN				        IF ( NA .GT. NMAX ) THEN
+          TINT(NA) = F0I(NA) + ( F1I(NA) + F2I(NA)*BINV ) * B	          TINT(NA) = F0I(NA) + ( F1I(NA) + F2I(NA)*BINV ) * B
+          NMAX = NA						          NMAX = NA
+        ENDIF							        ENDIF
+        IF ( XINT .LE. TINT(NA-1) ) GOTO 60			        IF ( XINT .LE. TINT(NA-1) ) GOTO 60
+ 50   CONTINUE							 50   CONTINUE
+      IF ( XINT .LE. TINT(40) ) THEN				      IF ( XINT .LE. TINT(40) ) THEN
+        NA = 40							        NA = 40
+        GOTO 60							        GOTO 60
+      ELSE							      ELSE
+        TMP  = 1.D0 - ( 1.D0 - B*(1.D0-XINT) )**5		        TMP  = 1.D0 - ( 1.D0 - B*(1.D0-XINT) )**5
+        IF ( TMP .LE. 0.D0 ) GOTO 40				        IF ( TMP .LE. 0.D0 ) GOTO 40
+        THRI = 5.D0 / TMP					        THRI = 5.D0 / TMP
+        GOTO 80							        GOTO 80
+      ENDIF							      ENDIF
+ 60   CONTINUE							 60   CONTINUE
+      NA  = MAX(NA-1,3)						      NA  = MAX(NA-1,3)
+      NA3 = NA-3						      NA3 = NA-3
+      DO 70 M = 1,4						      DO 70 M = 1,4
+        NA3M   = NA3 + M					        NA3M   = NA3 + M
+        ARG(M) = TINT(NA3M)					        ARG(M) = TINT(NA3M)
+        VAL(M) = THRED(NA3M)**2					        VAL(M) = THRED(NA3M)**2
+ 70   CONTINUE							 70   CONTINUE
+      F = THRED(NA) * .02D0					      F = THRED(NA) * .02D0
+      CALL MMOL4(THRI,XINT,VAL,ARG,F,IER)			      CALL MMOL4(THRI,XINT,VAL,ARG,F,IER)
+ 80   CONTINUE							 80   CONTINUE
+      VSCAT = CHIC * SQRT( ABS(B*THRI) )			      VSCAT = CHIC * SQRT( ABS(B*THRI) )
+      IF ( VSCAT .GT. PI ) GOTO 40				      IF ( VSCAT .GT. PI ) GOTO 40
+      SINTH = SIN(VSCAT)					      SINTH = SIN(VSCAT)
+      TEST  = VSCAT * (RD(1))**2				      TEST  = VSCAT * (RD(1))**2
+      IF ( TEST .GT. SINTH ) GOTO 40				      IF ( TEST .GT. SINTH ) GOTO 40
+ 								 
+      RETURN							      RETURN
+      END							      END

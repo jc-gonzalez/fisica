@@ -1,0 +1,86 @@
+      SUBROUTINE RNEGBI( N,XN,ECM )				      SUBROUTINE RNEGBI( N,XN,ECM )
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  R(ANDOM NUMBER WITH) NEG(ATIVE) BI(NOMIAL DISTRIBUTION)	C  R(ANDOM NUMBER WITH) NEG(ATIVE) BI(NOMIAL DISTRIBUTION)
+C								C
+C  RANDOM NUMBER GENERATOR FOR INTEGER NUMBERS DISTRIBUTED AC	C  RANDOM NUMBER GENERATOR FOR INTEGER NUMBERS DISTRIBUTED AC
+C  A NEGATIVE BINOMIAL DISTRIBUTION WITH PARAMETERS <N> AND K	C  A NEGATIVE BINOMIAL DISTRIBUTION WITH PARAMETERS <N> AND K
+C  DELIVERS ONLY EVEN NUMBERS AS CHARGE MUST BE CONSERVED	C  DELIVERS ONLY EVEN NUMBERS AS CHARGE MUST BE CONSERVED
+C  THIS SUBROUTINE IS CALLED FROM HDPM				C  THIS SUBROUTINE IS CALLED FROM HDPM
+C  ARGUMENTS:							C  ARGUMENTS:
+C   XN     = <N>  AVERAGE VALUE OF N				C   XN     = <N>  AVERAGE VALUE OF N
+C   ECM    = CENTER OF MASS ENERGY				C   ECM    = CENTER OF MASS ENERGY
+C   N      = RANDOM NUMBER DISTRIBUTED WITH NEG. BIN. DISTR.	C   N      = RANDOM NUMBER DISTRIBUTED WITH NEG. BIN. DISTR.
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,RANDPA.							*KEEP,RANDPA.
+      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR		      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR
+      DOUBLE PRECISION FAC,U1,U2				      DOUBLE PRECISION FAC,U1,U2
+      REAL             RD(3000)					      REAL             RD(3000)
+      INTEGER          ISEED(103,10),NSEQ			      INTEGER          ISEED(103,10),NSEQ
+      LOGICAL          KNOR					      LOGICAL          KNOR
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEND.								*KEND.
+ 								 
+      DOUBLE PRECISION ECM,P,PN,Q,R,SUM,XI,XK,XN		      DOUBLE PRECISION ECM,P,PN,Q,R,SUM,XI,XK,XN
+      INTEGER          N					      INTEGER          N
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+CC    IF ( DEBUG ) WRITE(MDEBUG,*) 'RNEGBI: XN,ECM=',SNGL(XN)	CC    IF ( DEBUG ) WRITE(MDEBUG,*) 'RNEGBI: XN,ECM=',SNGL(XN)
+ 								 
+C  PARAMETRIZATION OF PARAMETER K OF NEG.BIN. DISTRIBUTION AC	C  PARAMETRIZATION OF PARAMETER K OF NEG.BIN. DISTRIBUTION AC
+C  TO  UA5 COLLABORATION, PHYS. LETT. 167B (1986) 476		C  TO  UA5 COLLABORATION, PHYS. LETT. 167B (1986) 476
+      XK  = 1.D0 / ( -0.104D0 + 0.058D0 * LOG(ECM) )		      XK  = 1.D0 / ( -0.104D0 + 0.058D0 * LOG(ECM) )
+C  OTHER PARAMETERS						C  OTHER PARAMETERS
+      R   = XN / XK						      R   = XN / XK
+      Q   = 1.D0 / (1.D0 + R)					      Q   = 1.D0 / (1.D0 + R)
+      P   = R * Q						      P   = R * Q
+ 								 
+C  VALUES FOR N EQUAL 0						C  VALUES FOR N EQUAL 0
+  1   CONTINUE							  1   CONTINUE
+      N   = 0							      N   = 0
+      PN  = Q**XK						      PN  = Q**XK
+      SUM = PN							      SUM = PN
+C  GET UNIFORM RANDOM NUMBER					C  GET UNIFORM RANDOM NUMBER
+      CALL RMMAR( RD,1,1 )					      CALL RMMAR( RD,1,1 )
+      IF ( RD(1) .LE. SUM ) GOTO 100				      IF ( RD(1) .LE. SUM ) GOTO 100
+C  COMPARE WITH SUM OVER P(N)					C  COMPARE WITH SUM OVER P(N)
+      DO  2  XI = 1.D0, 1350.D0					      DO  2  XI = 1.D0, 1350.D0
+        PN  = PN * P * (XK - 1.D0 + XI) / XI			        PN  = PN * P * (XK - 1.D0 + XI) / XI
+        SUM = SUM + PN						        SUM = SUM + PN
+        IF ( RD(1) .LE. SUM ) THEN				        IF ( RD(1) .LE. SUM ) THEN
+          N = XI						          N = XI
+          GOTO 100						          GOTO 100
+        ENDIF							        ENDIF
+  2   CONTINUE							  2   CONTINUE
+      N = 1350							      N = 1350
+ 								 
+ 100  CONTINUE							 100  CONTINUE
+      IF ( MOD(N,2) .NE. 0  .AND.  N .NE. 1 ) GOTO 1		      IF ( MOD(N,2) .NE. 0  .AND.  N .NE. 1 ) GOTO 1
+CC    IF (DEBUG) WRITE(MDEBUG,*)'RNEGBI: RD(1),N,<N>=',RD(1),	CC    IF (DEBUG) WRITE(MDEBUG,*)'RNEGBI: RD(1),N,<N>=',RD(1),
+ 								 
+      RETURN							      RETURN
+      END							      END

@@ -1,0 +1,61 @@
+inprm.f.diff
+=========================================================
+205,226c205,235
+<       IF ( PRMPAR(1) .GT. 101.D0 ) THEN
+<         IF ( GHEISH ) THEN
+< C  GHEISHA CAN TREAT ONLY DEUTERONS, TRITONS, AND ALPHA PARTICLES
+<           IF ( PRMPAR(1) .NE. 201.D0  .AND.  PRMPAR(1) .NE. 301.D0
+<      *         .AND.  PRMPAR(1) .NE. 401.D0 ) THEN
+<             IF ( LLIMIT .LT. HILOELB * INT(PRMPAR(1)/100.D0) ) THEN
+<               WRITE(MONIOU,503) INT(PRMPAR(1)/100.D0),LLIMIT
+<               STOP
+<             ENDIF
+<           ENDIF
+<         ELSE
+<           IF ( LLIMIT .LT. HILOELB * INT(PRMPAR(1)/100.D0) ) THEN
+<             WRITE(MONIOU,503) INT(PRMPAR(1)/100.D0),LLIMIT
+<   503       FORMAT(' NUCLEUS WITH A =',I2,' AND PRIMARY ENERGY =',
+<      *        1PE10.3,' GEV TOO LOW FOR HIGH ENERGY INTERACTION MODEL'/
+<      *        ' AND CANNOT BE TREATED BY LOW ENERGY INTERACTION MODEL'/
+<      *        ' PLEASE READ THE MANUALS')
+<             STOP
+<           ENDIF
+<         ENDIF
+<       ENDIF
+<  
+---
+> 
+> 
+> 
+> c> *** modified by fs (22/09/98) *******************************
+> 
+> 
+> c      IF ( PRMPAR(1) .GT. 101.D0 ) THEN
+> c        IF ( GHEISH ) THEN
+> cC  GHEISHA CAN TREAT ONLY DEUTERONS, TRITONS, AND ALPHA PARTICLES
+> c          IF ( PRMPAR(1) .NE. 201.D0  .AND.  PRMPAR(1) .NE. 301.D0
+> c     *         .AND.  PRMPAR(1) .NE. 402.D0 ) THEN
+> c            IF ( LLIMIT .LT. HILOELB * INT(PRMPAR(1)/100.D0) ) THEN
+> c              WRITE(MONIOU,503) INT(PRMPAR(1)/100.D0),LLIMIT
+> c              STOP
+> c            ENDIF
+> c          ENDIF
+> c        ELSE
+> c          IF ( LLIMIT .LT. HILOELB * INT(PRMPAR(1)/100.D0) ) THEN
+> c            WRITE(MONIOU,503) INT(PRMPAR(1)/100.D0),LLIMIT
+> c  503       FORMAT(' NUCLEUS WITH A =',I2,' AND PRIMARY ENERGY =',
+> c     *        1PE10.3,' GEV TOO LOW FOR HIGH ENERGY INTERACTION MODEL'/
+> c     *        ' AND CANNOT BE TREATED BY LOW ENERGY INTERACTION MODEL'/
+> c     *        ' PLEASE READ THE MANUALS')
+> c            STOP
+> c          ENDIF
+> c        ENDIF
+> c      ENDIF
+> 
+> 
+> c> *** end of modification ****************************************
+> 
+753c762
+<      $INT(RUNH(3))+20000000,INT(EVTH(80)),INT(EVTH(79)),INT(EVTH(78)),
+---
+>      $INT(RUNH(3))+19000000,INT(EVTH(80)),INT(EVTH(79)),INT(EVTH(78)),

@@ -1,0 +1,63 @@
+      DOUBLE PRECISION FUNCTION AMOTRY(P,Y,PSUM,MP,NP,NDIM,FU	      DOUBLE PRECISION FUNCTION AMOTRY(P,Y,PSUM,MP,NP,NDIM,FU
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C								C
+C  REFERENCE : NUMERICAL RECIPES, W.H. PRESS ET AL.,		C  REFERENCE : NUMERICAL RECIPES, W.H. PRESS ET AL.,
+C              CAMBRIDGE UNIVERSITY PRESS, 1992  ISBN 0 521 4	C              CAMBRIDGE UNIVERSITY PRESS, 1992  ISBN 0 521 4
+C  ADAPTED FOR DOUBLE PRECISION					C  ADAPTED FOR DOUBLE PRECISION
+C  THIS SUBROUTINE IS CALLED FROM AMOEBA			C  THIS SUBROUTINE IS CALLED FROM AMOEBA
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEND.								*KEND.
+ 								 
+      INTEGER          MP,NP,NMAX				      INTEGER          MP,NP,NMAX
+      PARAMETER        (NMAX=20)				      PARAMETER        (NMAX=20)
+      DOUBLE PRECISION FAC,P(MP,NP),PSUM(NP),Y(MP),FUNK		      DOUBLE PRECISION FAC,P(MP,NP),PSUM(NP),Y(MP),FUNK
+      DOUBLE PRECISION FAC1,FAC2,YTRY,PTRY(NMAX)		      DOUBLE PRECISION FAC1,FAC2,YTRY,PTRY(NMAX)
+      INTEGER          IHI,NDIM,J				      INTEGER          IHI,NDIM,J
+      EXTERNAL         FUNK					      EXTERNAL         FUNK
+CU  USES FUNK							CU  USES FUNK
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,*) 'AMOTRY:'			      IF ( DEBUG ) WRITE(MDEBUG,*) 'AMOTRY:'
+ 								 
+      FAC1 = (1.D0-FAC)/NDIM					      FAC1 = (1.D0-FAC)/NDIM
+      FAC2 = FAC1-FAC						      FAC2 = FAC1-FAC
+      DO 11 J=1,NDIM						      DO 11 J=1,NDIM
+        PTRY(J) = PSUM(J) * FAC1 - P(IHI,J) * FAC2		        PTRY(J) = PSUM(J) * FAC1 - P(IHI,J) * FAC2
+ 11   CONTINUE							 11   CONTINUE
+      YTRY = FUNK(PTRY)						      YTRY = FUNK(PTRY)
+      IF ( YTRY .LT. Y(IHI) ) THEN				      IF ( YTRY .LT. Y(IHI) ) THEN
+        Y(IHI) = YTRY						        Y(IHI) = YTRY
+        DO 12 J=1,NDIM						        DO 12 J=1,NDIM
+          PSUM(J)  = PSUM(J) - P(IHI,J) + PTRY(J)		          PSUM(J)  = PSUM(J) - P(IHI,J) + PTRY(J)
+          P(IHI,J) = PTRY(J)					          P(IHI,J) = PTRY(J)
+ 12     CONTINUE						 12     CONTINUE
+      ENDIF							      ENDIF
+      AMOTRY = YTRY						      AMOTRY = YTRY
+      RETURN							      RETURN
+      END							      END

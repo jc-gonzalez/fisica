@@ -1,0 +1,121 @@
+      SUBROUTINE LEADDF( IFLGLD )				      SUBROUTINE LEADDF( IFLGLD )
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  LEAD(ING PARTICLE RAPIDITY FOR) D(I)F(FFRACTING SYSTEM)	C  LEAD(ING PARTICLE RAPIDITY FOR) D(I)F(FFRACTING SYSTEM)
+C								C
+C  SELECTS THE RAPIDITY OF THE (ANTI)LEADING PARTICLES IN CAS	C  SELECTS THE RAPIDITY OF THE (ANTI)LEADING PARTICLES IN CAS
+C  DIFFRACTION. THE NON-DIFFRACTING (ANTI)LEADER GETS ITS RAP	C  DIFFRACTION. THE NON-DIFFRACTING (ANTI)LEADER GETS ITS RAP
+C  FROM THE REMAINDER ENERGY, THE DIFFRACTING (ANTI)LEADER GE	C  FROM THE REMAINDER ENERGY, THE DIFFRACTING (ANTI)LEADER GE
+C  RAPIDITY FROM THE GAUSSIAN (STRING) OF THE DECAYING DIFFRA	C  RAPIDITY FROM THE GAUSSIAN (STRING) OF THE DECAYING DIFFRA
+C  THIS SUBROUTINE IS CALLED FROM HDPM				C  THIS SUBROUTINE IS CALLED FROM HDPM
+C  ARGUMENT:							C  ARGUMENT:
+C   IFLGLD = 0  RAPIDITY SELECTION SUCCESSFUL			C   IFLGLD = 0  RAPIDITY SELECTION SUCCESSFUL
+C          = 1  RAPIDITY SELECTION NOT SUCCESSFULL		C          = 1  RAPIDITY SELECTION NOT SUCCESSFULL
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)			      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+*KEEP,INTER.							*KEEP,INTER.
+      COMMON /INTER/   AVCH,AVCH3,DC0,DLOG,DMLOG,ECMDIF,ECMDP	      COMMON /INTER/   AVCH,AVCH3,DC0,DLOG,DMLOG,ECMDIF,ECMDP
+     *                 FNEUT,FNEUT2,GNU,PLAB,POSC2,POSC3,POSN	     *                 FNEUT,FNEUT2,GNU,PLAB,POSC2,POSC3,POSN
+     *                 RC3TO2,S,SEUGF,SEUGP,SLOG,SLOGSQ,SMLOG	     *                 RC3TO2,S,SEUGF,SEUGP,SLOG,SLOGSQ,SMLOG
+     *                 WIDC2,WIDC3,WIDN2,WIDN3,YCM,YY0,ZN,	     *                 WIDC2,WIDC3,WIDN2,WIDN3,YCM,YY0,ZN,
+     *                 IDIF,ITAR				     *                 IDIF,ITAR
+      DOUBLE PRECISION AVCH,AVCH3,DC0,DLOG,DMLOG,ECMDIF,ECMDP	      DOUBLE PRECISION AVCH,AVCH3,DC0,DLOG,DMLOG,ECMDIF,ECMDP
+     *                 FNEUT,FNEUT2,GNU,PLAB,POSC2,POSC3,POSN	     *                 FNEUT,FNEUT2,GNU,PLAB,POSC2,POSC3,POSN
+     *                 RC3TO2,S,SEUGF,SEUGP,SLOG,SLOGSQ,SMLOG	     *                 RC3TO2,S,SEUGF,SEUGP,SLOG,SLOGSQ,SMLOG
+     *                 WIDC2,WIDC3,WIDN2,WIDN3,YCM,YY0,ZN	     *                 WIDC2,WIDC3,WIDN2,WIDN3,YCM,YY0,ZN
+      INTEGER          IDIF,ITAR				      INTEGER          IDIF,ITAR
+*KEEP,LEPAR.							*KEEP,LEPAR.
+      COMMON /LEPAR/   LEPAR1,LEPAR2,LASTPI,NRESPC,NRESPN,NCP	      COMMON /LEPAR/   LEPAR1,LEPAR2,LASTPI,NRESPC,NRESPN,NCP
+      INTEGER          LEPAR1,LEPAR2,LASTPI,NRESPC,NRESPN,NCP	      INTEGER          LEPAR1,LEPAR2,LASTPI,NRESPC,NRESPN,NCP
+*KEEP,NEWPAR.							*KEEP,NEWPAR.
+      COMMON /NEWPAR/  EA,PT2,PX,PY,TMAS,YR,ITYP,		      COMMON /NEWPAR/  EA,PT2,PX,PY,TMAS,YR,ITYP,
+     *                 IA1,IA2,IB1,IB2,IC1,IC2,ID1,ID2,IE1,IE	     *                 IA1,IA2,IB1,IB2,IC1,IC2,ID1,ID2,IE1,IE
+     *                 IG1,IG2,IH1,IH2,II1,II2,IJ1,NTOT		     *                 IG1,IG2,IH1,IH2,II1,II2,IJ1,NTOT
+      DOUBLE PRECISION EA(3000),PT2(3000),PX(3000),PY(3000),T	      DOUBLE PRECISION EA(3000),PT2(3000),PX(3000),PY(3000),T
+     *                 YR(3000)					     *                 YR(3000)
+      INTEGER          ITYP(3000),				      INTEGER          ITYP(3000),
+     *                 IA1,IA2,IB1,IB2,IC1,IC2,ID1,ID2,IE1,IE	     *                 IA1,IA2,IB1,IB2,IC1,IC2,ID1,ID2,IE1,IE
+     *                 IG1,IG2,IH1,IH2,II1,II2,IJ1,NTOT		     *                 IG1,IG2,IH1,IH2,II1,II2,IJ1,NTOT
+*KEEP,RANDPA.							*KEEP,RANDPA.
+      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR		      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR
+      DOUBLE PRECISION FAC,U1,U2				      DOUBLE PRECISION FAC,U1,U2
+      REAL             RD(3000)					      REAL             RD(3000)
+      INTEGER          ISEED(103,10),NSEQ			      INTEGER          ISEED(103,10),NSEQ
+      LOGICAL          KNOR					      LOGICAL          KNOR
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEND.								*KEND.
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,*) 'LEADDF: LEPAR1,LEPAR2=',	      IF ( DEBUG ) WRITE(MDEBUG,*) 'LEADDF: LEPAR1,LEPAR2=',
+     *                                      LEPAR1,LEPAR2	     *                                      LEPAR1,LEPAR2
+ 								 
+      IF ( YY0 .GT. 0.D0 ) THEN					      IF ( YY0 .GT. 0.D0 ) THEN
+C  PROJECTILE DIFFRACTION; CALCULATE TARGET RAPIDITY USING TA	C  PROJECTILE DIFFRACTION; CALCULATE TARGET RAPIDITY USING TA
+C  ENERGY ECMTAR AND LONGITUDINAL MOMENTUM PCMTAR THE IN C.M.	C  ENERGY ECMTAR AND LONGITUDINAL MOMENTUM PCMTAR THE IN C.M.
+        ECMTAR = (ECMDPM**2 - ECMDIF**2 + TMAS(2)**2) / (2.D0	        ECMTAR = (ECMDPM**2 - ECMDIF**2 + TMAS(2)**2) / (2.D0
+        PTLSQ  = ECMTAR**2 - TMAS(2)**2				        PTLSQ  = ECMTAR**2 - TMAS(2)**2
+        IF ( PTLSQ .LE. 0.D0 ) THEN				        IF ( PTLSQ .LE. 0.D0 ) THEN
+          IFLGLD = 1						          IFLGLD = 1
+          RETURN						          RETURN
+        ENDIF							        ENDIF
+        PCMTAR = SQRT(PTLSQ)					        PCMTAR = SQRT(PTLSQ)
+*       YR(2)  = -0.5D0 * LOG( (ECMTAR+PCMTAR) / (ECMTAR-PCMT	*       YR(2)  = -0.5D0 * LOG( (ECMTAR+PCMTAR) / (ECMTAR-PCMT
+        YR(2)  = - LOG( (ECMTAR+PCMTAR) / TMAS(2) )		        YR(2)  = - LOG( (ECMTAR+PCMTAR) / TMAS(2) )
+C  RAPIDITY OF DIFFRACTING PROJECTILE				C  RAPIDITY OF DIFFRACTING PROJECTILE
+        CALL RMMAR( RD,1,1 )					        CALL RMMAR( RD,1,1 )
+        IF ( RD(1) .GE. 0.5 ) THEN				        IF ( RD(1) .GE. 0.5 ) THEN
+          YR(1) = RANNOR( POSC2, WIDC2 ) + YY0			          YR(1) = RANNOR( POSC2, WIDC2 ) + YY0
+        ELSE							        ELSE
+          YR(1) = RANNOR(-POSC2, WIDC2 ) + YY0			          YR(1) = RANNOR(-POSC2, WIDC2 ) + YY0
+        ENDIF							        ENDIF
+ 								 
+      ELSE							      ELSE
+C  TARGET DIFFRACTION; CALCULATE PROJECTILE RAPIDITY USING PR	C  TARGET DIFFRACTION; CALCULATE PROJECTILE RAPIDITY USING PR
+C  ENERGY ECMPRO AND LONGITUDINAL MOMENTUM PLPRO IN THE C.M. 	C  ENERGY ECMPRO AND LONGITUDINAL MOMENTUM PLPRO IN THE C.M. 
+        ECMPRO = (ECMDPM**2 -ECMDIF**2 +TMAS(1)**2) / (2.D0*E	        ECMPRO = (ECMDPM**2 -ECMDIF**2 +TMAS(1)**2) / (2.D0*E
+        PPLSQ  = ECMPRO**2 - TMAS(1)**2				        PPLSQ  = ECMPRO**2 - TMAS(1)**2
+        IF ( PPLSQ .LE. 0.D0 ) THEN				        IF ( PPLSQ .LE. 0.D0 ) THEN
+          IFLGLD = 1						          IFLGLD = 1
+          RETURN						          RETURN
+        ENDIF							        ENDIF
+        PCMPRO = SQRT(PPLSQ)					        PCMPRO = SQRT(PPLSQ)
+*       YR(1)  = 0.5D0 * LOG( (ECMPRO+PCMPRO) / (ECMPRO-PCMPR	*       YR(1)  = 0.5D0 * LOG( (ECMPRO+PCMPRO) / (ECMPRO-PCMPR
+        YR(1)  = LOG( (ECMPRO+PCMPRO) / TMAS(1) )		        YR(1)  = LOG( (ECMPRO+PCMPRO) / TMAS(1) )
+C  RAPIDITY OF DIFFRACTING TARGET NUCLEON			C  RAPIDITY OF DIFFRACTING TARGET NUCLEON
+        CALL RMMAR( RD,1,1 )					        CALL RMMAR( RD,1,1 )
+        IF ( RD(1) .GE. 0.5 ) THEN				        IF ( RD(1) .GE. 0.5 ) THEN
+          YR(2) = RANNOR( POSC2, WIDC2 ) + YY0			          YR(2) = RANNOR( POSC2, WIDC2 ) + YY0
+        ELSE							        ELSE
+          YR(2) = RANNOR(-POSC2, WIDC2 ) + YY0			          YR(2) = RANNOR(-POSC2, WIDC2 ) + YY0
+        ENDIF							        ENDIF
+      ENDIF							      ENDIF
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,*) 'LEADDF: YR(2),YR(1)=',	      IF ( DEBUG ) WRITE(MDEBUG,*) 'LEADDF: YR(2),YR(1)=',
+     *                           SNGL(YR(2)),SNGL(YR(1))	     *                           SNGL(YR(2)),SNGL(YR(1))
+      IFLGLD = 0						      IFLGLD = 0
+      RETURN							      RETURN
+      END							      END

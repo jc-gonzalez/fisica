@@ -1,0 +1,213 @@
+      SUBROUTINE OUTEND						      SUBROUTINE OUTEND
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  OUT(PUT AT) END (OF SHOWER)					C  OUT(PUT AT) END (OF SHOWER)
+C								C
+C  WRITE REST OF PARTICLES TO OUTPUT BUFFER			C  WRITE REST OF PARTICLES TO OUTPUT BUFFER
+C  PRINTS INTERACTION LENGTHS STATISTICS			C  PRINTS INTERACTION LENGTHS STATISTICS
+C  THIS SUBROUTINE IS CALLED FROM MAIN				C  THIS SUBROUTINE IS CALLED FROM MAIN
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,BAL.							*KEEP,BAL.
+      COMMON /BAL/     EBAL					      COMMON /BAL/     EBAL
+      DOUBLE PRECISION EBAL(10)					      DOUBLE PRECISION EBAL(10)
+*KEEP,BUFFS.							*KEEP,BUFFS.
+      COMMON /BUFFS/   RUNH,RUNE,EVTH,EVTE,DATAB,LH		      COMMON /BUFFS/   RUNH,RUNE,EVTH,EVTE,DATAB,LH
+      INTEGER          MAXBUF,MAXLEN				      INTEGER          MAXBUF,MAXLEN
+      PARAMETER        (MAXBUF=39*7)				      PARAMETER        (MAXBUF=39*7)
+      PARAMETER        (MAXLEN=12)				      PARAMETER        (MAXLEN=12)
+      REAL             RUNH(MAXBUF),EVTH(MAXBUF),EVTE(MAXBUF)	      REAL             RUNH(MAXBUF),EVTH(MAXBUF),EVTE(MAXBUF)
+     *                 RUNE(MAXBUF),DATAB(MAXBUF)		     *                 RUNE(MAXBUF),DATAB(MAXBUF)
+      INTEGER          LH					      INTEGER          LH
+      CHARACTER*4      CRUNH,CRUNE,CEVTH,CEVTE			      CHARACTER*4      CRUNH,CRUNE,CEVTH,CEVTE
+      EQUIVALENCE      (RUNH(1),CRUNH), (RUNE(1),CRUNE)		      EQUIVALENCE      (RUNH(1),CRUNH), (RUNE(1),CRUNE)
+      EQUIVALENCE      (EVTH(1),CEVTH), (EVTE(1),CEVTE)		      EQUIVALENCE      (EVTH(1),CEVTH), (EVTE(1),CEVTE)
+*KEEP,CHISTA.							*KEEP,CHISTA.
+      COMMON /CHISTA/  IHYCHI,IKACHI,IMUCHI,INNCHI,INUCHI,IPI	      COMMON /CHISTA/  IHYCHI,IKACHI,IMUCHI,INNCHI,INUCHI,IPI
+      INTEGER          IHYCHI(124),IKACHI(124),IMUCHI(124),	      INTEGER          IHYCHI(124),IKACHI(124),IMUCHI(124),
+     *                 INNCHI(124),INUCHI(124),IPICHI(124)	     *                 INNCHI(124),INUCHI(124),IPICHI(124)
+*KEEP,ELADPM.							*KEEP,ELADPM.
+      COMMON /ELADPM/  ELMEAN,ELMEAA,IELDPM,IELDPA		      COMMON /ELADPM/  ELMEAN,ELMEAA,IELDPM,IELDPA
+      DOUBLE PRECISION ELMEAN(37),ELMEAA(37)			      DOUBLE PRECISION ELMEAN(37),ELMEAA(37)
+      INTEGER          IELDPM(37,13),IELDPA(37,13)		      INTEGER          IELDPM(37,13),IELDPA(37,13)
+*KEEP,MULT.							*KEEP,MULT.
+      COMMON /MULT/    EKINL,MSMM,MULTMA,MULTOT			      COMMON /MULT/    EKINL,MSMM,MULTMA,MULTOT
+      DOUBLE PRECISION EKINL					      DOUBLE PRECISION EKINL
+      INTEGER          MSMM,MULTMA(37,13),MULTOT(37,13)		      INTEGER          MSMM,MULTMA(37,13),MULTOT(37,13)
+*KEEP,NCOUNT.							*KEEP,NCOUNT.
+      COMMON /NCOUNT/  NCOUN					      COMMON /NCOUNT/  NCOUN
+      INTEGER          NCOUN(8)					      INTEGER          NCOUN(8)
+*KEEP,NPARTI.							*KEEP,NPARTI.
+      COMMON /NPARTI/  NPARTO,MUOND				      COMMON /NPARTI/  NPARTO,MUOND
+      DOUBLE PRECISION NPARTO(10,25),NPHOTO(10),NPOSIT(10),NE	      DOUBLE PRECISION NPARTO(10,25),NPHOTO(10),NPOSIT(10),NE
+     *                 NNU(10),NMUP(10),NMUM(10),NPI0(10),NPI	     *                 NNU(10),NMUP(10),NMUM(10),NPI0(10),NPI
+     *                 NPIM(10),NK0L(10),NKPL(10),NKMI(10),NN	     *                 NPIM(10),NK0L(10),NKPL(10),NKMI(10),NN
+     *                 NPROTO(10),NPROTB(10),NK0S(10),NHYP(10	     *                 NPROTO(10),NPROTB(10),NK0S(10),NHYP(10
+     *                 NNEUTB(10),NDEUT(10),NTRIT(10),NALPHA(	     *                 NNEUTB(10),NDEUT(10),NTRIT(10),NALPHA(
+     *                 NOTHER(10),MUOND				     *                 NOTHER(10),MUOND
+      EQUIVALENCE (NPARTO(1, 1),NPHOTO(1)), (NPARTO(1, 2),NPO	      EQUIVALENCE (NPARTO(1, 1),NPHOTO(1)), (NPARTO(1, 2),NPO
+     *            (NPARTO(1, 3),NELECT(1)), (NPARTO(1, 4),NNU	     *            (NPARTO(1, 3),NELECT(1)), (NPARTO(1, 4),NNU
+     *            (NPARTO(1, 5),NMUP(1))  , (NPARTO(1, 6),NMU	     *            (NPARTO(1, 5),NMUP(1))  , (NPARTO(1, 6),NMU
+     *            (NPARTO(1, 7),NPI0(1))  , (NPARTO(1, 8),NPI	     *            (NPARTO(1, 7),NPI0(1))  , (NPARTO(1, 8),NPI
+     *            (NPARTO(1, 9),NPIM(1))  , (NPARTO(1,10),NK0	     *            (NPARTO(1, 9),NPIM(1))  , (NPARTO(1,10),NK0
+     *            (NPARTO(1,11),NKPL(1))  , (NPARTO(1,12),NKM	     *            (NPARTO(1,11),NKPL(1))  , (NPARTO(1,12),NKM
+     *            (NPARTO(1,13),NNEUTR(1)), (NPARTO(1,14),NPR	     *            (NPARTO(1,13),NNEUTR(1)), (NPARTO(1,14),NPR
+     *            (NPARTO(1,15),NPROTB(1)), (NPARTO(1,16),NK0	     *            (NPARTO(1,15),NPROTB(1)), (NPARTO(1,16),NK0
+     *            (NPARTO(1,18),NHYP(1))  , (NPARTO(1,19),NDE	     *            (NPARTO(1,18),NHYP(1))  , (NPARTO(1,19),NDE
+     *            (NPARTO(1,20),NTRIT(1)) , (NPARTO(1,21),NAL	     *            (NPARTO(1,20),NTRIT(1)) , (NPARTO(1,21),NAL
+     *            (NPARTO(1,22),NOTHER(1)), (NPARTO(1,25),NNE	     *            (NPARTO(1,22),NOTHER(1)), (NPARTO(1,25),NNE
+*KEEP,PARPAR.							*KEEP,PARPAR.
+      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,		      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,
+     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE	     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE
+      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA	      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA
+     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH	     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH
+      INTEGER          ITYPE,LEVL				      INTEGER          ITYPE,LEVL
+*KEEP,PARPAE.							*KEEP,PARPAE.
+      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,	      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,
+      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)	      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)
+     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )	     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )
+     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )	     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )
+     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )	     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )
+     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )	     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )
+     *                 (CURPAR(12),ECM )			     *                 (CURPAR(12),ECM )
+*KEEP,PBALA.							*KEEP,PBALA.
+      COMMON /PBALA/   PBAL					      COMMON /PBALA/   PBAL
+      DOUBLE PRECISION PBAL(10)					      DOUBLE PRECISION PBAL(10)
+*KEEP,RECORD.							*KEEP,RECORD.
+      COMMON /RECORD/  IRECOR					      COMMON /RECORD/  IRECOR
+      INTEGER          IRECOR					      INTEGER          IRECOR
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEEP,STACKF.							*KEEP,STACKF.
+      COMMON /STACKF/  STACK,STACKP,EXST,NSHIFT,NOUREC,ICOUNT	      COMMON /STACKF/  STACK,STACKP,EXST,NSHIFT,NOUREC,ICOUNT
+      INTEGER          MAXSTK					      INTEGER          MAXSTK
+      PARAMETER        (MAXSTK = 12*340*2)			      PARAMETER        (MAXSTK = 12*340*2)
+      DOUBLE PRECISION STACK(MAXSTK)				      DOUBLE PRECISION STACK(MAXSTK)
+      INTEGER          STACKP,EXST,NSHIFT,NOUREC,ICOUNT,NTO,N	      INTEGER          STACKP,EXST,NSHIFT,NOUREC,ICOUNT,NTO,N
+*KEEP,STATI.							*KEEP,STATI.
+      COMMON /STATI/   SABIN,SBBIN,INBIN,IPBIN,IKBIN,IHBIN	      COMMON /STATI/   SABIN,SBBIN,INBIN,IPBIN,IKBIN,IHBIN
+      DOUBLE PRECISION SABIN(37),SBBIN(37)			      DOUBLE PRECISION SABIN(37),SBBIN(37)
+      INTEGER          INBIN(37),IPBIN(37),IKBIN(37),IHBIN(37	      INTEGER          INBIN(37),IPBIN(37),IKBIN(37),IHBIN(37
+*KEND.								*KEND.
+ 								 
+      INTEGER I,J,K,NELMEA					      INTEGER I,J,K,NELMEA
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( LH .GT. 0 ) THEN					      IF ( LH .GT. 0 ) THEN
+        CALL TOBUF( DATAB,0 )					        CALL TOBUF( DATAB,0 )
+        DO  2  I = 1,MAXBUF					        DO  2  I = 1,MAXBUF
+          DATAB(I) = 0.						          DATAB(I) = 0.
+    2   CONTINUE						    2   CONTINUE
+      ENDIF							      ENDIF
+      LH = 0							      LH = 0
+ 								 
+      IF ( FPRINT .OR. DEBUG ) THEN				      IF ( FPRINT .OR. DEBUG ) THEN
+        WRITE(MONIOU,101) NSHIFT,NOPART				        WRITE(MONIOU,101) NSHIFT,NOPART
+  101   FORMAT(' ',I10,' SHIFTS TO EXTERNAL STACK'/		  101   FORMAT(' ',I10,' SHIFTS TO EXTERNAL STACK'/
+     *         ' ',I10,' PARTICLES WRITTEN TO PATAPE')		     *         ' ',I10,' PARTICLES WRITTEN TO PATAPE')
+ 								 
+        IF ( .NOT. GHEISH ) THEN				        IF ( .NOT. GHEISH ) THEN
+          WRITE(MONIOU,103) (EBAL(I),I=1,10)			          WRITE(MONIOU,103) (EBAL(I),I=1,10)
+  103     FORMAT (/' ENERGY BALANCE OF PARTICLE PRODUCTION PR	  103     FORMAT (/' ENERGY BALANCE OF PARTICLE PRODUCTION PR
+     *             1P,5E20.8/5E20.8/)				     *             1P,5E20.8/5E20.8/)
+ 								 
+          WRITE(MONIOU,203) (PBAL(I),I=1,10)			          WRITE(MONIOU,203) (PBAL(I),I=1,10)
+  203     FORMAT (' MOMENTUM BALANCE OF PARTICLE PRODUCTION P	  203     FORMAT (' MOMENTUM BALANCE OF PARTICLE PRODUCTION P
+     *          1P,5E20.8/5E20.8/)				     *          1P,5E20.8/5E20.8/)
+ 								 
+          WRITE(MONIOU,104) (NCOUN(K),K=1,8)			          WRITE(MONIOU,104) (NCOUN(K),K=1,8)
+  104     FORMAT(//						  104     FORMAT(//
+     *      I10,' / ',I6,'  ANTINUCLEONS ENTER / ANNIHILATE I	     *      I10,' / ',I6,'  ANTINUCLEONS ENTER / ANNIHILATE I
+     *      I10,' / ',I6,'  ANTINUCLEONS ENTER / ANNIHILATE I	     *      I10,' / ',I6,'  ANTINUCLEONS ENTER / ANNIHILATE I
+     *      I10,' / ',I6,'  ANTINUCLEONS ENTER / ANNIHILATE I	     *      I10,' / ',I6,'  ANTINUCLEONS ENTER / ANNIHILATE I
+     *      I10,' / ',I6,'  ANTINUCLEONS ENTER / ANNIHILATE I	     *      I10,' / ',I6,'  ANTINUCLEONS ENTER / ANNIHILATE I
+        ENDIF							        ENDIF
+      ENDIF							      ENDIF
+ 								 
+      IF ( FPRINT ) THEN					      IF ( FPRINT ) THEN
+C  PRINT ENERGY - MULTIPLICITY MATRIX				C  PRINT ENERGY - MULTIPLICITY MATRIX
+        WRITE(MONIOU,209) SHOWNO,(K,K=1,13),			        WRITE(MONIOU,209) SHOWNO,(K,K=1,13),
+     *  (J,(MULTMA(J,K),K=1,13),10**((J-4.)/3.),10**((J-3.)/3	     *  (J,(MULTMA(J,K),K=1,13),10**((J-4.)/3.),10**((J-3.)/3
+     *     1,(INT(10**((K-1.)/3.)+1 ),K = 2,13),		     *     1,(INT(10**((K-1.)/3.)+1 ),K = 2,13),
+     *     2,(INT(10**((K   )/3.)   ),K = 2,13)			     *     2,(INT(10**((K   )/3.)   ),K = 2,13)
+  209   FORMAT(//' ENERGY - MULTIPLICITY MATRIX OF SHOWER NO 	  209   FORMAT(//' ENERGY - MULTIPLICITY MATRIX OF SHOWER NO 
+     *           ' ENERGY RUNS VERTICALLY, MULTIPLICITY HORIZ	     *           ' ENERGY RUNS VERTICALLY, MULTIPLICITY HORIZ
+     *           ' ',5X,5I9,3I8,5I7,'    ENERGY RANGE (GEV)'/	     *           ' ',5X,5I9,3I8,5I7,'    ENERGY RANGE (GEV)'/
+     *           37(/' ',I4,1X,5I9,3I8,5I7,2X,1P,2E10.1,0P)//	     *           37(/' ',I4,1X,5I9,3I8,5I7,2X,1P,2E10.1,0P)//
+     *           ' MULT.',5I9,3I8,5I7,5X,'LOWER BIN LIMIT'/	     *           ' MULT.',5I9,3I8,5I7,5X,'LOWER BIN LIMIT'/
+     *           ' RANGE',5I9,3I8,5I7,5X,'UPPER BIN LIMIT')	     *           ' RANGE',5I9,3I8,5I7,5X,'UPPER BIN LIMIT')
+      ENDIF							      ENDIF
+ 								 
+C  GET MEAN OF ELASTICITY FOR ENERGY BINS			C  GET MEAN OF ELASTICITY FOR ENERGY BINS
+      DO 3377  J = 1,37						      DO 3377  J = 1,37
+        NELMEA = 0						        NELMEA = 0
+        DO 3378  K = 1,10					        DO 3378  K = 1,10
+          NELMEA = NELMEA + IELDPM(J,K)				          NELMEA = NELMEA + IELDPM(J,K)
+ 3378   CONTINUE						 3378   CONTINUE
+        IF ( NELMEA .NE. 0 ) ELMEAN(J) = ELMEAN(J) / NELMEA	        IF ( NELMEA .NE. 0 ) ELMEAN(J) = ELMEAN(J) / NELMEA
+ 3377 CONTINUE							 3377 CONTINUE
+ 								 
+      IF ( FPRINT ) THEN					      IF ( FPRINT ) THEN
+C  PRINT ENERGY - ELASTICITY MATRIX				C  PRINT ENERGY - ELASTICITY MATRIX
+        WRITE(MONIOU,408) SHOWNO,(K,K=1,10),			        WRITE(MONIOU,408) SHOWNO,(K,K=1,10),
+     *        (J,(IELDPM(J,K),K=1,10),				     *        (J,(IELDPM(J,K),K=1,10),
+     *        ELMEAN(J),10**((J-4.)/3.),10**((J-3.)/3.),J=1,3	     *        ELMEAN(J),10**((J-4.)/3.),10**((J-3.)/3.),J=1,3
+     *        ((K-1)*0.1,K=1,10),(K*0.1,K=1,10)			     *        ((K-1)*0.1,K=1,10),(K*0.1,K=1,10)
+  408   FORMAT (//' ENERGY - ELASTICITY MATRIX OF SHOWER NO '	  408   FORMAT (//' ENERGY - ELASTICITY MATRIX OF SHOWER NO '
+     *            ' ENERGY RUNS VERTICALLY, ELASTICITY HORIZO	     *            ' ENERGY RUNS VERTICALLY, ELASTICITY HORIZO
+     *            ' ',5X,10I9,'   MEAN EL.   ENERGY RANGE (GE	     *            ' ',5X,10I9,'   MEAN EL.   ENERGY RANGE (GE
+     *            37(/' ',I4,1X,10I9,2X,1P,E10.3,2E10.1,0P)//	     *            37(/' ',I4,1X,10I9,2X,1P,E10.3,2E10.1,0P)//
+     *            ' ELA. ',10F9.2,5X,'LOWER BIN LIMIT'/		     *            ' ELA. ',10F9.2,5X,'LOWER BIN LIMIT'/
+     *            ' RANGE',10F9.2,5X,'UPPER BIN LIMIT')		     *            ' RANGE',10F9.2,5X,'UPPER BIN LIMIT')
+ 								 
+        WRITE(MONIOU,204) SHOWNO				        WRITE(MONIOU,204) SHOWNO
+  204   FORMAT(//' INTERACTIONS PER KINETIC ENERGY INTERVAL O	  204   FORMAT(//' INTERACTIONS PER KINETIC ENERGY INTERVAL O
+     *         ' NO ',I10//)					     *         ' NO ',I10//)
+ 								 
+        WRITE(MONIOU,205)					        WRITE(MONIOU,205)
+  205   FORMAT('   BIN    LOWER LIMIT    UPPER LIMIT    ',	  205   FORMAT('   BIN    LOWER LIMIT    UPPER LIMIT    ',
+     *         ' NUCLEON      PIONS      KAONS  S.BARYONS    	     *         ' NUCLEON      PIONS      KAONS  S.BARYONS    
+     *         '             IN GEV         IN GEV      ',	     *         '             IN GEV         IN GEV      ',
+     *         '  EVENTS     EVENTS     EVENTS     EVENTS  '/	     *         '  EVENTS     EVENTS     EVENTS     EVENTS  '/
+        WRITE(MONIOU,207) (I,SABIN(I),SBBIN(I),INBIN(I),IPBIN	        WRITE(MONIOU,207) (I,SABIN(I),SBBIN(I),INBIN(I),IPBIN
+     *    IKBIN(I),IHBIN(I),INBIN(I)+IPBIN(I)+IKBIN(I)+IHBIN(	     *    IKBIN(I),IHBIN(I),INBIN(I)+IPBIN(I)+IKBIN(I)+IHBIN(
+  207   FORMAT(' ',I5,1P,2E15.4,0P,1X,5I11)			  207   FORMAT(' ',I5,1P,2E15.4,0P,1X,5I11)
+ 								 
+        WRITE(MONIOU,301)					        WRITE(MONIOU,301)
+  301   FORMAT (//' INTERACTION LENGTH STATISTICS: ',		  301   FORMAT (//' INTERACTION LENGTH STATISTICS: ',
+     *        '    1 BIN CORRESPONDS TO 10 G/CM**2 OR 1KM FOR	     *        '    1 BIN CORRESPONDS TO 10 G/CM**2 OR 1KM FOR
+     *        '  BIN      LAMBDA NU   LAMBDA PI   LAMBDA KA  	     *        '  BIN      LAMBDA NU   LAMBDA PI   LAMBDA KA  
+     *                   'LAMBDA HY   LAMBDA MU   LAMBDA NUCL	     *                   'LAMBDA HY   LAMBDA MU   LAMBDA NUCL
+        WRITE(MONIOU,303) (I,INUCHI(I),IPICHI(I),IKACHI(I),IH	        WRITE(MONIOU,303) (I,INUCHI(I),IPICHI(I),IKACHI(I),IH
+     *                      IMUCHI(I),INNCHI(I),I=1,124)	     *                      IMUCHI(I),INNCHI(I),I=1,124)
+  303   FORMAT (' ',I4,6I12)					  303   FORMAT (' ',I4,6I12)
+ 								 
+        WRITE(MONIOU,105) IRECOR				        WRITE(MONIOU,105) IRECOR
+  105   FORMAT (/' NO OF WORDS WRITTEN TO PARTICLE TAPE UP TO	  105   FORMAT (/' NO OF WORDS WRITTEN TO PARTICLE TAPE UP TO
+     *           I10)						     *           I10)
+      ENDIF							      ENDIF
+ 								 
+      RETURN							      RETURN
+      END							      END

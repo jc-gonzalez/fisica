@@ -1,0 +1,86 @@
+      SUBROUTINE TSTINI						      SUBROUTINE TSTINI
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  T(O INTERMEDIATE) ST(ACK) INI(TIALIZATION)			C  T(O INTERMEDIATE) ST(ACK) INI(TIALIZATION)
+C								C
+C  INITIALIZE THE INTERMEDIATE STACK FOR A SINGLE REACTION	C  INITIALIZE THE INTERMEDIATE STACK FOR A SINGLE REACTION
+C  THIS SUBROUTINE IS CALLED FROM AAMAIN, BOX3, AND PIGEN	C  THIS SUBROUTINE IS CALLED FROM AAMAIN, BOX3, AND PIGEN
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,PAM.							*KEEP,PAM.
+      COMMON /PAM/     PAMA,SIGNUM				      COMMON /PAM/     PAMA,SIGNUM
+      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)			      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)
+*KEEP,PARPAR.							*KEEP,PARPAR.
+      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,		      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,
+     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE	     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE
+      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA	      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA
+     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH	     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH
+      INTEGER          ITYPE,LEVL				      INTEGER          ITYPE,LEVL
+*KEEP,PARPAE.							*KEEP,PARPAE.
+      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,	      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,
+      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)	      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)
+     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )	     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )
+     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )	     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )
+     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )	     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )
+     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )	     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )
+     *                 (CURPAR(12),ECM )			     *                 (CURPAR(12),ECM )
+*KEEP,REJECT.							*KEEP,REJECT.
+      COMMON /REJECT/  AVNREJ,					      COMMON /REJECT/  AVNREJ,
+     *                 ALTMIN,ANEXP,THICKA,THICKD,CUTLN,EONCU	     *                 ALTMIN,ANEXP,THICKA,THICKD,CUTLN,EONCU
+     *                 FNPRIM					     *                 FNPRIM
+      DOUBLE PRECISION AVNREJ(10)				      DOUBLE PRECISION AVNREJ(10)
+      REAL             ALTMIN(10),ANEXP(10),THICKA(10),THICKD	      REAL             ALTMIN(10),ANEXP(10),THICKA(10),THICKD
+     *                 CUTLN,EONCUT				     *                 CUTLN,EONCUT
+      LOGICAL          FNPRIM					      LOGICAL          FNPRIM
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEEP,STACKF.							*KEEP,STACKF.
+      COMMON /STACKF/  STACK,STACKP,EXST,NSHIFT,NOUREC,ICOUNT	      COMMON /STACKF/  STACK,STACKP,EXST,NSHIFT,NOUREC,ICOUNT
+      INTEGER          MAXSTK					      INTEGER          MAXSTK
+      PARAMETER        (MAXSTK = 12*340*2)			      PARAMETER        (MAXSTK = 12*340*2)
+      DOUBLE PRECISION STACK(MAXSTK)				      DOUBLE PRECISION STACK(MAXSTK)
+      INTEGER          STACKP,EXST,NSHIFT,NOUREC,ICOUNT,NTO,N	      INTEGER          STACKP,EXST,NSHIFT,NOUREC,ICOUNT,NTO,N
+*KEEP,THNVAR.							*KEEP,THNVAR.
+      COMMON /THNVAR/  STACKINT,INT_ICOUNT,THINNING		      COMMON /THNVAR/  STACKINT,INT_ICOUNT,THINNING
+      INTEGER          MAXICOUNT				      INTEGER          MAXICOUNT
+      PARAMETER        (MAXICOUNT=20000)			      PARAMETER        (MAXICOUNT=20000)
+      DOUBLE PRECISION STACKINT(MAXICOUNT,13)			      DOUBLE PRECISION STACKINT(MAXICOUNT,13)
+      INTEGER          INT_ICOUNT				      INTEGER          INT_ICOUNT
+      LOGICAL          THINNING					      LOGICAL          THINNING
+*KEND.								*KEND.
+ 								 
+      DOUBLE PRECISION EEPP					      DOUBLE PRECISION EEPP
+      INTEGER          I,J					      INTEGER          I,J
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,1)				      IF ( DEBUG ) WRITE(MDEBUG,1)
+ 1    FORMAT(' TSTINI: RESET INTERNAL REACTION STACK')		 1    FORMAT(' TSTINI: RESET INTERNAL REACTION STACK')
+ 								 
+      INT_ICOUNT = 0						      INT_ICOUNT = 0
+ 								 
+      THINNING = .FALSE.					      THINNING = .FALSE.
+ 								 
+      RETURN							      RETURN
+      END							      END

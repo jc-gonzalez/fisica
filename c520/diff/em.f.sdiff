@@ -1,0 +1,102 @@
+      SUBROUTINE EM						      SUBROUTINE EM
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  E(LECTRO) M(AGNETIC PARTICLES)				C  E(LECTRO) M(AGNETIC PARTICLES)
+C								C
+C  ROUTINE FOR TREATING EM PARTICLES				C  ROUTINE FOR TREATING EM PARTICLES
+C  THIS SUBROUTINE IS CALLED FROM BOX3				C  THIS SUBROUTINE IS CALLED FROM BOX3
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,GENER.							*KEEP,GENER.
+      COMMON /GENER/   GEN,ALEVEL				      COMMON /GENER/   GEN,ALEVEL
+      DOUBLE PRECISION GEN,ALEVEL				      DOUBLE PRECISION GEN,ALEVEL
+*KEEP,PAM.							*KEEP,PAM.
+      COMMON /PAM/     PAMA,SIGNUM				      COMMON /PAM/     PAMA,SIGNUM
+      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)			      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)
+*KEEP,PARPAR.							*KEEP,PARPAR.
+      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,		      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,
+     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE	     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE
+      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA	      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA
+     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH	     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH
+      INTEGER          ITYPE,LEVL				      INTEGER          ITYPE,LEVL
+*KEEP,PARPAE.							*KEEP,PARPAE.
+      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,	      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,
+      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)	      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)
+     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )	     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )
+     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )	     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )
+     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )	     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )
+     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )	     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )
+     *                 (CURPAR(12),ECM )			     *                 (CURPAR(12),ECM )
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEND.								*KEND.
+ 								 
+      DOUBLE PRECISION ENER					      DOUBLE PRECISION ENER
+      INTEGER          I					      INTEGER          I
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,444) (CURPAR(I),I=1,9)		      IF ( DEBUG ) WRITE(MDEBUG,444) (CURPAR(I),I=1,9)
+  444 FORMAT(' EM    : CURPAR=',1P,9E10.3)			  444 FORMAT(' EM    : CURPAR=',1P,9E10.3)
+ 								 
+C  GET CORRECT PARTICLE ENERGY					C  GET CORRECT PARTICLE ENERGY
+      IF     ( ITYPE  .EQ. 1 ) THEN				      IF     ( ITYPE  .EQ. 1 ) THEN
+        ENER = CURPAR(2)					        ENER = CURPAR(2)
+      ELSEIF ( ITYPE .EQ. 2  .OR.  ITYPE .EQ. 3 ) THEN		      ELSEIF ( ITYPE .EQ. 2  .OR.  ITYPE .EQ. 3 ) THEN
+C  Line commented due to a bug. Aitor 14-Feb-2000	      |	        ENER  = SECPAR(2) * PAMA(2)
+c        ENER  = SECPAR(2) * PAMA(2)			      <
+        ENER  = CURPAR(2) * PAMA(2)			      <
+      ELSE							      ELSE
+        WRITE(MONIOU,*) 'EM    : WRONG PARTICLE CODE =',ITYPE	        WRITE(MONIOU,*) 'EM    : WRONG PARTICLE CODE =',ITYPE
+        RETURN							        RETURN
+      ENDIF							      ENDIF
+ 								 
+C  LOOK FOR ENERGY OF EM PARTICLE				C  LOOK FOR ENERGY OF EM PARTICLE
+*     IF ( ENER .LE. 1.D7 ) THEN				*     IF ( ENER .LE. 1.D7 ) THEN
+C  EM-PARTICLE ENERGY IS BELOW LPM EFFECT, STORE IT TO SECPAR	C  EM-PARTICLE ENERGY IS BELOW LPM EFFECT, STORE IT TO SECPAR
+C  LPM LIMIT IS SET AT 1.*10**16 EV = 1.*10**7 GEV		C  LPM LIMIT IS SET AT 1.*10**16 EV = 1.*10**7 GEV
+        DO 101  I = 1,8						        DO 101  I = 1,8
+          SECPAR(I) = CURPAR(I)					          SECPAR(I) = CURPAR(I)
+  101   CONTINUE						  101   CONTINUE
+        SECPAR( 9)  = GEN					        SECPAR( 9)  = GEN
+        SECPAR(10)  = ALEVEL					        SECPAR(10)  = ALEVEL
+ 								 
+C  CALL NKG IF SELECTED						C  CALL NKG IF SELECTED
+        IF ( FNKG ) THEN					        IF ( FNKG ) THEN
+          CALL NKG( ENER )					          CALL NKG( ENER )
+        ENDIF							        ENDIF
+ 								 
+C  CALL EGS4 IF SELECTED ( PARTICLE IS TAKEN IN EGS FROM COMM	C  CALL EGS4 IF SELECTED ( PARTICLE IS TAKEN IN EGS FROM COMM
+        IF ( FEGS ) THEN					        IF ( FEGS ) THEN
+          CALL EGS4( ENER )					          CALL EGS4( ENER )
+        ENDIF							        ENDIF
+ 								 
+*     ELSE							*     ELSE
+C  EM-PARTICLE ENERGY IS ABOVE LPM EFFECT AND MUST BE TREATED	C  EM-PARTICLE ENERGY IS ABOVE LPM EFFECT AND MUST BE TREATED
+C  IF EM_PARTICLES ARE REQUESTED BY EGS OR NKG			C  IF EM_PARTICLES ARE REQUESTED BY EGS OR NKG
+*       IF ( FNKG .OR. FEGS ) CALL LPM(ENER)			*       IF ( FNKG .OR. FEGS ) CALL LPM(ENER)
+*     ENDIF							*     ENDIF
+ 								 
+      RETURN							      RETURN
+      END							      END

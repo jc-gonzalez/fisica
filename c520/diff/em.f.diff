@@ -1,0 +1,6 @@
+67,69c67
+< C  Line commented due to a bug. Aitor 14-Feb-2000
+< c        ENER  = SECPAR(2) * PAMA(2)
+<         ENER  = CURPAR(2) * PAMA(2)
+---
+>         ENER  = SECPAR(2) * PAMA(2)

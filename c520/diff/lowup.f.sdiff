@@ -1,0 +1,70 @@
+      SUBROUTINE LOWUP(CHAR)					      SUBROUTINE LOWUP(CHAR)
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  (CONVERTS) LOW(ER CASE CHARACTER TO) UP(PPER CASE CHARACTE	C  (CONVERTS) LOW(ER CASE CHARACTER TO) UP(PPER CASE CHARACTE
+C								C
+C  THIS SUBROUTINE IS CALLED FROM DATAC				C  THIS SUBROUTINE IS CALLED FROM DATAC
+C  ARGUMENT :							C  ARGUMENT :
+C   CHAR    =  CHARACTER TO BE CONVERTED			C   CHAR    =  CHARACTER TO BE CONVERTED
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+      CHARACTER*1 CHAR						      CHARACTER*1 CHAR
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF     ( CHAR .EQ. 'a' ) THEN				      IF     ( CHAR .EQ. 'a' ) THEN
+        CHAR='A'						        CHAR='A'
+      ELSEIF ( CHAR .EQ. 'b' ) THEN				      ELSEIF ( CHAR .EQ. 'b' ) THEN
+        CHAR='B'						        CHAR='B'
+      ELSEIF ( CHAR .EQ. 'c' ) THEN				      ELSEIF ( CHAR .EQ. 'c' ) THEN
+        CHAR='C'						        CHAR='C'
+      ELSEIF ( CHAR .EQ. 'd' ) THEN				      ELSEIF ( CHAR .EQ. 'd' ) THEN
+        CHAR='D'						        CHAR='D'
+      ELSEIF ( CHAR .EQ. 'e' ) THEN				      ELSEIF ( CHAR .EQ. 'e' ) THEN
+        CHAR='E'						        CHAR='E'
+      ELSEIF ( CHAR .EQ. 'f' ) THEN				      ELSEIF ( CHAR .EQ. 'f' ) THEN
+        CHAR='F'						        CHAR='F'
+      ELSEIF ( CHAR .EQ. 'g' ) THEN				      ELSEIF ( CHAR .EQ. 'g' ) THEN
+        CHAR='G'						        CHAR='G'
+      ELSEIF ( CHAR .EQ. 'h' ) THEN				      ELSEIF ( CHAR .EQ. 'h' ) THEN
+        CHAR='H'						        CHAR='H'
+      ELSEIF ( CHAR .EQ. 'i' ) THEN				      ELSEIF ( CHAR .EQ. 'i' ) THEN
+        CHAR='I'						        CHAR='I'
+      ELSEIF ( CHAR .EQ. 'j' ) THEN				      ELSEIF ( CHAR .EQ. 'j' ) THEN
+        CHAR='J'						        CHAR='J'
+      ELSEIF ( CHAR .EQ. 'k' ) THEN				      ELSEIF ( CHAR .EQ. 'k' ) THEN
+        CHAR='K'						        CHAR='K'
+      ELSEIF ( CHAR .EQ. 'l' ) THEN				      ELSEIF ( CHAR .EQ. 'l' ) THEN
+        CHAR='L'						        CHAR='L'
+      ELSEIF ( CHAR .EQ. 'm' ) THEN				      ELSEIF ( CHAR .EQ. 'm' ) THEN
+        CHAR='M'						        CHAR='M'
+      ELSEIF ( CHAR .EQ. 'n' ) THEN				      ELSEIF ( CHAR .EQ. 'n' ) THEN
+        CHAR='N'						        CHAR='N'
+      ELSEIF ( CHAR .EQ. 'o' ) THEN				      ELSEIF ( CHAR .EQ. 'o' ) THEN
+        CHAR='O'						        CHAR='O'
+      ELSEIF ( CHAR .EQ. 'p' ) THEN				      ELSEIF ( CHAR .EQ. 'p' ) THEN
+        CHAR='P'						        CHAR='P'
+      ELSEIF ( CHAR .EQ. 'q' ) THEN				      ELSEIF ( CHAR .EQ. 'q' ) THEN
+        CHAR='Q'						        CHAR='Q'
+      ELSEIF ( CHAR .EQ. 'r' ) THEN				      ELSEIF ( CHAR .EQ. 'r' ) THEN
+        CHAR='R'						        CHAR='R'
+      ELSEIF ( CHAR .EQ. 's' ) THEN				      ELSEIF ( CHAR .EQ. 's' ) THEN
+        CHAR='S'						        CHAR='S'
+      ELSEIF ( CHAR .EQ. 't' ) THEN				      ELSEIF ( CHAR .EQ. 't' ) THEN
+        CHAR='T'						        CHAR='T'
+      ELSEIF ( CHAR .EQ. 'u' ) THEN				      ELSEIF ( CHAR .EQ. 'u' ) THEN
+        CHAR='U'						        CHAR='U'
+      ELSEIF ( CHAR .EQ. 'v' ) THEN				      ELSEIF ( CHAR .EQ. 'v' ) THEN
+        CHAR='V'						        CHAR='V'
+      ELSEIF ( CHAR .EQ. 'w' ) THEN				      ELSEIF ( CHAR .EQ. 'w' ) THEN
+        CHAR='W'						        CHAR='W'
+      ELSEIF ( CHAR .EQ. 'x' ) THEN				      ELSEIF ( CHAR .EQ. 'x' ) THEN
+        CHAR='X'						        CHAR='X'
+      ELSEIF ( CHAR .EQ. 'y' ) THEN				      ELSEIF ( CHAR .EQ. 'y' ) THEN
+        CHAR='Y'						        CHAR='Y'
+      ELSEIF ( CHAR .EQ. 'z' ) THEN				      ELSEIF ( CHAR .EQ. 'z' ) THEN
+        CHAR='Z'						        CHAR='Z'
+      ENDIF							      ENDIF
+ 								 
+      RETURN							      RETURN
+      END							      END

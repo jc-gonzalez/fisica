@@ -1,0 +1,21 @@
+      SUBROUTINE GRANOR(A,B)					      SUBROUTINE GRANOR(A,B)
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  TWO GAUSSIAN DISTRIBUTED RANDOM NUMBERS (MEAN=0, SIGMA=1)	C  TWO GAUSSIAN DISTRIBUTED RANDOM NUMBERS (MEAN=0, SIGMA=1)
+C								C
+C  RANDOM NUMBER GENERATORS USED BY THE GHEISHA ROUTINES	C  RANDOM NUMBER GENERATORS USED BY THE GHEISHA ROUTINES
+C  ADAPTED FOR USE WITH THE CORSIKA RANDOM NUMBER GENERATORS	C  ADAPTED FOR USE WITH THE CORSIKA RANDOM NUMBER GENERATORS
+C								C
+C  DESIGN  : J. KNAPP   IK1  FZK KARLSRUHE			C  DESIGN  : J. KNAPP   IK1  FZK KARLSRUHE
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      REAL RD(2)						      REAL RD(2)
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      CALL RMMAR(RD,2,1)					      CALL RMMAR(RD,2,1)
+      U1 = SQRT(-2.*LOG(RD(1)))					      U1 = SQRT(-2.*LOG(RD(1)))
+      U2 = RD(2) * 6.28318530718				      U2 = RD(2) * 6.28318530718
+      A = COS(U2) * U1						      A = COS(U2) * U1
+      B = SIN(U2) * U1						      B = SIN(U2) * U1
+      RETURN							      RETURN
+      END							      END

@@ -1,0 +1,342 @@
+      SUBROUTINE PPARAM						      SUBROUTINE PPARAM
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  P(ARTICLE) PARAM(ETERS)					C  P(ARTICLE) PARAM(ETERS)
+C								C
+C  SETS PARAMETERS (PARTICLE TYP, TRANSVERSE MOMENTUM)		C  SETS PARAMETERS (PARTICLE TYP, TRANSVERSE MOMENTUM)
+C  OF SECONDARY PARTICLES IN HDPM				C  OF SECONDARY PARTICLES IN HDPM
+C  THIS SUBROUTINE IS CALLED FROM HDPM				C  THIS SUBROUTINE IS CALLED FROM HDPM
+C								C
+C  DESIGN  : D. HECK    IK3  FZK KARLSRUHE			C  DESIGN  : D. HECK    IK3  FZK KARLSRUHE
+C  CHANGES : J.N. CAPDEVIELLE CDF PARIS				C  CHANGES : J.N. CAPDEVIELLE CDF PARIS
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)			      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+*KEEP,AVPT.							*KEEP,AVPT.
+      COMMON /AVPT/    AVPT,AVPK,AVPN,AVPH,AVPE			      COMMON /AVPT/    AVPT,AVPK,AVPN,AVPH,AVPE
+      DOUBLE PRECISION AVPT,AVPK,AVPN,AVPH,AVPE			      DOUBLE PRECISION AVPT,AVPK,AVPN,AVPH,AVPE
+*KEEP,DPMFLG.							*KEEP,DPMFLG.
+      COMMON /DPMFLG/  NFLAIN,NFLDIF,NFLPI0,NFLCHE,NFLPIF,NFR	      COMMON /DPMFLG/  NFLAIN,NFLDIF,NFLPI0,NFLCHE,NFLPIF,NFR
+      INTEGER          NFLAIN,NFLDIF,NFLPI0,NFLCHE,NFLPIF,NFR	      INTEGER          NFLAIN,NFLDIF,NFLPI0,NFLCHE,NFLPIF,NFR
+*KEEP,INDICE.							*KEEP,INDICE.
+      COMMON /INDICE/  NNUCN,NKA0,NHYPN,NETA,NETAS,NPIZER,	      COMMON /INDICE/  NNUCN,NKA0,NHYPN,NETA,NETAS,NPIZER,
+     *                 NNC,NKC,NHC,NPC,NCH,NNN,NKN,NHN,NET,NP	     *                 NNC,NKC,NHC,NPC,NCH,NNN,NKN,NHN,NET,NP
+      INTEGER          NNUCN(2:3),NKA0(2:3),NHYPN(2:3),NETA(2	      INTEGER          NNUCN(2:3),NKA0(2:3),NHYPN(2:3),NETA(2
+     *                 NETAS(2:3),NPIZER(2:3),			     *                 NETAS(2:3),NPIZER(2:3),
+     *                 NNC,NKC,NHC,NPC,NCH,NNN,NKN,NHN,NET,NP	     *                 NNC,NKC,NHC,NPC,NCH,NNN,NKN,NHN,NET,NP
+*KEEP,INTER.							*KEEP,INTER.
+      COMMON /INTER/   AVCH,AVCH3,DC0,DLOG,DMLOG,ECMDIF,ECMDP	      COMMON /INTER/   AVCH,AVCH3,DC0,DLOG,DMLOG,ECMDIF,ECMDP
+     *                 FNEUT,FNEUT2,GNU,PLAB,POSC2,POSC3,POSN	     *                 FNEUT,FNEUT2,GNU,PLAB,POSC2,POSC3,POSN
+     *                 RC3TO2,S,SEUGF,SEUGP,SLOG,SLOGSQ,SMLOG	     *                 RC3TO2,S,SEUGF,SEUGP,SLOG,SLOGSQ,SMLOG
+     *                 WIDC2,WIDC3,WIDN2,WIDN3,YCM,YY0,ZN,	     *                 WIDC2,WIDC3,WIDN2,WIDN3,YCM,YY0,ZN,
+     *                 IDIF,ITAR				     *                 IDIF,ITAR
+      DOUBLE PRECISION AVCH,AVCH3,DC0,DLOG,DMLOG,ECMDIF,ECMDP	      DOUBLE PRECISION AVCH,AVCH3,DC0,DLOG,DMLOG,ECMDIF,ECMDP
+     *                 FNEUT,FNEUT2,GNU,PLAB,POSC2,POSC3,POSN	     *                 FNEUT,FNEUT2,GNU,PLAB,POSC2,POSC3,POSN
+     *                 RC3TO2,S,SEUGF,SEUGP,SLOG,SLOGSQ,SMLOG	     *                 RC3TO2,S,SEUGF,SEUGP,SLOG,SLOGSQ,SMLOG
+     *                 WIDC2,WIDC3,WIDN2,WIDN3,YCM,YY0,ZN	     *                 WIDC2,WIDC3,WIDN2,WIDN3,YCM,YY0,ZN
+      INTEGER          IDIF,ITAR				      INTEGER          IDIF,ITAR
+*KEEP,LEPAR.							*KEEP,LEPAR.
+      COMMON /LEPAR/   LEPAR1,LEPAR2,LASTPI,NRESPC,NRESPN,NCP	      COMMON /LEPAR/   LEPAR1,LEPAR2,LASTPI,NRESPC,NRESPN,NCP
+      INTEGER          LEPAR1,LEPAR2,LASTPI,NRESPC,NRESPN,NCP	      INTEGER          LEPAR1,LEPAR2,LASTPI,NRESPC,NRESPN,NCP
+*KEEP,NEWPAR.							*KEEP,NEWPAR.
+      COMMON /NEWPAR/  EA,PT2,PX,PY,TMAS,YR,ITYP,		      COMMON /NEWPAR/  EA,PT2,PX,PY,TMAS,YR,ITYP,
+     *                 IA1,IA2,IB1,IB2,IC1,IC2,ID1,ID2,IE1,IE	     *                 IA1,IA2,IB1,IB2,IC1,IC2,ID1,ID2,IE1,IE
+     *                 IG1,IG2,IH1,IH2,II1,II2,IJ1,NTOT		     *                 IG1,IG2,IH1,IH2,II1,II2,IJ1,NTOT
+      DOUBLE PRECISION EA(3000),PT2(3000),PX(3000),PY(3000),T	      DOUBLE PRECISION EA(3000),PT2(3000),PX(3000),PY(3000),T
+     *                 YR(3000)					     *                 YR(3000)
+      INTEGER          ITYP(3000),				      INTEGER          ITYP(3000),
+     *                 IA1,IA2,IB1,IB2,IC1,IC2,ID1,ID2,IE1,IE	     *                 IA1,IA2,IB1,IB2,IC1,IC2,ID1,ID2,IE1,IE
+     *                 IG1,IG2,IH1,IH2,II1,II2,IJ1,NTOT		     *                 IG1,IG2,IH1,IH2,II1,II2,IJ1,NTOT
+*KEEP,PAM.							*KEEP,PAM.
+      COMMON /PAM/     PAMA,SIGNUM				      COMMON /PAM/     PAMA,SIGNUM
+      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)			      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)
+*KEEP,RANDPA.							*KEEP,RANDPA.
+      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR		      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR
+      DOUBLE PRECISION FAC,U1,U2				      DOUBLE PRECISION FAC,U1,U2
+      REAL             RD(3000)					      REAL             RD(3000)
+      INTEGER          ISEED(103,10),NSEQ			      INTEGER          ISEED(103,10),NSEQ
+      LOGICAL          KNOR					      LOGICAL          KNOR
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEND.								*KEND.
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,*) 'PPARAM: NTOT,NPC,NCPLUS='	      IF ( DEBUG ) WRITE(MDEBUG,*) 'PPARAM: NTOT,NPC,NCPLUS='
+     *                                      NTOT,NPC,NCPLUS	     *                                      NTOT,NPC,NCPLUS
+ 								 
+C  FILL PARTICLES INTO ARRAYS, CALCULATE PT AND SUM UP		C  FILL PARTICLES INTO ARRAYS, CALCULATE PT AND SUM UP
+      SPX   = 0.D0						      SPX   = 0.D0
+      SPY   = 0.D0						      SPY   = 0.D0
+      NPART = 3							      NPART = 3
+C  PROTON ANTIPROTON PAIRS					C  PROTON ANTIPROTON PAIRS
+      DO 1003  K = 1,NNC					      DO 1003  K = 1,NNC
+        CALL RMMAR( RD,1,1 )					        CALL RMMAR( RD,1,1 )
+        IF ( RD(1) .LT. 0.5 ) THEN				        IF ( RD(1) .LT. 0.5 ) THEN
+          ITYP(NPART)   = 14					          ITYP(NPART)   = 14
+          ITYP(NPART+1) = 15					          ITYP(NPART+1) = 15
+        ELSE							        ELSE
+          ITYP(NPART)   = 15					          ITYP(NPART)   = 15
+          ITYP(NPART+1) = 14					          ITYP(NPART+1) = 14
+        ENDIF							        ENDIF
+        CALL PTRAM( ZN,AVPN,PX(NPART),PY(NPART) )		        CALL PTRAM( ZN,AVPN,PX(NPART),PY(NPART) )
+        CALL PTRAM( ZN,AVPN,PX(NPART+1),PY(NPART+1) )		        CALL PTRAM( ZN,AVPN,PX(NPART+1),PY(NPART+1) )
+        SPX   = SPX + PX(NPART) + PX(NPART+1)			        SPX   = SPX + PX(NPART) + PX(NPART+1)
+        SPY   = SPY + PY(NPART) + PY(NPART+1)			        SPY   = SPY + PY(NPART) + PY(NPART+1)
+        NPART = NPART + 2					        NPART = NPART + 2
+ 1003 CONTINUE							 1003 CONTINUE
+C  K+ K- PAIRS							C  K+ K- PAIRS
+      DO 1004  K = 1,NKC					      DO 1004  K = 1,NKC
+        CALL RMMAR( RD,1,1 )					        CALL RMMAR( RD,1,1 )
+        IF ( RD(1) .LT. 0.5 ) THEN				        IF ( RD(1) .LT. 0.5 ) THEN
+          ITYP(NPART)   = 11					          ITYP(NPART)   = 11
+          ITYP(NPART+1) = 12					          ITYP(NPART+1) = 12
+        ELSE							        ELSE
+          ITYP(NPART)   = 12					          ITYP(NPART)   = 12
+          ITYP(NPART+1) = 11					          ITYP(NPART+1) = 11
+        ENDIF							        ENDIF
+        CALL PTRAM( ZN,AVPK,PX(NPART),PY(NPART) )		        CALL PTRAM( ZN,AVPK,PX(NPART),PY(NPART) )
+        CALL PTRAM( ZN,AVPK,PX(NPART+1),PY(NPART+1) )		        CALL PTRAM( ZN,AVPK,PX(NPART+1),PY(NPART+1) )
+        SPX   = SPX + PX(NPART) + PX(NPART+1)			        SPX   = SPX + PX(NPART) + PX(NPART+1)
+        SPY   = SPY + PY(NPART) + PY(NPART+1)			        SPY   = SPY + PY(NPART) + PY(NPART+1)
+        NPART = NPART + 2					        NPART = NPART + 2
+ 1004 CONTINUE							 1004 CONTINUE
+C  SIGMA PAIRS							C  SIGMA PAIRS
+      DO 1005  K = 1,NHC					      DO 1005  K = 1,NHC
+        CALL RMMAR( RD,2,1 )					        CALL RMMAR( RD,2,1 )
+        IF ( RD(1) .LT. 0.5 ) THEN				        IF ( RD(1) .LT. 0.5 ) THEN
+          IF ( RD(2) .LT. 0.5 ) THEN				          IF ( RD(2) .LT. 0.5 ) THEN
+            ITYP(NPART)   = 19					            ITYP(NPART)   = 19
+            ITYP(NPART+1) = 27					            ITYP(NPART+1) = 27
+          ELSE							          ELSE
+            ITYP(NPART)   = 27					            ITYP(NPART)   = 27
+            ITYP(NPART+1) = 19					            ITYP(NPART+1) = 19
+          ENDIF							          ENDIF
+        ELSE							        ELSE
+          IF ( RD(2) .LT. 0.5 ) THEN				          IF ( RD(2) .LT. 0.5 ) THEN
+            ITYP(NPART)   = 21					            ITYP(NPART)   = 21
+            ITYP(NPART+1) = 29					            ITYP(NPART+1) = 29
+          ELSE							          ELSE
+            ITYP(NPART)   = 29					            ITYP(NPART)   = 29
+            ITYP(NPART+1) = 21					            ITYP(NPART+1) = 21
+          ENDIF							          ENDIF
+        ENDIF							        ENDIF
+        CALL PTRAM( ZN,AVPH,PX(NPART),PY(NPART) )		        CALL PTRAM( ZN,AVPH,PX(NPART),PY(NPART) )
+        CALL PTRAM( ZN,AVPH,PX(NPART+1),PY(NPART+1) )		        CALL PTRAM( ZN,AVPH,PX(NPART+1),PY(NPART+1) )
+        SPX   = SPX + PX(NPART) + PX(NPART+1)			        SPX   = SPX + PX(NPART) + PX(NPART+1)
+        SPY   = SPY + PY(NPART) + PY(NPART+1)			        SPY   = SPY + PY(NPART) + PY(NPART+1)
+        NPART = NPART + 2					        NPART = NPART + 2
+ 1005 CONTINUE							 1005 CONTINUE
+ 								 
+C  DECIDE WITH WHICH CHARGED PION TO START WITH			C  DECIDE WITH WHICH CHARGED PION TO START WITH
+C  NUMBER OF PIONS MAY BE ODD IN THE CASE IF ISEL IS 1		C  NUMBER OF PIONS MAY BE ODD IN THE CASE IF ISEL IS 1
+      CALL RMMAR( RD,1,1 )					      CALL RMMAR( RD,1,1 )
+      IF ( RD(1) .GT. 0.5 ) THEN				      IF ( RD(1) .GT. 0.5 ) THEN
+        NPIOCH = 0						        NPIOCH = 0
+      ELSE							      ELSE
+        NPIOCH = 1						        NPIOCH = 1
+      ENDIF							      ENDIF
+      NPOS = NCPLUS						      NPOS = NCPLUS
+C  PI +-							C  PI +-
+      DO 1007  K = 1,NPC					      DO 1007  K = 1,NPC
+        IF     ( NPC-K+1 .LE.  NPOS ) THEN			        IF     ( NPC-K+1 .LE.  NPOS ) THEN
+          NPIOCH = 1						          NPIOCH = 1
+          IF ( DEBUG ) WRITE(MDEBUG,*) '   NPC,K,NPOS,NPIOCH=	          IF ( DEBUG ) WRITE(MDEBUG,*) '   NPC,K,NPOS,NPIOCH=
+     *                                     NPC,K,NPOS,NPIOCH	     *                                     NPC,K,NPOS,NPIOCH
+        ELSEIF ( NPC-K+1 .LE. -NPOS ) THEN			        ELSEIF ( NPC-K+1 .LE. -NPOS ) THEN
+          NPIOCH = 0						          NPIOCH = 0
+          IF ( DEBUG ) WRITE(MDEBUG,*) '   NPC,K,-NPOS,NPIOCH	          IF ( DEBUG ) WRITE(MDEBUG,*) '   NPC,K,-NPOS,NPIOCH
+     *                                     NPC,K,-NPOS,NPIOCH	     *                                     NPC,K,-NPOS,NPIOCH
+        ENDIF							        ENDIF
+        IF ( NPIOCH .EQ. 0 ) THEN				        IF ( NPIOCH .EQ. 0 ) THEN
+          ITYP(NPART) = 8					          ITYP(NPART) = 8
+          NPIOCH = 1						          NPIOCH = 1
+          NPOS   = NPOS + 1					          NPOS   = NPOS + 1
+        ELSE							        ELSE
+          ITYP(NPART) = 9					          ITYP(NPART) = 9
+          NPIOCH = 0						          NPIOCH = 0
+          NPOS   = NPOS - 1					          NPOS   = NPOS - 1
+        ENDIF							        ENDIF
+        CALL PTRAM( ZN,AVPT,PX(NPART),PY(NPART) )		        CALL PTRAM( ZN,AVPT,PX(NPART),PY(NPART) )
+        SPX   = SPX + PX(NPART)					        SPX   = SPX + PX(NPART)
+        SPY   = SPY + PY(NPART)					        SPY   = SPY + PY(NPART)
+        NPART = NPART + 1					        NPART = NPART + 1
+ 1007 CONTINUE							 1007 CONTINUE
+C  NEUTRON ANTINEUTRON PAIRS					C  NEUTRON ANTINEUTRON PAIRS
+      DO 1008  K = 1,NNN					      DO 1008  K = 1,NNN
+        CALL RMMAR( RD,1,1 )					        CALL RMMAR( RD,1,1 )
+        IF ( RD(1) .LT. 0.5 ) THEN				        IF ( RD(1) .LT. 0.5 ) THEN
+          ITYP(NPART)   = 13					          ITYP(NPART)   = 13
+          ITYP(NPART+1) = 25					          ITYP(NPART+1) = 25
+        ELSE							        ELSE
+          ITYP(NPART)   = 25					          ITYP(NPART)   = 25
+          ITYP(NPART+1) = 13					          ITYP(NPART+1) = 13
+        ENDIF							        ENDIF
+        CALL PTRAM( ZN,AVPN,PX(NPART),PY(NPART) )		        CALL PTRAM( ZN,AVPN,PX(NPART),PY(NPART) )
+        CALL PTRAM( ZN,AVPN,PX(NPART+1),PY(NPART+1) )		        CALL PTRAM( ZN,AVPN,PX(NPART+1),PY(NPART+1) )
+        SPX   = SPX + PX(NPART) + PX(NPART+1)			        SPX   = SPX + PX(NPART) + PX(NPART+1)
+        SPY   = SPY + PY(NPART) + PY(NPART+1)			        SPY   = SPY + PY(NPART) + PY(NPART+1)
+        NPART = NPART + 2					        NPART = NPART + 2
+ 1008 CONTINUE							 1008 CONTINUE
+C  K0L K0S PAIRS						C  K0L K0S PAIRS
+      DO 1009  K = 1,NKN					      DO 1009  K = 1,NKN
+        CALL RMMAR( RD,1,1 )					        CALL RMMAR( RD,1,1 )
+        IF ( RD(1) .LT. 0.5 ) THEN				        IF ( RD(1) .LT. 0.5 ) THEN
+          ITYP(NPART)   = 10					          ITYP(NPART)   = 10
+          ITYP(NPART+1) = 16					          ITYP(NPART+1) = 16
+        ELSE							        ELSE
+          ITYP(NPART)   = 16					          ITYP(NPART)   = 16
+          ITYP(NPART+1) = 10					          ITYP(NPART+1) = 10
+        ENDIF							        ENDIF
+        CALL PTRAM( ZN,AVPK,PX(NPART),PY(NPART) )		        CALL PTRAM( ZN,AVPK,PX(NPART),PY(NPART) )
+        CALL PTRAM( ZN,AVPK,PX(NPART+1),PY(NPART+1) )		        CALL PTRAM( ZN,AVPK,PX(NPART+1),PY(NPART+1) )
+        SPX   = SPX + PX(NPART) + PX(NPART+1)			        SPX   = SPX + PX(NPART) + PX(NPART+1)
+        SPY   = SPY + PY(NPART) + PY(NPART+1)			        SPY   = SPY + PY(NPART) + PY(NPART+1)
+        NPART = NPART + 2					        NPART = NPART + 2
+ 1009 CONTINUE							 1009 CONTINUE
+C  LAMDA/SIGMA0 PAIRS						C  LAMDA/SIGMA0 PAIRS
+      DO 1010  K = 1,NHN					      DO 1010  K = 1,NHN
+        CALL RMMAR( RD,2,1 )					        CALL RMMAR( RD,2,1 )
+        IF ( RD(1) .LT. 0.5 ) THEN				        IF ( RD(1) .LT. 0.5 ) THEN
+          IF ( RD(2) .LT. 0.5 ) THEN				          IF ( RD(2) .LT. 0.5 ) THEN
+            ITYP(NPART)   = 18					            ITYP(NPART)   = 18
+            ITYP(NPART+1) = 28					            ITYP(NPART+1) = 28
+          ELSE							          ELSE
+            ITYP(NPART)   = 28					            ITYP(NPART)   = 28
+            ITYP(NPART+1) = 18					            ITYP(NPART+1) = 18
+          ENDIF							          ENDIF
+        ELSE							        ELSE
+          IF ( RD(2) .LT. 0.5 ) THEN				          IF ( RD(2) .LT. 0.5 ) THEN
+            ITYP(NPART)   = 26					            ITYP(NPART)   = 26
+            ITYP(NPART+1) = 20					            ITYP(NPART+1) = 20
+          ELSE							          ELSE
+            ITYP(NPART)   = 20					            ITYP(NPART)   = 20
+            ITYP(NPART+1) = 26					            ITYP(NPART+1) = 26
+          ENDIF							          ENDIF
+        ENDIF							        ENDIF
+C      -----  CHANGE BY JNC DEC.96)				C      -----  CHANGE BY JNC DEC.96)
+        IF ( ECMDPM .LE. 500.D0 ) THEN				        IF ( ECMDPM .LE. 500.D0 ) THEN
+          CALL PTRAN( ZN,AVPH,PX(NPART),PY(NPART) )		          CALL PTRAN( ZN,AVPH,PX(NPART),PY(NPART) )
+          CALL PTRAN( ZN,AVPH,PX(NPART+1),PY(NPART+1) )		          CALL PTRAN( ZN,AVPH,PX(NPART+1),PY(NPART+1) )
+        ELSE							        ELSE
+          CALL PTRAM( ZN,AVPH,PX(NPART),PY(NPART) )		          CALL PTRAM( ZN,AVPH,PX(NPART),PY(NPART) )
+          CALL PTRAM( ZN,AVPH,PX(NPART+1),PY(NPART+1) )		          CALL PTRAM( ZN,AVPH,PX(NPART+1),PY(NPART+1) )
+        ENDIF							        ENDIF
+        SPX   = SPX + PX(NPART) + PX(NPART+1)			        SPX   = SPX + PX(NPART) + PX(NPART+1)
+        SPY   = SPY + PY(NPART) + PY(NPART+1)			        SPY   = SPY + PY(NPART) + PY(NPART+1)
+        NPART = NPART + 2					        NPART = NPART + 2
+ 1010 CONTINUE							 1010 CONTINUE
+C  ETA								C  ETA
+      DO 1013  K = 1,NET					      DO 1013  K = 1,NET
+C  FIRST FOR ETAS FROM THIRD STRING				C  FIRST FOR ETAS FROM THIRD STRING
+        IF     ( K .LE. NETA(3,1)                            	        IF     ( K .LE. NETA(3,1)                            
+          ITYP(NPART) = 71					          ITYP(NPART) = 71
+        ELSEIF ( K .LE. NETA(3,1)+NETA(3,2)                  	        ELSEIF ( K .LE. NETA(3,1)+NETA(3,2)                  
+          ITYP(NPART) = 72					          ITYP(NPART) = 72
+        ELSEIF ( K .LE. NETA(3,1)+NETA(3,2)+NETA(3,3)        	        ELSEIF ( K .LE. NETA(3,1)+NETA(3,2)+NETA(3,3)        
+          ITYP(NPART) = 73					          ITYP(NPART) = 73
+        ELSEIF ( K .LE. NETA(3,1)+NETA(3,2)+NETA(3,3)+NETA(3,	        ELSEIF ( K .LE. NETA(3,1)+NETA(3,2)+NETA(3,3)+NETA(3,
+          ITYP(NPART) = 74					          ITYP(NPART) = 74
+C  NOW FOR ETAS FROM FIRST AND SECOND STRING			C  NOW FOR ETAS FROM FIRST AND SECOND STRING
+        ELSEIF ( K .LE. NETAS(3)+NETA(2,1)                   	        ELSEIF ( K .LE. NETAS(3)+NETA(2,1)                   
+          ITYP(NPART) = 71					          ITYP(NPART) = 71
+        ELSEIF ( K .LE. NETAS(3)+NETA(2,1)+NETA(2,2)         	        ELSEIF ( K .LE. NETAS(3)+NETA(2,1)+NETA(2,2)         
+          ITYP(NPART) = 72					          ITYP(NPART) = 72
+        ELSEIF ( K .LE. NETAS(3)+NETA(2,1)+NETA(2,2)+NETA(2,3	        ELSEIF ( K .LE. NETAS(3)+NETA(2,1)+NETA(2,2)+NETA(2,3
+          ITYP(NPART) = 73					          ITYP(NPART) = 73
+        ELSE							        ELSE
+          ITYP(NPART) = 74					          ITYP(NPART) = 74
+        ENDIF							        ENDIF
+C      -----  CHANGE BY JNC DEC.96)				C      -----  CHANGE BY JNC DEC.96)
+        IF ( ECMDPM .LE. 500.D0 ) THEN				        IF ( ECMDPM .LE. 500.D0 ) THEN
+          CALL PTRAN( ZN,AVPE,PX(NPART),PY(NPART) )		          CALL PTRAN( ZN,AVPE,PX(NPART),PY(NPART) )
+        ELSE							        ELSE
+          CALL PTRAM( ZN,AVPE,PX(NPART),PY(NPART) )		          CALL PTRAM( ZN,AVPE,PX(NPART),PY(NPART) )
+        ENDIF							        ENDIF
+        SPX   = SPX + PX(NPART)					        SPX   = SPX + PX(NPART)
+        SPY   = SPY + PY(NPART)					        SPY   = SPY + PY(NPART)
+        NPART = NPART + 1					        NPART = NPART + 1
+ 1013 CONTINUE							 1013 CONTINUE
+C  PI(0)							C  PI(0)
+      DO 1014  K = 1,NPN					      DO 1014  K = 1,NPN
+        ITYP(NPART) = 7						        ITYP(NPART) = 7
+C      -----  CHANGE BY JNC DEC.96)				C      -----  CHANGE BY JNC DEC.96)
+        IF ( ECMDPM .LE. 500.D0 ) THEN				        IF ( ECMDPM .LE. 500.D0 ) THEN
+          CALL PTRAN( ZN,AVPT,PX(NPART),PY(NPART) )		          CALL PTRAN( ZN,AVPT,PX(NPART),PY(NPART) )
+        ELSE							        ELSE
+          CALL PTRAM( ZN,AVPT,PX(NPART),PY(NPART) )		          CALL PTRAM( ZN,AVPT,PX(NPART),PY(NPART) )
+        ENDIF							        ENDIF
+        SPX   = SPX + PX(NPART)					        SPX   = SPX + PX(NPART)
+        SPY   = SPY + PY(NPART)					        SPY   = SPY + PY(NPART)
+        NPART = NPART + 1					        NPART = NPART + 1
+ 1014 CONTINUE							 1014 CONTINUE
+ 								 
+C  ANTILEADER (FROM TARGET, THEREFORE ALWAYS NUCLEON OR DELTA	C  ANTILEADER (FROM TARGET, THEREFORE ALWAYS NUCLEON OR DELTA
+      ITYP(2) = LEPAR2						      ITYP(2) = LEPAR2
+C      -----  CHANGE BY JNC DEC.96)				C      -----  CHANGE BY JNC DEC.96)
+      IF ( ECMDPM .LE. 500.D0 ) THEN				      IF ( ECMDPM .LE. 500.D0 ) THEN
+        CALL PTRAN( ZN,AVPN,PX(2),PY(2) )			        CALL PTRAN( ZN,AVPN,PX(2),PY(2) )
+      ELSE							      ELSE
+        CALL PTRAM( ZN,AVPN,PX(2),PY(2) )			        CALL PTRAM( ZN,AVPN,PX(2),PY(2) )
+      ENDIF							      ENDIF
+ 								 
+C  FIRST PARTICLE IS LEADING PARTICLE				C  FIRST PARTICLE IS LEADING PARTICLE
+      ITYP(1) = LEPAR1						      ITYP(1) = LEPAR1
+      IF     (  (LEPAR1 .GE.  7  .AND.  LEPAR1 .LE.  9)  .OR.	      IF     (  (LEPAR1 .GE.  7  .AND.  LEPAR1 .LE.  9)  .OR.
+     *          (LEPAR1 .GE. 51  .AND.  LEPAR1 .LE. 53) ) THE	     *          (LEPAR1 .GE. 51  .AND.  LEPAR1 .LE. 53) ) THE
+C  LEADING PARTICLE IS PION OR RHO RESONANCE			C  LEADING PARTICLE IS PION OR RHO RESONANCE
+        AVERPT = AVPT						        AVERPT = AVPT
+C  LEADING PARTICLE IS KAON OR KAON RESONANCE			C  LEADING PARTICLE IS KAON OR KAON RESONANCE
+      ELSEIF ( LEPAR1 .EQ. 10  .OR.  LEPAR1 .EQ. 11  .OR.	      ELSEIF ( LEPAR1 .EQ. 10  .OR.  LEPAR1 .EQ. 11  .OR.
+     *         LEPAR1 .EQ. 12  .OR.  LEPAR1 .EQ. 16  .OR.	     *         LEPAR1 .EQ. 12  .OR.  LEPAR1 .EQ. 16  .OR.
+     *        (LEPAR1 .GE. 62  .AND. LEPAR1 .LE. 68) ) THEN	     *        (LEPAR1 .GE. 62  .AND. LEPAR1 .LE. 68) ) THEN
+        AVERPT = AVPK						        AVERPT = AVPK
+      ELSE							      ELSE
+C  LEADING PARTICLE IS NUCLEON OR ANTINUCLEON OR DELTA RESONA	C  LEADING PARTICLE IS NUCLEON OR ANTINUCLEON OR DELTA RESONA
+C  OR STRANGE BARYON						C  OR STRANGE BARYON
+        AVERPT = AVPN						        AVERPT = AVPN
+      ENDIF							      ENDIF
+C      -----  CHANGE BY JNC DEC.96)				C      -----  CHANGE BY JNC DEC.96)
+      IF ( ECMDPM .LE. 500.D0 ) THEN				      IF ( ECMDPM .LE. 500.D0 ) THEN
+        CALL PTRAN( ZN,AVERPT,PX(1),PY(1) )			        CALL PTRAN( ZN,AVERPT,PX(1),PY(1) )
+      ELSE							      ELSE
+        CALL PTRAM( ZN,AVERPT,PX(1),PY(1) )			        CALL PTRAM( ZN,AVERPT,PX(1),PY(1) )
+      ENDIF							      ENDIF
+      SPX = SPX + PX(1) + PX(2)					      SPX = SPX + PX(1) + PX(2)
+      SPY = SPY + PY(1) + PY(2)					      SPY = SPY + PY(1) + PY(2)
+ 								 
+C  AVERAGE EXCESS PT PER PARTICLE				C  AVERAGE EXCESS PT PER PARTICLE
+      SPX = SPX / NTOT						      SPX = SPX / NTOT
+      SPY = SPY / NTOT						      SPY = SPY / NTOT
+ 								 
+C  RENORMALIZATION OF PT AND CALCULATION OF TRANSVERSE MASSES	C  RENORMALIZATION OF PT AND CALCULATION OF TRANSVERSE MASSES
+      DO 130  I = 1,NTOT					      DO 130  I = 1,NTOT
+        PX(I)   = PX(I) - SPX					        PX(I)   = PX(I) - SPX
+        PY(I)   = PY(I) - SPY					        PY(I)   = PY(I) - SPY
+        PT2(I)  = PX(I)**2 + PY(I)**2				        PT2(I)  = PX(I)**2 + PY(I)**2
+        TMAS(I) = SQRT( PAMA(ITYP(I))**2 + PT2(I) )		        TMAS(I) = SQRT( PAMA(ITYP(I))**2 + PT2(I) )
+ 130  CONTINUE							 130  CONTINUE
+ 								 
+      RETURN							      RETURN
+      END							      END

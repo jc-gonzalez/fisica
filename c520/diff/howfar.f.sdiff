@@ -1,0 +1,198 @@
+      SUBROUTINE HOWFAR						      SUBROUTINE HOWFAR
+C								C
+C************************************************************	C************************************************************
+C  DESIGN  : D. HECK   IK3  FZK KARLSRUHE			C  DESIGN  : D. HECK   IK3  FZK KARLSRUHE
+C  DATE    : SEP  05, 1988					C  DATE    : SEP  05, 1988
+C************************************************************	C************************************************************
+C  THE FOLLOWING IS A GENERAL SPECIFICATION OF HOWFAR:		C  THE FOLLOWING IS A GENERAL SPECIFICATION OF HOWFAR:
+C  GIVEN A PARTICLE AT (X,Y,Z) IN REGION IR AND GOING IN DIRE	C  GIVEN A PARTICLE AT (X,Y,Z) IN REGION IR AND GOING IN DIRE
+C  (U,V,W), THIS ROUTINE ANSWERS THE QUESTION, CAN THE PARTIC	C  (U,V,W), THIS ROUTINE ANSWERS THE QUESTION, CAN THE PARTIC
+C  A DISTANCE USTEP WITHOUT CROSSING A BOUNDARY OR OBSERVATIO	C  A DISTANCE USTEP WITHOUT CROSSING A BOUNDARY OR OBSERVATIO
+C          IF YES, IT CALCULATES DNEAR AND RETURNS.		C          IF YES, IT CALCULATES DNEAR AND RETURNS.
+C          IF NO, IT SETS USTEP=DISTANCE TO BOUNDARY OR DETEC	C          IF NO, IT SETS USTEP=DISTANCE TO BOUNDARY OR DETEC
+C             IN THE CURRENT DIRECTION.				C             IN THE CURRENT DIRECTION.
+C             IT SETS IRNEW TO THE REGION NUMBER ON THE FAR S	C             IT SETS IRNEW TO THE REGION NUMBER ON THE FAR S
+C             OF THE BOUNDARY (THIS CAN BE MESSY IN GENERAL!)	C             OF THE BOUNDARY (THIS CAN BE MESSY IN GENERAL!)
+C             IT SETS NEWOBS TO THE DETECTOR NUMBER NEXT AFTE	C             IT SETS NEWOBS TO THE DETECTOR NUMBER NEXT AFTE
+C             DETECTOR JUST PASSING.				C             DETECTOR JUST PASSING.
+C  THE USER CAN TERMINATE A HISTORY BY SETTING IDISC>0. THE U	C  THE USER CAN TERMINATE A HISTORY BY SETTING IDISC>0. THE U
+C  CAN TRANSPORT THE LAST PARTICLE  BY SETTING IDISC<0. HERE 	C  CAN TRANSPORT THE LAST PARTICLE  BY SETTING IDISC<0. HERE 
+C  TERMINATE ALL HISTORIES WHICH ENTER REGION 6 OR ARE GOING	C  TERMINATE ALL HISTORIES WHICH ENTER REGION 6 OR ARE GOING
+C  BACKWARDS IN REGION 1 OR HAVE PASSED THE LAST OBSERVATION 	C  BACKWARDS IN REGION 1 OR HAVE PASSED THE LAST OBSERVATION 
+C************************************************************	C************************************************************
+C   ELECTRON OR PHOTON        POSITIVE Z-DIRECTION (W>0) IS D	C   ELECTRON OR PHOTON        POSITIVE Z-DIRECTION (W>0) IS D
+C            |							C            |
+C            |                  REGION 1   (VACUUM)		C            |                  REGION 1   (VACUUM)
+C            V							C            V
+C---------------------------    STARTING PLANE AT -BOUND(1) =	C---------------------------    STARTING PLANE AT -BOUND(1) =
+C								C
+C                               REGION 2   (AIR WITH EXPONENT	C                               REGION 2   (AIR WITH EXPONENT
+C                                           INCREASING DENSIT	C                                           INCREASING DENSIT
+C								C
+C---------------------------    BOUNDARY AT -BOUND(2)		C---------------------------    BOUNDARY AT -BOUND(2)
+C								C
+C                               REGION 3   (AIR WITH EXPONENT	C                               REGION 3   (AIR WITH EXPONENT
+C                                           INCREASING DENSIT	C                                           INCREASING DENSIT
+C								C
+C---------------------------    BOUNDARY AT  -BOUND(3)		C---------------------------    BOUNDARY AT  -BOUND(3)
+C								C
+C                               REGION 4   (AIR WITH EXPONENT	C                               REGION 4   (AIR WITH EXPONENT
+C                                           INCREASING DENSIT	C                                           INCREASING DENSIT
+C								C
+C---------------------------    BOUNDARY AT  -BOUND(4)		C---------------------------    BOUNDARY AT  -BOUND(4)
+C								C
+C                               REGION 5   (AIR WITH EXPONENT	C                               REGION 5   (AIR WITH EXPONENT
+C                                           INCREASING DENSIT	C                                           INCREASING DENSIT
+C								C
+C-------------------------Z=0   BOUNDARY AT -BOUND(5)   (SEA 	C-------------------------Z=0   BOUNDARY AT -BOUND(5)   (SEA 
+C////////////|/////////						C////////////|/////////
+C////////////|/////////         REGION 6   (VACUUM)		C////////////|/////////         REGION 6   (VACUUM)
+C////////////V/////////                    (MAY CONTAIN DETEC	C////////////V/////////                    (MAY CONTAIN DETEC
+C   ELECTRON OR PHOTON						C   ELECTRON OR PHOTON
+C------------------------       BOUNDARY AT -BOUND(6)		C------------------------       BOUNDARY AT -BOUND(6)
+C								C
+C************************************************************	C************************************************************
+*KEEP,EPCONT.							*KEEP,EPCONT.
+      COMMON/EPCONT/   EDEP,RATIO,TSTEP,TUSTEP,USTEP,TVSTEP,V	      COMMON/EPCONT/   EDEP,RATIO,TSTEP,TUSTEP,USTEP,TVSTEP,V
+     *                 IROLD,IRNEW,RHOFAC, EOLD,ENEW,EKE,ELKE	     *                 IROLD,IRNEW,RHOFAC, EOLD,ENEW,EKE,ELKE
+     *                 TSCAT,IAUSFL				     *                 TSCAT,IAUSFL
+      DOUBLE PRECISION EDEP,RATIO				      DOUBLE PRECISION EDEP,RATIO
+      REAL             TSTEP,TUSTEP,USTEP,TVSTEP,VSTEP,RHOFAC	      REAL             TSTEP,TUSTEP,USTEP,TVSTEP,VSTEP,RHOFAC
+     *                 EKE,ELKE,BETA2,GLE,TSCAT			     *                 EKE,ELKE,BETA2,GLE,TSCAT
+      INTEGER          IDISC,IROLD,IRNEW,IAUSFL(29)		      INTEGER          IDISC,IROLD,IRNEW,IAUSFL(29)
+*KEND.								*KEND.
+      COMMON/GEOM/ZALTIT,BOUND(6),NEWOBS,OBSLVL(10)		      COMMON/GEOM/ZALTIT,BOUND(6),NEWOBS,OBSLVL(10)
+*KEEP,OBSPAR.							*KEEP,OBSPAR.
+      COMMON /OBSPAR/  OBSLEV,THCKOB,XOFF,YOFF,THETAP,PHIP,	      COMMON /OBSPAR/  OBSLEV,THCKOB,XOFF,YOFF,THETAP,PHIP,
+     *                 THETPR,PHIPR,NOBSLV			     *                 THETPR,PHIPR,NOBSLV
+      DOUBLE PRECISION OBSLEV(10),THCKOB(10),XOFF(10),YOFF(10	      DOUBLE PRECISION OBSLEV(10),THCKOB(10),XOFF(10),YOFF(10
+     *                 THETAP,THETPR(2),PHIP,PHIPR(2)		     *                 THETAP,THETPR(2),PHIP,PHIPR(2)
+      INTEGER          NOBSLV					      INTEGER          NOBSLV
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEEP,STACKE.							*KEEP,STACKE.
+      COMMON/STACKE/   E,TIME,X,Y,Z,U,V,W,DNEAR,IQ,IGEN,IR,IO	      COMMON/STACKE/   E,TIME,X,Y,Z,U,V,W,DNEAR,IQ,IGEN,IR,IO
+      DOUBLE PRECISION E(60),TIME(60)				      DOUBLE PRECISION E(60),TIME(60)
+      REAL             X(60),Y(60),Z(60),U(60),V(60),W(60),DN	      REAL             X(60),Y(60),Z(60),U(60),V(60),W(60),DN
+      INTEGER          IQ(60),IGEN(60),IR(60),IOBS(60),LPCTE(	      INTEGER          IQ(60),IGEN(60),IR(60),IOBS(60),LPCTE(
+*KEND.								*KEND.
+      COMMON/ACLOCK/NCLOCK,JCLOCK				      COMMON/ACLOCK/NCLOCK,JCLOCK
+C_____IF (NCLOCK.GT.JCLOCK) THEN				C_____IF (NCLOCK.GT.JCLOCK) THEN
+C______WRITE(MDEBUG,* )' HOWFAR:NP=',NP,' IR=',IR(NP),' IOBS=	C______WRITE(MDEBUG,* )' HOWFAR:NP=',NP,' IR=',IR(NP),' IOBS=
+C______CALL AUSGB2						C______CALL AUSGB2
+C_____END IF							C_____END IF
+      IF (IR(NP).GT.1 .AND. IR(NP).LT.6) THEN			      IF (IR(NP).GT.1 .AND. IR(NP).LT.6) THEN
+C ***  WE ARE IN THE ATMOSPHERE - CHECK THE GEOMETRY		C ***  WE ARE IN THE ATMOSPHERE - CHECK THE GEOMETRY
+       IRL=IR(NP)						       IRL=IR(NP)
+C ***  GOING FORWARD - CONSIDER FIRST SINCE MOST FREQUENT	C ***  GOING FORWARD - CONSIDER FIRST SINCE MOST FREQUENT
+       NOBS=IOBS(NP)						       NOBS=IOBS(NP)
+       IF (W(NP).GT.0.0) THEN					       IF (W(NP).GT.0.0) THEN
+C  ***  TVAL IS DISTANCE TO NEXT BOUNDARY OR			C  ***  TVAL IS DISTANCE TO NEXT BOUNDARY OR
+C  ***  OBSERVATION LEVEL IN THIS DIRECTION			C  ***  OBSERVATION LEVEL IN THIS DIRECTION
+        TVAL=(-Z(NP)-MAX(BOUND(IRL),OBSLVL(NOBS)))/W(NP)	        TVAL=(-Z(NP)-MAX(BOUND(IRL),OBSLVL(NOBS)))/W(NP)
+        IF (TVAL.GT.USTEP) THEN					        IF (TVAL.GT.USTEP) THEN
+C   ***  CAN TAKE CURRENTLY REQUESTED STEP			C   ***  CAN TAKE CURRENTLY REQUESTED STEP
+         DNEAR(NP)=TVAL*W(NP)					         DNEAR(NP)=TVAL*W(NP)
+        ELSE							        ELSE
+C   ***  GO TO DETECTOR OR BOUNDARY, WHICH IS CLOSER		C   ***  GO TO DETECTOR OR BOUNDARY, WHICH IS CLOSER
+         USTEP=MAX(TVAL,0.0001)					         USTEP=MAX(TVAL,0.0001)
+         IF (BOUND(IRL).GE.OBSLVL(NOBS)) THEN			         IF (BOUND(IRL).GE.OBSLVL(NOBS)) THEN
+C    ***  PARTICLE CROSSES BOUNDARY				C    ***  PARTICLE CROSSES BOUNDARY
+          IRNEW=IRL+1						          IRNEW=IRL+1
+C    ***  PARTICLE LEAVES AIR					C    ***  PARTICLE LEAVES AIR
+          IF((IRNEW.GE.6))IDISC=-1				          IF((IRNEW.GE.6))IDISC=-1
+         END IF							         END IF
+         IF (BOUND(IRL).LE.OBSLVL(NOBS)) THEN			         IF (BOUND(IRL).LE.OBSLVL(NOBS)) THEN
+C    ***  PARTICLE CROSSES DETECTOR				C    ***  PARTICLE CROSSES DETECTOR
+          NEWOBS=NOBS+1						          NEWOBS=NOBS+1
+C    ***  MAKE A VERY SMALL STEP TO AVOID HANGUP OF PROGRAM	C    ***  MAKE A VERY SMALL STEP TO AVOID HANGUP OF PROGRAM
+          IF((USTEP.LE.0.0))USTEP = 0.0001			          IF((USTEP.LE.0.0))USTEP = 0.0001
+C    ***  TRANSPORT PARTICLE  TO FINAL DETECTOR LEVEL AND DIS	C    ***  TRANSPORT PARTICLE  TO FINAL DETECTOR LEVEL AND DIS
+          IF((NEWOBS.GT.NOBSLV))IDISC=-1			          IF((NEWOBS.GT.NOBSLV))IDISC=-1
+         END IF							         END IF
+        END IF							        END IF
+C  ***  END OF W(NP)>0 CASE					C  ***  END OF W(NP)>0 CASE
+C  ***  GOING UPWARD IN ATMOSPHERE				C  ***  GOING UPWARD IN ATMOSPHERE
+       ELSE IF(W(NP).LT.0.0) THEN				       ELSE IF(W(NP).LT.0.0) THEN
+C  ***  NO DETECTOR ABOVE PARTICLE				C  ***  NO DETECTOR ABOVE PARTICLE
+        IF (NOBS.LE.1) THEN					        IF (NOBS.LE.1) THEN
+C   ***  DISTANCE TO BOUNDARY ABOVE				C   ***  DISTANCE TO BOUNDARY ABOVE
+         TVAL=(-Z(NP)-BOUND(IRL-1))/W(NP)			         TVAL=(-Z(NP)-BOUND(IRL-1))/W(NP)
+         IF (TVAL.GT.USTEP) THEN				         IF (TVAL.GT.USTEP) THEN
+C    ***  CAN TAKE CURRENTLY REQUESTED STEP			C    ***  CAN TAKE CURRENTLY REQUESTED STEP
+          DNEAR(NP)=MIN(Z(NP)+BOUND(IRL-1),-(Z(NP)+BOUND(IRL)	          DNEAR(NP)=MIN(Z(NP)+BOUND(IRL-1),-(Z(NP)+BOUND(IRL)
+         ELSE							         ELSE
+C    ***  CROSS BOUNDARY ABOVE					C    ***  CROSS BOUNDARY ABOVE
+          USTEP=MAX(TVAL,0.0001)				          USTEP=MAX(TVAL,0.0001)
+          IRNEW=IRL-1						          IRNEW=IRL-1
+         END IF							         END IF
+        ELSE							        ELSE
+C   ***  BOUNDARY AND DETECTOR ABOVE PARTICLE			C   ***  BOUNDARY AND DETECTOR ABOVE PARTICLE
+         TVAL=(-Z(NP)-MIN(BOUND(IRL-1),OBSLVL(NOBS-1)))/W(NP)	         TVAL=(-Z(NP)-MIN(BOUND(IRL-1),OBSLVL(NOBS-1)))/W(NP)
+         IF (TVAL.GT.USTEP) THEN				         IF (TVAL.GT.USTEP) THEN
+C    ***  CAN TAKE CURRENTLY REQUESTED STEP			C    ***  CAN TAKE CURRENTLY REQUESTED STEP
+C    ***  DNEAR IS CLOSEST DISTANCE TO DETECTOR OR		C    ***  DNEAR IS CLOSEST DISTANCE TO DETECTOR OR
+C    ***  BOUNDARY ABOVE OR BELOW PARTICLE			C    ***  BOUNDARY ABOVE OR BELOW PARTICLE
+          DNEAR(NP)=MIN(Z(NP)+MIN(BOUND(IRL-1),OBSLVL(NOBS-1)	          DNEAR(NP)=MIN(Z(NP)+MIN(BOUND(IRL-1),OBSLVL(NOBS-1)
+     *     MAX(BOUND(IRL),OBSLVL(NOBS)))			     *     MAX(BOUND(IRL),OBSLVL(NOBS)))
+         ELSE							         ELSE
+C    ***  TAKE ONLY STEP UP TO BOUNDARY OR DETECTOR		C    ***  TAKE ONLY STEP UP TO BOUNDARY OR DETECTOR
+          USTEP=MAX(TVAL,0.0001)				          USTEP=MAX(TVAL,0.0001)
+          IF (BOUND(IRL-1).LE.OBSLVL(NOBS-1)) THEN		          IF (BOUND(IRL-1).LE.OBSLVL(NOBS-1)) THEN
+C     ***  PARTICLE CROSSES  BOUNDARY ABOVE			C     ***  PARTICLE CROSSES  BOUNDARY ABOVE
+           IRNEW=IRL-1						           IRNEW=IRL-1
+C     ***  PARTICLE LEAVES ATMOSPHERE				C     ***  PARTICLE LEAVES ATMOSPHERE
+           IF((IRNEW.LE.1))IDISC=1				           IF((IRNEW.LE.1))IDISC=1
+          END IF						          END IF
+          IF ((BOUND(IRL-1).GE.OBSLVL(NOBS-1))) THEN		          IF ((BOUND(IRL-1).GE.OBSLVL(NOBS-1))) THEN
+C     ***  PARTICLE CROSSES DETECTOR ABOVE; IT IS NOT		C     ***  PARTICLE CROSSES DETECTOR ABOVE; IT IS NOT
+C     ***  PRINTED, BECAUSE IT MUST HIT DETECTOR DOWNWARDS	C     ***  PRINTED, BECAUSE IT MUST HIT DETECTOR DOWNWARDS
+           NEWOBS=NOBS-1					           NEWOBS=NOBS-1
+           IOBS(NP)=NEWOBS					           IOBS(NP)=NEWOBS
+          END IF						          END IF
+         END IF							         END IF
+        END IF							        END IF
+C  ***  END W(NP)<0 CASE					C  ***  END W(NP)<0 CASE
+C  ***  PARTICLE IS MOVING HORIZONTALLY, CANNOT HIT BOUNDARY	C  ***  PARTICLE IS MOVING HORIZONTALLY, CANNOT HIT BOUNDARY
+       ELSE IF(W(NP).EQ.0.0) THEN				       ELSE IF(W(NP).EQ.0.0) THEN
+        RETURN							        RETURN
+       END IF							       END IF
+C ***  END OF ATMOSPHERE REGION CASE				C ***  END OF ATMOSPHERE REGION CASE
+      ELSE IF(IR(NP).EQ.6) THEN					      ELSE IF(IR(NP).EQ.6) THEN
+C ***  TERMINATE THIS HISTORY, IT IS PAST THE ATMOSPHERE	C ***  TERMINATE THIS HISTORY, IT IS PAST THE ATMOSPHERE
+       IDISC=1							       IDISC=1
+C ***  WE ARE IN THE REGION WITH SOURCE ABOVE AIR		C ***  WE ARE IN THE REGION WITH SOURCE ABOVE AIR
+      ELSE IF(IR(NP).EQ.1) THEN					      ELSE IF(IR(NP).EQ.1) THEN
+       IF (W(NP).GT.0.0) THEN					       IF (W(NP).GT.0.0) THEN
+C  ***  IT MUST BE A SOURCE PARTICLE ON BOUNDARY 1		C  ***  IT MUST BE A SOURCE PARTICLE ON BOUNDARY 1
+        USTEP=0.0001						        USTEP=0.0001
+        IRNEW=2							        IRNEW=2
+       ELSE							       ELSE
+C  ***  IT IS A REFLECTED PARTICLE, DISCARD IT			C  ***  IT IS A REFLECTED PARTICLE, DISCARD IT
+        IDISC=1							        IDISC=1
+       END IF							       END IF
+C ***  END REGION 1 CASE					C ***  END REGION 1 CASE
+      END IF							      END IF
+      RETURN							      RETURN
+      END							      END

@@ -1,0 +1,144 @@
+      SUBROUTINE PRANGE(ARG)					      SUBROUTINE PRANGE(ARG)
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  (DECAYING) P(ARTICLE'S) RANGE				C  (DECAYING) P(ARTICLE'S) RANGE
+C								C
+C  DETERMINES MEAN FREE PATH FOR DECAYING PARTICLES		C  DETERMINES MEAN FREE PATH FOR DECAYING PARTICLES
+C  INCLUDING IONIZATION ENERGY LOSS,				C  INCLUDING IONIZATION ENERGY LOSS,
+C  FOR EACH LAYER OF THE ATMOSOHERE SEPARATELY			C  FOR EACH LAYER OF THE ATMOSOHERE SEPARATELY
+C  PRECISELY							C  PRECISELY
+C  THIS SUBROUTINE IS CALLED FROM BOX2				C  THIS SUBROUTINE IS CALLED FROM BOX2
+C  ARGUMENT:							C  ARGUMENT:
+C   ARG    = -LOG(RANDOM NUMBER) * SPEED OF LIGHT * LIFETIME	C   ARG    = -LOG(RANDOM NUMBER) * SPEED OF LIGHT * LIFETIME
+C								C
+C  DESIGN  : D. HECK    IK3  FZK KARLSRUHE			C  DESIGN  : D. HECK    IK3  FZK KARLSRUHE
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,AIR.							*KEEP,AIR.
+      COMMON /AIR/     COMPOS,PROBTA,AVERAW,AVOGAD		      COMMON /AIR/     COMPOS,PROBTA,AVERAW,AVOGAD
+      DOUBLE PRECISION COMPOS(3),PROBTA(3),AVERAW,AVOGAD	      DOUBLE PRECISION COMPOS(3),PROBTA(3),AVERAW,AVOGAD
+*KEEP,ATMOS.							*KEEP,ATMOS.
+      COMMON /ATMOS/   AATM,BATM,CATM,DATM			      COMMON /ATMOS/   AATM,BATM,CATM,DATM
+      DOUBLE PRECISION AATM(5),BATM(5),CATM(5),DATM(5)		      DOUBLE PRECISION AATM(5),BATM(5),CATM(5),DATM(5)
+*KEEP,ATMOS2.							*KEEP,ATMOS2.
+      COMMON /ATMOS2/  HLAY,THICKL				      COMMON /ATMOS2/  HLAY,THICKL
+      DOUBLE PRECISION HLAY(5),THICKL(5)			      DOUBLE PRECISION HLAY(5),THICKL(5)
+*KEEP,CONST.							*KEEP,CONST.
+      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER			      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER
+      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER			      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER
+*KEEP,OBSPAR.							*KEEP,OBSPAR.
+      COMMON /OBSPAR/  OBSLEV,THCKOB,XOFF,YOFF,THETAP,PHIP,	      COMMON /OBSPAR/  OBSLEV,THCKOB,XOFF,YOFF,THETAP,PHIP,
+     *                 THETPR,PHIPR,NOBSLV			     *                 THETPR,PHIPR,NOBSLV
+      DOUBLE PRECISION OBSLEV(10),THCKOB(10),XOFF(10),YOFF(10	      DOUBLE PRECISION OBSLEV(10),THCKOB(10),XOFF(10),YOFF(10
+     *                 THETAP,THETPR(2),PHIP,PHIPR(2)		     *                 THETAP,THETPR(2),PHIP,PHIPR(2)
+      INTEGER          NOBSLV					      INTEGER          NOBSLV
+*KEEP,PAM.							*KEEP,PAM.
+      COMMON /PAM/     PAMA,SIGNUM				      COMMON /PAM/     PAMA,SIGNUM
+      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)			      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)
+*KEEP,PARPAR.							*KEEP,PARPAR.
+      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,		      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,
+     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE	     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE
+      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA	      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA
+     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH	     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH
+      INTEGER          ITYPE,LEVL				      INTEGER          ITYPE,LEVL
+*KEEP,PARPAE.							*KEEP,PARPAE.
+      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,	      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,
+      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)	      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)
+     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )	     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )
+     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )	     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )
+     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )	     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )
+     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )	     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )
+     *                 (CURPAR(12),ECM )			     *                 (CURPAR(12),ECM )
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEND.								*KEND.
+ 								 
+      DOUBLE PRECISION AK,ARG,ARG0,BK,CHIT,DK,ELOSS		      DOUBLE PRECISION AK,ARG,ARG0,BK,CHIT,DK,ELOSS
+      DOUBLE PRECISION GAMK,GAMNEW,GAMSQ,GAM0,GMSQM1,H0,TH0	      DOUBLE PRECISION GAMK,GAMNEW,GAMSQ,GAM0,GMSQM1,H0,TH0
+      INTEGER          ILAY					      INTEGER          ILAY
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,444) ARG,THICKH			      IF ( DEBUG ) WRITE(MDEBUG,444) ARG,THICKH
+  444 FORMAT(' PRANGE: -LOG(RD)*C*TAU = ',1P,E10.3,' THICKH='	  444 FORMAT(' PRANGE: -LOG(RD)*C*TAU = ',1P,E10.3,' THICKH='
+ 								 
+C  LOOK WITHIN WHICH LAYER THE PARTICLE STARTS			C  LOOK WITHIN WHICH LAYER THE PARTICLE STARTS
+      IF     ( H .LE. HLAY(2) ) THEN				      IF     ( H .LE. HLAY(2) ) THEN
+        ILAY = 1						        ILAY = 1
+        TH0  = THICKH						        TH0  = THICKH
+      ELSEIF ( H .LE. HLAY(3) ) THEN				      ELSEIF ( H .LE. HLAY(3) ) THEN
+        ILAY = 2						        ILAY = 2
+        TH0  = THICKH						        TH0  = THICKH
+      ELSEIF ( H .LE. HLAY(4) ) THEN				      ELSEIF ( H .LE. HLAY(4) ) THEN
+        ILAY = 3						        ILAY = 3
+        TH0  = THICKH						        TH0  = THICKH
+      ELSE							      ELSE
+        ILAY = 4						        ILAY = 4
+        TH0  = MAX( THICKH, 2.D-4 )				        TH0  = MAX( THICKH, 2.D-4 )
+      ENDIF							      ENDIF
+C  SET START VALUES FOR ITERATION				C  SET START VALUES FOR ITERATION
+      ARG0 = ARG						      ARG0 = ARG
+      CHIT = 0.D0						      CHIT = 0.D0
+      GAM0 = GAMMA						      GAM0 = GAMMA
+      H0   = H							      H0   = H
+ 								 
+  2   CONTINUE							  2   CONTINUE
+      GAM0   = MAX( GAM0, 1.0001D0 )				      GAM0   = MAX( GAM0, 1.0001D0 )
+      GAMSQ  = GAM0**2						      GAMSQ  = GAM0**2
+      GMSQM1 = GAMSQ - 1.D0					      GMSQM1 = GAMSQ - 1.D0
+C  ENERGY LOSS BY IONIZATION					C  ENERGY LOSS BY IONIZATION
+      ELOSS  = SIGNUM(ITYPE)**2 * C(22) *			      ELOSS  = SIGNUM(ITYPE)**2 * C(22) *
+     *           ( GAMSQ * (LOG(GMSQM1) + C(23)) / GMSQM1 - 1	     *           ( GAMSQ * (LOG(GMSQM1) + C(23)) / GMSQM1 - 1
+      ELOSS  = ELOSS / (PAMA(ITYPE) * COSTHE )			      ELOSS  = ELOSS / (PAMA(ITYPE) * COSTHE )
+      BK     = ELOSS * (TH0 - AATM(ILAY))			      BK     = ELOSS * (TH0 - AATM(ILAY))
+      DK     = GAM0 + BK					      DK     = GAM0 + BK
+      AK     = ARG0 * DK * COSTHE * DATM(ILAY)			      AK     = ARG0 * DK * COSTHE * DATM(ILAY)
+      IF ( AK .LT. 174.D0 ) THEN				      IF ( AK .LT. 174.D0 ) THEN
+C  LIMIT FOR EXPONENT (ON IBM COMPUTER)				C  LIMIT FOR EXPONENT (ON IBM COMPUTER)
+        GAMNEW = MAX( GAM0 * DK / ( GAM0 + BK * EXP(AK) ), 1.	        GAMNEW = MAX( GAM0 * DK / ( GAM0 + BK * EXP(AK) ), 1.
+      ELSE							      ELSE
+        GAMNEW = 1.D0						        GAMNEW = 1.D0
+      ENDIF							      ENDIF
+      GAMK   = GAM0 - ELOSS * ( THICKL(ILAY) - TH0)		      GAMK   = GAM0 - ELOSS * ( THICKL(ILAY) - TH0)
+      IF ( DEBUG ) WRITE(MDEBUG,*) 'PRANGE: GAMNEW,GAMK=',	      IF ( DEBUG ) WRITE(MDEBUG,*) 'PRANGE: GAMNEW,GAMK=',
+     *                           SNGL(GAMNEW),SNGL(GAMK)	     *                           SNGL(GAMNEW),SNGL(GAMK)
+C  LOOK WETHER PARTICLE PENETRATES LAYER BOUNDARY OR DECAYS B	C  LOOK WETHER PARTICLE PENETRATES LAYER BOUNDARY OR DECAYS B
+      IF ( GAMNEW .LT. GAMK  .AND.  ILAY. GT. 1 ) THEN		      IF ( GAMNEW .LT. GAMK  .AND.  ILAY. GT. 1 ) THEN
+C  CALCULATE PORTION OF RANGE AND NEW START VALUES AT LAYER B	C  CALCULATE PORTION OF RANGE AND NEW START VALUES AT LAYER B
+        ARG0 = ARG0 - ( H0 - HLAY(ILAY) + CATM(ILAY) * LOG(GA	        ARG0 = ARG0 - ( H0 - HLAY(ILAY) + CATM(ILAY) * LOG(GA
+     *                       / (DK * COSTHE)			     *                       / (DK * COSTHE)
+        CHIT = CHIT + (THICKL(ILAY) - TH0) / COSTHE		        CHIT = CHIT + (THICKL(ILAY) - TH0) / COSTHE
+        GAM0 = GAMK						        GAM0 = GAMK
+        H0   = HLAY(ILAY)					        H0   = HLAY(ILAY)
+        TH0  = THICKL(ILAY)					        TH0  = THICKL(ILAY)
+        ILAY = ILAY - 1						        ILAY = ILAY - 1
+        GOTO 2							        GOTO 2
+      ENDIF							      ENDIF
+C  PENETRATED MATTER THICKNESS					C  PENETRATED MATTER THICKNESS
+      CHI = CHIT + (GAM0 - GAMNEW) / (ELOSS*COSTHE)		      CHI = CHIT + (GAM0 - GAMNEW) / (ELOSS*COSTHE)
+      IF ( DEBUG ) WRITE(MDEBUG,445) CHI			      IF ( DEBUG ) WRITE(MDEBUG,445) CHI
+  445 FORMAT(' PRANGE: CHI = ',1P,E10.3)			  445 FORMAT(' PRANGE: CHI = ',1P,E10.3)
+ 								 
+      RETURN							      RETURN
+      END							      END

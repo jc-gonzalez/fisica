@@ -1,0 +1,191 @@
+      SUBROUTINE AVAGE						      SUBROUTINE AVAGE
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  AVE(ERAGE) AGE						C  AVE(ERAGE) AGE
+C								C
+C  CALCULATES AVERAGE AGE AS A FUNCTION OF RADIUS		C  CALCULATES AVERAGE AGE AS A FUNCTION OF RADIUS
+C  THIS SUBROUTINE IS CALLED FROM MAIN				C  THIS SUBROUTINE IS CALLED FROM MAIN
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,BUFFS.							*KEEP,BUFFS.
+      COMMON /BUFFS/   RUNH,RUNE,EVTH,EVTE,DATAB,LH		      COMMON /BUFFS/   RUNH,RUNE,EVTH,EVTE,DATAB,LH
+      INTEGER          MAXBUF,MAXLEN				      INTEGER          MAXBUF,MAXLEN
+      PARAMETER        (MAXBUF=39*7)				      PARAMETER        (MAXBUF=39*7)
+      PARAMETER        (MAXLEN=12)				      PARAMETER        (MAXLEN=12)
+      REAL             RUNH(MAXBUF),EVTH(MAXBUF),EVTE(MAXBUF)	      REAL             RUNH(MAXBUF),EVTH(MAXBUF),EVTE(MAXBUF)
+     *                 RUNE(MAXBUF),DATAB(MAXBUF)		     *                 RUNE(MAXBUF),DATAB(MAXBUF)
+      INTEGER          LH					      INTEGER          LH
+      CHARACTER*4      CRUNH,CRUNE,CEVTH,CEVTE			      CHARACTER*4      CRUNH,CRUNE,CEVTH,CEVTE
+      EQUIVALENCE      (RUNH(1),CRUNH), (RUNE(1),CRUNE)		      EQUIVALENCE      (RUNH(1),CRUNH), (RUNE(1),CRUNE)
+      EQUIVALENCE      (EVTH(1),CEVTH), (EVTE(1),CEVTE)		      EQUIVALENCE      (EVTH(1),CEVTH), (EVTE(1),CEVTE)
+*KEEP,ELABCT.							*KEEP,ELABCT.
+      COMMON /ELABCT/  ELCUT					      COMMON /ELABCT/  ELCUT
+      DOUBLE PRECISION ELCUT(4)					      DOUBLE PRECISION ELCUT(4)
+*KEEP,NKGI.							*KEEP,NKGI.
+      COMMON /NKGI/    SEL,SELLG,STH,ZEL,ZELLG,ZSL,DIST,	      COMMON /NKGI/    SEL,SELLG,STH,ZEL,ZELLG,ZSL,DIST,
+     *                 DISX,DISY,DISXY,DISYX,DLAX,DLAY,DLAXY,	     *                 DISX,DISY,DISXY,DISYX,DLAX,DLAY,DLAXY,
+     *                 OBSATI,RADNKG,RMOL,TLEV,TLEVCM,IALT	     *                 OBSATI,RADNKG,RMOL,TLEV,TLEVCM,IALT
+      DOUBLE PRECISION SEL(10),SELLG(10),STH(10),ZEL(10),ZELL	      DOUBLE PRECISION SEL(10),SELLG(10),STH(10),ZEL(10),ZELL
+     *                 ZSL(10),DIST(10),			     *                 ZSL(10),DIST(10),
+     *                 DISX(-10:10),DISY(-10:10),		     *                 DISX(-10:10),DISY(-10:10),
+     *                 DISXY(-10:10,2),DISYX(-10:10,2),		     *                 DISXY(-10:10,2),DISYX(-10:10,2),
+     *                 DLAX (-10:10,2),DLAY (-10:10,2),		     *                 DLAX (-10:10,2),DLAY (-10:10,2),
+     *                 DLAXY(-10:10,2),DLAYX(-10:10,2),		     *                 DLAXY(-10:10,2),DLAYX(-10:10,2),
+     *                 OBSATI(2),RADNKG,RMOL(2),TLEV(10),TLEV	     *                 OBSATI(2),RADNKG,RMOL(2),TLEV(10),TLEV
+      INTEGER          IALT(2)					      INTEGER          IALT(2)
+*KEEP,NKGS.							*KEEP,NKGS.
+      COMMON /NKGS/    CZX,CZY,CZXY,CZYX,SAH,SL,ZNE		      COMMON /NKGS/    CZX,CZY,CZXY,CZYX,SAH,SL,ZNE
+      DOUBLE PRECISION CZX(-10:10,2),CZY(-10:10,2),CZXY(-10:1	      DOUBLE PRECISION CZX(-10:10,2),CZY(-10:10,2),CZXY(-10:1
+     *                 CZYX(-10:10,2),SAH(10),SL(10),ZNE(10)	     *                 CZYX(-10:10,2),SAH(10),SL(10),ZNE(10)
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEND.								*KEND.
+ 								 
+      DOUBLE PRECISION AJ,BJ,CJ,DF(10),SJ(10),SLLG,TH,ZF	      DOUBLE PRECISION AJ,BJ,CJ,DF(10),SJ(10),SLLG,TH,ZF
+      INTEGER          I,ID,IL,IOL,J,K,L			      INTEGER          I,ID,IL,IOL,J,K,L
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,*) 'AVAGE :'			      IF ( DEBUG ) WRITE(MDEBUG,*) 'AVAGE :'
+ 								 
+      IF ( FPRINT ) WRITE(MONIOU,1110) SHOWNO,ELCUT(3),ELCUT(	      IF ( FPRINT ) WRITE(MONIOU,1110) SHOWNO,ELCUT(3),ELCUT(
+ 1110 FORMAT (/' ---------- NKG - OUTPUT OF SHOWER NO ',I10,	 1110 FORMAT (/' ---------- NKG - OUTPUT OF SHOWER NO ',I10,
+     *         ' --------------------------------'/		     *         ' --------------------------------'/
+     *       ' ELECTRON/PHOTON THRESHOLD AT ',F10.5,' /',F10.	     *       ' ELECTRON/PHOTON THRESHOLD AT ',F10.5,' /',F10.
+ 								 
+C  LOOP OVER ALL DISTANCES WHERE ELECTRON NUMBER IS CALCULATE	C  LOOP OVER ALL DISTANCES WHERE ELECTRON NUMBER IS CALCULATE
+      DO 302  K = 1,2						      DO 302  K = 1,2
+        IF ( OBSATI(K) .GE. 0.D0 ) THEN				        IF ( OBSATI(K) .GE. 0.D0 ) THEN
+          DO 301  ID = -10,10					          DO 301  ID = -10,10
+            DLAX (ID,K) = DLAX (ID,K) + CZX (ID,K)		            DLAX (ID,K) = DLAX (ID,K) + CZX (ID,K)
+            DLAY (ID,K) = DLAY (ID,K) + CZY (ID,K)		            DLAY (ID,K) = DLAY (ID,K) + CZY (ID,K)
+            DLAXY(ID,K) = DLAXY(ID,K) + CZXY(ID,K)		            DLAXY(ID,K) = DLAXY(ID,K) + CZXY(ID,K)
+            DLAYX(ID,K) = DLAYX(ID,K) + CZYX(ID,K)		            DLAYX(ID,K) = DLAYX(ID,K) + CZYX(ID,K)
+ 301      CONTINUE						 301      CONTINUE
+        ENDIF							        ENDIF
+ 302  CONTINUE							 302  CONTINUE
+ 								 
+C  CALCULATE LONGITUDINAL SHOWER DEVELOPMENT			C  CALCULATE LONGITUDINAL SHOWER DEVELOPMENT
+      DO 311  IL = 1,IALT(1)					      DO 311  IL = 1,IALT(1)
+        IF ( SL(IL) .GT. 0.D0 ) THEN				        IF ( SL(IL) .GT. 0.D0 ) THEN
+          SEL(IL)   = SEL(IL) + SL(IL)				          SEL(IL)   = SEL(IL) + SL(IL)
+          SLLG      = LOG10(SL(IL))				          SLLG      = LOG10(SL(IL))
+          SELLG(IL) = SELLG(IL) + SLLG				          SELLG(IL) = SELLG(IL) + SLLG
+          ZEL(IL)   = ZEL(IL) + SL(IL)**2			          ZEL(IL)   = ZEL(IL) + SL(IL)**2
+          ZELLG(IL) = ZELLG(IL) + SLLG**2			          ZELLG(IL) = ZELLG(IL) + SLLG**2
+          ZF        = ZNE(IL) / SL(IL)				          ZF        = ZNE(IL) / SL(IL)
+          CALL AGE( ZF,TH )					          CALL AGE( ZF,TH )
+C  AGE PARAMETERS AVERAGED ON ALL SUBCASCADES AT THIS LEVEL	C  AGE PARAMETERS AVERAGED ON ALL SUBCASCADES AT THIS LEVEL
+          SAH(IL) = TH						          SAH(IL) = TH
+          STH(IL) = STH(IL) + TH				          STH(IL) = STH(IL) + TH
+          ZSL(IL) = ZSL(IL) + TH**2				          ZSL(IL) = ZSL(IL) + TH**2
+        ELSE							        ELSE
+          SAH(IL) = 0.D0					          SAH(IL) = 0.D0
+        ENDIF							        ENDIF
+        EVTE(175+IL) = SL (IL)					        EVTE(175+IL) = SL (IL)
+        EVTE(185+IL) = SAH(IL)					        EVTE(185+IL) = SAH(IL)
+        EVTE(215+IL) = TLEV(IL)					        EVTE(215+IL) = TLEV(IL)
+        EVTE(225+IL) = TLEVCM(IL)				        EVTE(225+IL) = TLEVCM(IL)
+ 311  CONTINUE							 311  CONTINUE
+ 								 
+C  PRINT LONGITUDINAL SHOWER DEVELOPMENT			C  PRINT LONGITUDINAL SHOWER DEVELOPMENT
+      IF ( FPRINT ) WRITE(MONIOU,229)				      IF ( FPRINT ) WRITE(MONIOU,229)
+     *  (I,TLEV(I),TLEVCM(I),SL(I),SAH(I),I=1,IALT(1))		     *  (I,TLEV(I),TLEVCM(I),SL(I),SAH(I),I=1,IALT(1))
+  229 FORMAT(							  229 FORMAT(
+     *  /' LEVEL',2X,'THICKNESS',8X,'HEIGHT',5X,'ELECT. NUMBE	     *  /' LEVEL',2X,'THICKNESS',8X,'HEIGHT',5X,'ELECT. NUMBE
+     *  /'  NO. ',2X,'  G/CM**2',8X,'    CM'/			     *  /'  NO. ',2X,'  G/CM**2',8X,'    CM'/
+     *        (' ',I4,F12.0,2X,F12.0,1X,F17.3,F10.3) )		     *        (' ',I4,F12.0,2X,F12.0,1X,F17.3,F10.3) )
+ 								 
+      DO 312  IOL = 1,2						      DO 312  IOL = 1,2
+        IF ( OBSATI(IOL) .LT. 0.D0 ) GOTO 312			        IF ( OBSATI(IOL) .LT. 0.D0 ) GOTO 312
+C  DETERMINE LOCAL AGE PARAMETER				C  DETERMINE LOCAL AGE PARAMETER
+        DO 50  J = 1,9						        DO 50  J = 1,9
+          IF ( CZX(J+1,IOL).GT.0.D0  .AND.  CZX(-J-1,IOL).GT.	          IF ( CZX(J+1,IOL).GT.0.D0  .AND.  CZX(-J-1,IOL).GT.
+     *         CZXY(J+1,IOL).GT.0.D0 .AND.  CZXY(-J-1,IOL).GT	     *         CZXY(J+1,IOL).GT.0.D0 .AND.  CZXY(-J-1,IOL).GT
+     *         CZYX(J+1,IOL).GT.0.D0 .AND.  CZYX(-J-1,IOL).GT	     *         CZYX(J+1,IOL).GT.0.D0 .AND.  CZYX(-J-1,IOL).GT
+     *         CZY(J+1,IOL).GT.0.D0  .AND.  CZY(-J-1,IOL).GT.	     *         CZY(J+1,IOL).GT.0.D0  .AND.  CZY(-J-1,IOL).GT.
+            AJ = 0.125D0 * (					            AJ = 0.125D0 * (
+     *           CZX(J,IOL) /CZX(J+1,IOL) + CZX(-J,IOL) /CZX(	     *           CZX(J,IOL) /CZX(J+1,IOL) + CZX(-J,IOL) /CZX(
+     *         + CZXY(J,IOL)/CZXY(J+1,IOL)+ CZXY(-J,IOL)/CZXY	     *         + CZXY(J,IOL)/CZXY(J+1,IOL)+ CZXY(-J,IOL)/CZXY
+     *         + CZYX(J,IOL)/CZYX(J+1,IOL)+ CZYX(-J,IOL)/CZYX	     *         + CZYX(J,IOL)/CZYX(J+1,IOL)+ CZYX(-J,IOL)/CZYX
+     *         + CZY(J,IOL) /CZY(J+1,IOL) + CZY(-J,IOL) /CZY(	     *         + CZY(J,IOL) /CZY(J+1,IOL) + CZY(-J,IOL) /CZY(
+          ELSE							          ELSE
+            AJ = 0.D0						            AJ = 0.D0
+          ENDIF							          ENDIF
+          IF ( AJ .GT. 0.D0 ) THEN				          IF ( AJ .GT. 0.D0 ) THEN
+            BJ    = DIST(J) / DIST(J+1)				            BJ    = DIST(J) / DIST(J+1)
+            CJ    = (DIST(J)+RMOL(IOL)) / (DIST(J+1)+RMOL(IOL	            CJ    = (DIST(J)+RMOL(IOL)) / (DIST(J+1)+RMOL(IOL
+            SJ(J) = LOG(AJ * BJ**2 * CJ**4.5D0) / LOG(BJ * CJ	            SJ(J) = LOG(AJ * BJ**2 * CJ**4.5D0) / LOG(BJ * CJ
+            DF(J) = 0.5D0 * (DIST(J) + DIST(J+1))		            DF(J) = 0.5D0 * (DIST(J) + DIST(J+1))
+          ELSE							          ELSE
+            SJ(J) = 0.D0					            SJ(J) = 0.D0
+            DF(J) = 0.D0					            DF(J) = 0.D0
+          ENDIF							          ENDIF
+  50    CONTINUE						  50    CONTINUE
+ 								 
+        DO L = 1,10						        DO L = 1,10
+          EVTE(165+IOL*40+L) = SJ(L)				          EVTE(165+IOL*40+L) = SJ(L)
+        ENDDO							        ENDDO
+ 								 
+        IF ( FPRINT ) THEN					        IF ( FPRINT ) THEN
+C  WRITE LOCAL AGE PARAMETER					C  WRITE LOCAL AGE PARAMETER
+          WRITE(MONIOU,60) IOL,OBSATI(IOL), (I,DF(I),SJ(I),I=	          WRITE(MONIOU,60) IOL,OBSATI(IOL), (I,DF(I),SJ(I),I=
+  60      FORMAT(/' RADIAL BIN  DISTANCE(CM)  LOCAL AGE  AT L	  60      FORMAT(/' RADIAL BIN  DISTANCE(CM)  LOCAL AGE  AT L
+     *          I4,' AT HEIGHT:',F10.0,' CM'/			     *          I4,' AT HEIGHT:',F10.0,' CM'/
+     *         (' ',I10,'   ',F10.0,'  ',F10.3 ) )		     *         (' ',I10,'   ',F10.0,'  ',F10.3 ) )
+ 								 
+C  PRINT LATERAL ELECTRON DISTRIBUTION				C  PRINT LATERAL ELECTRON DISTRIBUTION
+          WRITE(MONIOU,507) IOL,OBSATI(IOL)			          WRITE(MONIOU,507) IOL,OBSATI(IOL)
+ 507      FORMAT(/' LATERAL ELECTRON DENSITY (/CM**2)    AT L	 507      FORMAT(/' LATERAL ELECTRON DENSITY (/CM**2)    AT L
+     *           I4,' AT HEIGHT:',F10.0,' CM'/			     *           I4,' AT HEIGHT:',F10.0,' CM'/
+     *           ' ------------------------------------------	     *           ' ------------------------------------------
+     *           '---------------------------'/			     *           '---------------------------'/
+     *           '  DIST (CM)        CZX            CZY      	     *           '  DIST (CM)        CZX            CZY      
+     *           '      CZXY           CZYX     ')		     *           '      CZXY           CZYX     ')
+          WRITE(MONIOU,508) (DISX(I),CZX(I,IOL),CZY(I,IOL),	          WRITE(MONIOU,508) (DISX(I),CZX(I,IOL),CZY(I,IOL),
+     *                      CZXY(I,IOL),CZYX(I,IOL),I=-10,10)	     *                      CZXY(I,IOL),CZYX(I,IOL),I=-10,10)
+ 508      FORMAT(' ',0P,F10.0,1P,4E15.5)			 508      FORMAT(' ',0P,F10.0,1P,4E15.5)
+        ENDIF							        ENDIF
+ 								 
+ 312  CONTINUE							 312  CONTINUE
+ 								 
+      DO  L = 1,10						      DO  L = 1,10
+        EVTE(195+L) = DIST(L)					        EVTE(195+L) = DIST(L)
+        EVTE(235+L) = DF(L)					        EVTE(235+L) = DF(L)
+      ENDDO							      ENDDO
+ 								 
+C  WRITE NKG - SHOWER INFORMATION TO EVENT END BLOCK		C  WRITE NKG - SHOWER INFORMATION TO EVENT END BLOCK
+      DO 353  L = 1,21						      DO 353  L = 1,21
+        EVTE(  7+L) = CZX (-11+L,1)				        EVTE(  7+L) = CZX (-11+L,1)
+        EVTE( 28+L) = CZY (-11+L,1)				        EVTE( 28+L) = CZY (-11+L,1)
+        EVTE( 49+L) = CZXY(-11+L,1)				        EVTE( 49+L) = CZXY(-11+L,1)
+        EVTE( 70+L) = CZYX(-11+L,1)				        EVTE( 70+L) = CZYX(-11+L,1)
+        EVTE( 91+L) = CZX (-11+L,2)				        EVTE( 91+L) = CZX (-11+L,2)
+        EVTE(112+L) = CZY (-11+L,2)				        EVTE(112+L) = CZY (-11+L,2)
+        EVTE(133+L) = CZXY(-11+L,2)				        EVTE(133+L) = CZXY(-11+L,2)
+        EVTE(154+L) = CZYX(-11+L,2)				        EVTE(154+L) = CZYX(-11+L,2)
+ 353  CONTINUE							 353  CONTINUE
+ 								 
+      RETURN							      RETURN
+      END							      END

@@ -1,0 +1,8 @@
+egsini.f.diff
+=========================================================
+177,178c177,178
+< 90     FORMAT (' EGS4  :', ' DETECTOR ',I2,' AT ',E10.3,' M IS OUT OF A
+<      *TMOSPHERE')
+---
+> 90     FORMAT (' EGS4  :', ' DETECTOR ',I2,' AT ',E10.3,
+>      *  ' M IS OUT OF ATMOSPHERE')

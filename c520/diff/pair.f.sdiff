@@ -1,0 +1,117 @@
+      SUBROUTINE PAIR						      SUBROUTINE PAIR
+C                                VERSION 4.00  --  26 JAN 198	C                                VERSION 4.00  --  26 JAN 198
+C************************************************************	C************************************************************
+C   FOR A PHOTON ENERGY LESS THAN 2.1 MEV, THE APPROXIMATION 	C   FOR A PHOTON ENERGY LESS THAN 2.1 MEV, THE APPROXIMATION 
+C   MADE THAT ONE PAIR ELECTRON (OR POSITRON) HAS ONLY ITS RE	C   MADE THAT ONE PAIR ELECTRON (OR POSITRON) HAS ONLY ITS RE
+C   MASS ENERGY.   FOR PHOTON ENERGY BETWEEN 2.1 MEV AND 50 M	C   MASS ENERGY.   FOR PHOTON ENERGY BETWEEN 2.1 MEV AND 50 M
+C   BETHE-HEITLER CROSS SECTION IS EMPLOYED.  ABOVE 50 MEV TH	C   BETHE-HEITLER CROSS SECTION IS EMPLOYED.  ABOVE 50 MEV TH
+C   COULOMB CORRECTED BETHE-HEITLER CROSS SECTION IS USED.	C   COULOMB CORRECTED BETHE-HEITLER CROSS SECTION IS USED.
+C   (BUTCHER AND MESSEL, OP. CIT., P. 17-19, 22).		C   (BUTCHER AND MESSEL, OP. CIT., P. 17-19, 22).
+C************************************************************	C************************************************************
+      DOUBLE PRECISION PEIG,PESE1,PESE2				      DOUBLE PRECISION PEIG,PESE1,PESE2
+      COMMON/BREMPR/DL1(6),DL2(6),DL3(6),DL4(6),DL5(6),DL6(6)	      COMMON/BREMPR/DL1(6),DL2(6),DL3(6),DL4(6),DL5(6),DL6(6)
+     *HI(2),BPAR(2),DELPOS(2),PWR2I(50)				     *HI(2),BPAR(2),DELPOS(2),PWR2I(50)
+*KEEP,RANDPA.							*KEEP,RANDPA.
+      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR		      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR
+      DOUBLE PRECISION FAC,U1,U2				      DOUBLE PRECISION FAC,U1,U2
+      REAL             RD(3000)					      REAL             RD(3000)
+      INTEGER          ISEED(103,10),NSEQ			      INTEGER          ISEED(103,10),NSEQ
+      LOGICAL          KNOR					      LOGICAL          KNOR
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEEP,STACKE.							*KEEP,STACKE.
+      COMMON/STACKE/   E,TIME,X,Y,Z,U,V,W,DNEAR,IQ,IGEN,IR,IO	      COMMON/STACKE/   E,TIME,X,Y,Z,U,V,W,DNEAR,IQ,IGEN,IR,IO
+      DOUBLE PRECISION E(60),TIME(60)				      DOUBLE PRECISION E(60),TIME(60)
+      REAL             X(60),Y(60),Z(60),U(60),V(60),W(60),DN	      REAL             X(60),Y(60),Z(60),U(60),V(60),W(60),DN
+      INTEGER          IQ(60),IGEN(60),IR(60),IOBS(60),LPCTE(	      INTEGER          IQ(60),IGEN(60),IR(60),IOBS(60),LPCTE(
+*KEND.								*KEND.
+      COMMON/THRESH/RMT2,RMSQ,ESCD2,AP,API,AE,UP,UE,TE,THMOLL	      COMMON/THRESH/RMT2,RMSQ,ESCD2,AP,API,AE,UP,UE,TE,THMOLL
+      COMMON/UPHIOT/THETA,SINTHE,COSTHE,SINPHI, COSPHI,PI,TWO	      COMMON/UPHIOT/THETA,SINTHE,COSTHE,SINPHI, COSPHI,PI,TWO
+      DOUBLE PRECISION PZERO,PRM,PRMT2,RMI,VC			      DOUBLE PRECISION PZERO,PRM,PRMT2,RMI,VC
+      COMMON/USEFUL/PZERO,PRM,PRMT2,RMI,VC,RM,MEDIUM,MEDOLD,I	      COMMON/USEFUL/PZERO,PRM,PRMT2,RMI,VC,RM,MEDIUM,MEDOLD,I
+      COMMON/ACLOCK/NCLOCK,JCLOCK				      COMMON/ACLOCK/NCLOCK,JCLOCK
+C_____IF (NCLOCK.GT.JCLOCK) THEN				C_____IF (NCLOCK.GT.JCLOCK) THEN
+C______WRITE(MDEBUG,* )' PAIR:  NP=',NP,' IR=',IR(NP),' IOBS=	C______WRITE(MDEBUG,* )' PAIR:  NP=',NP,' IR=',IR(NP),' IOBS=
+C______CALL AUSGB2						C______CALL AUSGB2
+C_____END IF							C_____END IF
+      PEIG=E(NP)						      PEIG=E(NP)
+      EIG=PEIG							      EIG=PEIG
+      IF (EIG.LE.2.1) THEN					      IF (EIG.LE.2.1) THEN
+       ESE2=PRM							       ESE2=PRM
+      ELSE							      ELSE
+       IF (EIG.LT.50.) THEN					       IF (EIG.LT.50.) THEN
+        LVX=1							        LVX=1
+        LVL0=0							        LVL0=0
+       ELSE							       ELSE
+        LVX=2							        LVX=2
+        LVL0=3							        LVL0=3
+       END IF							       END IF
+961    CONTINUE							961    CONTINUE
+        CALL RMMAR(RD,2,2)					        CALL RMMAR(RD,2,2)
+        RNNO30=RD(1)						        RNNO30=RD(1)
+        RNNO31=RD(2)						        RNNO31=RD(2)
+        IF (RNNO31.GE.BPAR(LVX)) THEN				        IF (RNNO31.GE.BPAR(LVX)) THEN
+         LVL=LVL0+1						         LVL=LVL0+1
+         CALL RMMAR(RD,2,2)					         CALL RMMAR(RD,2,2)
+         RNNO32=RD(1)						         RNNO32=RD(1)
+         RNNO33=RD(2)						         RNNO33=RD(2)
+         BR=0.5*(1.0-MAX(RNNO32,RNNO33,RNNO30))			         BR=0.5*(1.0-MAX(RNNO32,RNNO33,RNNO30))
+        ELSE							        ELSE
+         LVL=LVL0+3						         LVL=LVL0+3
+         BR=RNNO30*0.5						         BR=RNNO30*0.5
+        END IF							        END IF
+        IF((BR.EQ.0.0))GO TO961					        IF((BR.EQ.0.0))GO TO961
+        DEL=1.0/(EIG*BR*(1.0-BR))				        DEL=1.0/(EIG*BR*(1.0-BR))
+        IF((DEL.GE.DELPOS(LVX)))GO TO961			        IF((DEL.GE.DELPOS(LVX)))GO TO961
+        DELTA=DELCM*DEL						        DELTA=DELCM*DEL
+        IF (DELTA.LT.1.0) THEN					        IF (DELTA.LT.1.0) THEN
+         REJF=DL1(LVL)+DELTA*(DL2(LVL)+DELTA*DL3(LVL))		         REJF=DL1(LVL)+DELTA*(DL2(LVL)+DELTA*DL3(LVL))
+        ELSE							        ELSE
+         REJF=DL4(LVL)+DL5(LVL)*LOG(DELTA+DL6(LVL))		         REJF=DL4(LVL)+DL5(LVL)*LOG(DELTA+DL6(LVL))
+        END IF							        END IF
+        CALL RMMAR(RNSCRN,1,2)					        CALL RMMAR(RNSCRN,1,2)
+        IF((RNSCRN.LE.REJF))GO TO962				        IF((RNSCRN.LE.REJF))GO TO962
+       GO TO 961						       GO TO 961
+962    CONTINUE							962    CONTINUE
+       ESE2=BR*EIG						       ESE2=BR*EIG
+      END IF							      END IF
+      PESE2=ESE2						      PESE2=ESE2
+      PESE1=PEIG-PESE2						      PESE1=PEIG-PESE2
+      E(NP)=PESE1						      E(NP)=PESE1
+      E(NP+1)=PESE2						      E(NP+1)=PESE2
+      THETA=RM/EIG						      THETA=RM/EIG
+      CALL UPHI(1,1)						      CALL UPHI(1,1)
+      NP=NP+1							      NP=NP+1
+      SINTHE=-SINTHE						      SINTHE=-SINTHE
+      CALL UPHI(3,2)						      CALL UPHI(3,2)
+      CALL RMMAR(RNNO34,1,2)					      CALL RMMAR(RNNO34,1,2)
+      IF (RNNO34.LE.0.5) THEN					      IF (RNNO34.LE.0.5) THEN
+       IQ(NP)=2							       IQ(NP)=2
+       IQ(NP-1)=3						       IQ(NP-1)=3
+      ELSE							      ELSE
+       IQ(NP)=3							       IQ(NP)=3
+       IQ(NP-1)=2						       IQ(NP-1)=2
+      END IF							      END IF
+      RETURN							      RETURN
+      END							      END

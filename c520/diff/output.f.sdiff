@@ -1,0 +1,208 @@
+      SUBROUTINE OUTPUT						      SUBROUTINE OUTPUT
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  (WRITE PARTICLE) OUTPUT					C  (WRITE PARTICLE) OUTPUT
+C								C
+C  WRITES 39 PARTICLE RECORDS PER PHYSICAL RECORD		C  WRITES 39 PARTICLE RECORDS PER PHYSICAL RECORD
+C  TABULATES PARAMETERS OF ALL HIGH ENERGY PARTICLES WITH	C  TABULATES PARAMETERS OF ALL HIGH ENERGY PARTICLES WITH
+C  LORENTZ FACTOR LARGER THAN ECTMAP				C  LORENTZ FACTOR LARGER THAN ECTMAP
+C  THIS SUBROUTINE IS CALLED FROM MAIN, BOX3, MUTRAC, AND AUS	C  THIS SUBROUTINE IS CALLED FROM MAIN, BOX3, MUTRAC, AND AUS
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,BUFFS.							*KEEP,BUFFS.
+      COMMON /BUFFS/   RUNH,RUNE,EVTH,EVTE,DATAB,LH		      COMMON /BUFFS/   RUNH,RUNE,EVTH,EVTE,DATAB,LH
+      INTEGER          MAXBUF,MAXLEN				      INTEGER          MAXBUF,MAXLEN
+      PARAMETER        (MAXBUF=39*7)				      PARAMETER        (MAXBUF=39*7)
+      PARAMETER        (MAXLEN=12)				      PARAMETER        (MAXLEN=12)
+      REAL             RUNH(MAXBUF),EVTH(MAXBUF),EVTE(MAXBUF)	      REAL             RUNH(MAXBUF),EVTH(MAXBUF),EVTE(MAXBUF)
+     *                 RUNE(MAXBUF),DATAB(MAXBUF)		     *                 RUNE(MAXBUF),DATAB(MAXBUF)
+      INTEGER          LH					      INTEGER          LH
+      CHARACTER*4      CRUNH,CRUNE,CEVTH,CEVTE			      CHARACTER*4      CRUNH,CRUNE,CEVTH,CEVTE
+      EQUIVALENCE      (RUNH(1),CRUNH), (RUNE(1),CRUNE)		      EQUIVALENCE      (RUNH(1),CRUNH), (RUNE(1),CRUNE)
+      EQUIVALENCE      (EVTH(1),CEVTH), (EVTE(1),CEVTE)		      EQUIVALENCE      (EVTH(1),CEVTH), (EVTE(1),CEVTE)
+*KEEP,ETHMAP.							*KEEP,ETHMAP.
+      COMMON /ETHMAP/  ECTMAP,ELEFT				      COMMON /ETHMAP/  ECTMAP,ELEFT
+      DOUBLE PRECISION ECTMAP,ELEFT				      DOUBLE PRECISION ECTMAP,ELEFT
+*KEEP,MAGANG.							*KEEP,MAGANG.
+      COMMON /MAGANG/  ARRANG,ARRANR,COSANG,SINANG		      COMMON /MAGANG/  ARRANG,ARRANR,COSANG,SINANG
+      DOUBLE PRECISION ARRANG,ARRANR,COSANG,SINANG		      DOUBLE PRECISION ARRANG,ARRANR,COSANG,SINANG
+*KEEP,MULT.							*KEEP,MULT.
+      COMMON /MULT/    EKINL,MSMM,MULTMA,MULTOT			      COMMON /MULT/    EKINL,MSMM,MULTMA,MULTOT
+      DOUBLE PRECISION EKINL					      DOUBLE PRECISION EKINL
+      INTEGER          MSMM,MULTMA(37,13),MULTOT(37,13)		      INTEGER          MSMM,MULTMA(37,13),MULTOT(37,13)
+*KEEP,MUPART.							*KEEP,MUPART.
+      COMMON /MUPART/  AMUPAR,BCUT,CMUON,FMUBRM,FMUORG		      COMMON /MUPART/  AMUPAR,BCUT,CMUON,FMUBRM,FMUORG
+      DOUBLE PRECISION AMUPAR(14),BCUT,CMUON(11)		      DOUBLE PRECISION AMUPAR(14),BCUT,CMUON(11)
+      LOGICAL          FMUBRM,FMUORG				      LOGICAL          FMUBRM,FMUORG
+*KEEP,NPARTI.							*KEEP,NPARTI.
+      COMMON /NPARTI/  NPARTO,MUOND				      COMMON /NPARTI/  NPARTO,MUOND
+      DOUBLE PRECISION NPARTO(10,25),NPHOTO(10),NPOSIT(10),NE	      DOUBLE PRECISION NPARTO(10,25),NPHOTO(10),NPOSIT(10),NE
+     *                 NNU(10),NMUP(10),NMUM(10),NPI0(10),NPI	     *                 NNU(10),NMUP(10),NMUM(10),NPI0(10),NPI
+     *                 NPIM(10),NK0L(10),NKPL(10),NKMI(10),NN	     *                 NPIM(10),NK0L(10),NKPL(10),NKMI(10),NN
+     *                 NPROTO(10),NPROTB(10),NK0S(10),NHYP(10	     *                 NPROTO(10),NPROTB(10),NK0S(10),NHYP(10
+     *                 NNEUTB(10),NDEUT(10),NTRIT(10),NALPHA(	     *                 NNEUTB(10),NDEUT(10),NTRIT(10),NALPHA(
+     *                 NOTHER(10),MUOND				     *                 NOTHER(10),MUOND
+      EQUIVALENCE (NPARTO(1, 1),NPHOTO(1)), (NPARTO(1, 2),NPO	      EQUIVALENCE (NPARTO(1, 1),NPHOTO(1)), (NPARTO(1, 2),NPO
+     *            (NPARTO(1, 3),NELECT(1)), (NPARTO(1, 4),NNU	     *            (NPARTO(1, 3),NELECT(1)), (NPARTO(1, 4),NNU
+     *            (NPARTO(1, 5),NMUP(1))  , (NPARTO(1, 6),NMU	     *            (NPARTO(1, 5),NMUP(1))  , (NPARTO(1, 6),NMU
+     *            (NPARTO(1, 7),NPI0(1))  , (NPARTO(1, 8),NPI	     *            (NPARTO(1, 7),NPI0(1))  , (NPARTO(1, 8),NPI
+     *            (NPARTO(1, 9),NPIM(1))  , (NPARTO(1,10),NK0	     *            (NPARTO(1, 9),NPIM(1))  , (NPARTO(1,10),NK0
+     *            (NPARTO(1,11),NKPL(1))  , (NPARTO(1,12),NKM	     *            (NPARTO(1,11),NKPL(1))  , (NPARTO(1,12),NKM
+     *            (NPARTO(1,13),NNEUTR(1)), (NPARTO(1,14),NPR	     *            (NPARTO(1,13),NNEUTR(1)), (NPARTO(1,14),NPR
+     *            (NPARTO(1,15),NPROTB(1)), (NPARTO(1,16),NK0	     *            (NPARTO(1,15),NPROTB(1)), (NPARTO(1,16),NK0
+     *            (NPARTO(1,18),NHYP(1))  , (NPARTO(1,19),NDE	     *            (NPARTO(1,18),NHYP(1))  , (NPARTO(1,19),NDE
+     *            (NPARTO(1,20),NTRIT(1)) , (NPARTO(1,21),NAL	     *            (NPARTO(1,20),NTRIT(1)) , (NPARTO(1,21),NAL
+     *            (NPARTO(1,22),NOTHER(1)), (NPARTO(1,25),NNE	     *            (NPARTO(1,22),NOTHER(1)), (NPARTO(1,25),NNE
+*KEEP,OBSPAR.							*KEEP,OBSPAR.
+      COMMON /OBSPAR/  OBSLEV,THCKOB,XOFF,YOFF,THETAP,PHIP,	      COMMON /OBSPAR/  OBSLEV,THCKOB,XOFF,YOFF,THETAP,PHIP,
+     *                 THETPR,PHIPR,NOBSLV			     *                 THETPR,PHIPR,NOBSLV
+      DOUBLE PRECISION OBSLEV(10),THCKOB(10),XOFF(10),YOFF(10	      DOUBLE PRECISION OBSLEV(10),THCKOB(10),XOFF(10),YOFF(10
+     *                 THETAP,THETPR(2),PHIP,PHIPR(2)		     *                 THETAP,THETPR(2),PHIP,PHIPR(2)
+      INTEGER          NOBSLV					      INTEGER          NOBSLV
+*KEEP,PAM.							*KEEP,PAM.
+      COMMON /PAM/     PAMA,SIGNUM				      COMMON /PAM/     PAMA,SIGNUM
+      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)			      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)
+*KEEP,PARPAR.							*KEEP,PARPAR.
+      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,		      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,
+     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE	     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE
+      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA	      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA
+     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH	     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH
+      INTEGER          ITYPE,LEVL				      INTEGER          ITYPE,LEVL
+*KEEP,PARPAE.							*KEEP,PARPAE.
+      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,	      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,
+      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)	      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)
+     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )	     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )
+     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )	     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )
+     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )	     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )
+     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )	     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )
+     *                 (CURPAR(12),ECM )			     *                 (CURPAR(12),ECM )
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEND.								*KEND.
+ 								 
+      DOUBLE PRECISION AUGM,ETOT,PTOT,STT,XADDMU,YADDMU		      DOUBLE PRECISION AUGM,ETOT,PTOT,STT,XADDMU,YADDMU
+      INTEGER          I,IGG,III,NCOUNT				      INTEGER          I,IGG,III,NCOUNT
+      DATA             NCOUNT /0/,AUGM/1.D0/			      DATA             NCOUNT /0/,AUGM/1.D0/
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,444) (OUTPAR(I),I=1,9)		      IF ( DEBUG ) WRITE(MDEBUG,444) (OUTPAR(I),I=1,9)
+  444 FORMAT(' OUTPUT: OUTPAR=',1P,9E10.3)			  444 FORMAT(' OUTPUT: OUTPAR=',1P,9E10.3)
+ 								 
+C  CORRECT X,Y COORDINATES FOR EACH LEVEL			C  CORRECT X,Y COORDINATES FOR EACH LEVEL
+      OUTPAR(7) = OUTPAR(7) - XOFF(LEVL)			      OUTPAR(7) = OUTPAR(7) - XOFF(LEVL)
+      OUTPAR(8) = OUTPAR(8) - YOFF(LEVL)			      OUTPAR(8) = OUTPAR(8) - YOFF(LEVL)
+ 								 
+C  PRINT OUT PARTICLE IF IT IS ABOVE THE CUT			C  PRINT OUT PARTICLE IF IT IS ABOVE THE CUT
+      IF ( FPRINT .OR. DEBUG ) THEN				      IF ( FPRINT .OR. DEBUG ) THEN
+        IF ( OUTPAR(2) .GE. ECTMAP ) THEN			        IF ( OUTPAR(2) .GE. ECTMAP ) THEN
+          WRITE(MONIOU,3) (OUTPAR(I),I=1,10), ELEFT		          WRITE(MONIOU,3) (OUTPAR(I),I=1,10), ELEFT
+    3     FORMAT(' OUTPUT:        ',1P,11E10.3)			    3     FORMAT(' OUTPUT:        ',1P,11E10.3)
+          IF (DEBDEL) THEN					          IF (DEBDEL) THEN
+            NCOUNT = NCOUNT + 1					            NCOUNT = NCOUNT + 1
+            WRITE(MDEBUG,*)'OUTPUT: NCOUNT = ',NCOUNT		            WRITE(MDEBUG,*)'OUTPUT: NCOUNT = ',NCOUNT
+            IF ( NCOUNT .GE. NDEBDL ) DEBUG = .TRUE.		            IF ( NCOUNT .GE. NDEBDL ) DEBUG = .TRUE.
+          ENDIF							          ENDIF
+        ENDIF							        ENDIF
+      ENDIF							      ENDIF
+ 								 
+C  COUNT PARTICLES, THAT ARE WRITTEN TO TAPE			C  COUNT PARTICLES, THAT ARE WRITTEN TO TAPE
+      NOPART = NOPART + 1					      NOPART = NOPART + 1
+C  COUNT PARTICLES SPECIFIED BY THEIR PARTICLE CODE < 25	C  COUNT PARTICLES SPECIFIED BY THEIR PARTICLE CODE < 25
+      III    = NINT(OUTPAR(1))					      III    = NINT(OUTPAR(1))
+      IF     ( III .LT. 18 ) THEN				      IF     ( III .LT. 18 ) THEN
+        NPARTO(LEVL,III) = NPARTO(LEVL,III) + AUGM		        NPARTO(LEVL,III) = NPARTO(LEVL,III) + AUGM
+      ELSEIF ( (III .GE. 18  .AND.  III .LE. 24)  .OR.		      ELSEIF ( (III .GE. 18  .AND.  III .LE. 24)  .OR.
+     *         (III .GE. 26  .AND.  III .LE. 32)      ) THEN	     *         (III .GE. 26  .AND.  III .LE. 32)      ) THEN
+        NHYP(LEVL) = NHYP(LEVL) + AUGM				        NHYP(LEVL) = NHYP(LEVL) + AUGM
+      ELSEIF ( III .EQ. 201 ) THEN				      ELSEIF ( III .EQ. 201 ) THEN
+        NDEUT(LEVL) = NDEUT(LEVL) + AUGM			        NDEUT(LEVL) = NDEUT(LEVL) + AUGM
+      ELSEIF ( III .EQ. 301 ) THEN				      ELSEIF ( III .EQ. 301 ) THEN
+        NTRIT(LEVL) = NTRIT(LEVL) + AUGM			        NTRIT(LEVL) = NTRIT(LEVL) + AUGM
+      ELSEIF ( III .EQ. 402 ) THEN				      ELSEIF ( III .EQ. 402 ) THEN
+        NALPHA(LEVL) = NALPHA(LEVL) + AUGM			        NALPHA(LEVL) = NALPHA(LEVL) + AUGM
+      ELSEIF ( III .GT. 33 ) THEN				      ELSEIF ( III .GT. 33 ) THEN
+        WRITE(MONIOU,*) 'OUTPUT: PARTICLE ON OBSLEV ',LEVL,' 	        WRITE(MONIOU,*) 'OUTPUT: PARTICLE ON OBSLEV ',LEVL,' 
+        NOTHER(LEVL) = NOTHER(LEVL) + AUGM			        NOTHER(LEVL) = NOTHER(LEVL) + AUGM
+      ELSE							      ELSE
+        NPARTO(LEVL,III) = NPARTO(LEVL,III) + AUGM		        NPARTO(LEVL,III) = NPARTO(LEVL,III) + AUGM
+      ENDIF							      ENDIF
+ 								 
+C   TREATE ADDITIONAL INFORMATION OF MUONS			C   TREATE ADDITIONAL INFORMATION OF MUONS
+C   THE COORDINATES OF MUON ORIGIN ARE STORED IN AMUPAR(.)	C   THE COORDINATES OF MUON ORIGIN ARE STORED IN AMUPAR(.)
+      IF ( FMUADD  .AND. (III .EQ. 5  .OR. III .EQ. 6) ) THEN	      IF ( FMUADD  .AND. (III .EQ. 5  .OR. III .EQ. 6) ) THEN
+        DATAB(LH+1) = (III + 70.) * 1000.			        DATAB(LH+1) = (III + 70.) * 1000.
+        PTOT = PAMA(III) * SQRT( AMUPAR(2)**2 - 1.D0 )		        PTOT = PAMA(III) * SQRT( AMUPAR(2)**2 - 1.D0 )
+        STT  = SQRT( 1.D0 - AMUPAR(3)**2 )			        STT  = SQRT( 1.D0 - AMUPAR(3)**2 )
+        DATAB(LH+2) = PTOT * STT * COS( AMUPAR(4) + ARRANR )	        DATAB(LH+2) = PTOT * STT * COS( AMUPAR(4) + ARRANR )
+        DATAB(LH+3) = PTOT * STT * SIN( AMUPAR(4) + ARRANR )	        DATAB(LH+3) = PTOT * STT * SIN( AMUPAR(4) + ARRANR )
+        DATAB(LH+4) = PTOT * AMUPAR(3)				        DATAB(LH+4) = PTOT * AMUPAR(3)
+        XADDMU = AMUPAR(7) - XOFF(LEVL)				        XADDMU = AMUPAR(7) - XOFF(LEVL)
+        YADDMU = AMUPAR(8) - YOFF(LEVL)				        YADDMU = AMUPAR(8) - YOFF(LEVL)
+        DATAB(LH+5) = XADDMU * COSANG + YADDMU * SINANG		        DATAB(LH+5) = XADDMU * COSANG + YADDMU * SINANG
+        DATAB(LH+6) = YADDMU * COSANG - XADDMU * SINANG		        DATAB(LH+6) = YADDMU * COSANG - XADDMU * SINANG
+        DATAB(LH+7) = AMUPAR(5)					        DATAB(LH+7) = AMUPAR(5)
+        IF ( DEBUG ) WRITE(MDEBUG,445) (DATAB(LH+I),I=1,7)	        IF ( DEBUG ) WRITE(MDEBUG,445) (DATAB(LH+I),I=1,7)
+  445   FORMAT(' OUTPUT: MUADDI=',1P,8E10.3)			  445   FORMAT(' OUTPUT: MUADDI=',1P,8E10.3)
+        LH = LH + 7						        LH = LH + 7
+ 								 
+C  WRITE A BLOCK OF 39 PARTICLES TO OUTPUT BUFFER AND CLEAR F	C  WRITE A BLOCK OF 39 PARTICLES TO OUTPUT BUFFER AND CLEAR F
+        IF ( LH .GE. MAXBUF ) THEN				        IF ( LH .GE. MAXBUF ) THEN
+          CALL TOBUF( DATAB,0 )					          CALL TOBUF( DATAB,0 )
+          DO  1  I = 1,MAXBUF					          DO  1  I = 1,MAXBUF
+            DATAB(I) = 0.					            DATAB(I) = 0.
+  1       CONTINUE						  1       CONTINUE
+          LH = 0						          LH = 0
+        ENDIF							        ENDIF
+      ENDIF							      ENDIF
+ 								 
+C   COPY PARTICLE TO DATAB FIELD				C   COPY PARTICLE TO DATAB FIELD
+      IGG = MIN( OUTPAR(9), 99.D0 )				      IGG = MIN( OUTPAR(9), 99.D0 )
+      DATAB(LH+1) = III*1000 + IGG*10 + MOD(LEVL,10)		      DATAB(LH+1) = III*1000 + IGG*10 + MOD(LEVL,10)
+      IF ( OUTPAR(1) .LE. 3.D0 ) THEN				      IF ( OUTPAR(1) .LE. 3.D0 ) THEN
+        ETOT = OUTPAR(2)					        ETOT = OUTPAR(2)
+      ELSE							      ELSE
+        ETOT = PAMA(III) * OUTPAR(2)				        ETOT = PAMA(III) * OUTPAR(2)
+      ENDIF							      ENDIF
+      PTOT = SQRT( ETOT**2 - PAMA(III)**2 )			      PTOT = SQRT( ETOT**2 - PAMA(III)**2 )
+      STT  = SQRT( 1.D0 - OUTPAR(3)**2 )			      STT  = SQRT( 1.D0 - OUTPAR(3)**2 )
+      DATAB(LH+2) = PTOT * STT * COS( OUTPAR(4) + ARRANR )	      DATAB(LH+2) = PTOT * STT * COS( OUTPAR(4) + ARRANR )
+      DATAB(LH+3) = PTOT * STT * SIN( OUTPAR(4) + ARRANR )	      DATAB(LH+3) = PTOT * STT * SIN( OUTPAR(4) + ARRANR )
+      DATAB(LH+4) = PTOT * OUTPAR(3)				      DATAB(LH+4) = PTOT * OUTPAR(3)
+      DATAB(LH+5) = OUTPAR(7) * COSANG + OUTPAR(8) * SINANG	      DATAB(LH+5) = OUTPAR(7) * COSANG + OUTPAR(8) * SINANG
+      DATAB(LH+6) = OUTPAR(8) * COSANG - OUTPAR(7) * SINANG	      DATAB(LH+6) = OUTPAR(8) * COSANG - OUTPAR(7) * SINANG
+      DATAB(LH+7) = OUTPAR(6) * 1.E9				      DATAB(LH+7) = OUTPAR(6) * 1.E9
+      LH = LH + 7						      LH = LH + 7
+ 								 
+C  WRITE A BLOCK OF 39 PARTICLES TO OUTPUT BUFFER AND CLEAR F	C  WRITE A BLOCK OF 39 PARTICLES TO OUTPUT BUFFER AND CLEAR F
+      IF ( LH .GE. MAXBUF ) THEN				      IF ( LH .GE. MAXBUF ) THEN
+        CALL TOBUF( DATAB,0 )					        CALL TOBUF( DATAB,0 )
+        DO  2  I = 1,MAXBUF					        DO  2  I = 1,MAXBUF
+          DATAB(I) = 0.						          DATAB(I) = 0.
+  2     CONTINUE						  2     CONTINUE
+        LH = 0							        LH = 0
+      ENDIF							      ENDIF
+ 								 
+      RETURN							      RETURN
+      END							      END

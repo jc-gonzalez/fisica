@@ -1,0 +1,219 @@
+      SUBROUTINE NKG( ENERN )					      SUBROUTINE NKG( ENERN )
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  N(ISHIMURA) K(AMATA) G(REISEN)				C  N(ISHIMURA) K(AMATA) G(REISEN)
+C								C
+C  CALCULATES ELECTROMAGNETIC COMPONENT OF SHOWERS USING THE 	C  CALCULATES ELECTROMAGNETIC COMPONENT OF SHOWERS USING THE 
+C  NKG FORMULAS, INCLUDING ELECTRON ENERGY THRESHOLD ELCUT(3)	C  NKG FORMULAS, INCLUDING ELECTRON ENERGY THRESHOLD ELCUT(3)
+C  SEE J.N. CAPDEVIELLE, 22ND ICRC, DUBLIN 1991, CONTRIB. HE 	C  SEE J.N. CAPDEVIELLE, 22ND ICRC, DUBLIN 1991, CONTRIB. HE 
+C  THIS SUBROUTINE IS CALLED FROM EM				C  THIS SUBROUTINE IS CALLED FROM EM
+C  ARGUMENTS:							C  ARGUMENTS:
+C   ENERN  = ENERGY OF ELECTRON/PHOTON GENERATING A SUBSHOWER	C   ENERN  = ENERGY OF ELECTRON/PHOTON GENERATING A SUBSHOWER
+C            NEGATIVE FOR SUBSHOWERS TO BE SUBTRACTED AFTER	C            NEGATIVE FOR SUBSHOWERS TO BE SUBTRACTED AFTER
+C            PHOTONUCLEAR REACTION				C            PHOTONUCLEAR REACTION
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,CONST.							*KEEP,CONST.
+      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER			      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER
+      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER			      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER
+*KEEP,ELABCT.							*KEEP,ELABCT.
+      COMMON /ELABCT/  ELCUT					      COMMON /ELABCT/  ELCUT
+      DOUBLE PRECISION ELCUT(4)					      DOUBLE PRECISION ELCUT(4)
+*KEEP,NKGI.							*KEEP,NKGI.
+      COMMON /NKGI/    SEL,SELLG,STH,ZEL,ZELLG,ZSL,DIST,	      COMMON /NKGI/    SEL,SELLG,STH,ZEL,ZELLG,ZSL,DIST,
+     *                 DISX,DISY,DISXY,DISYX,DLAX,DLAY,DLAXY,	     *                 DISX,DISY,DISXY,DISYX,DLAX,DLAY,DLAXY,
+     *                 OBSATI,RADNKG,RMOL,TLEV,TLEVCM,IALT	     *                 OBSATI,RADNKG,RMOL,TLEV,TLEVCM,IALT
+      DOUBLE PRECISION SEL(10),SELLG(10),STH(10),ZEL(10),ZELL	      DOUBLE PRECISION SEL(10),SELLG(10),STH(10),ZEL(10),ZELL
+     *                 ZSL(10),DIST(10),			     *                 ZSL(10),DIST(10),
+     *                 DISX(-10:10),DISY(-10:10),		     *                 DISX(-10:10),DISY(-10:10),
+     *                 DISXY(-10:10,2),DISYX(-10:10,2),		     *                 DISXY(-10:10,2),DISYX(-10:10,2),
+     *                 DLAX (-10:10,2),DLAY (-10:10,2),		     *                 DLAX (-10:10,2),DLAY (-10:10,2),
+     *                 DLAXY(-10:10,2),DLAYX(-10:10,2),		     *                 DLAXY(-10:10,2),DLAYX(-10:10,2),
+     *                 OBSATI(2),RADNKG,RMOL(2),TLEV(10),TLEV	     *                 OBSATI(2),RADNKG,RMOL(2),TLEV(10),TLEV
+      INTEGER          IALT(2)					      INTEGER          IALT(2)
+*KEEP,NKGS.							*KEEP,NKGS.
+      COMMON /NKGS/    CZX,CZY,CZXY,CZYX,SAH,SL,ZNE		      COMMON /NKGS/    CZX,CZY,CZXY,CZYX,SAH,SL,ZNE
+      DOUBLE PRECISION CZX(-10:10,2),CZY(-10:10,2),CZXY(-10:1	      DOUBLE PRECISION CZX(-10:10,2),CZY(-10:10,2),CZXY(-10:1
+     *                 CZYX(-10:10,2),SAH(10),SL(10),ZNE(10)	     *                 CZYX(-10:10,2),SAH(10),SL(10),ZNE(10)
+*KEEP,OBSPAR.							*KEEP,OBSPAR.
+      COMMON /OBSPAR/  OBSLEV,THCKOB,XOFF,YOFF,THETAP,PHIP,	      COMMON /OBSPAR/  OBSLEV,THCKOB,XOFF,YOFF,THETAP,PHIP,
+     *                 THETPR,PHIPR,NOBSLV			     *                 THETPR,PHIPR,NOBSLV
+      DOUBLE PRECISION OBSLEV(10),THCKOB(10),XOFF(10),YOFF(10	      DOUBLE PRECISION OBSLEV(10),THCKOB(10),XOFF(10),YOFF(10
+     *                 THETAP,THETPR(2),PHIP,PHIPR(2)		     *                 THETAP,THETPR(2),PHIP,PHIPR(2)
+      INTEGER          NOBSLV					      INTEGER          NOBSLV
+*KEEP,PARPAR.							*KEEP,PARPAR.
+      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,		      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,
+     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE	     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE
+      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA	      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA
+     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH	     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH
+      INTEGER          ITYPE,LEVL				      INTEGER          ITYPE,LEVL
+*KEEP,PARPAE.							*KEEP,PARPAE.
+      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,	      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,
+      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)	      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)
+     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )	     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )
+     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )	     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )
+     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )	     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )
+     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )	     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )
+     *                 (CURPAR(12),ECM )			     *                 (CURPAR(12),ECM )
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEND.								*KEND.
+ 								 
+      DOUBLE PRECISION AE,AS,ASE,AUXIL,BS,CCP,CPC,CPCP,CPH,CS	      DOUBLE PRECISION AE,AS,ASE,AUXIL,BS,CCP,CPC,CPCP,CPH,CS
+     *                 DE,DISTL,ECRI,ECR1,ECR2,ENERN,GAM,GRCU	     *                 DE,DISTL,ECRI,ECR1,ECR2,ENERN,GAM,GRCU
+     *                 G1,G2,G3,S,SC1,SC2,SIGNE,SM,SMRM,	     *                 G1,G2,G3,S,SC1,SC2,SIGNE,SM,SMRM,
+     *                 SQRZ1I,SQZC1I,SQZC2I,SS2,SS45,TEX,THIC	     *                 SQRZ1I,SQZC1I,SQZC2I,SS2,SS45,TEX,THIC
+     *                 XMOL,XNE,XS,X0,YM,YS,ZC1,ZC2,ZG1,ZG2,Z	     *                 XMOL,XNE,XS,X0,YM,YS,ZC1,ZC2,ZG1,ZG2,Z
+      INTEGER          IL,IOL,M					      INTEGER          IL,IOL,M
+      EXTERNAL         GAM,THICK				      EXTERNAL         GAM,THICK
+C  X0 IS RADIATON LENGTH IN AIR (G/CM**2)			C  X0 IS RADIATON LENGTH IN AIR (G/CM**2)
+C  (SEE ALSO MIKOCKI ET AL. J.PHYS.G.:NUCL.PART.PHYS. 17 (199	C  (SEE ALSO MIKOCKI ET AL. J.PHYS.G.:NUCL.PART.PHYS. 17 (199
+C  GRCUT IS GREISEN CUT OFF,  ECRI IS CRITICAL ENERGY IN AIR	C  GRCUT IS GREISEN CUT OFF,  ECRI IS CRITICAL ENERGY IN AIR
+C  ECR2 IS 0.4 * ECRI						C  ECR2 IS 0.4 * ECRI
+      DATA X0 / 37.1D0 /, GRCUT / 0.1D0 /, ECRI / 0.082D0 /	      DATA X0 / 37.1D0 /, GRCUT / 0.1D0 /, ECRI / 0.082D0 /
+      DATA ECR2 / 0.0328D0 /					      DATA ECR2 / 0.0328D0 /
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF (DEBUG) WRITE(MDEBUG,*)'NKG   : ',SNGL(SECPAR(1)),SN	      IF (DEBUG) WRITE(MDEBUG,*)'NKG   : ',SNGL(SECPAR(1)),SN
+ 								 
+C  CHECK WETHER SUBSHOWER IS SUBTRACTED				C  CHECK WETHER SUBSHOWER IS SUBTRACTED
+      IF ( ENERN .GE. 0.D0 ) THEN				      IF ( ENERN .GE. 0.D0 ) THEN
+        SIGNE = +1.D0						        SIGNE = +1.D0
+      ELSE							      ELSE
+        ENERN = -ENERN						        ENERN = -ENERN
+        SIGNE = -1.D0						        SIGNE = -1.D0
+      ENDIF							      ENDIF
+ 								 
+C  ENERGY CUT OFF IN GREISEN FORMULA				C  ENERGY CUT OFF IN GREISEN FORMULA
+C  (EM PARTICLE BELOW THIS CUT CAN NOT PRODUCE A SHOWER)	C  (EM PARTICLE BELOW THIS CUT CAN NOT PRODUCE A SHOWER)
+      IF ( ENERN .LT. GRCUT ) RETURN				      IF ( ENERN .LT. GRCUT ) RETURN
+C  DON'T CALCULATE NKG FOR BACKWARD GOING PARTICLES		C  DON'T CALCULATE NKG FOR BACKWARD GOING PARTICLES
+      IF ( SECPAR(3) .LE. 0.D0 ) RETURN				      IF ( SECPAR(3) .LE. 0.D0 ) RETURN
+C  DON'T CALCULATE NKG IF PARTICLE BELOW THE LOWEST OBSERVATI	C  DON'T CALCULATE NKG IF PARTICLE BELOW THE LOWEST OBSERVATI
+      IF ( SECPAR(5) .LT. OBSATI(1) ) RETURN			      IF ( SECPAR(5) .LT. OBSATI(1) ) RETURN
+ 								 
+      Z1     = LOG(ENERN / ECRI)				      Z1     = LOG(ENERN / ECRI)
+      SQRZ1I = 1.D0 / SQRT(Z1)					      SQRZ1I = 1.D0 / SQRT(Z1)
+ 								 
+C  THIS CUT IS ONLY IMPORTANT FOR ELCUT > .0672			C  THIS CUT IS ONLY IMPORTANT FOR ELCUT > .0672
+      ECR1 = ECR2 + ELCUT(3)					      ECR1 = ECR2 + ELCUT(3)
+      IF ( ENERN .LT. ECR1 ) RETURN				      IF ( ENERN .LT. ECR1 ) RETURN
+      ZC1    = LOG(ENERN / ECR1)				      ZC1    = LOG(ENERN / ECR1)
+      SQZC1I = 1.D0 / SQRT(ZC1)					      SQZC1I = 1.D0 / SQRT(ZC1)
+C  LOG(ENERN/ECR2) IS LOG(ENERN / ECRI) - LOG(0.4)		C  LOG(ENERN/ECR2) IS LOG(ENERN / ECRI) - LOG(0.4)
+      ZC2    = Z1 + 0.916290732D0				      ZC2    = Z1 + 0.916290732D0
+      SQZC2I = 1.D0 / SQRT(ZC2)					      SQZC2I = 1.D0 / SQRT(ZC2)
+      THICKP = THICK(SECPAR(5))					      THICKP = THICK(SECPAR(5))
+ 								 
+C  LOOP OVER LEVELS						C  LOOP OVER LEVELS
+      DO 14  IL = 1,IALT(1)					      DO 14  IL = 1,IALT(1)
+C  DISREGARD LEVELS ABOVE THE PARTICLE				C  DISREGARD LEVELS ABOVE THE PARTICLE
+        IF ( TLEVCM(IL) .GT. SECPAR(5) ) GOTO 14		        IF ( TLEVCM(IL) .GT. SECPAR(5) ) GOTO 14
+C  DISTANCE IN G/CM**2 .... (ALONG PHOTON-AXIS) IN RADIATION 	C  DISTANCE IN G/CM**2 .... (ALONG PHOTON-AXIS) IN RADIATION 
+        XMOL  = (TLEV(IL) - THICKP) / ( X0 * SECPAR(3) )	        XMOL  = (TLEV(IL) - THICKP) / ( X0 * SECPAR(3) )
+C  CORRECT DEPTH FOR SUBSHOWERS TO BE SUBTRACTED BY 9/7		C  CORRECT DEPTH FOR SUBSHOWERS TO BE SUBTRACTED BY 9/7
+        IF ( SIGNE .LT. 0.D0 ) XMOL = XMOL + 1.285714286D0	        IF ( SIGNE .LT. 0.D0 ) XMOL = XMOL + 1.285714286D0
+C  XMOL IS DEPTH IN RADIATION LENGTHS				C  XMOL IS DEPTH IN RADIATION LENGTHS
+        IF ( XMOL .GT. 60.D0  .OR.  XMOL .LT. 1.D0 ) GOTO 14	        IF ( XMOL .GT. 60.D0  .OR.  XMOL .LT. 1.D0 ) GOTO 14
+C  S IS AGE PARAMETER						C  S IS AGE PARAMETER
+        S     = 3.D0 * XMOL / (XMOL + 2.D0 * Z1)		        S     = 3.D0 * XMOL / (XMOL + 2.D0 * Z1)
+        IF ( S .LE. 0.2D0 ) GOTO 14				        IF ( S .LE. 0.2D0 ) GOTO 14
+        SC1   = 3.D0 * XMOL / (XMOL + 2.D0 * ZC1)		        SC1   = 3.D0 * XMOL / (XMOL + 2.D0 * ZC1)
+        SC2   = 3.D0 * XMOL / (XMOL + 2.D0 * ZC2)		        SC2   = 3.D0 * XMOL / (XMOL + 2.D0 * ZC2)
+C  ELECTRON NUMBER AT OBSERVATION LEVEL				C  ELECTRON NUMBER AT OBSERVATION LEVEL
+        CPH   = .31D0 * EXP( XMOL * (1.D0 - 1.5D0 * LOG(S) ) 	        CPH   = .31D0 * EXP( XMOL * (1.D0 - 1.5D0 * LOG(S) ) 
+        CPC   = EXP( XMOL * ( 1.D0 - 1.5D0 * LOG(SC1) ) ) * S	        CPC   = EXP( XMOL * ( 1.D0 - 1.5D0 * LOG(SC1) ) ) * S
+        CCP   = EXP( XMOL * ( 1.D0 - 1.5D0 * LOG(SC2) ) ) * S	        CCP   = EXP( XMOL * ( 1.D0 - 1.5D0 * LOG(SC2) ) ) * S
+        CPCP  = SIGNE * CPH * CPC / CCP				        CPCP  = SIGNE * CPH * CPC / CCP
+C  INTERMEDIATE FACTORS FOR LATERAL DISTRIBUTION AND AGE PARA	C  INTERMEDIATE FACTORS FOR LATERAL DISTRIBUTION AND AGE PARA
+        AE    = 4.D0 * EXP( 0.915D0 * (S - 1.D0) ) / S		        AE    = 4.D0 * EXP( 0.915D0 * (S - 1.D0) ) / S
+        DE    = ( 1.D0 + S ) / ( 1.15D0 + 0.15D0 * S )		        DE    = ( 1.D0 + S ) / ( 1.15D0 + 0.15D0 * S )
+        ASE   = AE**DE						        ASE   = AE**DE
+        ZG3   = GAM( (S + 2.D0) * DE )				        ZG3   = GAM( (S + 2.D0) * DE )
+        IF ( ZG3 .LE. 0.D0 ) GOTO 14				        IF ( ZG3 .LE. 0.D0 ) GOTO 14
+        ZG1   = GAM(S * DE)					        ZG1   = GAM(S * DE)
+        ZG2   = GAM( (S + 1.D0) * DE )				        ZG2   = GAM( (S + 1.D0) * DE )
+        AUXIL = 4.D0 / (S * ASE)				        AUXIL = 4.D0 / (S * ASE)
+        XNE = CPCP * ( ZG2 + AUXIL * ZG3 ) / ( ASE * (ZG1 + A	        XNE = CPCP * ( ZG2 + AUXIL * ZG3 ) / ( ASE * (ZG1 + A
+C  SUM OF N_E AT FIXED LEVEL					C  SUM OF N_E AT FIXED LEVEL
+        ZNE(IL) = ZNE(IL) + XNE					        ZNE(IL) = ZNE(IL) + XNE
+        SL(IL)  = SL(IL) + CPCP					        SL(IL)  = SL(IL) + CPCP
+ 								 
+C  CALCULATE THE ELECTRON LATERAL DISTRIBUTION FOR THE 2 SELE	C  CALCULATE THE ELECTRON LATERAL DISTRIBUTION FOR THE 2 SELE
+C  OBSERVATION LEVELS						C  OBSERVATION LEVELS
+        IF     ( IL .EQ. IALT(1) ) THEN				        IF     ( IL .EQ. IALT(1) ) THEN
+          IOL = 1						          IOL = 1
+        ELSEIF ( IL .EQ. IALT(2) ) THEN				        ELSEIF ( IL .EQ. IALT(2) ) THEN
+          IOL = 2						          IOL = 2
+        ELSE							        ELSE
+          GOTO 14						          GOTO 14
+        ENDIF							        ENDIF
+ 								 
+C  CALCULATION OF LATERAL ELECTRON DISTRIBUTION			C  CALCULATION OF LATERAL ELECTRON DISTRIBUTION
+        IF ( SC1 .GE. 2.25D0 ) GOTO 14				        IF ( SC1 .GE. 2.25D0 ) GOTO 14
+        G1    = GAM(4.5D0 - SC1)				        G1    = GAM(4.5D0 - SC1)
+        G2    = GAM(SC1)					        G2    = GAM(SC1)
+        G3    = GAM(4.5D0 - 2.D0 * SC1)				        G3    = GAM(4.5D0 - 2.D0 * SC1)
+C  DISTANCE IN CM BETWEEN PHOTON INITIATION AND OBSERVATION (	C  DISTANCE IN CM BETWEEN PHOTON INITIATION AND OBSERVATION (
+        DISTL = SECPAR(5) - TLEVCM(IL)				        DISTL = SECPAR(5) - TLEVCM(IL)
+C  MODULATION BY AGE PARAMETER FOLLOWING LAGUTIN & UCHAIKIN	C  MODULATION BY AGE PARAMETER FOLLOWING LAGUTIN & UCHAIKIN
+C  (AGE PARAMETER LIES BETWEEN 0.2 AND 2.25)			C  (AGE PARAMETER LIES BETWEEN 0.2 AND 2.25)
+        SM    = 0.78D0 - 0.21D0 * SC1				        SM    = 0.78D0 - 0.21D0 * SC1
+        SMRM  = 1.D0 / ( SM * RMOL(IOL) )			        SMRM  = 1.D0 / ( SM * RMOL(IOL) )
+ 								 
+        CSGA  = CPCP * SMRM**2 * G1 / ( PI2 * G2 * G3 )		        CSGA  = CPCP * SMRM**2 * G1 / ( PI2 * G2 * G3 )
+        SS2   = SC1 - 2.D0					        SS2   = SC1 - 2.D0
+        SS45  = SC1 - 4.5D0					        SS45  = SC1 - 4.5D0
+        AS    = SIN( SECPAR(4) )				        AS    = SIN( SECPAR(4) )
+        BS    = COS( SECPAR(4) )				        BS    = COS( SECPAR(4) )
+        TEX   = DISTL * SQRT( 1.D0 - SECPAR(3)**2 ) / SECPAR(	        TEX   = DISTL * SQRT( 1.D0 - SECPAR(3)**2 ) / SECPAR(
+C  DISTANCE TO THE CENTER OF THE CASCADE (IN CM)		C  DISTANCE TO THE CENTER OF THE CASCADE (IN CM)
+        XS    = SECPAR(7) + TEX * BS - XOFF(NOBSLV+1-IOL)	        XS    = SECPAR(7) + TEX * BS - XOFF(NOBSLV+1-IOL)
+        YS    = SECPAR(8) + TEX * AS - YOFF(NOBSLV+1-IOL)	        YS    = SECPAR(8) + TEX * AS - YOFF(NOBSLV+1-IOL)
+ 								 
+C  NKG-FORMULA							C  NKG-FORMULA
+C  LOOP OVER ALL LATERAL DISTANCES GETTING THE DENSITY IN MOL	C  LOOP OVER ALL LATERAL DISTANCES GETTING THE DENSITY IN MOL
+        DO 171  M = -10,10					        DO 171  M = -10,10
+          IF ( M .EQ. 0 ) GOTO 171				          IF ( M .EQ. 0 ) GOTO 171
+C  X DIRECTION							C  X DIRECTION
+          YM  = SMRM * MAX( SQRT((DISX(M)-XS)**2 + YS**2), 1.	          YM  = SMRM * MAX( SQRT((DISX(M)-XS)**2 + YS**2), 1.
+          CZX (M,IOL) = CZX (M,IOL) + CSGA * YM**SS2 * (YM+1.	          CZX (M,IOL) = CZX (M,IOL) + CSGA * YM**SS2 * (YM+1.
+C  Y DIRECTION							C  Y DIRECTION
+          YM  = SMRM * MAX( SQRT(XS**2 + (DISY(M)-YS)**2), 1.	          YM  = SMRM * MAX( SQRT(XS**2 + (DISY(M)-YS)**2), 1.
+          CZY (M,IOL) = CZY (M,IOL) + CSGA * YM**SS2 * (YM+1.	          CZY (M,IOL) = CZY (M,IOL) + CSGA * YM**SS2 * (YM+1.
+C  XY DIRECTION							C  XY DIRECTION
+          YM  = SMRM *						          YM  = SMRM *
+     *       MAX( SQRT((DISXY(M,1)-XS)**2 + (DISXY(M,2)-YS)**	     *       MAX( SQRT((DISXY(M,1)-XS)**2 + (DISXY(M,2)-YS)**
+          CZXY(M,IOL) = CZXY(M,IOL) + CSGA * YM**SS2 * (YM+1.	          CZXY(M,IOL) = CZXY(M,IOL) + CSGA * YM**SS2 * (YM+1.
+C  YX DIRECTION							C  YX DIRECTION
+          YM  = SMRM *						          YM  = SMRM *
+     *       MAX( SQRT((DISYX(M,1)-XS)**2 + (DISYX(M,2)-YS)**	     *       MAX( SQRT((DISYX(M,1)-XS)**2 + (DISYX(M,2)-YS)**
+          CZYX(M,IOL) = CZYX(M,IOL) + CSGA * YM**SS2 * (YM+1.	          CZYX(M,IOL) = CZYX(M,IOL) + CSGA * YM**SS2 * (YM+1.
+  171   CONTINUE						  171   CONTINUE
+ 								 
+   14 CONTINUE							   14 CONTINUE
+ 								 
+      RETURN							      RETURN
+      END							      END

@@ -1,0 +1,136 @@
+      SUBROUTINE TSTOUT						      SUBROUTINE TSTOUT
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  T(O) ST(ACK) OUT						C  T(O) ST(ACK) OUT
+C								C
+C  MAKE REAL OUTPUT AFTER ONE INTERACTION HAS FINISHED		C  MAKE REAL OUTPUT AFTER ONE INTERACTION HAS FINISHED
+C  ADDS PARTICLE TO STACK AND WRITES IT TO DISK IF NECESSARY	C  ADDS PARTICLE TO STACK AND WRITES IT TO DISK IF NECESSARY
+C  THIS SUBROUTINE IS CALLED FORM MPPROP, PIGEN1, PIGEN2, AND	C  THIS SUBROUTINE IS CALLED FORM MPPROP, PIGEN1, PIGEN2, AND
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,BUFFS.							*KEEP,BUFFS.
+      COMMON /BUFFS/   RUNH,RUNE,EVTH,EVTE,DATAB,LH		      COMMON /BUFFS/   RUNH,RUNE,EVTH,EVTE,DATAB,LH
+      INTEGER          MAXBUF,MAXLEN				      INTEGER          MAXBUF,MAXLEN
+      PARAMETER        (MAXBUF=39*7)				      PARAMETER        (MAXBUF=39*7)
+      PARAMETER        (MAXLEN=12)				      PARAMETER        (MAXLEN=12)
+      REAL             RUNH(MAXBUF),EVTH(MAXBUF),EVTE(MAXBUF)	      REAL             RUNH(MAXBUF),EVTH(MAXBUF),EVTE(MAXBUF)
+     *                 RUNE(MAXBUF),DATAB(MAXBUF)		     *                 RUNE(MAXBUF),DATAB(MAXBUF)
+      INTEGER          LH					      INTEGER          LH
+      CHARACTER*4      CRUNH,CRUNE,CEVTH,CEVTE			      CHARACTER*4      CRUNH,CRUNE,CEVTH,CEVTE
+      EQUIVALENCE      (RUNH(1),CRUNH), (RUNE(1),CRUNE)		      EQUIVALENCE      (RUNH(1),CRUNH), (RUNE(1),CRUNE)
+      EQUIVALENCE      (EVTH(1),CEVTH), (EVTE(1),CEVTE)		      EQUIVALENCE      (EVTH(1),CEVTH), (EVTE(1),CEVTE)
+*KEEP,ELABCT.							*KEEP,ELABCT.
+      COMMON /ELABCT/  ELCUT					      COMMON /ELABCT/  ELCUT
+      DOUBLE PRECISION ELCUT(4)					      DOUBLE PRECISION ELCUT(4)
+*KEEP,ETHMAP.							*KEEP,ETHMAP.
+      COMMON /ETHMAP/  ECTMAP,ELEFT				      COMMON /ETHMAP/  ECTMAP,ELEFT
+      DOUBLE PRECISION ECTMAP,ELEFT				      DOUBLE PRECISION ECTMAP,ELEFT
+*KEEP,MUPART.							*KEEP,MUPART.
+      COMMON /MUPART/  AMUPAR,BCUT,CMUON,FMUBRM,FMUORG		      COMMON /MUPART/  AMUPAR,BCUT,CMUON,FMUBRM,FMUORG
+      DOUBLE PRECISION AMUPAR(14),BCUT,CMUON(11)		      DOUBLE PRECISION AMUPAR(14),BCUT,CMUON(11)
+      LOGICAL          FMUBRM,FMUORG				      LOGICAL          FMUBRM,FMUORG
+*KEEP,PAM.							*KEEP,PAM.
+      COMMON /PAM/     PAMA,SIGNUM				      COMMON /PAM/     PAMA,SIGNUM
+      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)			      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)
+*KEEP,PARPAR.							*KEEP,PARPAR.
+      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,		      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,
+     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE	     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE
+      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA	      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA
+     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH	     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH
+      INTEGER          ITYPE,LEVL				      INTEGER          ITYPE,LEVL
+*KEEP,PARPAE.							*KEEP,PARPAE.
+      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,	      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,
+      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)	      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)
+     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )	     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )
+     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )	     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )
+     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )	     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )
+     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )	     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )
+     *                 (CURPAR(12),ECM )			     *                 (CURPAR(12),ECM )
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEEP,STACKF.							*KEEP,STACKF.
+      COMMON /STACKF/  STACK,STACKP,EXST,NSHIFT,NOUREC,ICOUNT	      COMMON /STACKF/  STACK,STACKP,EXST,NSHIFT,NOUREC,ICOUNT
+      INTEGER          MAXSTK					      INTEGER          MAXSTK
+      PARAMETER        (MAXSTK = 12*340*2)			      PARAMETER        (MAXSTK = 12*340*2)
+      DOUBLE PRECISION STACK(MAXSTK)				      DOUBLE PRECISION STACK(MAXSTK)
+      INTEGER          STACKP,EXST,NSHIFT,NOUREC,ICOUNT,NTO,N	      INTEGER          STACKP,EXST,NSHIFT,NOUREC,ICOUNT,NTO,N
+*KEND.								*KEND.
+ 								 
+      DOUBLE PRECISION GLCUT					      DOUBLE PRECISION GLCUT
+      INTEGER          I,ISTK,J					      INTEGER          I,ISTK,J
+      DATA             ISTK / MAXSTK /				      DATA             ISTK / MAXSTK /
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,666) ICOUNT,(SECPAR(J),J=1,9)	      IF ( DEBUG ) WRITE(MDEBUG,666) ICOUNT,(SECPAR(J),J=1,9)
+ 666  FORMAT(' TSTOUT:',I7,1X,1P,9E10.3)			 666  FORMAT(' TSTOUT:',I7,1X,1P,9E10.3)
+ 								 
+C  CALCULATE APPROPRIATE KINETIC ENERGY CUT AND APPLY IT	C  CALCULATE APPROPRIATE KINETIC ENERGY CUT AND APPLY IT
+      IF     ( SECPAR(1) .EQ. 5.D0 .OR. SECPAR(1) .EQ. 6.D0 )	      IF     ( SECPAR(1) .EQ. 5.D0 .OR. SECPAR(1) .EQ. 6.D0 )
+C  MUONS							C  MUONS
+        GLCUT = ELCUT(2) / PAMA(NINT(SECPAR(1))) + 1.D0		        GLCUT = ELCUT(2) / PAMA(NINT(SECPAR(1))) + 1.D0
+      ELSEIF ( SECPAR(1) .EQ. 2.D0 .OR. SECPAR(1) .EQ. 3.D0 )	      ELSEIF ( SECPAR(1) .EQ. 2.D0 .OR. SECPAR(1) .EQ. 3.D0 )
+C  ELECTRONS							C  ELECTRONS
+        GLCUT = ELCUT(3) / PAMA(NINT(SECPAR(1))) + 1.D0		        GLCUT = ELCUT(3) / PAMA(NINT(SECPAR(1))) + 1.D0
+      ELSEIF ( SECPAR(1) .EQ. 1.D0 ) THEN			      ELSEIF ( SECPAR(1) .EQ. 1.D0 ) THEN
+C  GAMMAS							C  GAMMAS
+        GLCUT = ELCUT(4)					        GLCUT = ELCUT(4)
+      ELSEIF (SECPAR(1) .GE. 100.D0 ) THEN			      ELSEIF (SECPAR(1) .GE. 100.D0 ) THEN
+C  NUCLEI, CUTTED IF ENERGY/NUCLEON BELOW CUT			C  NUCLEI, CUTTED IF ENERGY/NUCLEON BELOW CUT
+        GLCUT = ELCUT(1) * INT(SECPAR(1)/100 )			        GLCUT = ELCUT(1) * INT(SECPAR(1)/100 )
+     *                   / PAMA(NINT(SECPAR(1))) + 1.D0		     *                   / PAMA(NINT(SECPAR(1))) + 1.D0
+      ELSE							      ELSE
+C  HADRONS							C  HADRONS
+        GLCUT = ELCUT(1) / PAMA(NINT(SECPAR(1))) + 1.D0		        GLCUT = ELCUT(1) / PAMA(NINT(SECPAR(1))) + 1.D0
+      ENDIF							      ENDIF
+      IF ( SECPAR(2) .LT. GLCUT ) THEN				      IF ( SECPAR(2) .LT. GLCUT ) THEN
+        IF ( SECPAR(1).EQ.5.D0 .OR. SECPAR(1).EQ.6.D0 ) FMUOR	        IF ( SECPAR(1).EQ.5.D0 .OR. SECPAR(1).EQ.6.D0 ) FMUOR
+        IF (DEBUG) WRITE(MDEBUG,*) 'TSTOUT: PARTICLE BELOW ',	        IF (DEBUG) WRITE(MDEBUG,*) 'TSTOUT: PARTICLE BELOW ',
+     *     'ENERGY CUT'						     *     'ENERGY CUT'
+        RETURN							        RETURN
+      ENDIF							      ENDIF
+ 								 
+      IF ( STACKP .GE. ISTK ) THEN				      IF ( STACKP .GE. ISTK ) THEN
+        WRITE(EXST,REC=NOUREC+1) (STACK(I),I=       1,ISTK/2)	        WRITE(EXST,REC=NOUREC+1) (STACK(I),I=       1,ISTK/2)
+        WRITE(EXST,REC=NOUREC+2) (STACK(I),I=ISTK/2+1,ISTK )	        WRITE(EXST,REC=NOUREC+2) (STACK(I),I=ISTK/2+1,ISTK )
+        NOUREC = NOUREC + 2					        NOUREC = NOUREC + 2
+        NSHIFT = NSHIFT + 2					        NSHIFT = NSHIFT + 2
+        STACKP = 0						        STACKP = 0
+      ENDIF							      ENDIF
+ 								 
+      NTO    = NTO + 1						      NTO    = NTO + 1
+      ICOUNT = ICOUNT + 1					      ICOUNT = ICOUNT + 1
+ 								 
+      DO  2  J = 1,MAXLEN					      DO  2  J = 1,MAXLEN
+        STACK(STACKP+J) = SECPAR(J)				        STACK(STACKP+J) = SECPAR(J)
+ 2    CONTINUE							 2    CONTINUE
+      STACKP = STACKP + MAXLEN					      STACKP = STACKP + MAXLEN
+      IF ( SECPAR(1) .LE.  1.D0 ) THEN				      IF ( SECPAR(1) .LE.  1.D0 ) THEN
+        ELEFT  = ELEFT + SECPAR(2)				        ELEFT  = ELEFT + SECPAR(2)
+      ELSE							      ELSE
+        ELEFT  = ELEFT + SECPAR(2) * PAMA(NINT(SECPAR(1)))	        ELEFT  = ELEFT + SECPAR(2) * PAMA(NINT(SECPAR(1)))
+      ENDIF							      ENDIF
+ 								 
+      RETURN							      RETURN
+      END							      END

@@ -1,0 +1,96 @@
+The CORSIKA520 set consists of 26 files:
+
+* a file READ_ME giving these short instructions how to proceed,
+* a postscript file CORSIKA_GUIDE520.ps,
+      (The file CORSIKA_GUIDE520.dvi contains it in dvi-mode.),
+* the major part of the source code (CORSIKA520.car) which is a CMZ 
+      card file, that contains the code of CORSIKA without GHEISHA ,
+      VENUS, SIBYLL, QGSJET, and DPMJET,
+* 7 separate files with the pure FORTRAN code of the GHEISHA, VENUS,
+      SIBYLL, QGSJET, and DPMJET routines, respectively (GHEISHA.f, 
+      VENUS.f, SIBYLL.f, QGSJET.f, DPMJET1.f, DPMJET2.f, DPMJET3.f),
+* 5 data sets containing the energy dependent cross sections for 
+      nucleon-nucleus processes (NUCNUCCS), electromagnetic inter-
+      actions (EGSDAT2), and numerical data to be used by the VENUS 
+      routines (VENUSDAT) and by the DPMJET routines (DPMSTRUC and
+      GLAUBTAR),
+* 9 datasets with atmospheric data for various large inclination 
+      angles (ATMxx),
+* an example input (INPUTS) to steer the simulation, and
+* a brief description of the changes in the program since the first 
+      CORSIKA version in the file CORSIKA_HISTORY.
+
+The CORSIKA code and the files belonging to it can be obtained from 
+FORSCHUNGSZENTRUM KARLSRUHE by anonymous ftp. If you want to transfer 
+CORSIKA files to your computer system, you have, for instance, to type 
+the following (commands that you have to type are underlined):
+
+
+ftp ik3al1.fzk.de
+~~~~~~~~~~~~~~~~~
+Trying 141.52.35.8... 
+
+Connected to ik3al1.fzk.de. 
+
+220 ik3al1 FTP server (Version [number & date]) ready. 
+
+Name (ik3al1.fzk.de:username): anonymous [or ftp]
+                               ~~~~~~~~~     ~~~
+331 Guest login ok, send your complete e-mail address as password.
+
+Password: your_mail_address
+          ~~~~~~~~~~~~~~~~~
+230- PROBLEMS
+
+230- If your FTP client crashes or hangs shortly after login please try
+
+230- using a dash (-) as the first character of your password. This will
+
+230- turn off the informational messages that may be confusing your FTP
+
+230- client. Administrative contact: bekk@ik3.fzk.de
+
+230-
+
+230-
+
+230-                      Welcome to ik3al1.fzk.de, the
+
+230-               ******  I N F O and S O F T  Server  ******
+
+230-          Forschungszentrum Karlsruhe, Institut fuer Kernphysik 3
+
+230-                     KASCADE Collaboration Karlsruhe
+
+230-
+
+230- current directory: /      local time: [date & time]
+
+230- You are user number # out of a possible total of 10 in our domain class
+
+230- All transfers to and from ik3al1.fzk.de are logged. If you don't like this
+
+230- then disconnect now!
+
+230-
+
+230 Guest login ok, access restrictions apply.
+
+ftp > cd pub/corsika/v520
+     ~~~~~~~~~~~~~~~~~~~~
+ftp > get CORSIKA_GUIDE520.ps
+      ~~~~~~~~~~~~~~~~~~~~~~~
+ftp > get CORSIKA520.car
+      ~~~~~~~~~~~~~~~~~~
+ftp > quit
+      ~~~~
+All files are text files annd should be transferred with the ASCII 
+option.  For faster transmission you may take the 'gzip' compressed 
+files, which you find in the subdirectory pub/corsika/v520/gzipfiles. 
+Before using those files, you first have to decompress the files 
+applying the gunzip procedure.
+
+                                                         March 24, 1997
+P.S. A recent detected error has been corrected in GHEISHA.f. Therefore
+this corrected GHEISHA.f differs from the Gheisha used together with former
+versions of Corsika.   D.H.

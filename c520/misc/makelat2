@@ -1,0 +1,46 @@
+#------------------------------------------------------------
+# Makefile for latdist.c
+#------------------------------------------------------------
+
+DESTDIR = .
+__MACHINE__ = __ALPHA__
+F77 = f77
+CC = cc
+CERNDIR = cern
+
+CFLAGS = -I. -I/usr/include -g
+
+FFLAGS = -O2
+
+#XLIB = -lX11
+
+#PLIB = -L/${CERNDIR}/pro/lib/ \
+#	-lgraflib -lgrafX11 -lpacklib -lkernlib -lpawlib
+
+#LIBS = -lxlf -lxlf90 -lm  
+LIBS = -lm  
+
+HEADERS = jchisto.h
+SOURCE = latdist.c jchisto.c
+ALLSOURCES = ${HEADERS} ${SOURCE}
+OBJS = latdist.o jchisto.o
+
+PROGRAM = ${DESTDIR}/latdist
+
+all: ${PROGRAM} 
+
+${PROGRAM}: ${OBJS}
+	@echo -n "   . . . and linking -> "${PROGRAM}" . . . "
+	@$(CC) ${CFLAGS} -o ${PROGRAM} ${OBJS} ${LIBS} ${PLIB} ${XLIB}
+	@echo "done."
+
+.c.o:
+	@echo "Compiling "$*.c" . . ."
+	@${CC} ${CFLAGS} -c $*.c -D${__MACHINE__}
+
+clean:
+	@rm ${OBJS} ${PROGRAM} *~ core *.BAK > /dev/null
+
+
+
+

@@ -1,0 +1,413 @@
+#!/usr/bin/perl
+
+# f2h: the FORTRAN77 to HTML translator
+
+# Copyright Joachim Wuttke (jwuttke@ph.tum.de) 21dec99
+# Version 1   released on 29dec99
+# Version 1.1 released on  4jan00  (bug fix: 1.0 ate trailing 0's)
+# Version 1.2 released on 26jan00  (line number in error report, TAB's)
+# Version 1.3 released on 22mar00  (INCLUDE .h; better handling of col's 2-6)
+# Distributed under the OpenSource license
+# Home page http://www.e13.physik.tu-muenchen.de/Wuttke/f2h.html
+
+$for2html = "<a href=\"http://www.e13.physik.tu-muenchen.de/Wuttke/f2h.html\">"
+            ."\n for2html</a>";
+
+##### SUBROUTINES #####
+
+### error messages ### :
+
+sub errc { # call error
+   die "for2html aborted while parsing command line :\n@_[0]\n";
+   }
+
+sub errf { # file-access error
+   die "for2html @_[0]\n";
+   }
+
+sub errs { # syntax error
+   die "for2html failed in line $lino :\n@_[0]\n";
+   }
+
+### analyse command-line parameters :
+
+sub com_lin_pars {
+
+   $argvin = join ' ', @ARGV;
+
+   @ARGLOOP = @ARGV;
+   foreach (@ARGLOOP) {
+      if ( s/^\-// ) {
+         if ( m/^h/i ) {
+            die 
+"usage: for2html [-s[C][T]] [-d<dir>] [-t<title>] [-u<URL>] <source_file[s]>;\n"
+               ."call for2html -s or -d or ... to obtain information "
+               ."on command-line options.\n"; }
+         elsif ( s/^s// ) {
+            if ( ! m/[CT]/ ) { 
+               errc "available style options are: -sC C-like comparisons"; }
+            if ( m/C/ ) { $c_like_comps = 1; }
+            if ( m/T/ ) { $allow_tabs   = 1; }
+            }
+         elsif ( s/^t// ) {
+            if ( $_ ) {
+               $prjparam = $_; }
+            else {
+               errc "use -t<title> to enter a project title"; }
+            }
+         elsif ( s/^d// ) {
+            if ( $_ ) {
+               $prjparam = $_; }
+            else {
+               errc "use -d<directory> to specify the HTML output directory"; }
+            }
+         elsif ( s/^u// ) {
+            if ( $_ ) {
+               $urlparam = $_; }
+            else {
+               errc "use -u<URL> to provide a link to a project home page"; }
+            }
+         shift @ARGV;
+         } # /-/
+      } # foreach @ARGLOOP
+   if (@ARGV < 1) { errc "no input files given"; }
+   } # sub com_lin_pars
+
+### file handling :
+
+sub splitextension { # geht auch einfacher
+   $File = @_[0];
+   $File =~ m/^(.*)\.(.*)/;
+   return ($1, $2)
+   }
+
+sub open_infile {
+   ($inname,$inext) = splitextension $infile;
+   if (length $inname<1) { 
+      errc "input file name \"$infile\" has no extension" }
+   unless ($inext eq "f" || $inext eq "f77") { 
+      errc "input file is \"$infile\" but should have extension .f or .f77" }
+   
+   open (INFILE,$infile) || errf "could not open input file $infile";
+   $outfile = "$inname.html"; # put in open IN_file because needed BEFORE pass 3
+   $lastept = ""; # in case, ept is called from non-entry-region (include-file) 
+   $lino = 0; # line number, for error report
+   }
+
+sub open_outfile {
+   open (OUTFILE,">$dirname$outfile") || 
+      errf "could not open output module file $dirname$outfile";
+   }
+
+sub open_prjfile {
+   if ($prjparam) { $prjname = $prjparam; }
+   if ($dirparam) { $dirname = "$dirparam/"; } else { $dirname = "$prjname/" ; }
+   if (opendir OUTDIR,$dirname) {
+      chmod 0755, $dirname; }
+   elsif (! mkdir $dirname, 0755) {
+      errf "could not create HTML output directory $dirname"; }
+   $prjfile = "PROJECT_OVERVIEW.html";
+   open (PRJFILE,">$dirname$prjfile") || 
+      errf "could not open output project file $dirname$prjfile";
+   }
+
+### cross reference handling :
+
+sub new_ept {
+   # learn new entry_point
+   $ept=@_[0];
+   $fref{$ept} = $inname;
+   }
+
+sub new_call {
+   # learn new call 
+   $called=@_[0];
+   if ($lastept && $called ne $lastept && $lref{$called} ne $lastept) { 
+      $cref{$called} = 
+        "$cref{$called} <a href=\"#$lastept\">$LastEpt</a>"; 
+      $lref{$called} = $lastept; # do not learn two calls from the same ept
+      }
+   }
+
+### convert fragments of FORTRAN code to HTML :
+
+sub printif {
+   if ( $pass == 3 ) { print OUTFILE "@_[0]"; }
+   } 
+
+sub printeol {
+   printif "<br>\n";
+   } 
+
+sub printtriv { # print anything, just substitute blank_character by &nbsp;
+   $_=@_[0];
+   s/\ /&nbsp;/g;    # preserve whitespace
+   printif $_;
+   }
+
+sub printchar { # print any character occuring in a normal Fortran statement
+   $_=@_[0];
+   if ( m/(<|>)/ ) { 
+      print "\"$_\"\n";
+      errs "encountered $1 outside comment or string" }
+   printtriv $_;
+   }
+
+sub printnum { # print any character allowed in columns 2-5
+   $_=@_[0];
+   if ( m/!/ ) {
+      errs "sorry: inline-comment starting in columns 2-5 cannot be handled by for2html" }
+   if ( m/[^0-9\s]/ ) { 
+      print "\"$_\"\n";
+      errs "invalid character in columns 2-5" }
+   printtriv $_;
+   }
+
+sub printtext { # print quoted text (comment or string)
+   $_=@_[0];
+   # substitute characters that have a special meaning in HTML
+   s/&/&amp;/g; # of course this substitution must be done first
+   s/</&lt;/g; 
+   s/>/&gt;/g; 
+   printchar $_;
+   }
+
+sub parse_line {
+   $lino = $lino + 1;
+
+   # new_line already treated by splitting input into lines :
+   s/\n//g; s/\r//g;
+
+   # I do not like tab's in source code :
+   if ( ! $allow_tabs && m/\t/ ) {
+      errs "found TAB" }
+
+   # full comment lines are handled once and for all :
+   if ( m/^[Cc*!](.*)/ ) { 
+      printif "#<i>";
+      s/\t/   /g;
+      printtext $1;
+      printif "</i>";
+      printeol; 
+      return;
+      }
+
+   # TAB's in columns 1-6 always mean: next char is in column 7 :
+   if ( $allow_tabs ) {
+      if (! s/^\t/      / )        {
+      if (! s/^(.{1})\t/$1     /) {
+      if (! s/^(.{2})\t/$1    /) {
+      if (! s/^(.{3})\t/$1   /) {
+      if (! s/^(.{4})\t/$1  /) {
+      if (! s/^(.{5})\t/$1 /) {}}}}}}
+      s/\t/   /g; # in columns 7pp: TAB replaced by three blanks
+      }
+
+   # statement label in columns 1-5
+   $l = $_;
+   $f = substr $l,0,5; 
+   printnum $f;
+           
+   # continuation indicator in column 6
+   $f = substr $l,5,1; 
+   printtriv $f; # corrected for bug reported by Liam.Healy@nrl.navy.mil
+
+   # statement field (..72 or ..132: would need command-line switch)
+   $_ = substr $l,6;
+   while ( m/./ ) {
+      if ( s/^\ // ) {
+         # whitespace -> HTML escape
+         printif "&nbsp;" }
+      elsif ( m/^([A-Za-z]\w*)(.*)/ ) {
+         # an identifier or a reserved word
+	 if ( m/^(PROGRAM|SUBROUTINE|FUNCTION|ENTRY|BLOCK\ *DATA)(\ *)(\w*)(.*)/i ) {
+            # a block name -> save in hash table
+            $Key = $1; $Key =~ tr /a-z/A-Z/;
+	    $LastEpt = $3;                          # original spelling
+	    $lastept = $3; $lastept =~ tr/A-Z/a-z/; # canonical minuscels
+	    if ( $pass == 1 ) { 
+               new_ept $lastept; 
+               if ( ! $prjparam && $Key eq "PROGRAM" ) {
+                  # take project name from PROGRAM statement
+                  if ( ! $prjname ) {
+                     $prjname = $3; } 
+                  else {
+                     errs "There are several PROGRAM statements - "
+                  ."use the -t parameter to set the project title"; }
+                  } 
+               }
+            elsif ( $pass == 3 ) {
+               # write entry-point to project-overview :
+               print PRJFILE "<li><b><a name=\"$lastept\" "
+                 ."href=\"$outfile#$lastept\">$1$2$3</a></b><br>\n";
+               # write back-references to project-overview :
+               if ( $Key eq "PROGRAM" ) {
+                  print PRJFILE "<i>main entry</i>\n"; }
+               else {
+                  if ( $ctxt = $cref{$lastept} ) {
+                     print PRJFILE "<i>called by </i>$ctxt\n"; }
+                  else {
+                     print PRJFILE "<i>never called</i>\n"; }
+                  }
+               }
+            # write out: underline and provide entry point
+	    printif "<a name=\"$lastept\" href=\"$prjfile#$lastept\">";
+	    printchar "$1$2";
+	    printif "$3</a>";
+	    $_ = $4; }
+         elsif ( m/^(INCLUDE)(\ *)'(.*)'(.*)/i ) {
+            # including a definition file -> provide link
+            printchar "$1$2";
+            ($fnam,$fext) = splitextension $3;
+            unless ($fext eq "f" || $fext eq "f77" || $fext eq "h") {
+               warn "unexpected file name extension in included file $3\n" }
+	    printif "\'<a href=\"$fnam.html\">$3</a>\'";
+	    $_ = $4; } 
+         else {
+            # a known identifier ? -> provide link to where it was defined
+            $key = $1;
+	    $key =~ tr/A-Z/a-z/;
+	    if ($fnam=$fref{$key}) { # Zuweisung, kein Test auf Gleichheit !
+	       printif "<a href=\"$fnam.html#$key\">$1</a>"; 
+               if ( $pass == 2 ) { new_call $key; }
+               }
+            else {
+               printif $1; }
+            $_ = $2; } }
+      elsif ( s/^!// ) {
+         # comment from here to end-of-line
+         printif "!<i>";
+         printtext $_;
+         printif "</i>"; 
+         $_ = ""; }
+      elsif ( s/^\'// ) {
+         # a string
+         unless ( m/^(.*?)'(.*)/ ) {
+            errs "unmatched apostrophe in \`$2\'" }
+         printif "'<i>";
+         printtext $1;
+         printif "</i>'";
+         $_ = $2; }
+      elsif ( m/^\.(.*)/ && $c_like_comps ) {
+         # nice symbols for comparison operators (C-like)
+         if    ( s/^\.eq\.// )  { printif "==" }
+         elsif ( s/^\.ne\.// )  { printif "!=" }
+         elsif ( s/^\.gt\.// )  { printif "&gt;" }
+         elsif ( s/^\.lt\.// )  { printif "&lt;" }
+         elsif ( s/^\.ge\.// )  { printif "&gt;=" }
+         elsif ( s/^\.le\.// )  { printif "&lt;=" }
+         elsif ( s/^\.or\.// )  { printif "||" }
+         elsif ( s/^\.and\.// ) { printif "&amp;&amp;" }
+         elsif ( s/^\.not\.// ) { printif "! " }
+         else  { s/\.//;          printif "." } 
+         }
+      elsif ( m/^(<|>|&)/ ) {
+         # at this place, special characters should never occur
+         print "$_\n";
+         errs "found $1 outside string or comment"; }
+      else {
+         # any other character : print out literally
+         m /^(.)(.*)/;
+         printif $1;
+         $_ = $2; }
+      }
+
+   printeol; "<br>\n";
+   }
+
+### write HTML trivia :
+
+sub print_HTML_header {
+   @fstat = stat INFILE;
+   $mdate = nicetime ($fstat[9]);
+   printif "<html><head><title>$infile</title></head><body><center>\n";
+   printif "<h2>$prjname / $infile</h2></center>\n";
+   printif "<i>Fortran project <a href=\"$prjfile\">$prjname</a>,
+     source module $infile</i>.<p>\n";
+   printif "<i>Source module last modified on $mdate;</i><br>\n";
+   $thistime = nicetime(time);
+   printif "<i>HTML image of Fortran source automatically generated by $for2html on $thistime.</i>\n";
+   printif "<p><hr><p><code>\n";
+   }
+
+sub print_HTML_epilogue {
+   printif "<p><hr><p></body></html>\n";
+   }
+
+sub print_HTML_head_prj {
+   print PRJFILE "<html><head><title>$prjname</title></head><body><center>\n";
+   print PRJFILE "<h2>$prjname</h2></center>\n";
+   if ($urlparam) {
+      print PRJFILE 
+        "<i>Up: <a href=\"$urlparam\">project home page</a>.</i><p>\n"; }
+   $thistime = nicetime(time);
+   print PRJFILE "<i>Fortran project overview automatically generated"
+         ." by $for2html on $thistime,</i><br>\n";
+   print PRJFILE "<i>called as for2html $argvin.</i><br>\n";
+   print PRJFILE "<p><hr><p><code>\n";
+   }
+
+sub print_HTML_epi_prj {
+   print PRJFILE "</code></center><p><hr><p></body></html>\n";
+   }
+
+### PERL trivia :
+
+sub nicetime {
+   ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime (@_[0]);
+   $wdname = (Sun,Mon,Tue,Wed,Thu,Fri,Sat)[$wday];
+   $moname = (Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec)[$mon];
+   $year = 1900 + $year;
+   return "$wdname, $mday $moname $year, ".(sprintf "%2u",$hour)
+      .":".(sprintf "%02u",$min);
+   }
+
+##### MAIN PROGRAM #####
+
+com_lin_pars;
+
+print "first pass\n"; # learn entry points
+$pass = 1; 
+foreach $infile (@ARGV) {
+   print "$infile\n";
+   open_infile;
+   while (<INFILE>) { parse_line }
+   close INFILE;
+   }
+
+if (! ( $prjname || $prjparam )) {
+   die "for2html found no PROGRAM statement - "
+     ."use -t to set the project title\n"; }
+
+print "second pass\n"; # learn calls to entry points
+$pass = 2; 
+foreach $infile (@ARGV) {
+   print "$infile\n";
+   open_infile;
+   while (<INFILE>) { parse_line }
+   close INFILE;
+   }
+
+print "third pass\n"; # write out
+$pass = 3;
+open_prjfile;
+print_HTML_head_prj;
+foreach $infile (@ARGV) {
+   print "$infile\n";
+   open_infile;
+   open_outfile;
+   print PRJFILE 
+     "<li><b>Source Module <a href=\"$outfile\">$infile</a></b><br><ul>\n";
+
+   print_HTML_header;
+   while (<INFILE>) { parse_line }
+   print_HTML_epilogue;
+
+   close INFILE;
+   close OUTFILE;
+   print PRJFILE "</ul>\n";
+   }
+print_HTML_epi_prj;
+close PRJFILE;
+
+##### EOF #####

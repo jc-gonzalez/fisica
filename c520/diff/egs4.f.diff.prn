@@ -1,0 +1,8 @@
+egs4.f.diff
+=========================================================
+141,142c141,142
+< 120   FORMAT (' EGS4  : START VALUE OF Z=',1P,E10.3,' KM  NOT IN ATMOSPH
+<      *ERE')
+---
+> 120   FORMAT (' EGS4  : START VALUE OF Z=',1P,E10.3,
+>      *' KM  NOT IN ATMOSPHERE')

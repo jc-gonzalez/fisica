@@ -1,0 +1,290 @@
+      SUBROUTINE CGHINI						      SUBROUTINE CGHINI
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  C(ORSIKA) GH(EISHA) INI(TIALISATION)				C  C(ORSIKA) GH(EISHA) INI(TIALISATION)
+C  INITIALIZATION OF RELEVANT GHEISHA VARIABLES			C  INITIALIZATION OF RELEVANT GHEISHA VARIABLES
+C  THIS SUBROUTINE IS CALLED FROM START				C  THIS SUBROUTINE IS CALLED FROM START
+C								C
+C  ORIGIN  : GHEISHA ROUTINE "GHEINI", F.CARMINATI		C  ORIGIN  : GHEISHA ROUTINE "GHEINI", F.CARMINATI
+C  REDESIGN: P. GABRIEL IK1  FZK KARLSRUHE			C  REDESIGN: P. GABRIEL IK1  FZK KARLSRUHE
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+*KEEP,AIR.							*KEEP,AIR.
+      COMMON /AIR/     COMPOS,PROBTA,AVERAW,AVOGAD		      COMMON /AIR/     COMPOS,PROBTA,AVERAW,AVOGAD
+      DOUBLE PRECISION COMPOS(3),PROBTA(3),AVERAW,AVOGAD	      DOUBLE PRECISION COMPOS(3),PROBTA(3),AVERAW,AVOGAD
+*KEEP,CGCOMP.							*KEEP,CGCOMP.
+      PARAMETER (KK=3)						      PARAMETER (KK=3)
+      COMMON/CGCOMP/ ACOMP,ZCOMP,WCOMP				      COMMON/CGCOMP/ ACOMP,ZCOMP,WCOMP
+      REAL           ACOMP(KK),ZCOMP(KK),WCOMP(KK)		      REAL           ACOMP(KK),ZCOMP(KK),WCOMP(KK)
+*KEEP,PAM.							*KEEP,PAM.
+      COMMON /PAM/     PAMA,SIGNUM				      COMMON /PAM/     PAMA,SIGNUM
+      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)			      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEND.								*KEND.
+ 								 
+      COMMON/GSECTI/ AIEL(20),AIIN(20),AIFI(20),AICA(20),ALAM	      COMMON/GSECTI/ AIEL(20),AIIN(20),AIFI(20),AICA(20),ALAM
+      INTEGER K0FLAG						      INTEGER K0FLAG
+      REAL AIEL,AIIN,AIFI,AICA,ALAM				      REAL AIEL,AIIN,AIFI,AICA,ALAM
+ 								 
+C --- GHEISHA COMMONS ---					C --- GHEISHA COMMONS ---
+C --- INITIALIZATION FLAGS FOR VARIOUS GHEISHA ROUTINES ---	C --- INITIALIZATION FLAGS FOR VARIOUS GHEISHA ROUTINES ---
+      COMMON /KGINIT/ KGINIT(50)				      COMMON /KGINIT/ KGINIT(50)
+ 								 
+      COMMON/CONSTS/ PI,TWPI,PIBTW,MP,MPI,MMU,MEL,MKCH,MK0,SM	      COMMON/CONSTS/ PI,TWPI,PIBTW,MP,MPI,MMU,MEL,MKCH,MK0,SM
+     $               SMU,CT,CTKCH,CTK0,				     $               SMU,CT,CTKCH,CTK0,
+     $               ML0,MSP,MS0,MSM,MX0,MXM,CTL0,CTSP,CTSM,C	     $               ML0,MSP,MS0,MSM,MX0,MXM,CTL0,CTSP,CTSM,C
+     $               RMASS(35),RCHARG(35)			     $               RMASS(35),RCHARG(35)
+ 								 
+                     REAL MP,MPI,MMU,MEL,MKCH,MK0,		                     REAL MP,MPI,MMU,MEL,MKCH,MK0,
+     *                    ML0,MSP,MS0,MSM,MX0,MXM		     *                    ML0,MSP,MS0,MSM,MX0,MXM
+ 								 
+      PARAMETER (MXGKGH=100)					      PARAMETER (MXGKGH=100)
+      PARAMETER (MXEVEN=12*MXGKGH)				      PARAMETER (MXEVEN=12*MXGKGH)
+      COMMON/EVENT / NSIZE,NCUR,NEXT,NTOT,EVE(MXEVEN)		      COMMON/EVENT / NSIZE,NCUR,NEXT,NTOT,EVE(MXEVEN)
+ 								 
+      COMMON/PRNTFL/INBCD,NEWBCD,INBIN,NEWBIN,NPEVT,NEVTP,LPR	      COMMON/PRNTFL/INBCD,NEWBCD,INBIN,NEWBIN,NPEVT,NEVTP,LPR
+                    LOGICAL LPRT,NPRT				                    LOGICAL LPRT,NPRT
+ 								 
+      PARAMETER (MXGKPV=MXGKGH)					      PARAMETER (MXGKPV=MXGKGH)
+      COMMON /VECUTY/ PV(10,MXGKPV)				      COMMON /VECUTY/ PV(10,MXGKPV)
+ 								 
+C --- BOUNDARY LIMITS FOR ARGUMENTS OF INTRINSIC FUNCTIONS --	C --- BOUNDARY LIMITS FOR ARGUMENTS OF INTRINSIC FUNCTIONS --
+C --- XL DENOTES LOWER BOUND WHEREAS XU DENOTES UPPER BOUND -	C --- XL DENOTES LOWER BOUND WHEREAS XU DENOTES UPPER BOUND -
+      COMMON /LIMITS/ EXPXL,EXPXU				      COMMON /LIMITS/ EXPXL,EXPXU
+ 								 
+ 								 
+C --- "NEVENT" CHANGED TO "KEVENT" IN COMMON /CURPAR/ DUE TO 	C --- "NEVENT" CHANGED TO "KEVENT" IN COMMON /CURPAR/ DUE TO 
+C --- WITH VARIABLE "NEVENT" IN GEANT COMMON ---		C --- WITH VARIABLE "NEVENT" IN GEANT COMMON ---
+ 								 
+      PARAMETER (MXGKCU=MXGKGH)					      PARAMETER (MXGKCU=MXGKGH)
+      COMMON /CURPAR/ WEIGHT(10),DDELTN,IFILE,IRUN,NEVT,KEVEN	      COMMON /CURPAR/ WEIGHT(10),DDELTN,IFILE,IRUN,NEVT,KEVEN
+     $                ITHST,ITTOT,ITLST,IFRND,TOFCUT,CMOM(5),	     $                ITHST,ITTOT,ITLST,IFRND,TOFCUT,CMOM(5),
+     $                RS,S,ENP(10),NP,NM,NN,NR,NO,NZ,IPA(MXGK	     $                RS,S,ENP(10),NP,NM,NN,NR,NO,NZ,IPA(MXGK
+     $                ATNO2,ZNO2				     $                ATNO2,ZNO2
+ 								 
+      DATA CLIGHT /2.99792458E10/				      DATA CLIGHT /2.99792458E10/
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,*) 'CGHINI:'			      IF ( DEBUG ) WRITE(MDEBUG,*) 'CGHINI:'
+ 								 
+C --- INITIALZE COMPOSITION OF AIR				C --- INITIALZE COMPOSITION OF AIR
+      WCOMP(1) = COMPOS(1)					      WCOMP(1) = COMPOS(1)
+      WCOMP(2) = COMPOS(2)					      WCOMP(2) = COMPOS(2)
+      WCOMP(3) = COMPOS(3)					      WCOMP(3) = COMPOS(3)
+      ACOMP(1) = 14.						      ACOMP(1) = 14.
+      ACOMP(2) = 16.						      ACOMP(2) = 16.
+      ACOMP(3) = 40.						      ACOMP(3) = 40.
+      ZCOMP(1) =  7.						      ZCOMP(1) =  7.
+      ZCOMP(2) =  8.						      ZCOMP(2) =  8.
+      ZCOMP(3) = 18.						      ZCOMP(3) = 18.
+ 								 
+C --- SET GHEISHA I/O UNITS TO THE SAME AS FOR CORSIKA --	C --- SET GHEISHA I/O UNITS TO THE SAME AS FOR CORSIKA --
+      INBCD=MONIIN						      INBCD=MONIIN
+      NEWBCD=MONIOU						      NEWBCD=MONIOU
+      IF ( DEBUG ) NEWBCD=MDEBUG				      IF ( DEBUG ) NEWBCD=MDEBUG
+ 								 
+C --- INITIALISE ALL GHEISHA PRINT FLAGS AS FALSE ---		C --- INITIALISE ALL GHEISHA PRINT FLAGS AS FALSE ---
+C --- ACTIVATION IS DONE BY "DEBUG" STEERING CARD ---		C --- ACTIVATION IS DONE BY "DEBUG" STEERING CARD ---
+      DO 11 J=1,10						      DO 11 J=1,10
+         NPRT(J)=.FALSE.					         NPRT(J)=.FALSE.
+ 11   CONTINUE							 11   CONTINUE
+      IF ( DEBUG ) THEN						      IF ( DEBUG ) THEN
+         NPRT(4)=.TRUE.						         NPRT(4)=.TRUE.
+         NPRT(9)=.TRUE.						         NPRT(9)=.TRUE.
+      ENDIF							      ENDIF
+      LPRT=.FALSE.						      LPRT=.FALSE.
+      DO 12 I=1,MXGKPV						      DO 12 I=1,MXGKPV
+         DO 12 J=1,10						         DO 12 J=1,10
+            PV(J,I)=0.						            PV(J,I)=0.
+ 12   CONTINUE							 12   CONTINUE
+ 								 
+C --- INITIALISE KGINIT ARRAY ---				C --- INITIALISE KGINIT ARRAY ---
+      DO 20 J=1,50						      DO 20 J=1,50
+         KGINIT(J)=0						         KGINIT(J)=0
+ 20   CONTINUE							 20   CONTINUE
+ 								 
+C --- INITIALIZE SOME CUT-OFF PARAMETERS WITH GEANT VALUES --	C --- INITIALIZE SOME CUT-OFF PARAMETERS WITH GEANT VALUES --
+      TOFCUT=1.0E+20						      TOFCUT=1.0E+20
+      NSIZE=MXEVEN						      NSIZE=MXEVEN
+      K0FLAG=0							      K0FLAG=0
+      CENG(3)=0.						      CENG(3)=0.
+      CENG(4)=0.						      CENG(4)=0.
+ 								 
+C --- INITIALIZE PI, 2*PI, PI/2 AND PARTICLE PARAMETERS ---	C --- INITIALIZE PI, 2*PI, PI/2 AND PARTICLE PARAMETERS ---
+      PI=ACOS(-1.0)						      PI=ACOS(-1.0)
+      TWPI=2.0*PI						      TWPI=2.0*PI
+      PIBTW=PI/2.0						      PIBTW=PI/2.0
+C *** GAMMA ***							C *** GAMMA ***
+      RMASS(1)=PAMA(1)						      RMASS(1)=PAMA(1)
+      RCHARG(1)=0.0						      RCHARG(1)=0.0
+C *** NEUTRINO ***						C *** NEUTRINO ***
+      RMASS(2)=PAMA(4)						      RMASS(2)=PAMA(4)
+      RCHARG(2)=0.0						      RCHARG(2)=0.0
+C *** E+ ***							C *** E+ ***
+      RMASS(3)=PAMA(2)						      RMASS(3)=PAMA(2)
+      RCHARG(3)=1.0						      RCHARG(3)=1.0
+C *** E- ***							C *** E- ***
+      RMASS(4)=PAMA(3)						      RMASS(4)=PAMA(3)
+      RCHARG(4)=-1.0						      RCHARG(4)=-1.0
+C *** MU+ ***							C *** MU+ ***
+      RMASS(5)=PAMA(5)						      RMASS(5)=PAMA(5)
+      RCHARG(5)=1.0						      RCHARG(5)=1.0
+C *** MU- ***							C *** MU- ***
+      RMASS(6)=PAMA(6)						      RMASS(6)=PAMA(6)
+      RCHARG(6)=-1.0						      RCHARG(6)=-1.0
+C *** PI+ ***							C *** PI+ ***
+      RMASS(7)=PAMA(8)						      RMASS(7)=PAMA(8)
+      RCHARG(7)=1.0						      RCHARG(7)=1.0
+      CT=780.4							      CT=780.4
+C *** PI0 ***							C *** PI0 ***
+      RMASS(8)=PAMA(7)						      RMASS(8)=PAMA(7)
+      RCHARG(8)=0.0						      RCHARG(8)=0.0
+C *** PI- ***							C *** PI- ***
+      RMASS(9)=PAMA(9)						      RMASS(9)=PAMA(9)
+      RCHARG(9)=-1.0						      RCHARG(9)=-1.0
+C *** K+ ***							C *** K+ ***
+      RMASS(10)=PAMA(11)					      RMASS(10)=PAMA(11)
+      RCHARG(10)=1.0						      RCHARG(10)=1.0
+      CTKCH=370.9						      CTKCH=370.9
+C *** K0 SHORT (==> K0) ***					C *** K0 SHORT (==> K0) ***
+      RMASS(11)=PAMA(16)					      RMASS(11)=PAMA(16)
+      RCHARG(11)=0.0						      RCHARG(11)=0.0
+      CTK0=2.675						      CTK0=2.675
+C *** K0 LONG (==> K0 BAR) ***					C *** K0 LONG (==> K0 BAR) ***
+      RMASS(12)=-PAMA(10)					      RMASS(12)=-PAMA(10)
+      RCHARG(12)=0.0						      RCHARG(12)=0.0
+C *** K- ***							C *** K- ***
+      RMASS(13)=PAMA(12)					      RMASS(13)=PAMA(12)
+      RCHARG(13)=-1.0						      RCHARG(13)=-1.0
+C *** P ***							C *** P ***
+      RMASS(14)=PAMA(14)					      RMASS(14)=PAMA(14)
+      RCHARG(14)=1.0						      RCHARG(14)=1.0
+C *** P BAR ***							C *** P BAR ***
+      RMASS(15)=-PAMA(15)					      RMASS(15)=-PAMA(15)
+      RCHARG(15)=-1.0						      RCHARG(15)=-1.0
+C *** N ***							C *** N ***
+      RMASS(16)=PAMA(13)					      RMASS(16)=PAMA(13)
+      RCHARG(16)=0.0						      RCHARG(16)=0.0
+C *** N BAR ***							C *** N BAR ***
+      RMASS(17)=-PAMA(25)					      RMASS(17)=-PAMA(25)
+      RCHARG(17)=0.0						      RCHARG(17)=0.0
+C *** L0 ***							C *** L0 ***
+      RMASS(18)=PAMA(18)					      RMASS(18)=PAMA(18)
+      RCHARG(18)=0.0						      RCHARG(18)=0.0
+      CTL0=7.89							      CTL0=7.89
+C *** L0 BAR ***						C *** L0 BAR ***
+      RMASS(19)=-PAMA(26)					      RMASS(19)=-PAMA(26)
+      RCHARG(19)=0.0						      RCHARG(19)=0.0
+C *** S+ ***							C *** S+ ***
+      RMASS(20)=PAMA(19)					      RMASS(20)=PAMA(19)
+      RCHARG(20)=1.0						      RCHARG(20)=1.0
+      CTSP=2.40							      CTSP=2.40
+C *** S0 ***							C *** S0 ***
+      RMASS(21)=PAMA(20)					      RMASS(21)=PAMA(20)
+      RCHARG(21)=0.0						      RCHARG(21)=0.0
+C *** S- ***							C *** S- ***
+      RMASS(22)=PAMA(21)					      RMASS(22)=PAMA(21)
+      RCHARG(22)=-1.0						      RCHARG(22)=-1.0
+      CTSM=4.44							      CTSM=4.44
+C *** S+ BAR ***						C *** S+ BAR ***
+      RMASS(23)=-PAMA(27)					      RMASS(23)=-PAMA(27)
+      RCHARG(23)=-1.0						      RCHARG(23)=-1.0
+C *** S0 BAR ***						C *** S0 BAR ***
+      RMASS(24)=-PAMA(28)					      RMASS(24)=-PAMA(28)
+      RCHARG(24)=0.0						      RCHARG(24)=0.0
+C *** S- BAR ***						C *** S- BAR ***
+      RMASS(25)=-PAMA(29)					      RMASS(25)=-PAMA(29)
+      RCHARG(25)=1.0						      RCHARG(25)=1.0
+C *** XI0 ***							C *** XI0 ***
+      RMASS(26)=PAMA(22)					      RMASS(26)=PAMA(22)
+      RCHARG(26)=0.0						      RCHARG(26)=0.0
+      CTX0=8.69							      CTX0=8.69
+C *** XI- ***							C *** XI- ***
+      RMASS(27)=PAMA(23)					      RMASS(27)=PAMA(23)
+      RCHARG(27)=-1.0						      RCHARG(27)=-1.0
+      CTXM=4.92							      CTXM=4.92
+C *** XI0 BAR ***						C *** XI0 BAR ***
+      RMASS(28)=-PAMA(30)					      RMASS(28)=-PAMA(30)
+      RCHARG(28)=0.0						      RCHARG(28)=0.0
+      CTX0=8.69							      CTX0=8.69
+C *** XI- BAR ***						C *** XI- BAR ***
+      RMASS(29)=-PAMA(31)					      RMASS(29)=-PAMA(31)
+      RCHARG(29)=1.0						      RCHARG(29)=1.0
+C *** DEUTERON ***						C *** DEUTERON ***
+      RMASS(30)=PAMA(45)					      RMASS(30)=PAMA(45)
+      RCHARG(30)=1.0						      RCHARG(30)=1.0
+C *** TRITON ***						C *** TRITON ***
+      RMASS(31)=PAMA(46)					      RMASS(31)=PAMA(46)
+      RCHARG(31)=1.0						      RCHARG(31)=1.0
+C *** ALPHA ***							C *** ALPHA ***
+      RMASS(32)=PAMA(47)					      RMASS(32)=PAMA(47)
+      RCHARG(32)=2.0						      RCHARG(32)=2.0
+C *** OMEGA- ***						C *** OMEGA- ***
+      RMASS(33)=PAMA(24)					      RMASS(33)=PAMA(24)
+      RCHARG(33)=-1.0						      RCHARG(33)=-1.0
+C *** OMEGA- BAR ***						C *** OMEGA- BAR ***
+      RMASS(34)=-PAMA(32)					      RMASS(34)=-PAMA(32)
+      RCHARG(34)=1.0						      RCHARG(34)=1.0
+C *** NEW PARTICLE (GEANTINO) ***				C *** NEW PARTICLE (GEANTINO) ***
+      RMASS(35)=0.0						      RMASS(35)=0.0
+      RCHARG(35)=0.0						      RCHARG(35)=0.0
+ 								 
+      IF (NPRT(9))						      IF (NPRT(9))
+     $ WRITE(MDEBUG,1000) (I,RMASS(I),RCHARG(I),I=1,33),	     $ WRITE(MDEBUG,1000) (I,RMASS(I),RCHARG(I),I=1,33),
+     $            CT,CTKCH,CTK0,CTL0,CTSP,CTSM,CTX0,CTXM	     $            CT,CTKCH,CTK0,CTL0,CTSP,CTSM,CTX0,CTXM
+ 1000 FORMAT(' *CGHINI* === GHEISHA PARTICLE PROPERTIES ==='/	 1000 FORMAT(' *CGHINI* === GHEISHA PARTICLE PROPERTIES ==='/
+     $ '0INDEX',5X,'MASS (GEV)',5X,'CHARGE'/1H /		     $ '0INDEX',5X,'MASS (GEV)',5X,'CHARGE'/1H /
+     $ 33(1H ,1X,I3,5X,F11.6,6X,F5.2/),				     $ 33(1H ,1X,I3,5X,F11.6,6X,F5.2/),
+     $ '0PI +-  CT = ',G12.5,' K  +-  CT = ',G12.5/		     $ '0PI +-  CT = ',G12.5,' K  +-  CT = ',G12.5/
+     $ ' K0     CT = ',G12.5,' L0     CT = ',G12.5/		     $ ' K0     CT = ',G12.5,' L0     CT = ',G12.5/
+     $ ' S+     CT = ',G12.5,' S-     CT = ',G12.5/		     $ ' S+     CT = ',G12.5,' S-     CT = ',G12.5/
+     $ ' X0     CT = ',G12.5,' X-     CT = ',G12.5)		     $ ' X0     CT = ',G12.5,' X-     CT = ',G12.5)
+ 								 
+      MP=RMASS(14)						      MP=RMASS(14)
+      MPI=RMASS(7)						      MPI=RMASS(7)
+      MMU=RMASS(5)						      MMU=RMASS(5)
+      MEL=RMASS(3)						      MEL=RMASS(3)
+      MKCH=RMASS(10)						      MKCH=RMASS(10)
+      MK0=RMASS(11)						      MK0=RMASS(11)
+      SMP=MP**2							      SMP=MP**2
+      SMPI=MPI**2						      SMPI=MPI**2
+      SMU=MMU**2						      SMU=MMU**2
+      ML0=RMASS(18)						      ML0=RMASS(18)
+      MSP=RMASS(20)						      MSP=RMASS(20)
+      MS0=RMASS(21)						      MS0=RMASS(21)
+      MSM=RMASS(22)						      MSM=RMASS(22)
+      MX0=RMASS(26)						      MX0=RMASS(26)
+      MXM=RMASS(27)						      MXM=RMASS(27)
+ 								 
+C --- LOAD LIMITS FOR INTRINSIC FUNCTION ARGUMENTS ---		C --- LOAD LIMITS FOR INTRINSIC FUNCTION ARGUMENTS ---
+      EXPXL = - 82.0						      EXPXL = - 82.0
+      EXPXU =   82.0						      EXPXU =   82.0
+ 								 
+      IF (NPRT(9)) WRITE(MDEBUG,1001) EXPXL,EXPXU		      IF (NPRT(9)) WRITE(MDEBUG,1001) EXPXL,EXPXU
+ 1001 FORMAT(' *GHEINI* === INTRINSIC FUNCTION BOUNDARIES ===	 1001 FORMAT(' *GHEINI* === INTRINSIC FUNCTION BOUNDARIES ===
+     $ ' EXPXL,EXPXU = ',2(G12.5,1X))				     $ ' EXPXL,EXPXU = ',2(G12.5,1X))
+ 								 
+      RETURN							      RETURN
+      END							      END

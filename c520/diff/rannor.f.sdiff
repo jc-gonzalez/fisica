@@ -1,0 +1,77 @@
+      DOUBLE PRECISION FUNCTION RANNOR( A,B )			      DOUBLE PRECISION FUNCTION RANNOR( A,B )
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  RAN(DOM NUMBER) NOR(MALLY DISTRIBUTED)			C  RAN(DOM NUMBER) NOR(MALLY DISTRIBUTED)
+C								C
+C  GENERATES NORMAL DISTRIBUTED RANDOM NUMBER			C  GENERATES NORMAL DISTRIBUTED RANDOM NUMBER
+C  DELIVERS 2 UNCORRELATED RANDOM NUMBERS,			C  DELIVERS 2 UNCORRELATED RANDOM NUMBERS,
+C  THEREFORE RANDOM CALLS ARE ONLY NECESSARY EVERY SECOND TIM	C  THEREFORE RANDOM CALLS ARE ONLY NECESSARY EVERY SECOND TIM
+C  REFERENCE : NUMERICAL RECIPES, W.H. PRESS ET AL.,		C  REFERENCE : NUMERICAL RECIPES, W.H. PRESS ET AL.,
+C              CAMBRIDGE UNIVERSITY PRESS, 1992  ISBN 0 521 4	C              CAMBRIDGE UNIVERSITY PRESS, 1992  ISBN 0 521 4
+C  THIS FUNCTION IS CALLED FROM HDPM, LEADDF, NIHILA, PARRAP,	C  THIS FUNCTION IS CALLED FROM HDPM, LEADDF, NIHILA, PARRAP,
+C  UPDATE, AND VAPOR						C  UPDATE, AND VAPOR
+C  ARGUMENTS:							C  ARGUMENTS:
+C   A      = MEAN VALUE						C   A      = MEAN VALUE
+C   B      = STANDARD DEVIATION					C   B      = STANDARD DEVIATION
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,CONST.							*KEEP,CONST.
+      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER			      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER
+      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER			      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER
+*KEEP,RANDPA.							*KEEP,RANDPA.
+      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR		      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR
+      DOUBLE PRECISION FAC,U1,U2				      DOUBLE PRECISION FAC,U1,U2
+      REAL             RD(3000)					      REAL             RD(3000)
+      INTEGER          ISEED(103,10),NSEQ			      INTEGER          ISEED(103,10),NSEQ
+      LOGICAL          KNOR					      LOGICAL          KNOR
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEND.								*KEND.
+ 								 
+      DOUBLE PRECISION A,B,RR					      DOUBLE PRECISION A,B,RR
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+CC    IF ( DEBUG ) WRITE(MDEBUG,100) SNGL(A),SNGL(B)		CC    IF ( DEBUG ) WRITE(MDEBUG,100) SNGL(A),SNGL(B)
+CC100 FORMAT(' RANNOR: A,B=',1P,2E10.3)				CC100 FORMAT(' RANNOR: A,B=',1P,2E10.3)
+      IF ( KNOR ) THEN						      IF ( KNOR ) THEN
+  1     CONTINUE						  1     CONTINUE
+        CALL RMMAR( RD,2,1 )					        CALL RMMAR( RD,2,1 )
+        U1 = 2.D0*RD(1) - 1.D0					        U1 = 2.D0*RD(1) - 1.D0
+        U2 = 2.D0*RD(2) - 1.D0					        U2 = 2.D0*RD(2) - 1.D0
+        RR = U1**2 + U2**2					        RR = U1**2 + U2**2
+        IF ( RR .GE. 1.D0 .OR. RR .EQ. 0.D0 ) GOTO 1		        IF ( RR .GE. 1.D0 .OR. RR .EQ. 0.D0 ) GOTO 1
+        FAC = SQRT( -2.D0 * LOG(RR) / RR )			        FAC = SQRT( -2.D0 * LOG(RR) / RR )
+ 								 
+        RANNOR = FAC * U1 * B + A				        RANNOR = FAC * U1 * B + A
+        KNOR   = .FALSE.					        KNOR   = .FALSE.
+      ELSE							      ELSE
+        RANNOR = FAC * U2 * B + A				        RANNOR = FAC * U2 * B + A
+        KNOR   = .TRUE.						        KNOR   = .TRUE.
+      ENDIF							      ENDIF
+CC    IF ( DEBUG ) WRITE(MDEBUG,101) RANNOR			CC    IF ( DEBUG ) WRITE(MDEBUG,101) RANNOR
+CC101 FORMAT('+',34X,' RANNOR =',1P,E12.5)			CC101 FORMAT('+',34X,' RANNOR =',1P,E12.5)
+ 								 
+      RETURN							      RETURN
+      END							      END

@@ -1,0 +1,10 @@
+474,476c474
+< C  Aitor 25-2-2000. He puesto que saque la Thickness del punto de primera interaccion
+<           WRITE(KMPO,* )' FIRST INTERACTION AT ',EVTH(7)*0.01,
+<      *        THICK(DBLE(EVTH(7))), ' M g/cm^2'
+---
+>          WRITE(KMPO,* )' FIRST INTERACTION AT ',EVTH(7)*0.01,' M'
+478c476
+<       END IF
+---
+>        END IF

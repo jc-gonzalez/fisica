@@ -1,0 +1,176 @@
+      SUBROUTINE HMESON( E,AMASS,ASMASS )			      SUBROUTINE HMESON( E,AMASS,ASMASS )
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  H(EAVY) MESON						C  H(EAVY) MESON
+C								C
+C  HANDLES PION INITIATED HEAVY MESON AND ITS DECAY IN UP TO 	C  HANDLES PION INITIATED HEAVY MESON AND ITS DECAY IN UP TO 
+C  HEAVY MESON EMITTED FORWARD					C  HEAVY MESON EMITTED FORWARD
+C  THIS SUBROUTINE IS CALLED FROM BOX67 AND BOX69		C  THIS SUBROUTINE IS CALLED FROM BOX67 AND BOX69
+C  ARGUMENTS:							C  ARGUMENTS:
+C   E      = AVAILABLE ENERGY IN CM				C   E      = AVAILABLE ENERGY IN CM
+C   AMASS  = MASS OF HEAVY MESON				C   AMASS  = MASS OF HEAVY MESON
+C   ASMASS = MASS TO BE LEFT OVER FOR OTHER PARTICLES		C   ASMASS = MASS TO BE LEFT OVER FOR OTHER PARTICLES
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)			      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+*KEEP,BAL.							*KEEP,BAL.
+      COMMON /BAL/     EBAL					      COMMON /BAL/     EBAL
+      DOUBLE PRECISION EBAL(10)					      DOUBLE PRECISION EBAL(10)
+*KEEP,CONST.							*KEEP,CONST.
+      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER			      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER
+      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER			      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER
+*KEEP,ELASTY.							*KEEP,ELASTY.
+      COMMON /ELASTY/  ELAST,IELIS,IELHM,IELNU,IELPI		      COMMON /ELASTY/  ELAST,IELIS,IELHM,IELNU,IELPI
+      DOUBLE PRECISION ELAST					      DOUBLE PRECISION ELAST
+      INTEGER          IELIS(20),IELHM(20),IELNU(20),IELPI(20	      INTEGER          IELIS(20),IELHM(20),IELNU(20),IELPI(20
+*KEEP,MULT.							*KEEP,MULT.
+      COMMON /MULT/    EKINL,MSMM,MULTMA,MULTOT			      COMMON /MULT/    EKINL,MSMM,MULTMA,MULTOT
+      DOUBLE PRECISION EKINL					      DOUBLE PRECISION EKINL
+      INTEGER          MSMM,MULTMA(37,13),MULTOT(37,13)		      INTEGER          MSMM,MULTMA(37,13),MULTOT(37,13)
+*KEEP,PAM.							*KEEP,PAM.
+      COMMON /PAM/     PAMA,SIGNUM				      COMMON /PAM/     PAMA,SIGNUM
+      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)			      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)
+*KEEP,PARPAR.							*KEEP,PARPAR.
+      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,		      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,
+     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE	     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE
+      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA	      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA
+     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH	     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH
+      INTEGER          ITYPE,LEVL				      INTEGER          ITYPE,LEVL
+*KEEP,PARPAE.							*KEEP,PARPAE.
+      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,	      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,
+      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)	      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)
+     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )	     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )
+     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )	     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )
+     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )	     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )
+     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )	     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )
+     *                 (CURPAR(12),ECM )			     *                 (CURPAR(12),ECM )
+*KEEP,RANDPA.							*KEEP,RANDPA.
+      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR		      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR
+      DOUBLE PRECISION FAC,U1,U2				      DOUBLE PRECISION FAC,U1,U2
+      REAL             RD(3000)					      REAL             RD(3000)
+      INTEGER          ISEED(103,10),NSEQ			      INTEGER          ISEED(103,10),NSEQ
+      LOGICAL          KNOR					      LOGICAL          KNOR
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEEP,VKIN.							*KEEP,VKIN.
+      COMMON /VKIN/    BETACM					      COMMON /VKIN/    BETACM
+      DOUBLE PRECISION BETACM					      DOUBLE PRECISION BETACM
+*KEND.								*KEND.
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,*) 'HMESON: E,AMASS,ASMASS=',	      IF ( DEBUG ) WRITE(MDEBUG,*) 'HMESON: E,AMASS,ASMASS=',
+     *         SNGL(E),SNGL(AMASS),SNGL(ASMASS)			     *         SNGL(E),SNGL(AMASS),SNGL(ASMASS)
+ 								 
+      IPI   = 0							      IPI   = 0
+      EDHM  = 0.D0						      EDHM  = 0.D0
+      PACC  = 0.D0						      PACC  = 0.D0
+      W     = 0.6D0						      W     = 0.6D0
+ 								 
+C  GAMMA AND BETA OF HEAVY MESON IN CM AND LAB			C  GAMMA AND BETA OF HEAVY MESON IN CM AND LAB
+C  E > AMASS + ASMASS  TO KEEP GHMCM > 1.			C  E > AMASS + ASMASS  TO KEEP GHMCM > 1.
+      GHMCM  = ( E**2+AMASS**2-ASMASS**2 ) / ( 2.D0*E*AMASS )	      GHMCM  = ( E**2+AMASS**2-ASMASS**2 ) / ( 2.D0*E*AMASS )
+      BHMCM  = SQRT(GHMCM**2 - 1.D0) / GHMCM			      BHMCM  = SQRT(GHMCM**2 - 1.D0) / GHMCM
+      GHMLAB = GCM * GHMCM * (1.D0 + BETACM * BHMCM)		      GHMLAB = GCM * GHMCM * (1.D0 + BETACM * BHMCM)
+      BHMLAB = SQRT(GHMLAB**2 - 1.D0) / GHMLAB			      BHMLAB = SQRT(GHMLAB**2 - 1.D0) / GHMLAB
+ 								 
+C  DECAY OF HEAVY MESON						C  DECAY OF HEAVY MESON
+    7 CONTINUE							    7 CONTINUE
+      IPI  = IPI + 1						      IPI  = IPI + 1
+C  CHOSE TRANSVERSE MOMENTUM RANDOMLY				C  CHOSE TRANSVERSE MOMENTUM RANDOMLY
+      PTPI = PTRANS(DUMMY)					      PTPI = PTRANS(DUMMY)
+C  CHOSE LONGITUDINAL MOMENTUM RANDOMLY				C  CHOSE LONGITUDINAL MOMENTUM RANDOMLY
+      IF ( IPI .LT. 3 ) THEN					      IF ( IPI .LT. 3 ) THEN
+        P  = PCL(C(40),W)					        P  = PCL(C(40),W)
+      ELSE							      ELSE
+        P2 = RESTE**2 - PAMA(8)**2 - PTPI**2			        P2 = RESTE**2 - PAMA(8)**2 - PTPI**2
+        P  = SQRT(MAX( P2, 0.D0 ))				        P  = SQRT(MAX( P2, 0.D0 ))
+      ENDIF							      ENDIF
+ 								 
+      PTPI  = PTRANS(DUMMY)					      PTPI  = PTRANS(DUMMY)
+      GPIHM = SQRT( P**2 / PAMA(8)**2 + 1.D0 )			      GPIHM = SQRT( P**2 / PAMA(8)**2 + 1.D0 )
+      BPIHM = SQRT( GPIHM**2-1.D0 ) / GPIHM			      BPIHM = SQRT( GPIHM**2-1.D0 ) / GPIHM
+      EDHM  = EDHM + SQRT( PAMA(8)**2 + P**2 + PTPI**2 )	      EDHM  = EDHM + SQRT( PAMA(8)**2 + P**2 + PTPI**2 )
+      RESTE = AMASS - EDHM					      RESTE = AMASS - EDHM
+ 								 
+C  FOR FIRST 2 PARTICLES CHOSE RANDOMLY WHETHER FORWARD OR BA	C  FOR FIRST 2 PARTICLES CHOSE RANDOMLY WHETHER FORWARD OR BA
+C  FOR 3. PARTICLE DECIDE ACCORDING TO ACCULMULATED P		C  FOR 3. PARTICLE DECIDE ACCORDING TO ACCULMULATED P
+      CALL RMMAR( RD,3,1 )					      CALL RMMAR( RD,3,1 )
+      IF ( IPI .EQ. 3 ) THEN					      IF ( IPI .EQ. 3 ) THEN
+        IF ( PACC .LE. 0.D0 ) THEN				        IF ( PACC .LE. 0.D0 ) THEN
+          RD(1) = 0.						          RD(1) = 0.
+        ELSE							        ELSE
+          RD(1) = 1.						          RD(1) = 1.
+        ENDIF							        ENDIF
+      ENDIF							      ENDIF
+ 								 
+      IF ( RD(1) .GT. 0.5 ) THEN				      IF ( RD(1) .GT. 0.5 ) THEN
+C  BACKWARD PION						C  BACKWARD PION
+        GPILAB = GHMLAB*GPIHM*(1.D0-BHMLAB*BPIHM)		        GPILAB = GHMLAB*GPIHM*(1.D0-BHMLAB*BPIHM)
+        PACC   = PACC - P					        PACC   = PACC - P
+      ELSE							      ELSE
+C  FORWARD PION							C  FORWARD PION
+        GPILAB = GHMLAB*GPIHM*(1.D0+BHMLAB*BPIHM)		        GPILAB = GHMLAB*GPIHM*(1.D0+BHMLAB*BPIHM)
+        PACC   = PACC + P					        PACC   = PACC + P
+      ENDIF							      ENDIF
+C  CORRECTIVE ACTION IF GPILAB LESS OR EQUAL TO 1.0		C  CORRECTIVE ACTION IF GPILAB LESS OR EQUAL TO 1.0
+      GPILAB   = MAX( GPILAB, 1.D0 )				      GPILAB   = MAX( GPILAB, 1.D0 )
+ 								 
+C  GET NEW DIRECTION						C  GET NEW DIRECTION
+      PLLAB2 = PAMA(8)**2 *(GPILAB**2 - 1.D0)			      PLLAB2 = PAMA(8)**2 *(GPILAB**2 - 1.D0)
+      CTHETA = SQRT( PLLAB2 / (PTPI**2+PLLAB2) )		      CTHETA = SQRT( PLLAB2 / (PTPI**2+PLLAB2) )
+      IF ( CTHETA .GE. C(27) ) THEN				      IF ( CTHETA .GE. C(27) ) THEN
+        CALL ADDANG( COSTHE,PHI, CTHETA,RD(2)*PI2, SECPAR(3),	        CALL ADDANG( COSTHE,PHI, CTHETA,RD(2)*PI2, SECPAR(3),
+        IF ( SECPAR(3) .GE. C(29) ) THEN			        IF ( SECPAR(3) .GE. C(29) ) THEN
+          SECPAR(2) = GPILAB					          SECPAR(2) = GPILAB
+ 								 
+C  RANDOM CHARGE ASSIGNMENT FOR PIONS				C  RANDOM CHARGE ASSIGNMENT FOR PIONS
+          IF     ( RD(3) .LE. OB3 ) THEN			          IF     ( RD(3) .LE. OB3 ) THEN
+            SECPAR(1) = 7.D0					            SECPAR(1) = 7.D0
+          ELSEIF ( RD(3) .LE. TB3 ) THEN			          ELSEIF ( RD(3) .LE. TB3 ) THEN
+            SECPAR(1) = 8.D0					            SECPAR(1) = 8.D0
+          ELSE							          ELSE
+            SECPAR(1) = 9.D0					            SECPAR(1) = 9.D0
+          ENDIF							          ENDIF
+ 								 
+          DO  4  J = 5,8					          DO  4  J = 5,8
+            SECPAR(J) = CURPAR(J)				            SECPAR(J) = CURPAR(J)
+    4     CONTINUE						    4     CONTINUE
+ 								 
+          CALL TSTACK						          CALL TSTACK
+        ENDIF							        ENDIF
+      ENDIF							      ENDIF
+      IF ( IPI .LT. 3  .AND.  RESTE .GT. PAMA(8) ) GOTO 7	      IF ( IPI .LT. 3  .AND.  RESTE .GT. PAMA(8) ) GOTO 7
+ 								 
+C  STATISTICS ON ENERGY BALANCE, MULTIPLICITY AND ELASTICITY	C  STATISTICS ON ENERGY BALANCE, MULTIPLICITY AND ELASTICITY
+      EBAL(4) = EBAL(4) + RESTE					      EBAL(4) = EBAL(4) + RESTE
+      MSMM    = MSMM + IPI					      MSMM    = MSMM + IPI
+ 								 
+C  INELASTICITY STATISTICS					C  INELASTICITY STATISTICS
+      IN = 1.D0 + SECPAR(2) / GAMMA * 20.D0			      IN = 1.D0 + SECPAR(2) / GAMMA * 20.D0
+      IN = MIN( IN, 20 )					      IN = MIN( IN, 20 )
+      IELHM(IN) = IELHM(IN) + 1					      IELHM(IN) = IELHM(IN) + 1
+ 								 
+      RETURN							      RETURN
+      END							      END

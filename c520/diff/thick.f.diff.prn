@@ -1,0 +1,62 @@
+thick.f.diff
+=========================================================
+67,84c67,78
+< C*******************************************************************
+< C     Modificado por Aitor (5-febrero-98)
+< 
+<       H = -RT + SQRT(RT**2 + (ARG/COS(aitoth))**2 +(2.0D0*RT*ARG))
+< C*******************************************************************
+< 
+< C      R = SQRT(CURPAR(7)**2+CURPAR(8)**2)
+< C      H = SQRT((RT+ARG)**2+R**2)-RT
+< c      print *,'THICK>>',arg,r,h,curpar(7),curpar(8)
+< 
+<       IF     ( H .LT. 4.D5 ) THEN
+<         THICK = AATM(1) + BATM(1) * EXP ( -H * DATM(1) )
+<       ELSEIF ( H .LT. 1.D6 ) THEN
+<         THICK = AATM(2) + BATM(2) * EXP ( -H * DATM(2) )
+<       ELSEIF ( H .LT. 4.D6 ) THEN
+<         THICK = AATM(3) + BATM(3) * EXP ( -H * DATM(3) )
+<       ELSEIF ( H .LT. 1.D7 ) THEN
+<         THICK = AATM(4) + BATM(4) * EXP ( -H * DATM(4) )
+---
+> c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+> c>> Modification (HZA trick) cancelled >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+> c>> JCG Wed Sep 21 10:49:14 MET DST 1998 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+> c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>       IF     ( ARG .LT. 4.D5 ) THEN
+>         THICK = AATM(1) + BATM(1) * EXP ( -ARG * DATM(1) )
+>       ELSEIF ( ARG .LT. 1.D6 ) THEN
+>         THICK = AATM(2) + BATM(2) * EXP ( -ARG * DATM(2) )
+>       ELSEIF ( ARG .LT. 4.D6 ) THEN
+>         THICK = AATM(3) + BATM(3) * EXP ( -ARG * DATM(3) )
+>       ELSEIF ( ARG .LT. 1.D7 ) THEN
+>         THICK = AATM(4) + BATM(4) * EXP ( -ARG * DATM(4) )
+86c80
+<         THICK = AATM(5) - H * CATM(5)
+---
+>         THICK = AATM(5) - ARG * CATM(5)
+87a82,104
+> c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+> cC*******************************************************************
+> cC     Modificado por Aitor (5-febrero-98)
+> c
+> c      H = -RT + SQRT(RT**2 + (ARG/COS(aitoth))**2 +(2.0D0*RT*ARG))
+> cC*******************************************************************
+> c
+> cC      R = SQRT(CURPAR(7)**2+CURPAR(8)**2)
+> cC      H = SQRT((RT+ARG)**2+R**2)-RT
+> cc      print *,'THICK>>',arg,r,h,curpar(7),curpar(8)
+> c
+> c      IF     ( H .LT. 4.D5 ) THEN
+> c        THICK = AATM(1) + BATM(1) * EXP ( -H * DATM(1) )
+> c      ELSEIF ( H .LT. 1.D6 ) THEN
+> c        THICK = AATM(2) + BATM(2) * EXP ( -H * DATM(2) )
+> c      ELSEIF ( H .LT. 4.D6 ) THEN
+> c        THICK = AATM(3) + BATM(3) * EXP ( -H * DATM(3) )
+> c      ELSEIF ( H .LT. 1.D7 ) THEN
+> c        THICK = AATM(4) + BATM(4) * EXP ( -H * DATM(4) )
+> c      ELSE
+> c        THICK = AATM(5) - H * CATM(5)
+> c      ENDIF
+> c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

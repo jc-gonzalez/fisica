@@ -1,0 +1,812 @@
+C============================================================	C============================================================
+
+      SUBROUTINE INPRM						      SUBROUTINE INPRM
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  IN(PUT) PR(I)M(ARY)						C  IN(PUT) PR(I)M(ARY)
+C								C
+C  TAKES INPUT PRIMARY ENERGY FROM SPECIFIED SPECTRUM		C  TAKES INPUT PRIMARY ENERGY FROM SPECIFIED SPECTRUM
+C  CHECKS INPUT VARIABLES FOR CONSISTENCY AND LIMITATIONS	C  CHECKS INPUT VARIABLES FOR CONSISTENCY AND LIMITATIONS
+C  WRITES DATA BASE FILE					C  WRITES DATA BASE FILE
+C  THIS SUBROUTINE IS CALLED FROM MAIN				C  THIS SUBROUTINE IS CALLED FROM MAIN
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,ATMOS.							*KEEP,ATMOS.
+      COMMON /ATMOS/   AATM,BATM,CATM,DATM			      COMMON /ATMOS/   AATM,BATM,CATM,DATM
+      DOUBLE PRECISION AATM(5),BATM(5),CATM(5),DATM(5)		      DOUBLE PRECISION AATM(5),BATM(5),CATM(5),DATM(5)
+*KEEP,BUFFS.							*KEEP,BUFFS.
+      COMMON /BUFFS/   RUNH,RUNE,EVTH,EVTE,DATAB,LH		      COMMON /BUFFS/   RUNH,RUNE,EVTH,EVTE,DATAB,LH
+      INTEGER          MAXBUF,MAXLEN				      INTEGER          MAXBUF,MAXLEN
+      PARAMETER        (MAXBUF=39*7)				      PARAMETER        (MAXBUF=39*7)
+      PARAMETER        (MAXLEN=12)				      PARAMETER        (MAXLEN=12)
+      REAL             RUNH(MAXBUF),EVTH(MAXBUF),EVTE(MAXBUF)	      REAL             RUNH(MAXBUF),EVTH(MAXBUF),EVTE(MAXBUF)
+     *                 RUNE(MAXBUF),DATAB(MAXBUF)		     *                 RUNE(MAXBUF),DATAB(MAXBUF)
+      INTEGER          LH					      INTEGER          LH
+      CHARACTER*4      CRUNH,CRUNE,CEVTH,CEVTE			      CHARACTER*4      CRUNH,CRUNE,CEVTH,CEVTE
+      EQUIVALENCE      (RUNH(1),CRUNH), (RUNE(1),CRUNE)		      EQUIVALENCE      (RUNH(1),CRUNH), (RUNE(1),CRUNE)
+      EQUIVALENCE      (EVTH(1),CEVTH), (EVTE(1),CEVTE)		      EQUIVALENCE      (EVTH(1),CEVTH), (EVTE(1),CEVTE)
+*KEEP,CONST.							*KEEP,CONST.
+      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER			      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER
+      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER			      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER
+*KEEP,DPMFLG.							*KEEP,DPMFLG.
+      COMMON /DPMFLG/  NFLAIN,NFLDIF,NFLPI0,NFLCHE,NFLPIF,NFR	      COMMON /DPMFLG/  NFLAIN,NFLDIF,NFLPI0,NFLCHE,NFLPIF,NFR
+      INTEGER          NFLAIN,NFLDIF,NFLPI0,NFLCHE,NFLPIF,NFR	      INTEGER          NFLAIN,NFLDIF,NFLPI0,NFLCHE,NFLPIF,NFR
+*KEEP,ELABCT.							*KEEP,ELABCT.
+      COMMON /ELABCT/  ELCUT					      COMMON /ELABCT/  ELCUT
+      DOUBLE PRECISION ELCUT(4)					      DOUBLE PRECISION ELCUT(4)
+*KEEP,ETHMAP.							*KEEP,ETHMAP.
+      COMMON /ETHMAP/  ECTMAP,ELEFT				      COMMON /ETHMAP/  ECTMAP,ELEFT
+      DOUBLE PRECISION ECTMAP,ELEFT				      DOUBLE PRECISION ECTMAP,ELEFT
+*KEEP,LONGI.							*KEEP,LONGI.
+      COMMON /LONGI/   APLONG,HLONG,PLONG,SPLONG,THSTEP,THSTP	      COMMON /LONGI/   APLONG,HLONG,PLONG,SPLONG,THSTEP,THSTP
+     *                 NSTEP,LLONGI,FLGFIT			     *                 NSTEP,LLONGI,FLGFIT
+      DOUBLE PRECISION APLONG(0:1040,9),HLONG(0:1024),PLONG(0	      DOUBLE PRECISION APLONG(0:1040,9),HLONG(0:1024),PLONG(0
+     *                 SPLONG(0:1040,9),THSTEP,THSTPI		     *                 SPLONG(0:1040,9),THSTEP,THSTPI
+      INTEGER          NSTEP					      INTEGER          NSTEP
+      LOGICAL          LLONGI,FLGFIT				      LOGICAL          LLONGI,FLGFIT
+*KEEP,MAGANG.							*KEEP,MAGANG.
+      COMMON /MAGANG/  ARRANG,ARRANR,COSANG,SINANG		      COMMON /MAGANG/  ARRANG,ARRANR,COSANG,SINANG
+      DOUBLE PRECISION ARRANG,ARRANR,COSANG,SINANG		      DOUBLE PRECISION ARRANG,ARRANR,COSANG,SINANG
+*KEEP,MAGNET.							*KEEP,MAGNET.
+      COMMON /MAGNET/  BX,BZ,BVAL,BNORMC,BNORM,COSB,SINB,BLIM	      COMMON /MAGNET/  BX,BZ,BVAL,BNORMC,BNORM,COSB,SINB,BLIM
+      DOUBLE PRECISION BX,BZ,BVAL,BNORMC			      DOUBLE PRECISION BX,BZ,BVAL,BNORMC
+      REAL             BNORM,COSB,SINB,BLIMIT			      REAL             BNORM,COSB,SINB,BLIMIT
+*KEEP,NKGI.							*KEEP,NKGI.
+      COMMON /NKGI/    SEL,SELLG,STH,ZEL,ZELLG,ZSL,DIST,	      COMMON /NKGI/    SEL,SELLG,STH,ZEL,ZELLG,ZSL,DIST,
+     *                 DISX,DISY,DISXY,DISYX,DLAX,DLAY,DLAXY,	     *                 DISX,DISY,DISXY,DISYX,DLAX,DLAY,DLAXY,
+     *                 OBSATI,RADNKG,RMOL,TLEV,TLEVCM,IALT	     *                 OBSATI,RADNKG,RMOL,TLEV,TLEVCM,IALT
+      DOUBLE PRECISION SEL(10),SELLG(10),STH(10),ZEL(10),ZELL	      DOUBLE PRECISION SEL(10),SELLG(10),STH(10),ZEL(10),ZELL
+     *                 ZSL(10),DIST(10),			     *                 ZSL(10),DIST(10),
+     *                 DISX(-10:10),DISY(-10:10),		     *                 DISX(-10:10),DISY(-10:10),
+     *                 DISXY(-10:10,2),DISYX(-10:10,2),		     *                 DISXY(-10:10,2),DISYX(-10:10,2),
+     *                 DLAX (-10:10,2),DLAY (-10:10,2),		     *                 DLAX (-10:10,2),DLAY (-10:10,2),
+     *                 DLAXY(-10:10,2),DLAYX(-10:10,2),		     *                 DLAXY(-10:10,2),DLAYX(-10:10,2),
+     *                 OBSATI(2),RADNKG,RMOL(2),TLEV(10),TLEV	     *                 OBSATI(2),RADNKG,RMOL(2),TLEV(10),TLEV
+      INTEGER          IALT(2)					      INTEGER          IALT(2)
+*KEEP,OBSPAR.							*KEEP,OBSPAR.
+      COMMON /OBSPAR/  OBSLEV,THCKOB,XOFF,YOFF,THETAP,PHIP,	      COMMON /OBSPAR/  OBSLEV,THCKOB,XOFF,YOFF,THETAP,PHIP,
+     *                 THETPR,PHIPR,NOBSLV			     *                 THETPR,PHIPR,NOBSLV
+      DOUBLE PRECISION OBSLEV(10),THCKOB(10),XOFF(10),YOFF(10	      DOUBLE PRECISION OBSLEV(10),THCKOB(10),XOFF(10),YOFF(10
+     *                 THETAP,THETPR(2),PHIP,PHIPR(2)		     *                 THETAP,THETPR(2),PHIP,PHIPR(2)
+      INTEGER          NOBSLV					      INTEGER          NOBSLV
+*KEEP,PARPAR.							*KEEP,PARPAR.
+      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,		      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,
+     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE	     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE
+      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA	      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA
+     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH	     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH
+      INTEGER          ITYPE,LEVL				      INTEGER          ITYPE,LEVL
+*KEEP,PARPAE.							*KEEP,PARPAE.
+      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,	      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,
+      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)	      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)
+     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )	     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )
+     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )	     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )
+     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )	     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )
+     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )	     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )
+     *                 (CURPAR(12),ECM )			     *                 (CURPAR(12),ECM )
+*KEEP,PRIMSP.							*KEEP,PRIMSP.
+      COMMON /PRIMSP/  PSLOPE,LLIMIT,ULIMIT,LL,UL,SLEX,ISPEC	      COMMON /PRIMSP/  PSLOPE,LLIMIT,ULIMIT,LL,UL,SLEX,ISPEC
+      DOUBLE PRECISION PSLOPE,LLIMIT,ULIMIT,LL,UL,SLEX		      DOUBLE PRECISION PSLOPE,LLIMIT,ULIMIT,LL,UL,SLEX
+      INTEGER          ISPEC					      INTEGER          ISPEC
+*KEEP,RANDPA.							*KEEP,RANDPA.
+      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR		      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR
+      DOUBLE PRECISION FAC,U1,U2				      DOUBLE PRECISION FAC,U1,U2
+      REAL             RD(3000)					      REAL             RD(3000)
+      INTEGER          ISEED(103,10),NSEQ			      INTEGER          ISEED(103,10),NSEQ
+      LOGICAL          KNOR					      LOGICAL          KNOR
+*KEEP,REJECT.							*KEEP,REJECT.
+      COMMON /REJECT/  AVNREJ,					      COMMON /REJECT/  AVNREJ,
+     *                 ALTMIN,ANEXP,THICKA,THICKD,CUTLN,EONCU	     *                 ALTMIN,ANEXP,THICKA,THICKD,CUTLN,EONCU
+     *                 FNPRIM					     *                 FNPRIM
+      DOUBLE PRECISION AVNREJ(10)				      DOUBLE PRECISION AVNREJ(10)
+      REAL             ALTMIN(10),ANEXP(10),THICKA(10),THICKD	      REAL             ALTMIN(10),ANEXP(10),THICKA(10),THICKD
+     *                 CUTLN,EONCUT				     *                 CUTLN,EONCUT
+      LOGICAL          FNPRIM					      LOGICAL          FNPRIM
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEEP,STACKF.							*KEEP,STACKF.
+      COMMON /STACKF/  STACK,STACKP,EXST,NSHIFT,NOUREC,ICOUNT	      COMMON /STACKF/  STACK,STACKP,EXST,NSHIFT,NOUREC,ICOUNT
+      INTEGER          MAXSTK					      INTEGER          MAXSTK
+      PARAMETER        (MAXSTK = 12*340*2)			      PARAMETER        (MAXSTK = 12*340*2)
+      DOUBLE PRECISION STACK(MAXSTK)				      DOUBLE PRECISION STACK(MAXSTK)
+      INTEGER          STACKP,EXST,NSHIFT,NOUREC,ICOUNT,NTO,N	      INTEGER          STACKP,EXST,NSHIFT,NOUREC,ICOUNT,NTO,N
+*KEEP,VERS.							*KEEP,VERS.
+      COMMON /VERS/    VERNUM,MVDATE,VERDAT			      COMMON /VERS/    VERNUM,MVDATE,VERDAT
+      DOUBLE PRECISION VERNUM					      DOUBLE PRECISION VERNUM
+      INTEGER          MVDATE					      INTEGER          MVDATE
+      CHARACTER*18     VERDAT					      CHARACTER*18     VERDAT
+*KEEP,VENUS.							*KEEP,VENUS.
+      COMMON /VENUS/   ISH0,IVERVN,MTAR99,FVENUS,FVENSG		      COMMON /VENUS/   ISH0,IVERVN,MTAR99,FVENUS,FVENSG
+      INTEGER          ISH0,IVERVN,MTAR99			      INTEGER          ISH0,IVERVN,MTAR99
+      LOGICAL          FVENUS,FVENSG				      LOGICAL          FVENUS,FVENSG
+*KEEP,CEREN1.							*KEEP,CEREN1.
+      COMMON /CEREN1/  CERELE,CERHAD,ETADSN,WAVLGL,WAVLGU,CYI	      COMMON /CEREN1/  CERELE,CERHAD,ETADSN,WAVLGL,WAVLGU,CYI
+     *                 CERSIZ,LCERFI				     *                 CERSIZ,LCERFI
+      DOUBLE PRECISION CERELE,CERHAD,ETADSN,WAVLGL,WAVLGU,CYI	      DOUBLE PRECISION CERELE,CERHAD,ETADSN,WAVLGL,WAVLGU,CYI
+      REAL             CERSIZ					      REAL             CERSIZ
+      LOGICAL          LCERFI					      LOGICAL          LCERFI
+*KEEP,CEREN2.							*KEEP,CEREN2.
+      COMMON /CEREN2/  PHOTCM,XCER,YCER,UEMIS,VEMIS,CARTIM,ZE	      COMMON /CEREN2/  PHOTCM,XCER,YCER,UEMIS,VEMIS,CARTIM,ZE
+     *                 DCERX,DCERY,ACERX,ACERY,			     *                 DCERX,DCERY,ACERX,ACERY,
+     *                 XCMAX,YCMAX,EPSX,EPSY,			     *                 XCMAX,YCMAX,EPSX,EPSY,
+     *                 DCERXI,DCERYI,FCERX,FCERY,		     *                 DCERXI,DCERYI,FCERX,FCERY,
+     *                 XSCATT,YSCATT,CERXOS,CERYOS,		     *                 XSCATT,YSCATT,CERXOS,CERYOS,
+     *                 NCERX,NCERY,ICERML			     *                 NCERX,NCERY,ICERML
+      REAL             PHOTCM,XCER,YCER,UEMIS,VEMIS,CARTIM,ZE	      REAL             PHOTCM,XCER,YCER,UEMIS,VEMIS,CARTIM,ZE
+     *                 DCERX,DCERY,ACERX,ACERY,			     *                 DCERX,DCERY,ACERX,ACERY,
+     *                 XCMAX,YCMAX,EPSX,EPSY,			     *                 XCMAX,YCMAX,EPSX,EPSY,
+     *                 DCERXI,DCERYI,FCERX,FCERY,		     *                 DCERXI,DCERYI,FCERX,FCERY,
+     *                 XSCATT,YSCATT,CERXOS(20),CERYOS(20)	     *                 XSCATT,YSCATT,CERXOS(20),CERYOS(20)
+      INTEGER          NCERX,NCERY,ICERML			      INTEGER          NCERX,NCERY,ICERML
+*KEND.								*KEND.
+ 								 
+      DOUBLE PRECISION EFRAC,HEIGH,H0,OOO,THICK			      DOUBLE PRECISION EFRAC,HEIGH,H0,OOO,THICK
+      REAL             VERVEN					      REAL             VERVEN
+      INTEGER          I,IBL,IDPM,ILONG,ISO,J,L			      INTEGER          I,IBL,IDPM,ILONG,ISO,J,L
+      LOGICAL          LTHIN					      LOGICAL          LTHIN
+      EXTERNAL         HEIGH,THICK				      EXTERNAL         HEIGH,THICK
+      CHARACTER*1      MARK					      CHARACTER*1      MARK
+      CHARACTER*9      LSTDSN					      CHARACTER*9      LSTDSN
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      WRITE(MONIOU,504)						      WRITE(MONIOU,504)
+  504 FORMAT(//' ',10('='),' SHOWER PARAMETERS ', 50('=') )	  504 FORMAT(//' ',10('='),' SHOWER PARAMETERS ', 50('=') )
+ 								 
+C  WRITE ENERGY SPECTRUM TO HEADER				C  WRITE ENERGY SPECTRUM TO HEADER
+      RUNH(16) = PSLOPE						      RUNH(16) = PSLOPE
+      RUNH(17) = LLIMIT						      RUNH(17) = LLIMIT
+      RUNH(18) = ULIMIT						      RUNH(18) = ULIMIT
+ 								 
+      EVTH(58) = PSLOPE						      EVTH(58) = PSLOPE
+      EVTH(59) = LLIMIT						      EVTH(59) = LLIMIT
+      EVTH(60) = ULIMIT						      EVTH(60) = ULIMIT
+ 								 
+      IF ( PRMPAR(1) .GE. 6000.D0  .OR.  PRMPAR(1) .LE. 0.D0 	      IF ( PRMPAR(1) .GE. 6000.D0  .OR.  PRMPAR(1) .LE. 0.D0 
+        WRITE(MONIOU,*)'INCORRECT SELECTION OF PRIMARY PARTIC	        WRITE(MONIOU,*)'INCORRECT SELECTION OF PRIMARY PARTIC
+     *                  ,INT(PRMPAR(1))				     *                  ,INT(PRMPAR(1))
+        WRITE(MONIOU,*)'PLEASE READ THE MANUALS'		        WRITE(MONIOU,*)'PLEASE READ THE MANUALS'
+        STOP							        STOP
+      ENDIF							      ENDIF
+C  CHECK WETHER NUCLEUS IS A SINGLE NUCLEON			C  CHECK WETHER NUCLEUS IS A SINGLE NUCLEON
+      IF (PRMPAR(1) .EQ. 100.D0 ) PRMPAR(1) = 13.D0		      IF (PRMPAR(1) .EQ. 100.D0 ) PRMPAR(1) = 13.D0
+      IF (PRMPAR(1) .EQ. 101.D0 ) PRMPAR(1) = 14.D0		      IF (PRMPAR(1) .EQ. 101.D0 ) PRMPAR(1) = 14.D0
+      WRITE(MONIOU,*)'PRIMARY PARTICLE IDENTIFICATION IS ',	      WRITE(MONIOU,*)'PRIMARY PARTICLE IDENTIFICATION IS ',
+     *                NINT(PRMPAR(1))				     *                NINT(PRMPAR(1))
+C  CHECK RECOMMENDED ENERGY RANGE				C  CHECK RECOMMENDED ENERGY RANGE
+      IF ( FVENUS  .AND.					      IF ( FVENUS  .AND.
+     *     ULIMIT.GT.2.D7  .AND.  PRMPAR(1).GE.8.D0 ) THEN	     *     ULIMIT.GT.2.D7  .AND.  PRMPAR(1).GE.8.D0 ) THEN
+        WRITE(MONIOU,502) ULIMIT				        WRITE(MONIOU,502) ULIMIT
+  502   FORMAT(' INTERACTION MODEL DOUBTFUL FOR THE SELECTED 	  502   FORMAT(' INTERACTION MODEL DOUBTFUL FOR THE SELECTED 
+     *         'ENERGY OF ',E10.3,' GEV'/' PLEASE READ THE MA	     *         'ENERGY OF ',E10.3,' GEV'/' PLEASE READ THE MA
+        STOP							        STOP
+      ENDIF							      ENDIF
+ 								 
+      IF ( PRMPAR(1) .GT. 101.D0 ) THEN			      |
+        IF ( GHEISH ) THEN				      |
+C  GHEISHA CAN TREAT ONLY DEUTERONS, TRITONS, AND ALPHA PARTI |
+          IF ( PRMPAR(1) .NE. 201.D0  .AND.  PRMPAR(1) .NE. 3 |	c> *** modified by fs (22/09/98) ****************************
+     *         .AND.  PRMPAR(1) .NE. 401.D0 ) THEN	      |
+            IF ( LLIMIT .LT. HILOELB * INT(PRMPAR(1)/100.D0)  |
+              WRITE(MONIOU,503) INT(PRMPAR(1)/100.D0),LLIMIT  |	c      IF ( PRMPAR(1) .GT. 101.D0 ) THEN
+              STOP					      |	c        IF ( GHEISH ) THEN
+            ENDIF					      |	cC  GHEISHA CAN TREAT ONLY DEUTERONS, TRITONS, AND ALPHA PART
+          ENDIF						      |	c          IF ( PRMPAR(1) .NE. 201.D0  .AND.  PRMPAR(1) .NE. 
+        ELSE						      |	c     *         .AND.  PRMPAR(1) .NE. 402.D0 ) THEN
+          IF ( LLIMIT .LT. HILOELB * INT(PRMPAR(1)/100.D0) )  |	c            IF ( LLIMIT .LT. HILOELB * INT(PRMPAR(1)/100.D0)
+            WRITE(MONIOU,503) INT(PRMPAR(1)/100.D0),LLIMIT    |	c              WRITE(MONIOU,503) INT(PRMPAR(1)/100.D0),LLIMIT
+  503       FORMAT(' NUCLEUS WITH A =',I2,' AND PRIMARY ENERG |	c              STOP
+     *        1PE10.3,' GEV TOO LOW FOR HIGH ENERGY INTERACTI |	c            ENDIF
+     *        ' AND CANNOT BE TREATED BY LOW ENERGY INTERACTI |	c          ENDIF
+     *        ' PLEASE READ THE MANUALS')		      |	c        ELSE
+            STOP					      |	c          IF ( LLIMIT .LT. HILOELB * INT(PRMPAR(1)/100.D0) )
+          ENDIF						      |	c            WRITE(MONIOU,503) INT(PRMPAR(1)/100.D0),LLIMIT
+        ENDIF						      |	c  503       FORMAT(' NUCLEUS WITH A =',I2,' AND PRIMARY ENER
+      ENDIF						      |	c     *        1PE10.3,' GEV TOO LOW FOR HIGH ENERGY INTERACT
+ 							      |	c     *        ' AND CANNOT BE TREATED BY LOW ENERGY INTERACT
+							      >	c     *        ' PLEASE READ THE MANUALS')
+							      >	c            STOP
+							      >	c          ENDIF
+							      >	c        ENDIF
+							      >	c      ENDIF
+							      >
+							      >
+							      >	c> *** end of modification **********************************
+							      >
+C  DEFINE ENERGY RANGE AND ENERGY SPECTRUM OF PRIMARY		C  DEFINE ENERGY RANGE AND ENERGY SPECTRUM OF PRIMARY
+      IF ( LLIMIT .EQ. ULIMIT ) THEN				      IF ( LLIMIT .EQ. ULIMIT ) THEN
+        ISPEC = 0						        ISPEC = 0
+        WRITE(MONIOU,506) LLIMIT				        WRITE(MONIOU,506) LLIMIT
+  506   FORMAT(' PRIMARY ENERGY IS FIXED AT           ',1PE10	  506   FORMAT(' PRIMARY ENERGY IS FIXED AT           ',1PE10
+     *         ' GEV' )						     *         ' GEV' )
+      ELSE							      ELSE
+        ISPEC = 1						        ISPEC = 1
+        WRITE(MONIOU,505) PSLOPE,LLIMIT,ULIMIT			        WRITE(MONIOU,505) PSLOPE,LLIMIT,ULIMIT
+  505   FORMAT(' PRIMARY ENERGY IS TAKEN FROM SPECTRUM VIA MO	  505   FORMAT(' PRIMARY ENERGY IS TAKEN FROM SPECTRUM VIA MO
+     *  5X,' SLOPE OF PRIMARY SPECTRUM                = ',1P,	     *  5X,' SLOPE OF PRIMARY SPECTRUM                = ',1P,
+     *  5X,' LOWER LIMIT CUT-OFF FOR PRIMARY SPECTRUM = ',E10	     *  5X,' LOWER LIMIT CUT-OFF FOR PRIMARY SPECTRUM = ',E10
+     *  5X,' UPPER LIMIT CUT-OFF FOR PRIMARY SPECTRUM = ',E10	     *  5X,' UPPER LIMIT CUT-OFF FOR PRIMARY SPECTRUM = ',E10
+        IF ( PSLOPE .NE. -1.D0 ) THEN				        IF ( PSLOPE .NE. -1.D0 ) THEN
+          LL   = LLIMIT ** (PSLOPE + 1.D0)			          LL   = LLIMIT ** (PSLOPE + 1.D0)
+          UL   = ULIMIT ** (PSLOPE + 1.D0)			          UL   = ULIMIT ** (PSLOPE + 1.D0)
+          SLEX = 1.D0 / (PSLOPE + 1.D0)				          SLEX = 1.D0 / (PSLOPE + 1.D0)
+        ELSE							        ELSE
+          LL   = ULIMIT / LLIMIT				          LL   = ULIMIT / LLIMIT
+        ENDIF							        ENDIF
+      ENDIF							      ENDIF
+ 								 
+C  FIRST INTERACTION TARGET FIXED ?				C  FIRST INTERACTION TARGET FIXED ?
+      IF     ( N1STTR .EQ. 1 ) THEN				      IF     ( N1STTR .EQ. 1 ) THEN
+        WRITE(MONIOU,508) 'NITROGEN'				        WRITE(MONIOU,508) 'NITROGEN'
+ 508    FORMAT(' TARGET OF FIRST INTERACTION IS FIXED TO   ',	 508    FORMAT(' TARGET OF FIRST INTERACTION IS FIXED TO   ',
+      ELSEIF ( N1STTR .EQ. 2 ) THEN				      ELSEIF ( N1STTR .EQ. 2 ) THEN
+        WRITE(MONIOU,508) 'OXYGEN  '				        WRITE(MONIOU,508) 'OXYGEN  '
+      ELSEIF ( N1STTR .EQ. 3 ) THEN				      ELSEIF ( N1STTR .EQ. 3 ) THEN
+        WRITE(MONIOU,508) 'ARGON   '				        WRITE(MONIOU,508) 'ARGON   '
+      ELSE							      ELSE
+        N1STTR = 0						        N1STTR = 0
+        WRITE(MONIOU,*)'TARGET OF FIRST INTERACTION IS CHOSEN	        WRITE(MONIOU,*)'TARGET OF FIRST INTERACTION IS CHOSEN
+      ENDIF							      ENDIF
+ 								 
+C  CHECK ANGULAR SETTINGS					C  CHECK ANGULAR SETTINGS
+      IF ( THETPR(1) .LT. 0.D0 ) THEN				      IF ( THETPR(1) .LT. 0.D0 ) THEN
+        WRITE(MONIOU,*)'UNALLOWED CHOICE OF THETPR = ',SNGL(T	        WRITE(MONIOU,*)'UNALLOWED CHOICE OF THETPR = ',SNGL(T
+     *                  ' DEGREES'				     *                  ' DEGREES'
+        WRITE(MONIOU,*)'PLEASE READ THE MANUALS'		        WRITE(MONIOU,*)'PLEASE READ THE MANUALS'
+        STOP							        STOP
+      ENDIF							      ENDIF
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+c>      IF     ( THETPR(2) .GT. 70.D0 ) THEN			c>      IF     ( THETPR(2) .GT. 70.D0 ) THEN
+c>        WRITE(MONIOU,*)'UNALLOWED CHOICE OF THETPR = ',SNGL	c>        WRITE(MONIOU,*)'UNALLOWED CHOICE OF THETPR = ',SNGL
+c>     *                  ' DEGREES'				c>     *                  ' DEGREES'
+c>        WRITE(MONIOU,*)'PLEASE READ THE MANUALS'		c>        WRITE(MONIOU,*)'PLEASE READ THE MANUALS'
+c>        STOP							c>        STOP
+c>      ELSEIF ( THETPR(2) .GT. 45.D0 ) THEN			c>      ELSEIF ( THETPR(2) .GT. 45.D0 ) THEN
+c>        WRITE(MONIOU,*)'UNALLOWED CHOICE OF THETPR = ',SNGL	c>        WRITE(MONIOU,*)'UNALLOWED CHOICE OF THETPR = ',SNGL
+c>     *                  ' DEGREES'				c>     *                  ' DEGREES'
+c>        WRITE(MONIOU,*)'###################################	c>        WRITE(MONIOU,*)'###################################
+c>        WRITE(MONIOU,*)'# IN DOUBTFUL CASES CONTACT THE AUT	c>        WRITE(MONIOU,*)'# IN DOUBTFUL CASES CONTACT THE AUT
+c>        WRITE(MONIOU,*)'###################################	c>        WRITE(MONIOU,*)'###################################
+c>        STOP							c>        STOP
+c>      ENDIF							c>      ENDIF
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+C  INCIDENCE ANGLE FIXED ?					C  INCIDENCE ANGLE FIXED ?
+      IF ( THETPR(1) .EQ. THETPR(2) .AND. PHIPR(1) .EQ. PHIPR	      IF ( THETPR(1) .EQ. THETPR(2) .AND. PHIPR(1) .EQ. PHIPR
+        FIXINC = .TRUE.						        FIXINC = .TRUE.
+        WRITE(MONIOU,517) THETPR(1),PHIPR(1)			        WRITE(MONIOU,517) THETPR(1),PHIPR(1)
+  517   FORMAT(' THETA OF INCIDENCE IS FIXED TO ',F10.2,' DEG	  517   FORMAT(' THETA OF INCIDENCE IS FIXED TO ',F10.2,' DEG
+     *         ' PHI   OF INCIDENCE IS FIXED TO ',F10.2,' DEG	     *         ' PHI   OF INCIDENCE IS FIXED TO ',F10.2,' DEG
+      ELSE							      ELSE
+        FIXINC = .FALSE.					        FIXINC = .FALSE.
+        WRITE(MONIOU,527) THETPR,PHIPR				        WRITE(MONIOU,527) THETPR,PHIPR
+  527   FORMAT(' THETA OF INCIDENCE CHOSEN FROM ',F10.2,'...'	  527   FORMAT(' THETA OF INCIDENCE CHOSEN FROM ',F10.2,'...'
+     *         ' DEGREES'/					     *         ' DEGREES'/
+     *         ' PHI   OF INCIDENCE CHOSEN FROM ',F10.2,'...'	     *         ' PHI   OF INCIDENCE CHOSEN FROM ',F10.2,'...'
+     *         ' DEGREES')					     *         ' DEGREES')
+      ENDIF							      ENDIF
+      EVTH(81) = THETPR(1)					      EVTH(81) = THETPR(1)
+      EVTH(82) = THETPR(2)					      EVTH(82) = THETPR(2)
+      EVTH(83) = PHIPR(1)					      EVTH(83) = PHIPR(1)
+      EVTH(84) = PHIPR(2) 					      EVTH(84) = PHIPR(2) 
+      THETPR(1) = THETPR(1)*PI/180.D0				      THETPR(1) = THETPR(1)*PI/180.D0
+      THETPR(2) = THETPR(2)*PI/180.D0				      THETPR(2) = THETPR(2)*PI/180.D0
+      PHIPR(1)  = PHIPR(1) *PI/180.D0				      PHIPR(1)  = PHIPR(1) *PI/180.D0
+      PHIPR(2)  = PHIPR(2) *PI/180.D0				      PHIPR(2)  = PHIPR(2) *PI/180.D0
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  PRMPAR, OBSLEV, NOBSLV					C  PRMPAR, OBSLEV, NOBSLV
+      PRMPAR(2) = 0.D0						      PRMPAR(2) = 0.D0
+      PRMPAR(6) = 0.D0						      PRMPAR(6) = 0.D0
+      PRMPAR(7) = 0.D0						      PRMPAR(7) = 0.D0
+      PRMPAR(8) = 0.D0						      PRMPAR(8) = 0.D0
+ 								 
+C  ORDERING OF OBSERVATION LEVELS FROM TOP TO BOTTOM		C  ORDERING OF OBSERVATION LEVELS FROM TOP TO BOTTOM
+      IF ( NOBSLV .GT. 1 ) THEN					      IF ( NOBSLV .GT. 1 ) THEN
+  215 CONTINUE							  215 CONTINUE
+        DO 11  I = 2,NOBSLV					        DO 11  I = 2,NOBSLV
+          IF ( OBSLEV(I) .GT. OBSLEV(I-1) ) THEN		          IF ( OBSLEV(I) .GT. OBSLEV(I-1) ) THEN
+            OOO         = OBSLEV(I)				            OOO         = OBSLEV(I)
+            OBSLEV(I)   = OBSLEV(I-1)				            OBSLEV(I)   = OBSLEV(I-1)
+            OBSLEV(I-1) = OOO					            OBSLEV(I-1) = OOO
+            GOTO 215						            GOTO 215
+          ENDIF							          ENDIF
+   11   CONTINUE						   11   CONTINUE
+      ENDIF							      ENDIF
+C  CHECK WETHER OBSERVATION LEVELS ARE IN ALLOWED RANGE		C  CHECK WETHER OBSERVATION LEVELS ARE IN ALLOWED RANGE
+      DO 12  I = 1,NOBSLV					      DO 12  I = 1,NOBSLV
+        IF ( OBSLEV(I) .GE. HEIGH(0.D0) ) THEN			        IF ( OBSLEV(I) .GE. HEIGH(0.D0) ) THEN
+          WRITE(MONIOU,120)I,OBSLEV(I),HEIGH(0.D0)		          WRITE(MONIOU,120)I,OBSLEV(I),HEIGH(0.D0)
+ 120      FORMAT(' UNALLOWED CHOICE OF OBSLEV '/' OBSERVATION	 120      FORMAT(' UNALLOWED CHOICE OF OBSLEV '/' OBSERVATION
+     *           I2,' IS AT ',F12.3,' CM, WHICH IS ABOVE ',	     *           I2,' IS AT ',F12.3,' CM, WHICH IS ABOVE ',
+     *           F12.3,' CM'/' PLEASE READ THE MANUALS')	     *           F12.3,' CM'/' PLEASE READ THE MANUALS')
+          STOP							          STOP
+        ENDIF							        ENDIF
+        IF ( OBSLEV(I) .LE. -1.D5 ) THEN			        IF ( OBSLEV(I) .LE. -1.D5 ) THEN
+          WRITE(MONIOU,121)I,OBSLEV(I)				          WRITE(MONIOU,121)I,OBSLEV(I)
+ 121      FORMAT(' UNALLOWED CHOICE OF OBSLEV '/' OBSERVATION	 121      FORMAT(' UNALLOWED CHOICE OF OBSLEV '/' OBSERVATION
+     *          I2,' IS AT ',F12.3,' CM, WHICH IS BELOW ',	     *          I2,' IS AT ',F12.3,' CM, WHICH IS BELOW ',
+     *          '-1.D5 CM'/' PLEASE READ THE MANUALS')		     *          '-1.D5 CM'/' PLEASE READ THE MANUALS')
+          STOP							          STOP
+        ENDIF							        ENDIF
+        THCKOB(I) = THICK(OBSLEV(I))				        THCKOB(I) = THICK(OBSLEV(I))
+   12 CONTINUE							   12 CONTINUE
+ 								 
+C  WRITE OBSERVATION LEVELS TO HEADER (IN CM)			C  WRITE OBSERVATION LEVELS TO HEADER (IN CM)
+      RUNH(5) = REAL(NOBSLV)					      RUNH(5) = REAL(NOBSLV)
+      EVTH(47) = REAL(NOBSLV)					      EVTH(47) = REAL(NOBSLV)
+      DO 114  I = 1,NOBSLV					      DO 114  I = 1,NOBSLV
+        RUNH(5+I)  = OBSLEV(I)					        RUNH(5+I)  = OBSLEV(I)
+        EVTH(47+I) = OBSLEV(I)					        EVTH(47+I) = OBSLEV(I)
+  114 CONTINUE							  114 CONTINUE
+ 								 
+C  FIRST INTERACTION HEIGHT FIXED ?				C  FIRST INTERACTION HEIGHT FIXED ?
+      IF ( FIX1I ) THEN						      IF ( FIX1I ) THEN
+        IF ( FIXHEI .GE. HEIGH(0.D0) ) THEN			        IF ( FIXHEI .GE. HEIGH(0.D0) ) THEN
+          WRITE(MONIOU,122)FIXHEI,HEIGH(0.D0)			          WRITE(MONIOU,122)FIXHEI,HEIGH(0.D0)
+ 122      FORMAT(' UNALLOWED CHOICE OF FIXHEI '/' FIRST INTER	 122      FORMAT(' UNALLOWED CHOICE OF FIXHEI '/' FIRST INTER
+     *           'IS FIXED AT ',F12.3,' CM, WHICH IS ABOVE ',	     *           'IS FIXED AT ',F12.3,' CM, WHICH IS ABOVE ',
+     *           F12.3,' CM'/' PLEASE READ THE MANUALS')	     *           F12.3,' CM'/' PLEASE READ THE MANUALS')
+          STOP							          STOP
+        ENDIF							        ENDIF
+        IF ( FIXHEI .LE. OBSLEV(NOBSLV) ) THEN			        IF ( FIXHEI .LE. OBSLEV(NOBSLV) ) THEN
+          WRITE(MONIOU,123)FIXHEI,OBSLEV(NOBSLV)		          WRITE(MONIOU,123)FIXHEI,OBSLEV(NOBSLV)
+ 123      FORMAT(' UNALLOWED CHOICE OF FIXHEI '/' FIRST INTER	 123      FORMAT(' UNALLOWED CHOICE OF FIXHEI '/' FIRST INTER
+     *           'IS FIXED AT ',F12.3,' CM, '/' WHICH IS BELO	     *           'IS FIXED AT ',F12.3,' CM, '/' WHICH IS BELO
+     *           'LOWEST OBSERVATION LEVEL AT ',F12.3,' CM'	     *           'LOWEST OBSERVATION LEVEL AT ',F12.3,' CM'
+     *           /' PLEASE READ THE MANUALS')			     *           /' PLEASE READ THE MANUALS')
+          STOP							          STOP
+        ENDIF							        ENDIF
+          WRITE(MONIOU,507) FIXHEI				          WRITE(MONIOU,507) FIXHEI
+ 507      FORMAT(' HEIGHT OF FIRST INTERACTION IS FIXED TO ',	 507      FORMAT(' HEIGHT OF FIRST INTERACTION IS FIXED TO ',
+     *         ' CM')						     *         ' CM')
+        IF ( N1STTR .GE. 1  .AND.  N1STTR .LE. 3 ) THEN		        IF ( N1STTR .GE. 1  .AND.  N1STTR .LE. 3 ) THEN
+          IF ( PRMPAR(1) .LE. 3.D0 ) THEN			          IF ( PRMPAR(1) .LE. 3.D0 ) THEN
+            WRITE(MONIOU,516) INT(PRMPAR(1))			            WRITE(MONIOU,516) INT(PRMPAR(1))
+ 516        FORMAT(' TARGET OF FIRST INTERACTION CANNOT BE FI	 516        FORMAT(' TARGET OF FIRST INTERACTION CANNOT BE FI
+     *           'PRIMARY TYPE ',I5/' PLEASE READ THE MANUALS	     *           'PRIMARY TYPE ',I5/' PLEASE READ THE MANUALS
+            STOP						            STOP
+          ELSEIF ( N1STTR .EQ. 1 ) THEN				          ELSEIF ( N1STTR .EQ. 1 ) THEN
+            WRITE(MONIOU,*)'TARGET OF FIRST INTERACTION IS NI	            WRITE(MONIOU,*)'TARGET OF FIRST INTERACTION IS NI
+          ELSEIF ( N1STTR .EQ. 2 ) THEN				          ELSEIF ( N1STTR .EQ. 2 ) THEN
+            WRITE(MONIOU,*)'TARGET OF FIRST INTERACTION IS OX	            WRITE(MONIOU,*)'TARGET OF FIRST INTERACTION IS OX
+          ELSEIF ( N1STTR .EQ. 3 ) THEN				          ELSEIF ( N1STTR .EQ. 3 ) THEN
+            WRITE(MONIOU,*)'TARGET OF FIRST INTERACTION IS AR	            WRITE(MONIOU,*)'TARGET OF FIRST INTERACTION IS AR
+          ENDIF							          ENDIF
+        ELSE							        ELSE
+          WRITE(MONIOU,*)					          WRITE(MONIOU,*)
+     *       'TARGET OF FIRST INTERACTION IS CHOSEN AT RANDOM	     *       'TARGET OF FIRST INTERACTION IS CHOSEN AT RANDOM
+        ENDIF							        ENDIF
+      ELSE							      ELSE
+        FIXHEI = 0.D0						        FIXHEI = 0.D0
+        WRITE(MONIOU,*) 'HEIGHT OF FIRST INTERACTION IS CHOSE	        WRITE(MONIOU,*) 'HEIGHT OF FIRST INTERACTION IS CHOSE
+      ENDIF							      ENDIF
+ 								 
+C  STARTING ALTITUDE WITHIN ATMOSPHERE?				C  STARTING ALTITUDE WITHIN ATMOSPHERE?
+      IF ( THICK0 .LT. 0.D0 ) THEN				      IF ( THICK0 .LT. 0.D0 ) THEN
+        WRITE(MONIOU,130)THICK0					        WRITE(MONIOU,130)THICK0
+ 130    FORMAT(' UNALLOWED STARTING ALTITUDE WITH NEGATIVE MA	 130    FORMAT(' UNALLOWED STARTING ALTITUDE WITH NEGATIVE MA
+     *          ,E12.3/' PLEASE READ THE MANUALS')		     *          ,E12.3/' PLEASE READ THE MANUALS')
+        STOP							        STOP
+      ENDIF							      ENDIF
+      IF ( THICK0 .GE. THCKOB(NOBSLV) ) THEN			      IF ( THICK0 .GE. THCKOB(NOBSLV) ) THEN
+        WRITE(MONIOU,131) THICK0				        WRITE(MONIOU,131) THICK0
+ 131    FORMAT(' UNALLOWED STARTING ALTITUDE AT ',F12.3,' G/C	 131    FORMAT(' UNALLOWED STARTING ALTITUDE AT ',F12.3,' G/C
+     *         '  WHICH IS BELOW LOWEST OBSERVATION LEVEL'/	     *         '  WHICH IS BELOW LOWEST OBSERVATION LEVEL'/
+     *        ' PLEASE READ THE MANUALS')			     *        ' PLEASE READ THE MANUALS')
+        STOP							        STOP
+      ENDIF							      ENDIF
+      H0 = HEIGH(THICK0)					      H0 = HEIGH(THICK0)
+      IF ( THICK0 .EQ. 0.D0 ) THEN				      IF ( THICK0 .EQ. 0.D0 ) THEN
+        WRITE(MONIOU,518) H0, THICK0				        WRITE(MONIOU,518) H0, THICK0
+        WRITE(MONIOU,*)'                 WHICH IS AT TOP OF A	        WRITE(MONIOU,*)'                 WHICH IS AT TOP OF A
+      ELSE							      ELSE
+        WRITE(MONIOU,518) H0, THICK0				        WRITE(MONIOU,518) H0, THICK0
+      ENDIF							      ENDIF
+ 518  FORMAT(' STARTING ALTITUDE AT ',1P,F13.2,' CM (=',	 518  FORMAT(' STARTING ALTITUDE AT ',1P,F13.2,' CM (=',
+     *                                             E7.1,' G/C	     *                                             E7.1,' G/C
+      WRITE(MONIOU,203) (OBSLEV(I),THCKOB(I),I=1,NOBSLV)	      WRITE(MONIOU,203) (OBSLEV(I),THCKOB(I),I=1,NOBSLV)
+  203 FORMAT(/' OBSERVATION LEVELS IN  CM    AND IN    G/CM**	  203 FORMAT(/' OBSERVATION LEVELS IN  CM    AND IN    G/CM**
+     *  1P /(5X, 2E20.8 /))					     *  1P /(5X, 2E20.8 /))
+ 								 
+C  LONGITUDINAL SHOWER DEVELOPMENT				C  LONGITUDINAL SHOWER DEVELOPMENT
+      IF ( LLONGI ) THEN					      IF ( LLONGI ) THEN
+        THSTEP = NINT(THSTEP)					        THSTEP = NINT(THSTEP)
+        THSTEP = MAX(THSTEP,1.D0)				        THSTEP = MAX(THSTEP,1.D0)
+        THSTEP = MIN(THSTEP,1040.D0)				        THSTEP = MIN(THSTEP,1040.D0)
+        THSTPI = 1.D0/THSTEP					        THSTPI = 1.D0/THSTEP
+        NSTEP  = INT(THCKOB(NOBSLV)*THSTPI)			        NSTEP  = INT(THCKOB(NOBSLV)*THSTPI)
+        IF ( NSTEP .GE. 1040 ) THEN				        IF ( NSTEP .GE. 1040 ) THEN
+          NSTEP  = 1040						          NSTEP  = 1040
+          THSTEP = THCKOB(NOBSLV)/NSTEP				          THSTEP = THCKOB(NOBSLV)/NSTEP
+          WRITE(MONIOU,*)'LONGITUDINAL SHOWER SAMPLING MODIFI	          WRITE(MONIOU,*)'LONGITUDINAL SHOWER SAMPLING MODIFI
+        ENDIF							        ENDIF
+        WRITE(MONIOU,925) NSTEP+1,THSTEP			        WRITE(MONIOU,925) NSTEP+1,THSTEP
+ 925    FORMAT(/' LONGITUDINAL SHOWER DEVELOPMENT:'/		 925    FORMAT(/' LONGITUDINAL SHOWER DEVELOPMENT:'/
+     *          '      SHOWER IS SAMPLED IN ',I4,		     *          '      SHOWER IS SAMPLED IN ',I4,
+     *          ' STEPS OF ',F6.1,' G/CM**2')			     *          ' STEPS OF ',F6.1,' G/CM**2')
+C  GET HEIGHT VALUES IN CM FOR USE IN EGS			C  GET HEIGHT VALUES IN CM FOR USE IN EGS
+        DO 478  J = 0,NSTEP					        DO 478  J = 0,NSTEP
+          HLONG(J) = HEIGH(J*THSTEP)				          HLONG(J) = HEIGH(J*THSTEP)
+ 478    CONTINUE						 478    CONTINUE
+        IF ( FLGFIT ) THEN					        IF ( FLGFIT ) THEN
+          WRITE(MONIOU,*)					          WRITE(MONIOU,*)
+     *      '     FIT TO CHARGED PARTICLE LONG. DISTRIBUTION 	     *      '     FIT TO CHARGED PARTICLE LONG. DISTRIBUTION 
+        ELSE							        ELSE
+          WRITE(MONIOU,*)					          WRITE(MONIOU,*)
+     *      '     FIT TO CHARGED PARTICLE LONG. DISTRIBUTION 	     *      '     FIT TO CHARGED PARTICLE LONG. DISTRIBUTION 
+        ENDIF							        ENDIF
+        WRITE(MONIOU,*)						        WRITE(MONIOU,*)
+      ENDIF							      ENDIF
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  CHECK INPUT OF ENERGY CUTS					C  CHECK INPUT OF ENERGY CUTS
+      IF     ( GHEISH  .AND.  ELCUT(1) .LT. 0.05D0 ) THEN	      IF     ( GHEISH  .AND.  ELCUT(1) .LT. 0.05D0 ) THEN
+        WRITE(MONIOU,*)'ELCUT(1) SELECTED INCORRECT TO ',ELCU	        WRITE(MONIOU,*)'ELCUT(1) SELECTED INCORRECT TO ',ELCU
+        WRITE(MONIOU,*)'PLEASE READ THE MANUALS '		        WRITE(MONIOU,*)'PLEASE READ THE MANUALS '
+        STOP							        STOP
+      ELSEIF ( .NOT.GHEISH  .AND.  ELCUT(1) .LT. 0.3D0 ) THEN	      ELSEIF ( .NOT.GHEISH  .AND.  ELCUT(1) .LT. 0.3D0 ) THEN
+        WRITE(MONIOU,*)'ELCUT(1) SELECTED INCORRECT TO ',ELCU	        WRITE(MONIOU,*)'ELCUT(1) SELECTED INCORRECT TO ',ELCU
+        WRITE(MONIOU,*)'PLEASE READ THE MANUALS '		        WRITE(MONIOU,*)'PLEASE READ THE MANUALS '
+        STOP							        STOP
+      ENDIF							      ENDIF
+      IF ( ELCUT(2) .LT. 0.05D0 ) THEN				      IF ( ELCUT(2) .LT. 0.05D0 ) THEN
+        WRITE(MONIOU,*)'ELCUT(2) SELECTED INCORRECT TO ',ELCU	        WRITE(MONIOU,*)'ELCUT(2) SELECTED INCORRECT TO ',ELCU
+        WRITE(MONIOU,*)'PLEASE READ THE MANUALS '		        WRITE(MONIOU,*)'PLEASE READ THE MANUALS '
+        STOP							        STOP
+      ENDIF							      ENDIF
+      IF ( ELCUT(3) .LT. 0.003D0 ) THEN				      IF ( ELCUT(3) .LT. 0.003D0 ) THEN
+        WRITE(MONIOU,*)'ELCUT(3) SELECTED INCORRECT TO ',ELCU	        WRITE(MONIOU,*)'ELCUT(3) SELECTED INCORRECT TO ',ELCU
+        WRITE(MONIOU,*)'PLEASE READ THE MANUALS '		        WRITE(MONIOU,*)'PLEASE READ THE MANUALS '
+        STOP							        STOP
+      ENDIF							      ENDIF
+      IF ( ELCUT(4) .LT. 0.003D0 ) THEN				      IF ( ELCUT(4) .LT. 0.003D0 ) THEN
+        WRITE(MONIOU,*)'ELCUT(4) SELECTED INCORRECT TO ',ELCU	        WRITE(MONIOU,*)'ELCUT(4) SELECTED INCORRECT TO ',ELCU
+        WRITE(MONIOU,*)'PLEASE READ THE MANUALS '		        WRITE(MONIOU,*)'PLEASE READ THE MANUALS '
+        STOP							        STOP
+      ENDIF							      ENDIF
+      WRITE(MONIOU,703) ECTMAP,ELCUT				      WRITE(MONIOU,703) ECTMAP,ELCUT
+  703 FORMAT (' PARTICLES WITH LORENTZ FACTOR LARGER THAN',1P	  703 FORMAT (' PARTICLES WITH LORENTZ FACTOR LARGER THAN',1P
+     *        ' ARE PRINTED OUT'/' SHOWER PARTICLES ENERGY CU	     *        ' ARE PRINTED OUT'/' SHOWER PARTICLES ENERGY CU
+     *        '      FOR HADRONS   : ',E15.4,' GEV'/		     *        '      FOR HADRONS   : ',E15.4,' GEV'/
+     *        '      FOR MUONS     : ',E15.4,' GEV'/		     *        '      FOR MUONS     : ',E15.4,' GEV'/
+     *        '      FOR ELECTRONS : ',E15.4,' GEV'/		     *        '      FOR ELECTRONS : ',E15.4,' GEV'/
+     *        '      FOR PHOTONS   : ',E15.4,' GEV'//)		     *        '      FOR PHOTONS   : ',E15.4,' GEV'//)
+ 								 
+      DO 774  I = 1,4						      DO 774  I = 1,4
+        RUNH(20+I) = ELCUT(I)					        RUNH(20+I) = ELCUT(I)
+        EVTH(60+I) = ELCUT(I)					        EVTH(60+I) = ELCUT(I)
+  774 CONTINUE							  774 CONTINUE
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  PARAMETERS OF EARTH MAGNETIC FIELD OF MIDDLE EUROPE		C  PARAMETERS OF EARTH MAGNETIC FIELD OF MIDDLE EUROPE
+C  +X DIRECTION IS NORTH, +Y DIRECTION IS EAST, +Z DIRECTION 	C  +X DIRECTION IS NORTH, +Y DIRECTION IS EAST, +Z DIRECTION 
+      BVAL   = SQRT( BX**2 + BZ**2 )				      BVAL   = SQRT( BX**2 + BZ**2 )
+C  BNORM HAS DIMENSIONS OF MEV/CM				C  BNORM HAS DIMENSIONS OF MEV/CM
+      BNORM  = BVAL * C(25) * 1.D-16				      BNORM  = BVAL * C(25) * 1.D-16
+C  BNORMC HAS DIMENSIONS OF GEV/CM				C  BNORMC HAS DIMENSIONS OF GEV/CM
+      BNORMC = BNORM * 1.D-3					      BNORMC = BNORM * 1.D-3
+      SINB   = BZ / BVAL					      SINB   = BZ / BVAL
+      COSB   = BX / BVAL					      COSB   = BX / BVAL
+      WRITE(MONIOU,*)'EARTH MAGNETIC FIELD STRENGTH IS ',SNGL	      WRITE(MONIOU,*)'EARTH MAGNETIC FIELD STRENGTH IS ',SNGL
+     *                ' MICROTESLA'				     *                ' MICROTESLA'
+      WRITE(MONIOU,*)'     WITH INCLINATION ANGLE      ',	      WRITE(MONIOU,*)'     WITH INCLINATION ANGLE      ',
+     *               SNGL(ASIN(SINB)*180./PI),' DEGREES'	     *               SNGL(ASIN(SINB)*180./PI),' DEGREES'
+      IF ( BVAL .GE. 10000.D0 ) THEN				      IF ( BVAL .GE. 10000.D0 ) THEN
+        WRITE(MONIOU,*)'YOU WANT TO MAGNETIZE THE GALAXY ?'	        WRITE(MONIOU,*)'YOU WANT TO MAGNETIZE THE GALAXY ?'
+        WRITE(MONIOU,*)'PLEASE READ THE MANUALS !'		        WRITE(MONIOU,*)'PLEASE READ THE MANUALS !'
+        STOP							        STOP
+      ENDIF							      ENDIF
+C  LIMITING FACTOR FOR STEP SIZE OF ELECTRON IN MAGNETIC FIEL	C  LIMITING FACTOR FOR STEP SIZE OF ELECTRON IN MAGNETIC FIEL
+      BLIMIT = 0.2 / BNORM					      BLIMIT = 0.2 / BNORM
+      EVTH(71) = BX						      EVTH(71) = BX
+      EVTH(72) = BZ						      EVTH(72) = BZ
+C  ANGLE BETWEEN ARRAY X-DIRECTION AND MAGNETIC NORD		C  ANGLE BETWEEN ARRAY X-DIRECTION AND MAGNETIC NORD
+C  POSITIV, IF X-DIRECTION OF ARRAY POINTS TO EASTERN DIRECTI	C  POSITIV, IF X-DIRECTION OF ARRAY POINTS TO EASTERN DIRECTI
+      ARRANR = ARRANG * PI / 180.D0				      ARRANR = ARRANG * PI / 180.D0
+      COSANG = COS(ARRANR)					      COSANG = COS(ARRANR)
+      SINANG = SIN(ARRANR)					      SINANG = SIN(ARRANR)
+      EVTH(93) = ARRANR						      EVTH(93) = ARRANR
+      IF ( ARRANG .NE. 0.D0 ) THEN				      IF ( ARRANG .NE. 0.D0 ) THEN
+        WRITE(MONIOU,*)						        WRITE(MONIOU,*)
+        WRITE(MONIOU,*)'DETECTOR COORDINATE SYSTEM IS ROTATED	        WRITE(MONIOU,*)'DETECTOR COORDINATE SYSTEM IS ROTATED
+     *                 'FROM NORTH BY ',SNGL(ARRANG),' DEGREE	     *                 'FROM NORTH BY ',SNGL(ARRANG),' DEGREE
+      ENDIF							      ENDIF
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  DEFINE CERENKOV ARRAY					C  DEFINE CERENKOV ARRAY
+      NCERX = MAX( NCERX, 1 )					      NCERX = MAX( NCERX, 1 )
+      NCERY = MAX( NCERY, 1 )					      NCERY = MAX( NCERY, 1 )
+      ACERX = ABS(ACERX)					      ACERX = ABS(ACERX)
+      ACERY = ABS(ACERY)					      ACERY = ABS(ACERY)
+      DCERX = MAX( ABS(DCERX), 0.001 )				      DCERX = MAX( ABS(DCERX), 0.001 )
+      DCERY = MAX( ABS(DCERY), 0.001 )				      DCERY = MAX( ABS(DCERY), 0.001 )
+      XCMAX = (ACERX + (NCERX-1) * DCERX) * 0.5			      XCMAX = (ACERX + (NCERX-1) * DCERX) * 0.5
+      YCMAX = (ACERY + (NCERY-1) * DCERY) * 0.5			      YCMAX = (ACERY + (NCERY-1) * DCERY) * 0.5
+      DCERXI = 1./DCERX						      DCERXI = 1./DCERX
+      EPSX = ACERX * 0.5 * DCERXI				      EPSX = ACERX * 0.5 * DCERXI
+      DCERYI = 1./DCERY						      DCERYI = 1./DCERY
+      EPSY = ACERY * 0.5 * DCERYI				      EPSY = ACERY * 0.5 * DCERYI
+      IF ( MOD(NCERX,2) .EQ. 0 ) THEN				      IF ( MOD(NCERX,2) .EQ. 0 ) THEN
+        FCERX = -0.5						        FCERX = -0.5
+      ELSE							      ELSE
+        FCERX = 0.0						        FCERX = 0.0
+      ENDIF							      ENDIF
+      IF ( MOD(NCERY,2) .EQ. 0 ) THEN				      IF ( MOD(NCERY,2) .EQ. 0 ) THEN
+        FCERY = -0.5						        FCERY = -0.5
+      ELSE							      ELSE
+        FCERY = 0.0						        FCERY = 0.0
+      ENDIF							      ENDIF
+ 								 
+      WRITE(MONIOU,472)						      WRITE(MONIOU,472)
+     *          ACERX*.01,ACERY*.01, DCERX*.01,DCERY*.01, NCE	     *          ACERX*.01,ACERY*.01, DCERX*.01,DCERY*.01, NCE
+ 472  FORMAT(/' CERENKOV ARRAY:'/				 472  FORMAT(/' CERENKOV ARRAY:'/
+     *  5X,' CERENKOV STATIONS ARE ',F6.2,'  X  ',F6.2,' M**2	     *  5X,' CERENKOV STATIONS ARE ',F6.2,'  X  ',F6.2,' M**2
+     *  5X,' THE GRID SPACING IS   ',F6.2,' AND ',F6.2,' M',/	     *  5X,' THE GRID SPACING IS   ',F6.2,' AND ',F6.2,' M',/
+     *  5X,' THERE ARE ',I3,' X ',I3,' STATIONS IN X/Y DIRECT	     *  5X,' THERE ARE ',I3,' X ',I3,' STATIONS IN X/Y DIRECT
+     *  5X,' THE CERENKOV ARRAY IS CENTERED AROUND (0., 0.)'/	     *  5X,' THE CERENKOV ARRAY IS CENTERED AROUND (0., 0.)'/
+C  CALCULATE CERENKOV YIELD FACTOR FROM WAVELENGTH BAND		C  CALCULATE CERENKOV YIELD FACTOR FROM WAVELENGTH BAND
+      IF ( WAVLGL .LT. 100.D0  .OR.  WAVLGU .GT. 700.D0		      IF ( WAVLGL .LT. 100.D0  .OR.  WAVLGU .GT. 700.D0
+     *                         .OR.  WAVLGL .GE. WAVLGU ) THE	     *                         .OR.  WAVLGL .GE. WAVLGU ) THE
+        WRITE(MONIOU,*)'CERENKOV WAVELENGTH BAND FROM ',SNGL(	        WRITE(MONIOU,*)'CERENKOV WAVELENGTH BAND FROM ',SNGL(
+     *              ' TO ',SNGL(WAVLGU),' NANOMETER'		     *              ' TO ',SNGL(WAVLGU),' NANOMETER'
+        WRITE(MONIOU,*)' IS OUT OF VALIDITY RANGE'		        WRITE(MONIOU,*)' IS OUT OF VALIDITY RANGE'
+        WRITE(MONIOU,*)'PLEASE READ THE MANUALS'		        WRITE(MONIOU,*)'PLEASE READ THE MANUALS'
+        STOP							        STOP
+      ENDIF							      ENDIF
+      WRITE(MONIOU,*)'CERENKOV WAVELENGTH BAND FROM ',SNGL(WA	      WRITE(MONIOU,*)'CERENKOV WAVELENGTH BAND FROM ',SNGL(WA
+     *              ' TO ',SNGL(WAVLGU),' NANOMETER'		     *              ' TO ',SNGL(WAVLGU),' NANOMETER'
+C  WAVELENGTH IS CONVERTED FROM NM TO CM			C  WAVELENGTH IS CONVERTED FROM NM TO CM
+      CYIELD = (1.D0/WAVLGL - 1.D0/WAVLGU) * 2.D7 * PI / C(50	      CYIELD = (1.D0/WAVLGL - 1.D0/WAVLGU) * 2.D7 * PI / C(50
+C  CALCULATE FACTOR FOR ETA DENSITY NORML.(ETA AT SEA LEVEL =	C  CALCULATE FACTOR FOR ETA DENSITY NORML.(ETA AT SEA LEVEL =
+      ETADSN = 0.283D-3 * CATM(1) / BATM(1)			      ETADSN = 0.283D-3 * CATM(1) / BATM(1)
+ 								 
+      IF ( CERSIZ .GT. 0. ) THEN				      IF ( CERSIZ .GT. 0. ) THEN
+        WRITE(MONIOU,*)'CERENKOV BUNCH SIZE IS SET TO=',CERSI	        WRITE(MONIOU,*)'CERENKOV BUNCH SIZE IS SET TO=',CERSI
+      ELSE							      ELSE
+        WRITE(MONIOU,*)'CERENKOV BUNCH SIZE IS CALCULATED FOR	        WRITE(MONIOU,*)'CERENKOV BUNCH SIZE IS CALCULATED FOR
+     *                 'SHOWER'					     *                 'SHOWER'
+      ENDIF							      ENDIF
+ 								 
+      IF ( LCERFI ) THEN					      IF ( LCERFI ) THEN
+        WRITE(MONIOU,*)'CERENKOV PHOTONS ARE WRITTEN TO SEPAR	        WRITE(MONIOU,*)'CERENKOV PHOTONS ARE WRITTEN TO SEPAR
+      ELSE							      ELSE
+        WRITE(MONIOU,*)'CERENKOV PHOTONS ARE WRITTEN TO PARTI	        WRITE(MONIOU,*)'CERENKOV PHOTONS ARE WRITTEN TO PARTI
+     *                 'OUTPUT FILE'				     *                 'OUTPUT FILE'
+      ENDIF							      ENDIF
+ 								 
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+c   Next block of code has been modified, and is passed to MA	c   Next block of code has been modified, and is passed to MA
+c------------------------------------------------------------	c------------------------------------------------------------
+cC  SCATTERING OF CENTER OF CHERENKOV ARRAY RELATIVE TO SHOWE	cC  SCATTERING OF CENTER OF CHERENKOV ARRAY RELATIVE TO SHOWE
+c      ICERML = MIN(MAX(ICERML,1),20)				c      ICERML = MIN(MAX(ICERML,1),20)
+c      XSCATT = ABS(XSCATT)					c      XSCATT = ABS(XSCATT)
+c      YSCATT = ABS(YSCATT)					c      YSCATT = ABS(YSCATT)
+c      IF ( ICERML .GE. 1 ) THEN				c      IF ( ICERML .GE. 1 ) THEN
+c        WRITE(MONIOU,5225)ICERML,XSCATT,YSCATT			c        WRITE(MONIOU,5225)ICERML,XSCATT,YSCATT
+c 5225   FORMAT(' DEFINE MULTIPLE CERENKOV ARRAYS TO USE EACH	c 5225   FORMAT(' DEFINE MULTIPLE CERENKOV ARRAYS TO USE EACH
+c     *   ' SHOWER SEVERAL TIMES'/ ' USE EACH EVENT ',I2,' TI	c     *   ' SHOWER SEVERAL TIMES'/ ' USE EACH EVENT ',I2,' TI
+c     *   ' THE EVENTS ARE SCATTERED QUASI RANDOMLY IN THE RA	c     *   ' THE EVENTS ARE SCATTERED QUASI RANDOMLY IN THE RA
+c     *   '   X =  +- ',F10.0,'    Y = +- ',F10.0)		c     *   '   X =  +- ',F10.0,'    Y = +- ',F10.0)
+c        DO 4438 I=1,ICERML					c        DO 4438 I=1,ICERML
+c          CALL SELCOR(CERXOS(I),CERYOS(I))			c          CALL SELCOR(CERXOS(I),CERYOS(I))
+c          WRITE(MONIOU,4437) I,CERXOS(I),CERYOS(I)		c          WRITE(MONIOU,4437) I,CERXOS(I),CERYOS(I)
+c 4437     FORMAT('    CORE OF EVENT ',I2,'  AT  ',2F12.2)	c 4437     FORMAT('    CORE OF EVENT ',I2,'  AT  ',2F12.2)
+c 4438   CONTINUE						c 4438   CONTINUE
+c        XCMAX = XCMAX + XSCATT					c        XCMAX = XCMAX + XSCATT
+c        YCMAX = YCMAX + YSCATT					c        YCMAX = YCMAX + YSCATT
+c      ENDIF							c      ENDIF
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+C  STORE CERENKOV PARAMETERS IN EVENTHEADER			C  STORE CERENKOV PARAMETERS IN EVENTHEADER
+      EVTH(86) = NCERX						      EVTH(86) = NCERX
+      EVTH(87) = NCERY						      EVTH(87) = NCERY
+      EVTH(88) = DCERX						      EVTH(88) = DCERX
+      EVTH(89) = DCERY						      EVTH(89) = DCERY
+      EVTH(90) = ACERX						      EVTH(90) = ACERX
+      EVTH(91) = ACERY						      EVTH(91) = ACERY
+      IF ( LCERFI ) THEN					      IF ( LCERFI ) THEN
+        EVTH(92) = 1.						        EVTH(92) = 1.
+      ELSE							      ELSE
+        EVTH(92) = 0.						        EVTH(92) = 0.
+      ENDIF							      ENDIF
+      EVTH(96) = WAVLGL						      EVTH(96) = WAVLGL
+      EVTH(97) = WAVLGU						      EVTH(97) = WAVLGU
+ 								 
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+c   Next block of code has been passed to MAIN			c   Next block of code has been passed to MAIN
+c------------------------------------------------------------	c------------------------------------------------------------
+c      EVTH(98) = FLOAT(ICERML)					c      EVTH(98) = FLOAT(ICERML)
+c      DO  480 I=1,20						c      DO  480 I=1,20
+c        EVTH( 98+I) = CERXOS(I)				c        EVTH( 98+I) = CERXOS(I)
+c        EVTH(118+I) = CERYOS(I)				c        EVTH(118+I) = CERYOS(I)
+c 480  CONTINUE							c 480  CONTINUE
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+C------------------------------------------------------------	C------------------------------------------------------------
+C  FLAG FOR ADDITIONAL MUON INFORMATION				C  FLAG FOR ADDITIONAL MUON INFORMATION
+      IF ( FMUADD ) THEN					      IF ( FMUADD ) THEN
+        WRITE(MONIOU,*)						        WRITE(MONIOU,*)
+        WRITE(MONIOU,*)'ADDITIONAL INFORMATION ON MUON ORIGIN	        WRITE(MONIOU,*)'ADDITIONAL INFORMATION ON MUON ORIGIN
+     *                 ' WRITTEN TO PARTICLE TAPE'		     *                 ' WRITTEN TO PARTICLE TAPE'
+        EVTH(94) = 1.						        EVTH(94) = 1.
+      ELSE							      ELSE
+        EVTH(94) = 0.						        EVTH(94) = 0.
+      ENDIF							      ENDIF
+ 								 
+C  PRINTOUT OF INFORMATIONS FOR DEBUGGING			C  PRINTOUT OF INFORMATIONS FOR DEBUGGING
+      IF ( DEBUG ) WRITE(MONIOU,484) MDEBUG			      IF ( DEBUG ) WRITE(MONIOU,484) MDEBUG
+  484 FORMAT(/' ATTENTION ! DEBUGGING IS ACTIVE'/		  484 FORMAT(/' ATTENTION ! DEBUGGING IS ACTIVE'/
+     *          ' ====> DEBUG INFORMATION WRITTEN TO UNIT ',I	     *          ' ====> DEBUG INFORMATION WRITTEN TO UNIT ',I
+ 								 
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+c   Next block of code is obsolete.				c   Next block of code is obsolete.
+c   Now it's used "jcio" routines (C)				c   Now it's used "jcio" routines (C)
+cC-----------------------------------------------------------	cC-----------------------------------------------------------
+cC  OPEN OUTPUT DATA SET FOR RUN				cC  OPEN OUTPUT DATA SET FOR RUN
+c      IBL = INDEX(DSN,' ')					c      IBL = INDEX(DSN,' ')
+c      DSN(IBL:73) = 'DAT000000'				c      DSN(IBL:73) = 'DAT000000'
+c      WRITE(DSN(IBL+3:IBL+8),'(I6)') NRRUN			c      WRITE(DSN(IBL+3:IBL+8),'(I6)') NRRUN
+c      DO 274  L = IBL+3,IBL+8					c      DO 274  L = IBL+3,IBL+8
+c        IF ( DSN(L:L) .EQ. ' ' ) DSN(L:L) = '0'		c        IF ( DSN(L:L) .EQ. ' ' ) DSN(L:L) = '0'
+c 274  CONTINUE							c 274  CONTINUE
+cC  OPEN DATASET FOR PARTICLE OUTPUT				cC  OPEN DATASET FOR PARTICLE OUTPUT
+c      OPEN(UNIT=PATAPE,FILE=DSN,STATUS='NEW',			c      OPEN(UNIT=PATAPE,FILE=DSN,STATUS='NEW',
+c     *       FORM='UNFORMATTED',ACCESS='SEQUENTIAL')		c     *       FORM='UNFORMATTED',ACCESS='SEQUENTIAL')
+c      WRITE(MONIOU,579) DSN					c      WRITE(MONIOU,579) DSN
+c 579  FORMAT(/' PARTICLE OUTPUT TO DIRECTORY : ',A79)		c 579  FORMAT(/' PARTICLE OUTPUT TO DIRECTORY : ',A79)
+cC  WRITE RUNHEADER TO OUTPUT BUFFER				cC  WRITE RUNHEADER TO OUTPUT BUFFER
+c      CALL TOBUF( RUNH,0 )					c      CALL TOBUF( RUNH,0 )
+c								c
+cC  OPEN OUTPUT DATA SET FOR CERENKOV PHOTONS			cC  OPEN OUTPUT DATA SET FOR CERENKOV PHOTONS
+c      IF ( LCERFI ) THEN					c      IF ( LCERFI ) THEN
+c        DSN(IBL:73) = 'CER000000'				c        DSN(IBL:73) = 'CER000000'
+c        WRITE(DSN(IBL+3:IBL+8),'(I6)') NRRUN			c        WRITE(DSN(IBL+3:IBL+8),'(I6)') NRRUN
+c        DO 249  L = IBL+3,IBL+8				c        DO 249  L = IBL+3,IBL+8
+c          IF (DSN(L:L) .EQ. ' ' ) DSN(L:L) = '0'		c          IF (DSN(L:L) .EQ. ' ' ) DSN(L:L) = '0'
+c 249    CONTINUE						c 249    CONTINUE
+c        OPEN(UNIT=CETAPE,FILE=DSN,STATUS='NEW',		c        OPEN(UNIT=CETAPE,FILE=DSN,STATUS='NEW',
+c     *       FORM='UNFORMATTED',ACCESS='SEQUENTIAL')		c     *       FORM='UNFORMATTED',ACCESS='SEQUENTIAL')
+c        WRITE(MONIOU,580) DSN					c        WRITE(MONIOU,580) DSN
+c 580    FORMAT(' CERENKOV OUTPUT TO DIRECTORY : ',A79)		c 580    FORMAT(' CERENKOV OUTPUT TO DIRECTORY : ',A79)
+c        CALL TOBUFC( RUNH,0 )					c        CALL TOBUFC( RUNH,0 )
+c      ELSE							c      ELSE
+c        WRITE(MONIOU,580) DSN					c        WRITE(MONIOU,580) DSN
+c      ENDIF							c      ENDIF
+cC  RESET DSN							cC  RESET DSN
+c      DSN(IBL:73) = '         '				c      DSN(IBL:73) = '         '
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ 								 
+C  OPEN ON EXTERNAL STACK					C  OPEN ON EXTERNAL STACK
+C  BLOCKS OF 32640 BYTES = 4080 REAL*8 = 340 PARTICLES		C  BLOCKS OF 32640 BYTES = 4080 REAL*8 = 340 PARTICLES
+      OPEN(UNIT=EXST,STATUS='SCRATCH',				      OPEN(UNIT=EXST,STATUS='SCRATCH',
+     *     FORM='UNFORMATTED',ACCESS='DIRECT',RECL=MAXSTK)	     *     FORM='UNFORMATTED',ACCESS='DIRECT',RECL=MAXSTK)
+ 								 
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  WRITE DATA SET FOR INFORMATION BANK				C  WRITE DATA SET FOR INFORMATION BANK
+      IF (FDBASE ) THEN						      IF (FDBASE ) THEN
+C  OPEN OUTPUT DATA SET FOR RUN					C  OPEN OUTPUT DATA SET FOR RUN
+        IBL = INDEX(DSN,' ')					        IBL = INDEX(DSN,' ')
+        DSN(IBL:79) = 'DAT000000.dbase'				        DSN(IBL:79) = 'DAT000000.dbase'
+        WRITE(DSN(IBL+3:IBL+8),'(I6)') NRRUN			        WRITE(DSN(IBL+3:IBL+8),'(I6)') NRRUN
+        DO 275  L = IBL+3,IBL+8					        DO 275  L = IBL+3,IBL+8
+          IF ( DSN(L:L) .EQ. ' ' ) DSN(L:L) = '0'		          IF ( DSN(L:L) .EQ. ' ' ) DSN(L:L) = '0'
+ 275    CONTINUE						 275    CONTINUE
+        OPEN(UNIT=MDBASE,FILE=DSN,STATUS='NEW')			        OPEN(UNIT=MDBASE,FILE=DSN,STATUS='NEW')
+        WRITE(MONIOU,581) DSN					        WRITE(MONIOU,581) DSN
+ 581    FORMAT(/' DBASE OUTPUT TO DIRECTORY : ',A79)		 581    FORMAT(/' DBASE OUTPUT TO DIRECTORY : ',A79)
+C  RESET DSN							C  RESET DSN
+        DSN(IBL+9:IBL+14) = '      '				        DSN(IBL+9:IBL+14) = '      '
+ 								 
+        LSTDSN(1:3) = 'LST'					        LSTDSN(1:3) = 'LST'
+        LSTDSN(4:9) = DSN(IBL+3:IBL+8)				        LSTDSN(4:9) = DSN(IBL+3:IBL+8)
+        VERVEN=FLOAT(IVERVN)/1000.				        VERVEN=FLOAT(IVERVN)/1000.
+        IF ( LLONGI ) THEN					        IF ( LLONGI ) THEN
+          ILONG = 1						          ILONG = 1
+        ELSE							        ELSE
+          ILONG = 0						          ILONG = 0
+        ENDIF							        ENDIF
+        IF ( EVTH(75) .NE. 0. ) THEN				        IF ( EVTH(75) .NE. 0. ) THEN
+          ISO = 0						          ISO = 0
+        ELSE							        ELSE
+          ISO = 1						          ISO = 1
+        ENDIF							        ENDIF
+C  SET DPMFLAG (0=VENUS, 1=HDPM, 2=SIBYLL, 3=QGSJET, 4=DPMJET	C  SET DPMFLAG (0=VENUS, 1=HDPM, 2=SIBYLL, 3=QGSJET, 4=DPMJET
+        IF     ( EVTH( 76) .NE. 0. ) THEN			        IF     ( EVTH( 76) .NE. 0. ) THEN
+          IDPM = 0						          IDPM = 0
+        ELSEIF ( EVTH(139) .NE. 0. ) THEN			        ELSEIF ( EVTH(139) .NE. 0. ) THEN
+          IDPM = 2						          IDPM = 2
+        ELSEIF ( EVTH(141) .NE. 0. ) THEN			        ELSEIF ( EVTH(141) .NE. 0. ) THEN
+          IDPM = 3						          IDPM = 3
+        ELSEIF ( EVTH(143) .NE. 0. ) THEN			        ELSEIF ( EVTH(143) .NE. 0. ) THEN
+          IDPM = 4						          IDPM = 4
+        ELSE							        ELSE
+          IDPM = 1						          IDPM = 1
+        ENDIF							        ENDIF
+C  INCREMENT DPMFLAG FOR VARIOUS CROSS SECTIONS			C  INCREMENT DPMFLAG FOR VARIOUS CROSS SECTIONS
+C  BY (0=HDPM-SIG, 10=VENUSSIG, 20=SIBYLLSIG, 30=QGSSIG, 4=DP	C  BY (0=HDPM-SIG, 10=VENUSSIG, 20=SIBYLLSIG, 30=QGSSIG, 4=DP
+        IF     ( EVTH(145) .NE. 0 ) THEN			        IF     ( EVTH(145) .NE. 0 ) THEN
+          IDPM = IDPM + 10					          IDPM = IDPM + 10
+        ELSEIF ( EVTH(140) .NE. 0 ) THEN			        ELSEIF ( EVTH(140) .NE. 0 ) THEN
+          IDPM = IDPM + 20					          IDPM = IDPM + 20
+        ELSEIF ( EVTH(142) .NE. 0 ) THEN			        ELSEIF ( EVTH(142) .NE. 0 ) THEN
+          IDPM = IDPM + 30					          IDPM = IDPM + 30
+        ELSEIF ( EVTH(144) .NE. 0 ) THEN			        ELSEIF ( EVTH(144) .NE. 0 ) THEN
+          IDPM = IDPM + 40					          IDPM = IDPM + 40
+        ENDIF							        ENDIF
+        MARK = '1'						        MARK = '1'
+        LTHIN = .FALSE.						        LTHIN = .FALSE.
+        EFRAC = 0.D0						        EFRAC = 0.D0
+ 								 
+        WRITE(MDBASE,666)VERNUM,MARK,MVDATE,VERVEN,		        WRITE(MDBASE,666)VERNUM,MARK,MVDATE,VERVEN,
+     $INT(RUNH(3))+20000000,INT(EVTH(80)),INT(EVTH(79)),INT(E |	     $INT(RUNH(3))+19000000,INT(EVTH(80)),INT(EVTH(79)),INT(E
+     $INT(EVTH(77)),INT(RUNH(2)),INT(PRMPAR(1)),		     $INT(EVTH(77)),INT(RUNH(2)),INT(PRMPAR(1)),
+     $LLIMIT,ULIMIT,PSLOPE,INT(RUNH(20)),			     $LLIMIT,ULIMIT,PSLOPE,INT(RUNH(20)),
+     $INT(RUNH(19)),INT(EVTH(76)),INT(EVTH(75)),ISO,IDPM,	     $INT(RUNH(19)),INT(EVTH(76)),INT(EVTH(75)),ISO,IDPM,
+     $NFLAIN,NFLDIF,NFLPI0,NFLPIF,				     $NFLAIN,NFLDIF,NFLPI0,NFLPIF,
+     $NFLCHE,NFRAGM,ILONG,THSTEP,				     $NFLCHE,NFRAGM,ILONG,THSTEP,
+     $BX,BZ,NOBSLV,						     $BX,BZ,NOBSLV,
+     $OBSLEV(1),OBSLEV(2),OBSLEV(3),				     $OBSLEV(1),OBSLEV(2),OBSLEV(3),
+     $OBSLEV(4),OBSLEV(5),OBSLEV(6),				     $OBSLEV(4),OBSLEV(5),OBSLEV(6),
+     $OBSLEV(7),OBSLEV(8),OBSLEV(9),				     $OBSLEV(7),OBSLEV(8),OBSLEV(9),
+     $OBSLEV(10),ELCUT(1),ELCUT(2),ELCUT(3),			     $OBSLEV(10),ELCUT(1),ELCUT(2),ELCUT(3),
+     $ELCUT(4),EVTH(81),EVTH(82),EVTH(83),			     $ELCUT(4),EVTH(81),EVTH(82),EVTH(83),
+     $EVTH(84),FIXHEI,N1STTR,THICK0,				     $EVTH(84),FIXHEI,N1STTR,THICK0,
+     $STEPFC,ARRANG,INT(EVTH(94)),NSEQ,				     $STEPFC,ARRANG,INT(EVTH(94)),NSEQ,
+     $ISEED(1,1),ISEED(2,1),ISEED(3,1),ISEED(1,2),		     $ISEED(1,1),ISEED(2,1),ISEED(3,1),ISEED(1,2),
+     $ISEED(2,2),ISEED(3,2),ISEED(1,3),				     $ISEED(2,2),ISEED(3,2),ISEED(1,3),
+     $ISEED(2,3),ISEED(3,3),0,DSN,				     $ISEED(2,3),ISEED(3,3),0,DSN,
+     $LSTDSN,' JDD300.01',' JDD300.01',				     $LSTDSN,' JDD300.01',' JDD300.01',
+     $NSHOW,HOST,USER,LTHIN,EFRAC				     $NSHOW,HOST,USER,LTHIN,EFRAC
+ 								 
+ 666    FORMAT('#version#',F6.3,A1,'#versiondate#',I9,'#venus	 666    FORMAT('#version#',F6.3,A1,'#versiondate#',I9,'#venus
+     $F6.3,'#rundate#',I9,/,'#computer#',I2,'#horizont#',I2,'	     $F6.3,'#rundate#',I9,/,'#computer#',I2,'#horizont#',I2,'
+     $,I2,'#cerenkov#',I2,'#runnumber#',I7,/,'#primary#',I5,	     $,I2,'#cerenkov#',I2,'#runnumber#',I7,/,'#primary#',I5,
+     $'#e_range_l#',E15.7,'#e_range_u#',E15.7,/,'#slope#',E15	     $'#e_range_l#',E15.7,'#e_range_u#',E15.7,/,'#slope#',E15
+     $I2,'#egs#',I2,'#venus#',I2,'#gheisha#',I2,'#isobar#',I2	     $I2,'#egs#',I2,'#venus#',I2,'#gheisha#',I2,'#isobar#',I2
+     $I2,/,'#hadflag1#',I2,'#hadflag2#',I2,'#hadflag3#',I2,'#	     $I2,/,'#hadflag1#',I2,'#hadflag2#',I2,'#hadflag3#',I2,'#
+     $I2,'#hadflag5#',I2,'#hadflag6#',I2,/,'#longi#',I2,'#lon	     $I2,'#hadflag5#',I2,'#hadflag6#',I2,/,'#longi#',I2,'#lon
+     $E15.7,'#magnetx#',E15.7,/,'#magnetz#',E15.7,'#nobslev#'	     $E15.7,'#magnetx#',E15.7,/,'#magnetz#',E15.7,'#nobslev#'
+     $'#obslev1#',E15.7,'#obslev2#',E15.7,'#obslev3#',E15.7,/	     $'#obslev1#',E15.7,'#obslev2#',E15.7,'#obslev3#',E15.7,/
+     $'#obslev4#',E15.7,'#obslev5#',E15.7,'#obslev6#',E15.7,/	     $'#obslev4#',E15.7,'#obslev5#',E15.7,'#obslev6#',E15.7,/
+     $'#obslev7#',E15.7,'#obslev8#',E15.7,'#obslev9#',E15.7,/	     $'#obslev7#',E15.7,'#obslev8#',E15.7,'#obslev9#',E15.7,/
+     $'#obslev10#',E15.7,'#hcut#',E15.7,'#mcut#',E15.7,/,'#ec	     $'#obslev10#',E15.7,'#hcut#',E15.7,'#mcut#',E15.7,/,'#ec
+     $'#gcut#',E15.7,'#thetal#',E15.7,/,'#thetau#',E15.7,'#ph	     $'#gcut#',E15.7,'#thetal#',E15.7,/,'#thetau#',E15.7,'#ph
+     $'#phiu#',E15.7,/,'#fixhei#',E15.7,'#n1sttr#',I3,'#fixch	     $'#phiu#',E15.7,/,'#fixhei#',E15.7,'#n1sttr#',I3,'#fixch
+     $/,'#stepfc#',E15.7,'#arrang#',E15.7,'#muaddi#',I2,'#nse	     $/,'#stepfc#',E15.7,'#arrang#',E15.7,'#muaddi#',I2,'#nse
+     $'#seq1seed1#',I9,'#seq1seed2#',I9,'#seq1seed3#',I9,/,'#	     $'#seq1seed1#',I9,'#seq1seed2#',I9,'#seq1seed3#',I9,/,'#
+     $,I9,'#seq2seed2#',I9,'#seq2seed3#',I9,/,'#seq3seed1#',I	     $,I9,'#seq2seed2#',I9,'#seq2seed3#',I9,/,'#seq3seed1#',I
+     $'#seq3seed2#',I9,'#seq3seed3#',I9,/,'#size#',I10,'#dsn_	     $'#seq3seed2#',I9,'#seq3seed3#',I9,/,'#size#',I10,'#dsn_
+     $A59,/,'#dsn_prtout# ',A9,'#tape_name#',A10,'#backup#',A	     $A59,/,'#dsn_prtout# ',A9,'#tape_name#',A10,'#backup#',A
+     $'#howmanyshowers#',I10,'#host#',A20,'#user#',A20,/	     $'#howmanyshowers#',I10,'#host#',A20,'#user#',A20,/
+     $'#thinning#',L4,'#thinninglevel#',E15.7)			     $'#thinning#',L4,'#thinninglevel#',E15.7)
+ 								 
+C  RESET DSN							C  RESET DSN
+        DSN(IBL:IBL+14) = '               '			        DSN(IBL:IBL+14) = '               '
+        CLOSE(UNIT=MDBASE)					        CLOSE(UNIT=MDBASE)
+      ENDIF							      ENDIF
+ 								 
+      WRITE(MONIOU,*)'NUMBER OF SHOWERS TO GENERATE =',NSHOW	      WRITE(MONIOU,*)'NUMBER OF SHOWERS TO GENERATE =',NSHOW
+      WRITE(MONIOU,*)						      WRITE(MONIOU,*)
+      RETURN							      RETURN
+      END							      END

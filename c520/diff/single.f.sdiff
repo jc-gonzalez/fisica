@@ -1,0 +1,165 @@
+      SUBROUTINE SINGLE( E,KIND,AMASS,ASMASS )			      SUBROUTINE SINGLE( E,KIND,AMASS,ASMASS )
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  SINGLE (PARTICLE)						C  SINGLE (PARTICLE)
+C								C
+C  NUCLEON, ANTINUCLEON, PION OR KAON INITIATED			C  NUCLEON, ANTINUCLEON, PION OR KAON INITIATED
+C  HANDLES SINGLE PARTICLE CASE					C  HANDLES SINGLE PARTICLE CASE
+C  THIS SUBROUTINE IS CALLED FROM MANY BOX ROUTINES		C  THIS SUBROUTINE IS CALLED FROM MANY BOX ROUTINES
+C  ARGUMENTS:							C  ARGUMENTS:
+C   E      = AVAILABLE ENERGY IN CM				C   E      = AVAILABLE ENERGY IN CM
+C   KIND   = 1  BACKWARD PARTICLE				C   KIND   = 1  BACKWARD PARTICLE
+C          = 0  FORWARD  PARTICLE				C          = 0  FORWARD  PARTICLE
+C   AMASS  = MASS OF SINGLE PARTICLE				C   AMASS  = MASS OF SINGLE PARTICLE
+C   ASMASS = MASS TO BE LEFT OVER FOR OTHER PARTICLES		C   ASMASS = MASS TO BE LEFT OVER FOR OTHER PARTICLES
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)			      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+*KEEP,CONST.							*KEEP,CONST.
+      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER			      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER
+      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER			      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER
+*KEEP,ELASTY.							*KEEP,ELASTY.
+      COMMON /ELASTY/  ELAST,IELIS,IELHM,IELNU,IELPI		      COMMON /ELASTY/  ELAST,IELIS,IELHM,IELNU,IELPI
+      DOUBLE PRECISION ELAST					      DOUBLE PRECISION ELAST
+      INTEGER          IELIS(20),IELHM(20),IELNU(20),IELPI(20	      INTEGER          IELIS(20),IELHM(20),IELNU(20),IELPI(20
+*KEEP,PAM.							*KEEP,PAM.
+      COMMON /PAM/     PAMA,SIGNUM				      COMMON /PAM/     PAMA,SIGNUM
+      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)			      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)
+*KEEP,PARPAR.							*KEEP,PARPAR.
+      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,		      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,
+     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE	     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE
+      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA	      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA
+     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH	     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH
+      INTEGER          ITYPE,LEVL				      INTEGER          ITYPE,LEVL
+*KEEP,PARPAE.							*KEEP,PARPAE.
+      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,	      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,
+      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)	      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)
+     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )	     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )
+     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )	     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )
+     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )	     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )
+     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )	     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )
+     *                 (CURPAR(12),ECM )			     *                 (CURPAR(12),ECM )
+*KEEP,RANDPA.							*KEEP,RANDPA.
+      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR		      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR
+      DOUBLE PRECISION FAC,U1,U2				      DOUBLE PRECISION FAC,U1,U2
+      REAL             RD(3000)					      REAL             RD(3000)
+      INTEGER          ISEED(103,10),NSEQ			      INTEGER          ISEED(103,10),NSEQ
+      LOGICAL          KNOR					      LOGICAL          KNOR
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEEP,VKIN.							*KEEP,VKIN.
+      COMMON /VKIN/    BETACM					      COMMON /VKIN/    BETACM
+      DOUBLE PRECISION BETACM					      DOUBLE PRECISION BETACM
+*KEND.								*KEND.
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,201)E,KIND,AMASS,ASMASS		      IF ( DEBUG ) WRITE(MDEBUG,201)E,KIND,AMASS,ASMASS
+ 201  FORMAT(' SINGLE: E,KIND,AMASS,ASMASS=',1P,E10.4,I3,2E10	 201  FORMAT(' SINGLE: E,KIND,AMASS,ASMASS=',1P,E10.4,I3,2E10
+ 								 
+      IF ( KIND .NE. 0 ) GOTO 100				      IF ( KIND .NE. 0 ) GOTO 100
+ 								 
+C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -	C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+C  FORWARD PARTICLE						C  FORWARD PARTICLE
+C  NUCLEON, ANTINUCLEON, PION, OR KAON				C  NUCLEON, ANTINUCLEON, PION, OR KAON
+C  PIONS AND / OR KAONS ARE ALWAYS FORWARD			C  PIONS AND / OR KAONS ARE ALWAYS FORWARD
+ 								 
+      GFCM   = ( E**2 + AMASS**2 - ASMASS**2 ) * 0.5D0 / (E*A	      GFCM   = ( E**2 + AMASS**2 - ASMASS**2 ) * 0.5D0 / (E*A
+      GFCM   = MAX( 1.D0, GFCM )				      GFCM   = MAX( 1.D0, GFCM )
+      BEFCM  = SQRT( GFCM**2 - 1.D0 ) / GFCM			      BEFCM  = SQRT( GFCM**2 - 1.D0 ) / GFCM
+      GFLAB  = GCM * GFCM * ( 1.D0 + BETACM * BEFCM )		      GFLAB  = GCM * GFCM * ( 1.D0 + BETACM * BEFCM )
+      PT     = PTRANS(DUMMY)					      PT     = PTRANS(DUMMY)
+      PLLAB2 = MAX( 1.D-6, AMASS**2*(GFLAB**2-1.D0) )		      PLLAB2 = MAX( 1.D-6, AMASS**2*(GFLAB**2-1.D0) )
+      CTHETA = SQRT( PLLAB2 / (PT**2+PLLAB2) )			      CTHETA = SQRT( PLLAB2 / (PT**2+PLLAB2) )
+      IF ( CTHETA .LT. C(27) ) GOTO 3				      IF ( CTHETA .LT. C(27) ) GOTO 3
+      CALL RMMAR( RD,2,1 )					      CALL RMMAR( RD,2,1 )
+      CALL ADDANG( COSTHE,PHI, CTHETA,RD(1)*PI2, SECPAR(3),SE	      CALL ADDANG( COSTHE,PHI, CTHETA,RD(1)*PI2, SECPAR(3),SE
+      IF ( SECPAR(3) .LT. C(29) ) GOTO 3			      IF ( SECPAR(3) .LT. C(29) ) GOTO 3
+ 								 
+C  CHARGE ASSIGNMENT						C  CHARGE ASSIGNMENT
+      IF ( ITYPE .EQ. 10  .OR.  ITYPE .EQ. 11  .OR.		      IF ( ITYPE .EQ. 10  .OR.  ITYPE .EQ. 11  .OR.
+     *     ITYPE .EQ. 12  .OR.  ITYPE .EQ. 16      ) THEN	     *     ITYPE .EQ. 12  .OR.  ITYPE .EQ. 16      ) THEN
+        SECPAR(1) = CURPAR(1)					        SECPAR(1) = CURPAR(1)
+      ELSE							      ELSE
+        IF ( RD(2) .LT. 0.5 ) THEN				        IF ( RD(2) .LT. 0.5 ) THEN
+          IADD = 1						          IADD = 1
+        ELSE							        ELSE
+          IADD = 0						          IADD = 0
+        ENDIF							        ENDIF
+        IF     ( ITYPE .EQ. 13  .OR.  ITYPE .EQ. 14 ) THEN	        IF     ( ITYPE .EQ. 13  .OR.  ITYPE .EQ. 14 ) THEN
+          SECPAR(1) = 13 + IADD					          SECPAR(1) = 13 + IADD
+        ELSEIF ( ITYPE .EQ.  8  .OR.  ITYPE .EQ.  9 ) THEN	        ELSEIF ( ITYPE .EQ.  8  .OR.  ITYPE .EQ.  9 ) THEN
+          SECPAR(1) =  8 + IADD					          SECPAR(1) =  8 + IADD
+        ELSEIF ( ITYPE .EQ. 15  .OR.  ITYPE .EQ. 25 ) THEN	        ELSEIF ( ITYPE .EQ. 15  .OR.  ITYPE .EQ. 25 ) THEN
+          SECPAR(1) = 15 + IADD * 10				          SECPAR(1) = 15 + IADD * 10
+        ENDIF							        ENDIF
+      ENDIF							      ENDIF
+      SECPAR(2) = GFLAB						      SECPAR(2) = GFLAB
+      DO  1  J = 5,8						      DO  1  J = 5,8
+        SECPAR(J) = CURPAR(J)					        SECPAR(J) = CURPAR(J)
+    1 CONTINUE							    1 CONTINUE
+      CALL TSTACK						      CALL TSTACK
+ 								 
+    3 CONTINUE							    3 CONTINUE
+ 								 
+C  STATISTICS ON ELASTICITY					C  STATISTICS ON ELASTICITY
+      IN = 1.D0 + SECPAR(2) / GAMMA * 20.D0			      IN = 1.D0 + SECPAR(2) / GAMMA * 20.D0
+      IN = MIN( IN, 20 )					      IN = MIN( IN, 20 )
+      IF ( ITYPE .EQ. 13  .OR.  ITYPE .EQ. 14  .OR.		      IF ( ITYPE .EQ. 13  .OR.  ITYPE .EQ. 14  .OR.
+     *     ITYPE .EQ. 15  .OR.  ITYPE .EQ. 25      ) THEN	     *     ITYPE .EQ. 15  .OR.  ITYPE .EQ. 25      ) THEN
+        IELNU(IN) = IELNU(IN) + 1				        IELNU(IN) = IELNU(IN) + 1
+      ELSE							      ELSE
+        IELPI(IN) = IELPI(IN)  + 1				        IELPI(IN) = IELPI(IN)  + 1
+      ENDIF							      ENDIF
+      RETURN							      RETURN
+ 								 
+C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -	C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+C  RECOIL PARTICLE, NUCLEON ONLY				C  RECOIL PARTICLE, NUCLEON ONLY
+C  FROM SIMPLE RECOIL SPECTRUM COMPUTED				C  FROM SIMPLE RECOIL SPECTRUM COMPUTED
+  100 CONTINUE							  100 CONTINUE
+      HELP   = MIN( C(10), GAMMA*0.5D0 )			      HELP   = MIN( C(10), GAMMA*0.5D0 )
+      CALL RMMAR( RD,3,1 )					      CALL RMMAR( RD,3,1 )
+      GRLAB  = RD(1)*(HELP-1.D0)+ 1.D0				      GRLAB  = RD(1)*(HELP-1.D0)+ 1.D0
+      PT     = PTRANS(DUMMY)					      PT     = PTRANS(DUMMY)
+      PLLAB2 = MAX( 1.D-6, PAMA(14)**2*(GRLAB**2-1.D0) )	      PLLAB2 = MAX( 1.D-6, PAMA(14)**2*(GRLAB**2-1.D0) )
+      CTHETA = SQRT( PLLAB2 / (PT**2+PLLAB2) )			      CTHETA = SQRT( PLLAB2 / (PT**2+PLLAB2) )
+      IF ( CTHETA .LT. C(27) ) RETURN				      IF ( CTHETA .LT. C(27) ) RETURN
+      CALL ADDANG( COSTHE,PHI, CTHETA,RD(2)*PI2, SECPAR(3),SE	      CALL ADDANG( COSTHE,PHI, CTHETA,RD(2)*PI2, SECPAR(3),SE
+      IF ( SECPAR(3) .LT. C(29) ) RETURN			      IF ( SECPAR(3) .LT. C(29) ) RETURN
+      SECPAR(2)=GRLAB						      SECPAR(2)=GRLAB
+ 								 
+C  CHARGE ASSIGNEMENT						C  CHARGE ASSIGNEMENT
+      IF ( RD(3) .GE. 0.5 ) THEN				      IF ( RD(3) .GE. 0.5 ) THEN
+        SECPAR(1) = 14.D0					        SECPAR(1) = 14.D0
+      ELSE							      ELSE
+        SECPAR(1) = 13.D0					        SECPAR(1) = 13.D0
+      ENDIF							      ENDIF
+ 								 
+      DO 103  J = 5,8						      DO 103  J = 5,8
+        SECPAR(J) = CURPAR(J)					        SECPAR(J) = CURPAR(J)
+  103 CONTINUE							  103 CONTINUE
+      CALL TSTACK						      CALL TSTACK
+ 								 
+      RETURN							      RETURN
+      END							      END

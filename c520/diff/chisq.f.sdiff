@@ -1,0 +1,85 @@
+      DOUBLE PRECISION FUNCTION CHISQ(F)			      DOUBLE PRECISION FUNCTION CHISQ(F)
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  CHI SQ(UARE)							C  CHI SQ(UARE)
+C								C
+C  THIS FUNCTION CALCULATES THE CHI**2 OBTAINED WITH THE FITF	C  THIS FUNCTION CALCULATES THE CHI**2 OBTAINED WITH THE FITF
+C  AMOEBA USING THE PARAMETER SET F				C  AMOEBA USING THE PARAMETER SET F
+C    F(1) = HEIGHT AT MAXIMUM					C    F(1) = HEIGHT AT MAXIMUM
+C    F(2) = SHOWER STARTING POINT				C    F(2) = SHOWER STARTING POINT
+C    F(3) = T AT MAXIMUM					C    F(3) = T AT MAXIMUM
+C    F(4) = WIDTH PARAMETER 1					C    F(4) = WIDTH PARAMETER 1
+C    F(5) = WIDTH PARAMETER 2 T					C    F(5) = WIDTH PARAMETER 2 T
+C    F(6) = WIDTH PARAMETER 3 T**2				C    F(6) = WIDTH PARAMETER 3 T**2
+C  THIS FUNCTION IS CALLED FROM LONGFT AND FROM AMOEBA		C  THIS FUNCTION IS CALLED FROM LONGFT AND FROM AMOEBA
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,CURVE.							*KEEP,CURVE.
+      COMMON /CURVE/   CHAPAR,DEP,ERR,NSTP			      COMMON /CURVE/   CHAPAR,DEP,ERR,NSTP
+      DOUBLE PRECISION CHAPAR(1100),DEP(1100),ERR(1100)		      DOUBLE PRECISION CHAPAR(1100),DEP(1100),ERR(1100)
+      INTEGER          NSTP					      INTEGER          NSTP
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEND.								*KEND.
+ 								 
+      DOUBLE PRECISION AUXIL,BALL,BASE,EXPO,F(6),T		      DOUBLE PRECISION AUXIL,BALL,BASE,EXPO,F(6),T
+      INTEGER          I					      INTEGER          I
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,*) 'CHISQ : PARAMETERS =',F	      IF ( DEBUG ) WRITE(MDEBUG,*) 'CHISQ : PARAMETERS =',F
+ 								 
+C  EXCLUDE PATHOLOGICAL PARAMETER SETTINGS			C  EXCLUDE PATHOLOGICAL PARAMETER SETTINGS
+      IF ( F(1) .LE. 0.D0  .OR.  F(2) .GE. F(3)  .OR.		      IF ( F(1) .LE. 0.D0  .OR.  F(2) .GE. F(3)  .OR.
+     *    (F(4).EQ.0.D0 .AND. F(5).EQ.0.D0 .AND. F(6).EQ.0.D0	     *    (F(4).EQ.0.D0 .AND. F(5).EQ.0.D0 .AND. F(6).EQ.0.D0
+        CHISQ = 1.D16						        CHISQ = 1.D16
+        RETURN							        RETURN
+      ENDIF							      ENDIF
+ 								 
+      CHISQ = 0.D0						      CHISQ = 0.D0
+C  LOOP OVER THE LONGITUDINAL DISTRIBUTION			C  LOOP OVER THE LONGITUDINAL DISTRIBUTION
+      DO 1 I=1,NSTP						      DO 1 I=1,NSTP
+        T = DEP(I)						        T = DEP(I)
+        IF ( T .GT. F(2) ) THEN					        IF ( T .GT. F(2) ) THEN
+          BASE  = (T-F(2)) / (F(3)-F(2))			          BASE  = (T-F(2)) / (F(3)-F(2))
+          AUXIL = F(4) + T*F(5) + T**2*F(6)			          AUXIL = F(4) + T*F(5) + T**2*F(6)
+          IF ( AUXIL .LT. 1.D-20 ) THEN				          IF ( AUXIL .LT. 1.D-20 ) THEN
+            CHISQ = CHISQ + 1.D16				            CHISQ = CHISQ + 1.D16
+            GOTO 1						            GOTO 1
+          ENDIF							          ENDIF
+          EXPO  = (F(3)-T) / AUXIL				          EXPO  = (F(3)-T) / AUXIL
+CC        IF(DEBUG)WRITE(MDEBUG,*)'CHISQ : I,BASE,EXPO=',I,	CC        IF(DEBUG)WRITE(MDEBUG,*)'CHISQ : I,BASE,EXPO=',I,
+CC   *                            SNGL(BASE),SNGL(EXPO)		CC   *                            SNGL(BASE),SNGL(EXPO)
+          BALL = F(1) * BASE ** EXPO				          BALL = F(1) * BASE ** EXPO
+        ELSE							        ELSE
+          BALL = 0.D0						          BALL = 0.D0
+        ENDIF							        ENDIF
+        CHISQ = CHISQ + ((BALL-CHAPAR(I))/ERR(I))**2		        CHISQ = CHISQ + ((BALL-CHAPAR(I))/ERR(I))**2
+ 1    CONTINUE							 1    CONTINUE
+      CHISQ = CHISQ / (NSTP-6)					      CHISQ = CHISQ / (NSTP-6)
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,*) 'CHISQ : CHI**2 =',SNGL(CH	      IF ( DEBUG ) WRITE(MDEBUG,*) 'CHISQ : CHI**2 =',SNGL(CH
+ 								 
+      RETURN							      RETURN
+      END							      END

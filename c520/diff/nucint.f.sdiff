@@ -1,0 +1,390 @@
+      SUBROUTINE NUCINT						      SUBROUTINE NUCINT
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  NUC(LEAR) INT(ERACTION)					C  NUC(LEAR) INT(ERACTION)
+C								C
+C  SELECTS TYPE OF INTERACTION PROCESS FOR ISOBAR MODEL, ACCO	C  SELECTS TYPE OF INTERACTION PROCESS FOR ISOBAR MODEL, ACCO
+C  ISOBAR MASSES INDEPENDENT OF RESPECTIVE ENERGY RANGES	C  ISOBAR MASSES INDEPENDENT OF RESPECTIVE ENERGY RANGES
+C  HEAVY PRIMARIES AND STRANGE BARYONS INCLUDED			C  HEAVY PRIMARIES AND STRANGE BARYONS INCLUDED
+C  THIS SUBROUTINE IS CALLED FROM MAIN				C  THIS SUBROUTINE IS CALLED FROM MAIN
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,AIR.							*KEEP,AIR.
+      COMMON /AIR/     COMPOS,PROBTA,AVERAW,AVOGAD		      COMMON /AIR/     COMPOS,PROBTA,AVERAW,AVOGAD
+      DOUBLE PRECISION COMPOS(3),PROBTA(3),AVERAW,AVOGAD	      DOUBLE PRECISION COMPOS(3),PROBTA(3),AVERAW,AVOGAD
+*KEEP,CONST.							*KEEP,CONST.
+      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER			      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER
+      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER			      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER
+*KEEP,GENER.							*KEEP,GENER.
+      COMMON /GENER/   GEN,ALEVEL				      COMMON /GENER/   GEN,ALEVEL
+      DOUBLE PRECISION GEN,ALEVEL				      DOUBLE PRECISION GEN,ALEVEL
+*KEEP,IRET.							*KEEP,IRET.
+      COMMON /IRET/    IRET1,IRET2				      COMMON /IRET/    IRET1,IRET2
+      INTEGER          IRET1,IRET2				      INTEGER          IRET1,IRET2
+*KEEP,KAONS.							*KEEP,KAONS.
+      COMMON /KAONS/   CKA					      COMMON /KAONS/   CKA
+      DOUBLE PRECISION CKA(80)					      DOUBLE PRECISION CKA(80)
+*KEEP,MULT.							*KEEP,MULT.
+      COMMON /MULT/    EKINL,MSMM,MULTMA,MULTOT			      COMMON /MULT/    EKINL,MSMM,MULTMA,MULTOT
+      DOUBLE PRECISION EKINL					      DOUBLE PRECISION EKINL
+      INTEGER          MSMM,MULTMA(37,13),MULTOT(37,13)		      INTEGER          MSMM,MULTMA(37,13),MULTOT(37,13)
+*KEEP,PAM.							*KEEP,PAM.
+      COMMON /PAM/     PAMA,SIGNUM				      COMMON /PAM/     PAMA,SIGNUM
+      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)			      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)
+*KEEP,PARPAR.							*KEEP,PARPAR.
+      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,		      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,
+     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE	     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE
+      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA	      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA
+     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH	     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH
+      INTEGER          ITYPE,LEVL				      INTEGER          ITYPE,LEVL
+*KEEP,PARPAE.							*KEEP,PARPAE.
+      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,	      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,
+      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)	      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)
+     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )	     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )
+     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )	     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )
+     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )	     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )
+     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )	     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )
+     *                 (CURPAR(12),ECM )			     *                 (CURPAR(12),ECM )
+*KEEP,POLAR.							*KEEP,POLAR.
+      COMMON /POLAR/   POLART,POLARF				      COMMON /POLAR/   POLART,POLARF
+      DOUBLE PRECISION POLART,POLARF				      DOUBLE PRECISION POLART,POLARF
+*KEEP,RANDPA.							*KEEP,RANDPA.
+      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR		      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR
+      DOUBLE PRECISION FAC,U1,U2				      DOUBLE PRECISION FAC,U1,U2
+      REAL             RD(3000)					      REAL             RD(3000)
+      INTEGER          ISEED(103,10),NSEQ			      INTEGER          ISEED(103,10),NSEQ
+      LOGICAL          KNOR					      LOGICAL          KNOR
+*KEEP,RANGE.							*KEEP,RANGE.
+      COMMON /RANGE/   CC					      COMMON /RANGE/   CC
+      DOUBLE PRECISION CC(20)					      DOUBLE PRECISION CC(20)
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEEP,SIGM.							*KEEP,SIGM.
+      COMMON /SIGM/    SIGMA,SIGANN,SIGAIR,FRACTN,FRCTNO	      COMMON /SIGM/    SIGMA,SIGANN,SIGAIR,FRACTN,FRCTNO
+      DOUBLE PRECISION SIGMA,SIGANN,SIGAIR,FRACTN,FRCTNO	      DOUBLE PRECISION SIGMA,SIGANN,SIGAIR,FRACTN,FRCTNO
+*KEEP,STATI.							*KEEP,STATI.
+      COMMON /STATI/   SABIN,SBBIN,INBIN,IPBIN,IKBIN,IHBIN	      COMMON /STATI/   SABIN,SBBIN,INBIN,IPBIN,IKBIN,IHBIN
+      DOUBLE PRECISION SABIN(37),SBBIN(37)			      DOUBLE PRECISION SABIN(37),SBBIN(37)
+      INTEGER          INBIN(37),IPBIN(37),IKBIN(37),IHBIN(37	      INTEGER          INBIN(37),IPBIN(37),IKBIN(37),IHBIN(37
+*KEEP,VKIN.							*KEEP,VKIN.
+      COMMON /VKIN/    BETACM					      COMMON /VKIN/    BETACM
+      DOUBLE PRECISION BETACM					      DOUBLE PRECISION BETACM
+*KEND.								*KEND.
+ 								 
+      DOUBLE PRECISION BETA3,COSMU,COSTCM,COSTH3,GAMMA3,	      DOUBLE PRECISION BETA3,COSMU,COSTCM,COSTH3,GAMMA3,
+     *                 PHIMU,PHI3,WORK1,WORK2			     *                 PHIMU,PHI3,WORK1,WORK2
+      INTEGER          I,IGO,KJ					      INTEGER          I,IGO,KJ
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,444) (CURPAR(I),I=1,9)		      IF ( DEBUG ) WRITE(MDEBUG,444) (CURPAR(I),I=1,9)
+  444 FORMAT(' NUCINT: CURPAR=',1P,9E10.3)			  444 FORMAT(' NUCINT: CURPAR=',1P,9E10.3)
+ 								 
+C  SET GENERATION AND LEVEL OF LAST INTERACTION			C  SET GENERATION AND LEVEL OF LAST INTERACTION
+      SECPAR( 9) = GEN						      SECPAR( 9) = GEN
+      SECPAR(10) = ALEVEL					      SECPAR(10) = ALEVEL
+C  RESET POLARIZATION, NOT USED FOR PARTICLES OTHER THAN MUON	C  RESET POLARIZATION, NOT USED FOR PARTICLES OTHER THAN MUON
+      SECPAR(11) = 0.D0						      SECPAR(11) = 0.D0
+      SECPAR(12) = 0.D0						      SECPAR(12) = 0.D0
+ 								 
+C  CALCULATE KIN. ENERGY BIN					C  CALCULATE KIN. ENERGY BIN
+      EKINL = PAMA(ITYPE) * ( GAMMA - 1.D0 )			      EKINL = PAMA(ITYPE) * ( GAMMA - 1.D0 )
+      IF ( EKINL .GE. .1D0 ) THEN				      IF ( EKINL .GE. .1D0 ) THEN
+        KJ = INT( MIN( 37.D0, 4.D0 + 3.D0*LOG10(EKINL) ) )	        KJ = INT( MIN( 37.D0, 4.D0 + 3.D0*LOG10(EKINL) ) )
+      ELSE							      ELSE
+        KJ = 1							        KJ = 1
+      ENDIF							      ENDIF
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  PION INCIDENT						C  PION INCIDENT
+      IF     ( ITYPE .EQ.  8  .OR.  ITYPE .EQ.  9 ) THEN	      IF     ( ITYPE .EQ.  8  .OR.  ITYPE .EQ.  9 ) THEN
+        IF ( DEBUG ) WRITE(MDEBUG,*) 'NUCINT: PION EKINL=',SN	        IF ( DEBUG ) WRITE(MDEBUG,*) 'NUCINT: PION EKINL=',SN
+        IPBIN(KJ) = IPBIN(KJ) + 1				        IPBIN(KJ) = IPBIN(KJ) + 1
+ 								 
+C  DECAY OR INTERACTION FOR PIONS ?				C  DECAY OR INTERACTION FOR PIONS ?
+        IF ( FDECAY ) THEN					        IF ( FDECAY ) THEN
+          DO 10  I = 5,8					          DO 10  I = 5,8
+            SECPAR(I) =  CURPAR(I)				            SECPAR(I) =  CURPAR(I)
+ 10       CONTINUE						 10       CONTINUE
+C  DECAY  PI(+,-)  ---->  MU(+,-) + (ANTI)-NEUTRINO(MU)		C  DECAY  PI(+,-)  ---->  MU(+,-) + (ANTI)-NEUTRINO(MU)
+          WORK1  = C(48) * GAMMA				          WORK1  = C(48) * GAMMA
+          WORK2  = C(49) * BETA * WORK1				          WORK2  = C(49) * BETA * WORK1
+          CALL RMMAR( RD,2,1 )					          CALL RMMAR( RD,2,1 )
+          COSTCM = 2.D0 * RD(1) - 1.D0				          COSTCM = 2.D0 * RD(1) - 1.D0
+          GAMMA3 = WORK1 + COSTCM * WORK2			          GAMMA3 = WORK1 + COSTCM * WORK2
+          BETA3  = SQRT( 1.D0 - 1.D0 / GAMMA3**2 )		          BETA3  = SQRT( 1.D0 - 1.D0 / GAMMA3**2 )
+          COSTH3 = MIN( 1.D0, ( GAMMA * GAMMA3 - C(48) )	          COSTH3 = MIN( 1.D0, ( GAMMA * GAMMA3 - C(48) )
+     *                      /( BETA * GAMMA * BETA3 * GAMMA3 	     *                      /( BETA * GAMMA * BETA3 * GAMMA3 
+          PHI3   = PI2 * RD(2)					          PHI3   = PI2 * RD(2)
+C  MUON / NEUTRINO IS DROPPED					C  MUON / NEUTRINO IS DROPPED
+          CALL ADDANG( COSTHE,PHI, COSTH3,PHI3, COSMU,PHIMU )	          CALL ADDANG( COSTHE,PHI, COSTH3,PHI3, COSMU,PHIMU )
+          IF ( COSMU .GT. C(29) ) THEN				          IF ( COSMU .GT. C(29) ) THEN
+C  DIRECTION OF PION IN THE MUON CM SYSTEM (= DIRECTION OF PO	C  DIRECTION OF PION IN THE MUON CM SYSTEM (= DIRECTION OF PO
+C  SEE: G. BARR ET AL., PHYS. REV. D39 (1989) 3532, EQ. 5	C  SEE: G. BARR ET AL., PHYS. REV. D39 (1989) 3532, EQ. 5
+C  POLART IS COS OF ANGLE BETWEEN PION AND LABORATORY IN THE 	C  POLART IS COS OF ANGLE BETWEEN PION AND LABORATORY IN THE 
+C  POLARF IS ANGLE PHI AROUND THE LAB DIRECTION IN THE MU CM	C  POLARF IS ANGLE PHI AROUND THE LAB DIRECTION IN THE MU CM
+C  POLART, POLARF ARE WITH RESPECT TO THE MU DIRECTION IN THE	C  POLART, POLARF ARE WITH RESPECT TO THE MU DIRECTION IN THE
+            POLART = ( 2.D0*PAMA(8)*GAMMA*C(7)/(PAMA(5)*GAMMA	            POLART = ( 2.D0*PAMA(8)*GAMMA*C(7)/(PAMA(5)*GAMMA
+     *                 - C(7) - 1.D0 ) / ( BETA3 * (1.D0 - C(	     *                 - C(7) - 1.D0 ) / ( BETA3 * (1.D0 - C(
+            POLARF = PHI3 - PI					            POLARF = PHI3 - PI
+C  PION DIRECTION IS DIRECTION OF POLARIZATION FOR PI+, OPPOS	C  PION DIRECTION IS DIRECTION OF POLARIZATION FOR PI+, OPPOS
+            IF ( ITYPE .EQ. 9 ) THEN				            IF ( ITYPE .EQ. 9 ) THEN
+              POLART = -POLART					              POLART = -POLART
+              POLARF = POLARF + PI				              POLARF = POLARF + PI
+            ENDIF						            ENDIF
+C  GET THE POLARIZATION DIRECTION IN THE MU CM RELATIVE TO TH	C  GET THE POLARIZATION DIRECTION IN THE MU CM RELATIVE TO TH
+C  COORDINATE SYSTEM						C  COORDINATE SYSTEM
+            CALL ADDANG( COSMU,PHIMU, POLART,POLARF, POLART,P	            CALL ADDANG( COSMU,PHIMU, POLART,POLARF, POLART,P
+C  MUON IS WRITTEN TO STACK					C  MUON IS WRITTEN TO STACK
+            SECPAR( 1) = CURPAR(1) - 3.D0			            SECPAR( 1) = CURPAR(1) - 3.D0
+            SECPAR( 2) = GAMMA3					            SECPAR( 2) = GAMMA3
+            SECPAR( 3) = COSMU					            SECPAR( 3) = COSMU
+            SECPAR( 4) = PHIMU					            SECPAR( 4) = PHIMU
+            SECPAR(11) = POLART					            SECPAR(11) = POLART
+            SECPAR(12) = POLARF					            SECPAR(12) = POLARF
+            CALL TSTACK						            CALL TSTACK
+            SECPAR(11) = 0.D0					            SECPAR(11) = 0.D0
+            SECPAR(12) = 0.D0					            SECPAR(12) = 0.D0
+          ENDIF							          ENDIF
+          IRET1 = 1						          IRET1 = 1
+          RETURN						          RETURN
+        ENDIF							        ENDIF
+ 								 
+C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -	C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+C  PION INTERACTS						C  PION INTERACTS
+ 								 
+C  CALCULATE GAMMA, BETA AND ENERGY IN CENTER OF MASS		C  CALCULATE GAMMA, BETA AND ENERGY IN CENTER OF MASS
+        ECM    = SQRT( C(45) * GAMMA + C(46) )			        ECM    = SQRT( C(45) * GAMMA + C(46) )
+        GCM    = (PAMA(ITYPE) * GAMMA + PAMA(14)) / ECM		        GCM    = (PAMA(ITYPE) * GAMMA + PAMA(14)) / ECM
+        BETACM = SQRT( 1.D0 - 1.D0 / GCM**2 )			        BETACM = SQRT( 1.D0 - 1.D0 / GCM**2 )
+ 								 
+C  LOW ENERGY HADRONIC INTERACTIONS				C  LOW ENERGY HADRONIC INTERACTIONS
+C  USE GHEISHA IF THE CROSS SECTION HAS BEEN CALCULATED FOR G	C  USE GHEISHA IF THE CROSS SECTION HAS BEEN CALCULATED FOR G
+        IF ( GHEISH ) THEN					        IF ( GHEISH ) THEN
+          IF ( GHESIG ) THEN					          IF ( GHESIG ) THEN
+            CALL CGHEI						            CALL CGHEI
+          ELSE							          ELSE
+            CALL SDPM						            CALL SDPM
+          ENDIF							          ENDIF
+        ELSE							        ELSE
+C  DETERMINE TYPE OF INTERACTION FOR PIONS			C  DETERMINE TYPE OF INTERACTION FOR PIONS
+          IF     ( ECM .GT. CC(8) ) THEN			          IF     ( ECM .GT. CC(8) ) THEN
+C  DUAL PARTON MODEL						C  DUAL PARTON MODEL
+            CALL SDPM						            CALL SDPM
+          ELSEIF ( ECM .GT. CC(7) ) THEN			          ELSEIF ( ECM .GT. CC(7) ) THEN
+C  HEAVY ISOBAR + HEAVY MESON					C  HEAVY ISOBAR + HEAVY MESON
+            CALL BOX69						            CALL BOX69
+          ELSEIF ( ECM .GT. CC(6) ) THEN			          ELSEIF ( ECM .GT. CC(6) ) THEN
+            CALL RMMAR( RD,1,1 )				            CALL RMMAR( RD,1,1 )
+            IF ( RD(1) .LE. 0.5 ) THEN				            IF ( RD(1) .LE. 0.5 ) THEN
+C  HEAVY ISOBAR + PION						C  HEAVY ISOBAR + PION
+              CALL BOX68					              CALL BOX68
+            ELSE						            ELSE
+C  HEAVY MESON + NUCLEON					C  HEAVY MESON + NUCLEON
+              CALL BOX67					              CALL BOX67
+            ENDIF						            ENDIF
+          ELSEIF ( ECM .GT. CC(5) ) THEN			          ELSEIF ( ECM .GT. CC(5) ) THEN
+C  LIGHT ISOBAR + PION						C  LIGHT ISOBAR + PION
+            CALL BOX66						            CALL BOX66
+          ELSE							          ELSE
+C  ELASTIC SCATTERING						C  ELASTIC SCATTERING
+            CALL BOX65						            CALL BOX65
+          ENDIF							          ENDIF
+        ENDIF							        ENDIF
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  NUCLEON OR ANTINUCLEON INCIDENT				C  NUCLEON OR ANTINUCLEON INCIDENT
+      ELSEIF ( ITYPE .EQ. 13  .OR.  ITYPE .EQ. 14  .OR.		      ELSEIF ( ITYPE .EQ. 13  .OR.  ITYPE .EQ. 14  .OR.
+     *         ITYPE .EQ. 15  .OR.  ITYPE .EQ. 25 ) THEN	     *         ITYPE .EQ. 15  .OR.  ITYPE .EQ. 25 ) THEN
+C  CALCULATE GAMMA, BETA AND ENERGY IN CENTER OF MASS		C  CALCULATE GAMMA, BETA AND ENERGY IN CENTER OF MASS
+        GCM       = SQRT( GAMMA * 0.5D0 + 0.5D0 )		        GCM       = SQRT( GAMMA * 0.5D0 + 0.5D0 )
+        ECM       = PAMA(ITYPE) * GCM * 2.D0			        ECM       = PAMA(ITYPE) * GCM * 2.D0
+        BETACM    = SQRT( 1.D0 - 1.D0 / GCM**2 )		        BETACM    = SQRT( 1.D0 - 1.D0 / GCM**2 )
+        IF ( DEBUG ) WRITE(MDEBUG,*) 'NUCINT: NUCL EKINL=',SN	        IF ( DEBUG ) WRITE(MDEBUG,*) 'NUCINT: NUCL EKINL=',SN
+        INBIN(KJ) = INBIN(KJ) + 1				        INBIN(KJ) = INBIN(KJ) + 1
+ 								 
+C  LOW ENERGY HADRONIC INTERACTIONS				C  LOW ENERGY HADRONIC INTERACTIONS
+C  USE GHEISHA IF THE CROSS SECTION HAS BEEN CALCULATED FOR G	C  USE GHEISHA IF THE CROSS SECTION HAS BEEN CALCULATED FOR G
+        IF ( GHEISH ) THEN					        IF ( GHEISH ) THEN
+          IF ( GHESIG ) THEN					          IF ( GHESIG ) THEN
+            CALL CGHEI						            CALL CGHEI
+          ELSE							          ELSE
+            CALL SDPM						            CALL SDPM
+          ENDIF							          ENDIF
+        ELSE							        ELSE
+C  DETERMINE TYPE OF INTERACTION FOR NUCLEONS AND ANTINUCLEON	C  DETERMINE TYPE OF INTERACTION FOR NUCLEONS AND ANTINUCLEON
+          IF     ( ECM .GT. CC(4) ) THEN			          IF     ( ECM .GT. CC(4) ) THEN
+C  DUAL PARTON MODEL						C  DUAL PARTON MODEL
+            CALL SDPM						            CALL SDPM
+          ELSEIF ( ECM .GT. CC(3) ) THEN			          ELSEIF ( ECM .GT. CC(3) ) THEN
+C  USE THE INTERACTION ROUTINES OF PKF GRIEDER			C  USE THE INTERACTION ROUTINES OF PKF GRIEDER
+C  2 HEAVY ISOBARS AND ANNIHILATION				C  2 HEAVY ISOBARS AND ANNIHILATION
+            CALL BOX63						            CALL BOX63
+          ELSEIF ( ECM .GT. CC(2) ) THEN			          ELSEIF ( ECM .GT. CC(2) ) THEN
+C  1 HEAVY ISOBAR + NUCLEON AND ANNIHILATION			C  1 HEAVY ISOBAR + NUCLEON AND ANNIHILATION
+            CALL BOX62						            CALL BOX62
+          ELSEIF ( ECM .GT. CC(1) ) THEN			          ELSEIF ( ECM .GT. CC(1) ) THEN
+C  1 LIGHT ISOBAR + NUCLEON AND ANNIHILATION			C  1 LIGHT ISOBAR + NUCLEON AND ANNIHILATION
+            CALL BOX61						            CALL BOX61
+          ELSE							          ELSE
+C  ELASTIC SCATTERING AND ANNIHILATION				C  ELASTIC SCATTERING AND ANNIHILATION
+            CALL BOX60						            CALL BOX60
+          ENDIF							          ENDIF
+        ENDIF							        ENDIF
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  KAON INCIDENT						C  KAON INCIDENT
+      ELSEIF ( ITYPE .EQ. 11  .OR.  ITYPE .EQ. 12  .OR.		      ELSEIF ( ITYPE .EQ. 11  .OR.  ITYPE .EQ. 12  .OR.
+     *         ITYPE .EQ. 10  .OR.  ITYPE .EQ. 16 ) THEN	     *         ITYPE .EQ. 10  .OR.  ITYPE .EQ. 16 ) THEN
+        IF ( DEBUG ) WRITE(MDEBUG,*) 'NUCINT: KAON EKINL=',SN	        IF ( DEBUG ) WRITE(MDEBUG,*) 'NUCINT: KAON EKINL=',SN
+        IKBIN(KJ) = IKBIN(KJ) + 1				        IKBIN(KJ) = IKBIN(KJ) + 1
+ 								 
+C  DECAY OR INTERACTION FOR KAONS ?				C  DECAY OR INTERACTION FOR KAONS ?
+        IF ( FDECAY ) THEN					        IF ( FDECAY ) THEN
+C  KAON DECAYS. DETERMINE DECAY MODE FOR KAONS AND SET LIFE T	C  KAON DECAYS. DETERMINE DECAY MODE FOR KAONS AND SET LIFE T
+          IF     ( ITYPE .EQ. 10 ) THEN				          IF     ( ITYPE .EQ. 10 ) THEN
+C  K(0,L)-MESON							C  K(0,L)-MESON
+            IGO = 4						            IGO = 4
+          ELSEIF ( ITYPE .EQ. 11 ) THEN				          ELSEIF ( ITYPE .EQ. 11 ) THEN
+C  K(+)-MESON							C  K(+)-MESON
+            IGO = 1						            IGO = 1
+          ELSEIF ( ITYPE .EQ. 12 ) THEN				          ELSEIF ( ITYPE .EQ. 12 ) THEN
+C  K(-)-MESON							C  K(-)-MESON
+            IGO = 2						            IGO = 2
+          ELSE							          ELSE
+C  K(0,S)-MESON							C  K(0,S)-MESON
+            IGO = 3						            IGO = 3
+          ENDIF							          ENDIF
+          CALL KDECAY( IGO )					          CALL KDECAY( IGO )
+          RETURN						          RETURN
+ 								 
+        ELSE							        ELSE
+C- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 	C- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+C  KAON INTERACTS						C  KAON INTERACTS
+C  CALCULATE GAMMA, BETA AND ENERGY IN CENTER OF MASS		C  CALCULATE GAMMA, BETA AND ENERGY IN CENTER OF MASS
+          ECM    = SQRT( CKA(13) * GAMMA + CKA(14) )		          ECM    = SQRT( CKA(13) * GAMMA + CKA(14) )
+          GCM    = ( PAMA(ITYPE) * GAMMA + PAMA(14) ) / ECM	          GCM    = ( PAMA(ITYPE) * GAMMA + PAMA(14) ) / ECM
+          BETACM = SQRT( 1.D0 - 1.D0 / GCM**2 )			          BETACM = SQRT( 1.D0 - 1.D0 / GCM**2 )
+C  LOW ENERGY HADRONIC INTERACTIONS				C  LOW ENERGY HADRONIC INTERACTIONS
+C  USE GHEISHA IF THE CROSS SECTION HAS BEEN CALCULATED FOR G	C  USE GHEISHA IF THE CROSS SECTION HAS BEEN CALCULATED FOR G
+          IF ( GHEISH ) THEN					          IF ( GHEISH ) THEN
+            IF ( GHESIG ) THEN					            IF ( GHESIG ) THEN
+              CALL CGHEI					              CALL CGHEI
+            ELSE						            ELSE
+              CALL SDPM						              CALL SDPM
+            ENDIF						            ENDIF
+          ELSE							          ELSE
+C  KAON INTERACTS. DETERMINE TYPE OF INTERACTION FOR KAONS	C  KAON INTERACTS. DETERMINE TYPE OF INTERACTION FOR KAONS
+            IF     ( ECM .GT. CC(12) ) THEN			            IF     ( ECM .GT. CC(12) ) THEN
+C  DUAL PARTON MODEL						C  DUAL PARTON MODEL
+              CALL SDPM						              CALL SDPM
+C  USE THE INTERACTION ROUTINES OF PKF GRIEDER			C  USE THE INTERACTION ROUTINES OF PKF GRIEDER
+            ELSEIF ( ECM .GT. CC(11) ) THEN			            ELSEIF ( ECM .GT. CC(11) ) THEN
+C  HEAVY ISOBAR + STRANGE MESON					C  HEAVY ISOBAR + STRANGE MESON
+              CALL BOX74					              CALL BOX74
+            ELSEIF ( ECM .GT. CC(10) ) THEN			            ELSEIF ( ECM .GT. CC(10) ) THEN
+              CALL RMMAR( RD,1,1 )				              CALL RMMAR( RD,1,1 )
+              IF ( RD(1) .GT. CKA(21) ) THEN			              IF ( RD(1) .GT. CKA(21) ) THEN
+C  HEAVY ISOBAR + KAON						C  HEAVY ISOBAR + KAON
+                CALL BOX73					                CALL BOX73
+              ELSE						              ELSE
+C  STRANGE MESON + NUCLEON					C  STRANGE MESON + NUCLEON
+                CALL BOX72					                CALL BOX72
+              ENDIF						              ENDIF
+            ELSEIF ( ECM .GT. CC(9) ) THEN			            ELSEIF ( ECM .GT. CC(9) ) THEN
+C  LIGHT ISOBAR + KAON						C  LIGHT ISOBAR + KAON
+              CALL BOX71					              CALL BOX71
+            ELSE						            ELSE
+C  ELASTIC SCATTERING						C  ELASTIC SCATTERING
+              CALL BOX70					              CALL BOX70
+            ENDIF						            ENDIF
+          ENDIF							          ENDIF
+        ENDIF							        ENDIF
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  STRANGE BARYON (LAMDA, SIGMA) INCIDENT			C  STRANGE BARYON (LAMDA, SIGMA) INCIDENT
+      ELSEIF ( (ITYPE .GE. 18  .AND.  ITYPE .LE. 24)  .OR.	      ELSEIF ( (ITYPE .GE. 18  .AND.  ITYPE .LE. 24)  .OR.
+     *         (ITYPE .GE. 26  .AND.  ITYPE .LE. 32) ) THEN	     *         (ITYPE .GE. 26  .AND.  ITYPE .LE. 32) ) THEN
+        IF ( DEBUG ) WRITE(MDEBUG,*) 'NUCINT: SBAR EKINL=',SN	        IF ( DEBUG ) WRITE(MDEBUG,*) 'NUCINT: SBAR EKINL=',SN
+        IHBIN(KJ) = IHBIN(KJ) + 1				        IHBIN(KJ) = IHBIN(KJ) + 1
+C  DECAY OR INTERACTION FOR STRANGE BARYONS?			C  DECAY OR INTERACTION FOR STRANGE BARYONS?
+        IF ( FDECAY ) THEN					        IF ( FDECAY ) THEN
+          CALL STRDEC						          CALL STRDEC
+          RETURN						          RETURN
+        ENDIF							        ENDIF
+C  CALCULATE GAMMA, BETA AND ENERGY IN CENTER OF MASS		C  CALCULATE GAMMA, BETA AND ENERGY IN CENTER OF MASS
+        ECM    = SQRT( 2.D0 * PAMA(ITYPE) * PAMA(14) * GAMMA	        ECM    = SQRT( 2.D0 * PAMA(ITYPE) * PAMA(14) * GAMMA
+     *              + PAMA(ITYPE)**2 + PAMA(14)**2 )		     *              + PAMA(ITYPE)**2 + PAMA(14)**2 )
+        GCM    = ( PAMA(ITYPE) * GAMMA + PAMA(14)) / ECM	        GCM    = ( PAMA(ITYPE) * GAMMA + PAMA(14)) / ECM
+        BETACM = SQRT( 1.D0 - 1.D0 / GCM**2 )			        BETACM = SQRT( 1.D0 - 1.D0 / GCM**2 )
+C  LOW ENERGY HADRONIC INTERACTIONS				C  LOW ENERGY HADRONIC INTERACTIONS
+C  USE GHEISHA IF THE CROSS SECTION HAS BEEN CALCULATED FOR G	C  USE GHEISHA IF THE CROSS SECTION HAS BEEN CALCULATED FOR G
+        IF ( GHEISH ) THEN					        IF ( GHEISH ) THEN
+          IF ( GHESIG ) THEN					          IF ( GHESIG ) THEN
+            CALL CGHEI						            CALL CGHEI
+          ELSE							          ELSE
+C  VENUS TREATS STRANGE BARYONS					C  VENUS TREATS STRANGE BARYONS
+            CALL SDPM						            CALL SDPM
+          ENDIF							          ENDIF
+        ELSE							        ELSE
+          IF ( ECM .GT. CC(4) ) THEN				          IF ( ECM .GT. CC(4) ) THEN
+            CALL SDPM						            CALL SDPM
+          ELSE							          ELSE
+C  USE THE INTERACTION ROUTINES OF PKF GRIEDER			C  USE THE INTERACTION ROUTINES OF PKF GRIEDER
+C  ELASTIC SCATTERING						C  ELASTIC SCATTERING
+            CALL BOX60						            CALL BOX60
+          ENDIF							          ENDIF
+        ENDIF							        ENDIF
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  HEAVY PRIMARY INCIDENT					C  HEAVY PRIMARY INCIDENT
+      ELSEIF ( ITYPE .GT. 100 ) THEN				      ELSEIF ( ITYPE .GT. 100 ) THEN
+        IF (DEBUG) WRITE(MDEBUG,*) 'NUCINT: HEAVY PRIMARY EKI	        IF (DEBUG) WRITE(MDEBUG,*) 'NUCINT: HEAVY PRIMARY EKI
+     *                                               SNGL(EKI	     *                                               SNGL(EKI
+C  USE GHEISHA IF THE CROSS SECTION HAS BEEN CALCULATED FOR G	C  USE GHEISHA IF THE CROSS SECTION HAS BEEN CALCULATED FOR G
+C   (THIS MIGHT BE THE CASE FOR DEUTERONS, TRITONS AND ALPHAS	C   (THIS MIGHT BE THE CASE FOR DEUTERONS, TRITONS AND ALPHAS
+        IF ( GHEISH ) THEN					        IF ( GHEISH ) THEN
+          IF ( GHESIG ) THEN					          IF ( GHESIG ) THEN
+            CALL CGHEI						            CALL CGHEI
+          ELSE							          ELSE
+            CALL SDPM						            CALL SDPM
+          ENDIF							          ENDIF
+        ELSE							        ELSE
+C  TREAT HEAVY PRIMARY IN SDPM					C  TREAT HEAVY PRIMARY IN SDPM
+          CALL SDPM						          CALL SDPM
+        ENDIF							        ENDIF
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  ILLEGAL PARTICLE						C  ILLEGAL PARTICLE
+      ELSE							      ELSE
+        WRITE(MONIOU,*) 'NUCINT: ILLEGAL PARTICLE = ',ITYPE	        WRITE(MONIOU,*) 'NUCINT: ILLEGAL PARTICLE = ',ITYPE
+        STOP							        STOP
+      ENDIF							      ENDIF
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  KILL PARTICLE						C  KILL PARTICLE
+      IRET1 = 1							      IRET1 = 1
+ 								 
+      RETURN							      RETURN
+      END							      END

@@ -1,0 +1,99 @@
+      SUBROUTINE TOBUF( A,IFL )					      SUBROUTINE TOBUF( A,IFL )
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  (WRITE) TO BUF(FER)						C  (WRITE) TO BUF(FER)
+C								C
+C  WRITES UP TO NSUBBL DATA BLOCKS TO OUTPUT BUFFER AND PUTS 	C  WRITES UP TO NSUBBL DATA BLOCKS TO OUTPUT BUFFER AND PUTS 
+C  BUFFER TO TAPE						C  BUFFER TO TAPE
+C  THIS SUBROUTINE IS CALLED FROM MAIN, ELECTR, PHOTON, INPRM	C  THIS SUBROUTINE IS CALLED FROM MAIN, ELECTR, PHOTON, INPRM
+C  OUTPUT, OUTPT2, AND PHOTON					C  OUTPUT, OUTPT2, AND PHOTON
+C  ARGUMENTS:							C  ARGUMENTS:
+C   A      = ARRAY TO BE WRITTEN TO TAPE			C   A      = ARRAY TO BE WRITTEN TO TAPE
+C   IFL    = STARTING OF FINAL OUTPUT				C   IFL    = STARTING OF FINAL OUTPUT
+C          = 0  NORMAL BLOCK					C          = 0  NORMAL BLOCK
+C          = 1  NORMAL BLOCK WITH END OF OUTPUT			C          = 1  NORMAL BLOCK WITH END OF OUTPUT
+C          = 2  ONLY END OF OUTPUT				C          = 2  ONLY END OF OUTPUT
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,BUFFS.							*KEEP,BUFFS.
+      COMMON /BUFFS/   RUNH,RUNE,EVTH,EVTE,DATAB,LH		      COMMON /BUFFS/   RUNH,RUNE,EVTH,EVTE,DATAB,LH
+      INTEGER          MAXBUF,MAXLEN				      INTEGER          MAXBUF,MAXLEN
+      PARAMETER        (MAXBUF=39*7)				      PARAMETER        (MAXBUF=39*7)
+      PARAMETER        (MAXLEN=12)				      PARAMETER        (MAXLEN=12)
+      REAL             RUNH(MAXBUF),EVTH(MAXBUF),EVTE(MAXBUF)	      REAL             RUNH(MAXBUF),EVTH(MAXBUF),EVTE(MAXBUF)
+     *                 RUNE(MAXBUF),DATAB(MAXBUF)		     *                 RUNE(MAXBUF),DATAB(MAXBUF)
+      INTEGER          LH					      INTEGER          LH
+      CHARACTER*4      CRUNH,CRUNE,CEVTH,CEVTE			      CHARACTER*4      CRUNH,CRUNE,CEVTH,CEVTE
+      EQUIVALENCE      (RUNH(1),CRUNH), (RUNE(1),CRUNE)		      EQUIVALENCE      (RUNH(1),CRUNH), (RUNE(1),CRUNE)
+      EQUIVALENCE      (EVTH(1),CEVTH), (EVTE(1),CEVTE)		      EQUIVALENCE      (EVTH(1),CEVTH), (EVTE(1),CEVTE)
+*KEEP,RECORD.							*KEEP,RECORD.
+      COMMON /RECORD/  IRECOR					      COMMON /RECORD/  IRECOR
+      INTEGER          IRECOR					      INTEGER          IRECOR
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEND.								*KEND.
+ 								 
+      INTEGER   NSUBBL						      INTEGER   NSUBBL
+      PARAMETER (NSUBBL=21)					      PARAMETER (NSUBBL=21)
+      REAL      A(*)						      REAL      A(*)
+C  NSUBBL IS NUMBER OF SUBBLOCKS IN ONE OUTPUT RECORD		C  NSUBBL IS NUMBER OF SUBBLOCKS IN ONE OUTPUT RECORD
+C  (OUTPUT RECORD LENGTH = NSUBBL * 39 * 7 * 4 BYTES  <= 2293	C  (OUTPUT RECORD LENGTH = NSUBBL * 39 * 7 * 4 BYTES  <= 2293
+C  IBLK  IS  COUNTER FOR SUBBLOCKS				C  IBLK  IS  COUNTER FOR SUBBLOCKS
+C  OUTPUT BUFFER FOR PARTICLE OUTPUT				C  OUTPUT BUFFER FOR PARTICLE OUTPUT
+      REAL      OUTBUF(MAXBUF,NSUBBL)				      REAL      OUTBUF(MAXBUF,NSUBBL)
+      INTEGER   I,IBLK,IFL,K					      INTEGER   I,IBLK,IFL,K
+      SAVE      OUTBUF						      SAVE      OUTBUF
+      DATA      IBLK / 0 /					      DATA      IBLK / 0 /
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,*) 'TOBUF : IFL =',IFL		      IF ( DEBUG ) WRITE(MDEBUG,*) 'TOBUF : IFL =',IFL
+ 								 
+ 								 
+C  COPY TO BUFFER						C  COPY TO BUFFER
+      IF ( IFL .LE. 1 ) THEN					      IF ( IFL .LE. 1 ) THEN
+        IBLK = IBLK + 1						        IBLK = IBLK + 1
+        DO  1  I = 1,MAXBUF					        DO  1  I = 1,MAXBUF
+          OUTBUF(I,IBLK) = A(I)					          OUTBUF(I,IBLK) = A(I)
+ 1      CONTINUE						 1      CONTINUE
+      ENDIF							      ENDIF
+ 								 
+C  WRITE TO TAPE IF BLOCK IS FULL OR IF IFL IS 1		C  WRITE TO TAPE IF BLOCK IS FULL OR IF IFL IS 1
+      IF ( IFL .GE. 1  .OR.  IBLK .EQ. NSUBBL ) THEN		      IF ( IFL .GE. 1  .OR.  IBLK .EQ. NSUBBL ) THEN
+        NRECS = NRECS + 1					        NRECS = NRECS + 1
+        NBLKS = NBLKS + IBLK					        NBLKS = NBLKS + IBLK
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+c        WRITE(PATAPE)           ((OUTBUF(I,K),I=1,MAXBUF),K=	c        WRITE(PATAPE)           ((OUTBUF(I,K),I=1,MAXBUF),K=
+        call jcdatsave(outbuf)					        call jcdatsave(outbuf)
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        IRECOR = IRECOR + MAXBUF * NSUBBL			        IRECOR = IRECOR + MAXBUF * NSUBBL
+        IBLK   = 0						        IBLK   = 0
+        DO  2  K = 1,NSUBBL					        DO  2  K = 1,NSUBBL
+        DO  2  I = 1,MAXBUF					        DO  2  I = 1,MAXBUF
+          OUTBUF(I,K) = 0.0					          OUTBUF(I,K) = 0.0
+ 2      CONTINUE						 2      CONTINUE
+      ENDIF							      ENDIF
+ 								 
+      RETURN							      RETURN
+      END							      END

@@ -1,0 +1,61 @@
+      SUBROUTINE STANKG						      SUBROUTINE STANKG
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  STA(RT) NKG							C  STA(RT) NKG
+C								C
+C  INITIALIZE ARRAYS FOR SINGLE SHOWERS NKG CALCULATED VARIAB	C  INITIALIZE ARRAYS FOR SINGLE SHOWERS NKG CALCULATED VARIAB
+C  THIS SUBROUTINE IS CALLED FROM MAIN				C  THIS SUBROUTINE IS CALLED FROM MAIN
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,NKGS.							*KEEP,NKGS.
+      COMMON /NKGS/    CZX,CZY,CZXY,CZYX,SAH,SL,ZNE		      COMMON /NKGS/    CZX,CZY,CZXY,CZYX,SAH,SL,ZNE
+      DOUBLE PRECISION CZX(-10:10,2),CZY(-10:10,2),CZXY(-10:1	      DOUBLE PRECISION CZX(-10:10,2),CZY(-10:10,2),CZXY(-10:1
+     *                 CZYX(-10:10,2),SAH(10),SL(10),ZNE(10)	     *                 CZYX(-10:10,2),SAH(10),SL(10),ZNE(10)
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEND.								*KEND.
+ 								 
+      INTEGER I,K						      INTEGER I,K
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,*) 'STANKG:'			      IF ( DEBUG ) WRITE(MDEBUG,*) 'STANKG:'
+ 								 
+C  CLEAR ARRAYS FOR AGE PARAMETER CALCULATION FOR EACH SHOWER	C  CLEAR ARRAYS FOR AGE PARAMETER CALCULATION FOR EACH SHOWER
+      DO 17  I = 1,10						      DO 17  I = 1,10
+        SAH(I) = 0.D0						        SAH(I) = 0.D0
+        SL (I) = 0.D0						        SL (I) = 0.D0
+        ZNE(I) = 0.D0						        ZNE(I) = 0.D0
+  17  CONTINUE							  17  CONTINUE
+C  CLEAR LATERAL ELECTRON DISTRIBUTION COUNTERS FOR EACH SHOW	C  CLEAR LATERAL ELECTRON DISTRIBUTION COUNTERS FOR EACH SHOW
+      DO 45  K = 1,2						      DO 45  K = 1,2
+      DO 45  I = -10,10						      DO 45  I = -10,10
+        CZX (I,K) = 0.D0					        CZX (I,K) = 0.D0
+        CZY (I,K) = 0.D0					        CZY (I,K) = 0.D0
+        CZXY(I,K) = 0.D0					        CZXY(I,K) = 0.D0
+        CZYX(I,K) = 0.D0					        CZYX(I,K) = 0.D0
+  45  CONTINUE							  45  CONTINUE
+ 								 
+      RETURN							      RETURN
+      END							      END

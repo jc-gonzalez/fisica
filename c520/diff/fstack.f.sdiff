@@ -1,0 +1,127 @@
+      SUBROUTINE FSTACK						      SUBROUTINE FSTACK
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  F(ROM) STACK							C  F(ROM) STACK
+C								C
+C  GETS PARTICLE FROM STACK AND READS FROM DISK IF NECESSARY	C  GETS PARTICLE FROM STACK AND READS FROM DISK IF NECESSARY
+C  THIS SUBROUTINE IS CALLED FORM MAIN				C  THIS SUBROUTINE IS CALLED FORM MAIN
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,BUFFS.							*KEEP,BUFFS.
+      COMMON /BUFFS/   RUNH,RUNE,EVTH,EVTE,DATAB,LH		      COMMON /BUFFS/   RUNH,RUNE,EVTH,EVTE,DATAB,LH
+      INTEGER          MAXBUF,MAXLEN				      INTEGER          MAXBUF,MAXLEN
+      PARAMETER        (MAXBUF=39*7)				      PARAMETER        (MAXBUF=39*7)
+      PARAMETER        (MAXLEN=12)				      PARAMETER        (MAXLEN=12)
+      REAL             RUNH(MAXBUF),EVTH(MAXBUF),EVTE(MAXBUF)	      REAL             RUNH(MAXBUF),EVTH(MAXBUF),EVTE(MAXBUF)
+     *                 RUNE(MAXBUF),DATAB(MAXBUF)		     *                 RUNE(MAXBUF),DATAB(MAXBUF)
+      INTEGER          LH					      INTEGER          LH
+      CHARACTER*4      CRUNH,CRUNE,CEVTH,CEVTE			      CHARACTER*4      CRUNH,CRUNE,CEVTH,CEVTE
+      EQUIVALENCE      (RUNH(1),CRUNH), (RUNE(1),CRUNE)		      EQUIVALENCE      (RUNH(1),CRUNH), (RUNE(1),CRUNE)
+      EQUIVALENCE      (EVTH(1),CEVTH), (EVTE(1),CEVTE)		      EQUIVALENCE      (EVTH(1),CEVTH), (EVTE(1),CEVTE)
+*KEEP,ETHMAP.							*KEEP,ETHMAP.
+      COMMON /ETHMAP/  ECTMAP,ELEFT				      COMMON /ETHMAP/  ECTMAP,ELEFT
+      DOUBLE PRECISION ECTMAP,ELEFT				      DOUBLE PRECISION ECTMAP,ELEFT
+*KEEP,GENER.							*KEEP,GENER.
+      COMMON /GENER/   GEN,ALEVEL				      COMMON /GENER/   GEN,ALEVEL
+      DOUBLE PRECISION GEN,ALEVEL				      DOUBLE PRECISION GEN,ALEVEL
+*KEEP,IRET.							*KEEP,IRET.
+      COMMON /IRET/    IRET1,IRET2				      COMMON /IRET/    IRET1,IRET2
+      INTEGER          IRET1,IRET2				      INTEGER          IRET1,IRET2
+*KEEP,PAM.							*KEEP,PAM.
+      COMMON /PAM/     PAMA,SIGNUM				      COMMON /PAM/     PAMA,SIGNUM
+      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)			      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)
+*KEEP,PARPAR.							*KEEP,PARPAR.
+      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,		      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,
+     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE	     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE
+      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA	      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA
+     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH	     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH
+      INTEGER          ITYPE,LEVL				      INTEGER          ITYPE,LEVL
+*KEEP,PARPAE.							*KEEP,PARPAE.
+      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,	      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,
+      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)	      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)
+     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )	     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )
+     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )	     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )
+     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )	     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )
+     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )	     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )
+     *                 (CURPAR(12),ECM )			     *                 (CURPAR(12),ECM )
+*KEEP,POLAR.							*KEEP,POLAR.
+      COMMON /POLAR/   POLART,POLARF				      COMMON /POLAR/   POLART,POLARF
+      DOUBLE PRECISION POLART,POLARF				      DOUBLE PRECISION POLART,POLARF
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEEP,STACKF.							*KEEP,STACKF.
+      COMMON /STACKF/  STACK,STACKP,EXST,NSHIFT,NOUREC,ICOUNT	      COMMON /STACKF/  STACK,STACKP,EXST,NSHIFT,NOUREC,ICOUNT
+      INTEGER          MAXSTK					      INTEGER          MAXSTK
+      PARAMETER        (MAXSTK = 12*340*2)			      PARAMETER        (MAXSTK = 12*340*2)
+      DOUBLE PRECISION STACK(MAXSTK)				      DOUBLE PRECISION STACK(MAXSTK)
+      INTEGER          STACKP,EXST,NSHIFT,NOUREC,ICOUNT,NTO,N	      INTEGER          STACKP,EXST,NSHIFT,NOUREC,ICOUNT,NTO,N
+*KEND.								*KEND.
+ 								 
+      INTEGER I,ISTK,J						      INTEGER I,ISTK,J
+      DATA ISTK / MAXSTK /					      DATA ISTK / MAXSTK /
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,*) 'FSTACK:'			      IF ( DEBUG ) WRITE(MDEBUG,*) 'FSTACK:'
+ 								 
+C  STACK EMPTY, SOMETHING TO BE READ FROM DISK ?		C  STACK EMPTY, SOMETHING TO BE READ FROM DISK ?
+      IF ( STACKP .EQ. 0 ) THEN					      IF ( STACKP .EQ. 0 ) THEN
+        IF ( NOUREC .EQ. 0 ) THEN				        IF ( NOUREC .EQ. 0 ) THEN
+          IF ( FPRINT .OR. DEBUG ) WRITE(MONIOU,224) NTO,NFRO	          IF ( FPRINT .OR. DEBUG ) WRITE(MONIOU,224) NTO,NFRO
+ 224      FORMAT(/' NO MORE SECONDARIES FOUND ON STACK'/	 224      FORMAT(/' NO MORE SECONDARIES FOUND ON STACK'/
+     *            ' ',I10,' PARTICLES WRITTEN TO STACK'/	     *            ' ',I10,' PARTICLES WRITTEN TO STACK'/
+     *            ' ',I10,' PARTICLES READ FROM STACK' )	     *            ' ',I10,' PARTICLES READ FROM STACK' )
+          CURPAR(1) = 0.D0					          CURPAR(1) = 0.D0
+          IRET1 = 1						          IRET1 = 1
+          RETURN						          RETURN
+        ENDIF							        ENDIF
+C  READ LAST BLOCK OF 340 PARTICLES FROM DISK			C  READ LAST BLOCK OF 340 PARTICLES FROM DISK
+        READ(EXST,REC=NOUREC) (STACK(I),I=1,ISTK/2)		        READ(EXST,REC=NOUREC) (STACK(I),I=1,ISTK/2)
+        NOUREC = NOUREC - 1					        NOUREC = NOUREC - 1
+        STACKP = ISTK/2						        STACKP = ISTK/2
+      ENDIF							      ENDIF
+ 								 
+      NFROM  = NFROM + 1					      NFROM  = NFROM + 1
+      ICOUNT = ICOUNT - 1					      ICOUNT = ICOUNT - 1
+ 								 
+C  PUT PARTICLE FROM STACK INTO CURPAR				C  PUT PARTICLE FROM STACK INTO CURPAR
+      STACKP = STACKP - MAXLEN					      STACKP = STACKP - MAXLEN
+      DO  5  J = 1,8						      DO  5  J = 1,8
+        CURPAR(J) = STACK(STACKP+J)				        CURPAR(J) = STACK(STACKP+J)
+    5 CONTINUE							    5 CONTINUE
+      GEN    = STACK(STACKP+ 9)					      GEN    = STACK(STACKP+ 9)
+      ALEVEL = STACK(STACKP+10)					      ALEVEL = STACK(STACKP+10)
+      POLART = STACK(STACKP+11)					      POLART = STACK(STACKP+11)
+      POLARF = STACK(STACKP+12)					      POLARF = STACK(STACKP+12)
+      IF ( PAMA(NINT(CURPAR(1))) .NE. 0.D0 ) THEN		      IF ( PAMA(NINT(CURPAR(1))) .NE. 0.D0 ) THEN
+        ELEFT  = ELEFT - CURPAR(2)*PAMA(NINT(CURPAR(1)))	        ELEFT  = ELEFT - CURPAR(2)*PAMA(NINT(CURPAR(1)))
+      ELSE							      ELSE
+        ELEFT  = ELEFT - CURPAR(2)				        ELEFT  = ELEFT - CURPAR(2)
+      ENDIF							      ENDIF
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,667) ICOUNT,(CURPAR(J),J=1,8)	      IF ( DEBUG ) WRITE(MDEBUG,667) ICOUNT,(CURPAR(J),J=1,8)
+  667 FORMAT('+       ',I7,1X,1P,9E10.3)			  667 FORMAT('+       ',I7,1X,1P,9E10.3)
+ 								 
+      RETURN							      RETURN
+      END							      END

@@ -1,0 +1,13 @@
+528a529,533
+>         
+> c> *** modified by fs (22/09/98) *******************************
+> 
+> c        IF ( GHEISH  .AND.  (ELAB .LE. HILOELB)  .AND.
+> c     *     (ITYPE.EQ.402 .OR. ITYPE.EQ.201 .OR. ITYPE.EQ.301) ) THEN
+530c535,538
+<      *     (ITYPE.EQ.402 .OR. ITYPE.EQ.201 .OR. ITYPE.EQ.301) ) THEN
+---
+>      *       (ITYPE.LE.101) ) THEN
+> 
+> c> *** end of modification *************************************
+> 

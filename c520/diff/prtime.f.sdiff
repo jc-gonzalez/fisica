@@ -1,0 +1,78 @@
+      SUBROUTINE PRTIME(TTIME)					      SUBROUTINE PRTIME(TTIME)
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  PR(INT) TIME							C  PR(INT) TIME
+C								C
+C  PRINTS PRESENT DATE AND TIME AND GIVES IT IN A FORMAT SUIT	C  PRINTS PRESENT DATE AND TIME AND GIVES IT IN A FORMAT SUIT
+C  RUNHEADER AND EVENTHEADER					C  RUNHEADER AND EVENTHEADER
+C  THIS SUBROUTINE IS CALLED FROM MAIN AND START		C  THIS SUBROUTINE IS CALLED FROM MAIN AND START
+C  ARGUMENT:							C  ARGUMENT:
+C   TTIME  = TIME (YYMMDD)					C   TTIME  = TIME (YYMMDD)
+C								C
+C  IF OUR DATE ROUTINE DOES NOT FIT TO YOUR COMPUTER, PLEASE 	C  IF OUR DATE ROUTINE DOES NOT FIT TO YOUR COMPUTER, PLEASE 
+C  IT BY A SUITABLE ROUTINE OF YOUR SYSTEM			C  IT BY A SUITABLE ROUTINE OF YOUR SYSTEM
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEND.								*KEND.
+ 							      |
+      DOUBLE PRECISION TTIME					      DOUBLE PRECISION TTIME
+      INTEGER          IJAHR,MONAT,ITAGE,ISTUN,IMINU,ISEK,ISE |	      INTEGER ID, IT, ISL1, ISL2, ISL3, ISL4, ISL5, ISL6
+      REAL             SECNDS				      |
+      character*80 line					      <
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> |	C call jcdate (modified version 13-10-98)
+c Forget all this: we just call a routine in C		      |	      CALL jcdate(ID, IT, ISL1, ISL2, ISL3, ISL4, ISL5, ISL6)
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> |	      ttime = DBLE(ID)
+c      CALL IDATE( MONAT,ITAGE,IJAHR )			      |	      
+c      ISECO   = INT(SECNDS(0.0))			      |	C format dd, mm, yy, hh, mm, ss
+c      TTIME = MOD(IJAHR,100)*10000 + MONAT*100 + ITAGE	      |	      WRITE(MONIOU,100) ISL3,ISL2,ISL1,ISL4,ISL5,ISL6
+C  SECONDS, MINUTS, HOURS, YEAR				      |	 100  FORMAT(' PRESENT TIME : ',
+c      ISEK  = MOD(ISECO,60)				      |	     *     I2,'.',I2.2,'.',I2.2,I4,':',I2.2,':',I2.2)
+c      ISECO = ISECO/60					      <
+c      IMINU = MOD(ISECO,60)				      <
+c      ISECO = ISECO/60					      <
+c      ISTUN = MOD(ISECO,24)				      <
+c      WRITE(MONIOU,100) ITAGE,MONAT,IJAHR,ISTUN,IMINU,ISEK   <
+c 100  FORMAT(' PRESENT TIME : ',I2,'.',I2,'.',I4,I4,':',I2,' <
+							      <
+      ttime = 0.0					      <
+      call jcdate					      <
+c>      write(MONIOU,*) line				      <
+
+c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ 								 
+      RETURN							      RETURN
+      END							      END
+							      >
+							      >
+							      >
+							      >
+							      >
+							      >
+							      >
+							      >

@@ -1,0 +1,129 @@
+      SUBROUTINE COMPT						      SUBROUTINE COMPT
+C                                VERSION 4.00  --  26 JAN 198	C                                VERSION 4.00  --  26 JAN 198
+C************************************************************	C************************************************************
+C   BUTCHER AND MESSEL'S CROSS SECTION EXPRESSION IS USED	C   BUTCHER AND MESSEL'S CROSS SECTION EXPRESSION IS USED
+C   (BUTCHER AND MESSEL, OP.CIT., P. 17-19,25), BUT THE		C   (BUTCHER AND MESSEL, OP.CIT., P. 17-19,25), BUT THE
+C   1/EPSILON PART IS NOT SAMPLED IN THE WAY THAT THEY DO.	C   1/EPSILON PART IS NOT SAMPLED IN THE WAY THAT THEY DO.
+C   THIS ROUTINE CALLS THEIR 'EPSILON' VARIABLE BY THE NAME '	C   THIS ROUTINE CALLS THEIR 'EPSILON' VARIABLE BY THE NAME '
+C   BR=FINAL PHOTON ENERGY /INITIAL PHOTON ENERGY.		C   BR=FINAL PHOTON ENERGY /INITIAL PHOTON ENERGY.
+C   BR0 = MINIMUM BR = 1./(1.+2.*(E(NP)/RM))			C   BR0 = MINIMUM BR = 1./(1.+2.*(E(NP)/RM))
+C   MAXIMUM BR IS 1.						C   MAXIMUM BR IS 1.
+C   BUTCHER AND MESSEL'S EXPRESSION FOR THE DIFFERENTIAL CROS	C   BUTCHER AND MESSEL'S EXPRESSION FOR THE DIFFERENTIAL CROS
+C   SECTION IS PROPORTIONAL TO					C   SECTION IS PROPORTIONAL TO
+C        (1./BR+BR)*(1.-BR*SINTHE**2/(1.+BR*BR))		C        (1./BR+BR)*(1.-BR*SINTHE**2/(1.+BR*BR))
+C   WE SHALL SAMPLE FROM THE FIRST FACTOR FROM THE INTERVAL (	C   WE SHALL SAMPLE FROM THE FIRST FACTOR FROM THE INTERVAL (
+C   AND USE THE SECOND FACTOR AS A REJECTION FUNCTION.		C   AND USE THE SECOND FACTOR AS A REJECTION FUNCTION.
+C************************************************************	C************************************************************
+      DOUBLE PRECISION PEIG,PESG,PESE				      DOUBLE PRECISION PEIG,PESG,PESE
+*KEEP,RANDPA.							*KEEP,RANDPA.
+      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR		      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR
+      DOUBLE PRECISION FAC,U1,U2				      DOUBLE PRECISION FAC,U1,U2
+      REAL             RD(3000)					      REAL             RD(3000)
+      INTEGER          ISEED(103,10),NSEQ			      INTEGER          ISEED(103,10),NSEQ
+      LOGICAL          KNOR					      LOGICAL          KNOR
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEEP,STACKE.							*KEEP,STACKE.
+      COMMON/STACKE/   E,TIME,X,Y,Z,U,V,W,DNEAR,IQ,IGEN,IR,IO	      COMMON/STACKE/   E,TIME,X,Y,Z,U,V,W,DNEAR,IQ,IGEN,IR,IO
+      DOUBLE PRECISION E(60),TIME(60)				      DOUBLE PRECISION E(60),TIME(60)
+      REAL             X(60),Y(60),Z(60),U(60),V(60),W(60),DN	      REAL             X(60),Y(60),Z(60),U(60),V(60),W(60),DN
+      INTEGER          IQ(60),IGEN(60),IR(60),IOBS(60),LPCTE(	      INTEGER          IQ(60),IGEN(60),IR(60),IOBS(60),LPCTE(
+*KEND.								*KEND.
+      COMMON/THRESH/RMT2,RMSQ,ESCD2,AP,API,AE,UP,UE,TE,THMOLL	      COMMON/THRESH/RMT2,RMSQ,ESCD2,AP,API,AE,UP,UE,TE,THMOLL
+      COMMON/UPHIOT/THETA,SINTHE,COSTHE,SINPHI, COSPHI,PI,TWO	      COMMON/UPHIOT/THETA,SINTHE,COSTHE,SINPHI, COSPHI,PI,TWO
+      DOUBLE PRECISION PZERO,PRM,PRMT2,RMI,VC			      DOUBLE PRECISION PZERO,PRM,PRMT2,RMI,VC
+      COMMON/USEFUL/PZERO,PRM,PRMT2,RMI,VC,RM,MEDIUM,MEDOLD,I	      COMMON/USEFUL/PZERO,PRM,PRMT2,RMI,VC,RM,MEDIUM,MEDOLD,I
+      COMMON/ACLOCK/NCLOCK,JCLOCK				      COMMON/ACLOCK/NCLOCK,JCLOCK
+C_____IF (NCLOCK.GT.JCLOCK) THEN				C_____IF (NCLOCK.GT.JCLOCK) THEN
+C______WRITE(MDEBUG,* )' COMPT: NP=',NP,' IR=',IR(NP),' IOBS=	C______WRITE(MDEBUG,* )' COMPT: NP=',NP,' IR=',IR(NP),' IOBS=
+C______CALL AUSGB2						C______CALL AUSGB2
+C_____END IF							C_____END IF
+      PEIG=E(NP)						      PEIG=E(NP)
+      EIG=PEIG							      EIG=PEIG
+      EGP=EIG*RMI						      EGP=EIG*RMI
+      BR0I=1.+2.*EGP						      BR0I=1.+2.*EGP
+      BR0=1./BR0I						      BR0=1./BR0I
+      ALPH1=LOG(BR0I)						      ALPH1=LOG(BR0I)
+      ALPH2=EGP*(BR0I+1.)*BR0*BR0				      ALPH2=EGP*(BR0I+1.)*BR0*BR0
+      SUMALP = ALPH1+ALPH2					      SUMALP = ALPH1+ALPH2
+371   CONTINUE							371   CONTINUE
+       CALL RMMAR(RNNO15,1,2)					       CALL RMMAR(RNNO15,1,2)
+       IF (ALPH1.GE.SUMALP*RNNO15) THEN				       IF (ALPH1.GE.SUMALP*RNNO15) THEN
+        CALL RMMAR(RNNO16,1,2)					        CALL RMMAR(RNNO16,1,2)
+        BR=EXP(ALPH1*RNNO16)*BR0				        BR=EXP(ALPH1*RNNO16)*BR0
+       ELSE							       ELSE
+        CALL RMMAR(RD,2,2)					        CALL RMMAR(RD,2,2)
+        BRP=RD(1)						        BRP=RD(1)
+        RNNO18=RD(2)						        RNNO18=RD(2)
+        IF (EGP.GE.(EGP+1.)*RNNO18) THEN			        IF (EGP.GE.(EGP+1.)*RNNO18) THEN
+         CALL RMMAR(RNNO19,1,2)					         CALL RMMAR(RNNO19,1,2)
+         BRP=MAX(BRP,RNNO19)					         BRP=MAX(BRP,RNNO19)
+        END IF							        END IF
+        BR=((BR0I-1.)*BRP+1.)*BR0				        BR=((BR0I-1.)*BRP+1.)*BR0
+       END IF							       END IF
+       ESG=BR*EIG						       ESG=BR*EIG
+       A1MIBR = 1.-BR						       A1MIBR = 1.-BR
+       TEMP=RM*A1MIBR/ESG					       TEMP=RM*A1MIBR/ESG
+       SINTHE=MAX(0.0,TEMP*(2.0-TEMP))				       SINTHE=MAX(0.0,TEMP*(2.0-TEMP))
+       CALL RMMAR(RNNO20,1,2)					       CALL RMMAR(RNNO20,1,2)
+       IF(((1.0-RNNO20)*(1.0+BR*BR).GE.BR*SINTHE))GO TO372	       IF(((1.0-RNNO20)*(1.0+BR*BR).GE.BR*SINTHE))GO TO372
+      GO TO 371							      GO TO 371
+372   CONTINUE							372   CONTINUE
+      SINTHE=SQRT(SINTHE)					      SINTHE=SQRT(SINTHE)
+      COSTHE=1.0-TEMP						      COSTHE=1.0-TEMP
+      PESG=ESG							      PESG=ESG
+      PESE=PEIG-PESG+PRM					      PESE=PEIG-PESG+PRM
+      ESE=PESE							      ESE=PESE
+      CALL UPHI(2,1)						      CALL UPHI(2,1)
+      NP=NP+1							      NP=NP+1
+      PSQ=ESE*ESE-RMSQ						      PSQ=ESE*ESE-RMSQ
+      IF (PSQ.LE.0.0) THEN					      IF (PSQ.LE.0.0) THEN
+       COSTHE=0.						       COSTHE=0.
+       SINTHE=-1.						       SINTHE=-1.
+      ELSE							      ELSE
+       COSTHE=(ESE+ESG)*A1MIBR/SQRT(PSQ)			       COSTHE=(ESE+ESG)*A1MIBR/SQRT(PSQ)
+       SINTHE=-SQRT(MAX(0.0,1.0-COSTHE*COSTHE))			       SINTHE=-SQRT(MAX(0.0,1.0-COSTHE*COSTHE))
+      END IF							      END IF
+      CALL UPHI(3,2)						      CALL UPHI(3,2)
+      IF (ESE.LE.ESG) THEN					      IF (ESE.LE.ESG) THEN
+       IQ(NP)=3							       IQ(NP)=3
+       E(NP)=PESE						       E(NP)=PESE
+       E(NP-1)=PESG						       E(NP-1)=PESG
+      ELSE							      ELSE
+       IQ(NP)=1							       IQ(NP)=1
+       IQ(NP-1)=3						       IQ(NP-1)=3
+       E(NP)=PESG						       E(NP)=PESG
+       E(NP-1)=PESE						       E(NP-1)=PESE
+       T=U(NP)							       T=U(NP)
+       U(NP)=U(NP-1)						       U(NP)=U(NP-1)
+       U(NP-1)=T						       U(NP-1)=T
+       T=V(NP)							       T=V(NP)
+       V(NP)=V(NP-1)						       V(NP)=V(NP-1)
+       V(NP-1)=T						       V(NP-1)=T
+       T=W(NP)							       T=W(NP)
+       W(NP)=W(NP-1)						       W(NP)=W(NP-1)
+       W(NP-1)=T						       W(NP-1)=T
+      END IF							      END IF
+      RETURN							      RETURN
+      END							      END

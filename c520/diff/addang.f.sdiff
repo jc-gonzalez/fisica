@@ -1,0 +1,83 @@
+      SUBROUTINE ADDANG( COST0,PHI0, COST,PHI, COST1,PHI1 )	      SUBROUTINE ADDANG( COST0,PHI0, COST,PHI, COST1,PHI1 )
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  ADD(ITION OF) ANG(LES)					C  ADD(ITION OF) ANG(LES)
+C								C
+C  ADDITION OF ANGLES IS DONE BY SEQUENTIAL ROTATIONS :		C  ADDITION OF ANGLES IS DONE BY SEQUENTIAL ROTATIONS :
+C    1. ROTATE VECTOR AROUND Z AXIS BY -PHI0			C    1. ROTATE VECTOR AROUND Z AXIS BY -PHI0
+C    2. ROTATE VECTOR AROUND Y AXIS BY -THETA0  NOW VECTOR IS	C    2. ROTATE VECTOR AROUND Y AXIS BY -THETA0  NOW VECTOR IS
+C								C
+C    3. ROTATE VECTOR AROUND Y AXIS BY  THETA ANGLES TO BE AD	C    3. ROTATE VECTOR AROUND Y AXIS BY  THETA ANGLES TO BE AD
+C    4. ROTATE VECTOR AROUND Z AXIS BY  PHI			C    4. ROTATE VECTOR AROUND Z AXIS BY  PHI
+C								C
+C    5. ROTATE VECTOR AROUND Y AXIS BY  THETA0			C    5. ROTATE VECTOR AROUND Y AXIS BY  THETA0
+C    6. ROTATE VECTOR AROUND Z AXIS BY -PHI0			C    6. ROTATE VECTOR AROUND Z AXIS BY -PHI0
+C              NOW VECTOR IS (X,Y,Z) WITH COST1     = Z		C              NOW VECTOR IS (X,Y,Z) WITH COST1     = Z
+C                                     AND TAN(PHI1) = Y/X	C                                     AND TAN(PHI1) = Y/X
+C  THIS SUBROUTINE IS CALLED FROM MANY ROUTINES			C  THIS SUBROUTINE IS CALLED FROM MANY ROUTINES
+C  ARGUMENTS:							C  ARGUMENTS:
+C   COST0  = COSINE THETA OF PARTICLE BEFORE			C   COST0  = COSINE THETA OF PARTICLE BEFORE
+C   PHI0   = PHI          OF PARTICLE BEFORE			C   PHI0   = PHI          OF PARTICLE BEFORE
+C   COST   = COSINE THETA OF ANGLE TO ADD			C   COST   = COSINE THETA OF ANGLE TO ADD
+C   PHI    = PHI          OF ANGLE TO ADD			C   PHI    = PHI          OF ANGLE TO ADD
+C   COST1  = COSINE THETA OF PARTICLE AFTER ADDITION OF ANGLE	C   COST1  = COSINE THETA OF PARTICLE AFTER ADDITION OF ANGLE
+C   PHI1   = PHI    THETA OF PARTICLE AFTER ADDITION OF ANGLE	C   PHI1   = PHI    THETA OF PARTICLE AFTER ADDITION OF ANGLE
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,CONST.							*KEEP,CONST.
+      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER			      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER
+      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER			      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEND.								*KEND.
+ 								 
+      DOUBLE PRECISION A,COST,COST0,COST1,CPHI,CPHI0,PHI,PHI0	      DOUBLE PRECISION A,COST,COST0,COST1,CPHI,CPHI0,PHI,PHI0
+     *                 SINT,SINT0,SPHI,SPHI0,XXX,YYY,ZZZ	     *                 SINT,SINT0,SPHI,SPHI0,XXX,YYY,ZZZ
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+CC    IF ( DEBUG ) WRITE(MDEBUG,*) 'ADDANG:'			CC    IF ( DEBUG ) WRITE(MDEBUG,*) 'ADDANG:'
+ 								 
+      SINT0 = SQRT(1.D0-COST0**2)				      SINT0 = SQRT(1.D0-COST0**2)
+      SINT  = SQRT(1.D0-COST **2)				      SINT  = SQRT(1.D0-COST **2)
+      SPHI0 = SIN(PHI0)						      SPHI0 = SIN(PHI0)
+      CPHI0 = COS(PHI0)						      CPHI0 = COS(PHI0)
+      SPHI  = SIN(PHI)						      SPHI  = SIN(PHI)
+      CPHI  = COS(PHI)						      CPHI  = COS(PHI)
+ 								 
+      A   = COST0 * CPHI * SINT + COST * SINT0			      A   = COST0 * CPHI * SINT + COST * SINT0
+      XXX = A    * CPHI0 - SPHI0 * SINT * SPHI			      XXX = A    * CPHI0 - SPHI0 * SINT * SPHI
+      YYY = A    * SPHI0 + CPHI0 * SINT * SPHI			      YYY = A    * SPHI0 + CPHI0 * SINT * SPHI
+      ZZZ = COST * COST0 - SINT0 * SINT * CPHI			      ZZZ = COST * COST0 - SINT0 * SINT * CPHI
+ 								 
+C  GET NEW COSINE(THETA) AND PHI				C  GET NEW COSINE(THETA) AND PHI
+      COST1  = ZZZ						      COST1  = ZZZ
+      IF ( YYY .EQ. 0.D0  .AND.  XXX .EQ. 0.D0 ) THEN		      IF ( YYY .EQ. 0.D0  .AND.  XXX .EQ. 0.D0 ) THEN
+        PHI1 = 0.D0						        PHI1 = 0.D0
+      ELSE							      ELSE
+        PHI1 = ATAN2( YYY, XXX )				        PHI1 = ATAN2( YYY, XXX )
+      ENDIF							      ENDIF
+ 								 
+      RETURN							      RETURN
+      END							      END

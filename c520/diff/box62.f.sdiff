@@ -1,0 +1,103 @@
+      SUBROUTINE BOX62						      SUBROUTINE BOX62
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C								C
+C  NUCLEON OR ANTINUCLEON INTERACTIONS				C  NUCLEON OR ANTINUCLEON INTERACTIONS
+C  HEAVY ISOBAR (FORWARD OR BACKWARD), NUCLEON			C  HEAVY ISOBAR (FORWARD OR BACKWARD), NUCLEON
+C  INCLUDES ANNIHILATION					C  INCLUDES ANNIHILATION
+C  THIS SUBROUTINE IS CALLED FROM NUCINT			C  THIS SUBROUTINE IS CALLED FROM NUCINT
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)			      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+*KEEP,NCOUNT.							*KEEP,NCOUNT.
+      COMMON /NCOUNT/  NCOUN					      COMMON /NCOUNT/  NCOUN
+      INTEGER          NCOUN(8)					      INTEGER          NCOUN(8)
+*KEEP,PAM.							*KEEP,PAM.
+      COMMON /PAM/     PAMA,SIGNUM				      COMMON /PAM/     PAMA,SIGNUM
+      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)			      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)
+*KEEP,PARPAR.							*KEEP,PARPAR.
+      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,		      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,
+     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE	     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE
+      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA	      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA
+     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH	     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH
+      INTEGER          ITYPE,LEVL				      INTEGER          ITYPE,LEVL
+*KEEP,PARPAE.							*KEEP,PARPAE.
+      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,	      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,
+      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)	      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)
+     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )	     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )
+     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )	     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )
+     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )	     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )
+     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )	     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )
+     *                 (CURPAR(12),ECM )			     *                 (CURPAR(12),ECM )
+*KEEP,RANDPA.							*KEEP,RANDPA.
+      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR		      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR
+      DOUBLE PRECISION FAC,U1,U2				      DOUBLE PRECISION FAC,U1,U2
+      REAL             RD(3000)					      REAL             RD(3000)
+      INTEGER          ISEED(103,10),NSEQ			      INTEGER          ISEED(103,10),NSEQ
+      LOGICAL          KNOR					      LOGICAL          KNOR
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEEP,SIGM.							*KEEP,SIGM.
+      COMMON /SIGM/    SIGMA,SIGANN,SIGAIR,FRACTN,FRCTNO	      COMMON /SIGM/    SIGMA,SIGANN,SIGAIR,FRACTN,FRCTNO
+      DOUBLE PRECISION SIGMA,SIGANN,SIGAIR,FRACTN,FRCTNO	      DOUBLE PRECISION SIGMA,SIGANN,SIGAIR,FRACTN,FRCTNO
+*KEND.								*KEND.
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,444) (CURPAR(I),I=1,9)		      IF ( DEBUG ) WRITE(MDEBUG,444) (CURPAR(I),I=1,9)
+  444 FORMAT(' BOX62 : CURPAR=',1P,9E10.3)			  444 FORMAT(' BOX62 : CURPAR=',1P,9E10.3)
+ 								 
+C  ANNIHILATION							C  ANNIHILATION
+      IF ( ITYPE .EQ. 15  .OR.  ITYPE .EQ. 25 ) THEN		      IF ( ITYPE .EQ. 15  .OR.  ITYPE .EQ. 25 ) THEN
+        NCOUN(5) = NCOUN(5) + 1					        NCOUN(5) = NCOUN(5) + 1
+        CALL RMMAR( RD,1,1 )					        CALL RMMAR( RD,1,1 )
+        IF ( RD(1)*SIGMA .LE. SIGANN ) THEN			        IF ( RD(1)*SIGMA .LE. SIGANN ) THEN
+          NCOUN(6) = NCOUN(6) + 1				          NCOUN(6) = NCOUN(6) + 1
+          CALL NIHILA						          CALL NIHILA
+          RETURN						          RETURN
+        ENDIF							        ENDIF
+      ENDIF							      ENDIF
+ 								 
+C  INTERACTION (ISOBAR EXCITATION)				C  INTERACTION (ISOBAR EXCITATION)
+C  SELECT HEAVY ISOBAR AND NUCLEON MASSES			C  SELECT HEAVY ISOBAR AND NUCLEON MASSES
+      CA = C(4)							      CA = C(4)
+      CB = PAMA(14)						      CB = PAMA(14)
+ 								 
+C  DECIDE WHETHER ISOBAR GOES FORWARD OR BACKWARD		C  DECIDE WHETHER ISOBAR GOES FORWARD OR BACKWARD
+C  FORWARD IF KIND = 0, BACKWARD IF KIND = 1			C  FORWARD IF KIND = 0, BACKWARD IF KIND = 1
+      CALL RMMAR( RD,1,1 )					      CALL RMMAR( RD,1,1 )
+      IF ( RD(1) .LE. 0.5 ) THEN				      IF ( RD(1) .LE. 0.5 ) THEN
+        KIND = 0						        KIND = 0
+      ELSE							      ELSE
+        KIND = 1						        KIND = 1
+      ENDIF							      ENDIF
+ 								 
+C  HEAVY ISOBAR							C  HEAVY ISOBAR
+      CALL ISOBAR( ECM,KIND,CA,CB,3 )				      CALL ISOBAR( ECM,KIND,CA,CB,3 )
+ 								 
+C  NUCLEON							C  NUCLEON
+      CALL SINGLE( ECM,1-KIND,CB,CA )				      CALL SINGLE( ECM,1-KIND,CB,CA )
+ 								 
+      RETURN							      RETURN
+      END							      END

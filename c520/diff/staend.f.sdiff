@@ -1,0 +1,114 @@
+      SUBROUTINE STAEND						      SUBROUTINE STAEND
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  STA(RT) END							C  STA(RT) END
+C								C
+C  SUBROUTINE FOR GETTING THE CONTROL PRINTOUT OF THE CONSTAN	C  SUBROUTINE FOR GETTING THE CONTROL PRINTOUT OF THE CONSTAN
+C  PRINT CONTROL OUTPUT						C  PRINT CONTROL OUTPUT
+C  THIS SUBROUTINE IS CALLED FROM MAIN AND START		C  THIS SUBROUTINE IS CALLED FROM MAIN AND START
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,ANNI.							*KEEP,ANNI.
+      COMMON /ANNI/    CAN,CANN					      COMMON /ANNI/    CAN,CANN
+      DOUBLE PRECISION CAN(50),CANN(50)				      DOUBLE PRECISION CAN(50),CANN(50)
+*KEEP,ATMOS.							*KEEP,ATMOS.
+      COMMON /ATMOS/   AATM,BATM,CATM,DATM			      COMMON /ATMOS/   AATM,BATM,CATM,DATM
+      DOUBLE PRECISION AATM(5),BATM(5),CATM(5),DATM(5)		      DOUBLE PRECISION AATM(5),BATM(5),CATM(5),DATM(5)
+*KEEP,EDECAY.							*KEEP,EDECAY.
+      COMMON /EDECAY/  CETA					      COMMON /EDECAY/  CETA
+      DOUBLE PRECISION CETA(5)					      DOUBLE PRECISION CETA(5)
+*KEEP,KAONS.							*KEEP,KAONS.
+      COMMON /KAONS/   CKA					      COMMON /KAONS/   CKA
+      DOUBLE PRECISION CKA(80)					      DOUBLE PRECISION CKA(80)
+*KEEP,PARPAR.							*KEEP,PARPAR.
+      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,		      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,
+     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE	     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE
+      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA	      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA
+     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH	     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH
+      INTEGER          ITYPE,LEVL				      INTEGER          ITYPE,LEVL
+*KEEP,PARPAE.							*KEEP,PARPAE.
+      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,	      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,
+      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)	      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)
+     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )	     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )
+     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )	     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )
+     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )	     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )
+     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )	     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )
+     *                 (CURPAR(12),ECM )			     *                 (CURPAR(12),ECM )
+*KEEP,RANGE.							*KEEP,RANGE.
+      COMMON /RANGE/   CC					      COMMON /RANGE/   CC
+      DOUBLE PRECISION CC(20)					      DOUBLE PRECISION CC(20)
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEEP,STRBAR.							*KEEP,STRBAR.
+      COMMON /STRBAR/  CSTRBA					      COMMON /STRBAR/  CSTRBA
+      DOUBLE PRECISION CSTRBA(11)				      DOUBLE PRECISION CSTRBA(11)
+*KEND.								*KEND.
+ 								 
+      INTEGER I							      INTEGER I
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+C  PRINT CONTROL OUTPUT						C  PRINT CONTROL OUTPUT
+      WRITE(MONIOU,103) (C(I),I=1,50)				      WRITE(MONIOU,103) (C(I),I=1,50)
+  103 FORMAT (//' ',10('='),' CONSTANTS AND PARAMETERS ',43('	  103 FORMAT (//' ',10('='),' CONSTANTS AND PARAMETERS ',43('
+     *        //' PHYSICAL CONSTANTS (C)' // (1P,4(E15.8,1X),	     *        //' PHYSICAL CONSTANTS (C)' // (1P,4(E15.8,1X),
+      WRITE(MONIOU,110) (CKA(I),I=1,80)				      WRITE(MONIOU,110) (CKA(I),I=1,80)
+  110 FORMAT (//' CONSTANTS FOR KAONS CKA(1) TO CKA(40)'	  110 FORMAT (//' CONSTANTS FOR KAONS CKA(1) TO CKA(40)'
+     *        // (1P,4(E15.8,1X),E15.8) )			     *        // (1P,4(E15.8,1X),E15.8) )
+      WRITE(MONIOU,114) (CETA(I),I=1,5)				      WRITE(MONIOU,114) (CETA(I),I=1,5)
+  114 FORMAT (//' CONSTANTS FOR ETAS CETA(1) TO CETA(5)'	  114 FORMAT (//' CONSTANTS FOR ETAS CETA(1) TO CETA(5)'
+     *        // (1P,4(E15.8,1X),E15.8) )			     *        // (1P,4(E15.8,1X),E15.8) )
+      WRITE(MONIOU,115) (CSTRBA(I),I=1,11)			      WRITE(MONIOU,115) (CSTRBA(I),I=1,11)
+  115 FORMAT (//' CONSTANTS FOR STRANGE BARYONS CSTRBA(1) TO 	  115 FORMAT (//' CONSTANTS FOR STRANGE BARYONS CSTRBA(1) TO 
+     *            'CSTRBA(11)'// (1P,4(E15.8,1X),E15.8) )	     *            'CSTRBA(11)'// (1P,4(E15.8,1X),E15.8) )
+      IF ( .NOT. GHEISH ) THEN					      IF ( .NOT. GHEISH ) THEN
+        WRITE(MONIOU,206) (CAN(I),I=1,30)			        WRITE(MONIOU,206) (CAN(I),I=1,30)
+  206   FORMAT (//' ANNIHILATION PARAMETERS, SET 1 (CAN)'	  206   FORMAT (//' ANNIHILATION PARAMETERS, SET 1 (CAN)'
+     *          // (1P,4(E15.8,1X),E15.8) )			     *          // (1P,4(E15.8,1X),E15.8) )
+        WRITE(MONIOU,209) (CANN(I),I=1,30)			        WRITE(MONIOU,209) (CANN(I),I=1,30)
+  209   FORMAT (//' ANNIHILATION PARAMETERS, SET 2 (CANN)'	  209   FORMAT (//' ANNIHILATION PARAMETERS, SET 2 (CANN)'
+     *          // (1P,4(E15.8,1X),E15.8) )			     *          // (1P,4(E15.8,1X),E15.8) )
+        WRITE(MONIOU,60) (CC(I),I=1,12)				        WRITE(MONIOU,60) (CC(I),I=1,12)
+   60   FORMAT (//' THRESHOLD ENERGIES OF INTERACTION INTERVA	   60   FORMAT (//' THRESHOLD ENERGIES OF INTERACTION INTERVA
+     *             ,'GEV (CC)'// (1P,4(E15.8,1X),E15.8) )	     *             ,'GEV (CC)'// (1P,4(E15.8,1X),E15.8) )
+      ENDIF							      ENDIF
+ 								 
+      WRITE(MONIOU,303) (AATM(I),BATM(I),CATM(I)*1.E-5,I=1,4)	      WRITE(MONIOU,303) (AATM(I),BATM(I),CATM(I)*1.E-5,I=1,4)
+     *                    AATM(5),CATM(5)*1.E5			     *                    AATM(5),CATM(5)*1.E5
+  303 FORMAT (//' ',10('='),' ATMOSPHERE ', 57('=') /		  303 FORMAT (//' ',10('='),' ATMOSPHERE ', 57('=') /
+     * ' ( US STANDARD ATMOSPHERE PARAMETRIZED BY LINSLEY )'/	     * ' ( US STANDARD ATMOSPHERE PARAMETRIZED BY LINSLEY )'/
+     * ' HEIGHT H IN KM GIVES THICKNESS OF ATMOSPHERE T IN G/	     * ' HEIGHT H IN KM GIVES THICKNESS OF ATMOSPHERE T IN G/
+     * ' H =   0 ...  4 KM ---> T = ',				     * ' H =   0 ...  4 KM ---> T = ',
+     * E12.5,' +',E11.4,' * EXP ( - H /',E11.4,' )'/		     * E12.5,' +',E11.4,' * EXP ( - H /',E11.4,' )'/
+     * ' H =   4 ... 10 KM ---> T = ',				     * ' H =   4 ... 10 KM ---> T = ',
+     * E12.5,' +',E11.4,' * EXP ( - H /',E11.4,' )'/		     * E12.5,' +',E11.4,' * EXP ( - H /',E11.4,' )'/
+     * ' H =  10 ... 40 KM ---> T = ',				     * ' H =  10 ... 40 KM ---> T = ',
+     * E12.5,' +',E11.4,' * EXP ( - H /',E11.4,' )'/		     * E12.5,' +',E11.4,' * EXP ( - H /',E11.4,' )'/
+     * ' H =  40 .. 100 KM ---> T = ',				     * ' H =  40 .. 100 KM ---> T = ',
+     * E12.5,' +',E11.4,' * EXP ( - H /',E11.4,' )'/		     * E12.5,' +',E11.4,' * EXP ( - H /',E11.4,' )'/
+     * ' H = 100 ...    KM ---> T = ',				     * ' H = 100 ...    KM ---> T = ',
+     * E12.5,' -',E11.4,' * H ' )				     * E12.5,' -',E11.4,' * H ' )
+ 								 
+      RETURN							      RETURN
+      END							      END

@@ -1,0 +1,109 @@
+      SUBROUTINE MUCOUL(OMEGA,DENS,VSCAT)			      SUBROUTINE MUCOUL(OMEGA,DENS,VSCAT)
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C   MU(ON) COUL(OMB SCATTERING OF SINGLE SCATTERING EVENTS)	C   MU(ON) COUL(OMB SCATTERING OF SINGLE SCATTERING EVENTS)
+C								C
+C  TREATES SINGLE COULOMB SCATTERING FOR MUONS IN SMALL ANGLE	C  TREATES SINGLE COULOMB SCATTERING FOR MUONS IN SMALL ANGLE
+C  APPROXIMATION.						C  APPROXIMATION.
+C  THIS SUBROUTINE IS IN ANALOGY WITH SUBROUTINE GMCOUL		C  THIS SUBROUTINE IS IN ANALOGY WITH SUBROUTINE GMCOUL
+C  (AUTHOR: G. LYNCH, LBL) OF GEANT321				C  (AUTHOR: G. LYNCH, LBL) OF GEANT321
+C  SEE CERN PROGRAM LIBRARY LONG WRITEUP W5013			C  SEE CERN PROGRAM LIBRARY LONG WRITEUP W5013
+C  THIS SUBROUTINE IS CALLED FROM UPDATE			C  THIS SUBROUTINE IS CALLED FROM UPDATE
+C  ARGUMENTS:							C  ARGUMENTS:
+C   OMEGA = NUMBER OF SCATTERINGS FOR THE STEP			C   OMEGA = NUMBER OF SCATTERINGS FOR THE STEP
+C   DENS  = LOCAL DENSITY					C   DENS  = LOCAL DENSITY
+C   VSCAT = SCATTERING ANGLE					C   VSCAT = SCATTERING ANGLE
+C								C
+C  REDESIGN: D. HECK    IK3  FZK KARLSRUHE			C  REDESIGN: D. HECK    IK3  FZK KARLSRUHE
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,CONST.							*KEEP,CONST.
+      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER			      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER
+      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER			      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER
+*KEEP,MUMULT.							*KEEP,MUMULT.
+      COMMON /MUMULT/  CHC,OMC,FMOLI				      COMMON /MUMULT/  CHC,OMC,FMOLI
+      DOUBLE PRECISION CHC,OMC					      DOUBLE PRECISION CHC,OMC
+      LOGICAL          FMOLI					      LOGICAL          FMOLI
+*KEEP,PAM.							*KEEP,PAM.
+      COMMON /PAM/     PAMA,SIGNUM				      COMMON /PAM/     PAMA,SIGNUM
+      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)			      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)
+*KEEP,PARPAR.							*KEEP,PARPAR.
+      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,		      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,
+     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE	     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE
+      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA	      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA
+     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH	     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH
+      INTEGER          ITYPE,LEVL				      INTEGER          ITYPE,LEVL
+*KEEP,PARPAE.							*KEEP,PARPAE.
+      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,	      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,
+      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)	      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)
+     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )	     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )
+     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )	     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )
+     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )	     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )
+     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )	     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )
+     *                 (CURPAR(12),ECM )			     *                 (CURPAR(12),ECM )
+*KEEP,RANDPA.							*KEEP,RANDPA.
+      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR		      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR
+      DOUBLE PRECISION FAC,U1,U2				      DOUBLE PRECISION FAC,U1,U2
+      REAL             RD(3000)					      REAL             RD(3000)
+      INTEGER          ISEED(103,10),NSEQ			      INTEGER          ISEED(103,10),NSEQ
+      LOGICAL          KNOR					      LOGICAL          KNOR
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEND.								*KEND.
+ 								 
+      DOUBLE PRECISION DENS,OMCF,OMEGA,OMEGA0,PHIS,SUMX,SUMY,	      DOUBLE PRECISION DENS,OMCF,OMEGA,OMEGA0,PHIS,SUMX,SUMY,
+     *                 THET,THMIN2,VSCAT			     *                 THET,THMIN2,VSCAT
+      INTEGER          I,NSCMX,NSCA				      INTEGER          I,NSCMX,NSCA
+      DATA             OMCF/1.167D0/,NSCMX/50/			      DATA             OMCF/1.167D0/,NSCMX/50/
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,*)'MUCOUL: OMEGA=',SNGL(OMEGA	      IF ( DEBUG ) WRITE(MDEBUG,*)'MUCOUL: OMEGA=',SNGL(OMEGA
+     *                                    ' DENS=',SNGL(DENS)	     *                                    ' DENS=',SNGL(DENS)
+ 								 
+C  COMPUTE NUMBER OF SCATTERS (POISSON DISTR. WITH MEAN OMEGA	C  COMPUTE NUMBER OF SCATTERS (POISSON DISTR. WITH MEAN OMEGA
+      OMEGA0 = OMCF*OMEGA					      OMEGA0 = OMCF*OMEGA
+      CALL MPOISS (OMEGA0,NSCA)					      CALL MPOISS (OMEGA0,NSCA)
+      IF ( NSCA .LE. 0 ) THEN					      IF ( NSCA .LE. 0 ) THEN
+        VSCAT = 0.D0						        VSCAT = 0.D0
+        RETURN							        RETURN
+      ENDIF							      ENDIF
+      NSCA = MIN(NSCA,NSCMX)					      NSCA = MIN(NSCA,NSCMX)
+      CALL RMMAR(RD,2*NSCA,1)					      CALL RMMAR(RD,2*NSCA,1)
+ 								 
+C  THMIN2 IS THE SCREENING ANGLE				C  THMIN2 IS THE SCREENING ANGLE
+      THMIN2 = CHC**2/( OMCF*OMC * (PAMA(5)*BETA*GAMMA)**2 )	      THMIN2 = CHC**2/( OMCF*OMC * (PAMA(5)*BETA*GAMMA)**2 )
+ 								 
+      SUMX = 0.D0						      SUMX = 0.D0
+      SUMY = 0.D0						      SUMY = 0.D0
+      DO 12 I = 1,NSCA						      DO 12 I = 1,NSCA
+        THET  = SQRT( THMIN2*((1./RD(I)) - 1.) )		        THET  = SQRT( THMIN2*((1./RD(I)) - 1.) )
+        PHIS  = PI2 * RD(NSCA+I)				        PHIS  = PI2 * RD(NSCA+I)
+        SUMX  = SUMX + THET*COS(PHIS)				        SUMX  = SUMX + THET*COS(PHIS)
+        SUMY  = SUMY + THET*SIN(PHIS)				        SUMY  = SUMY + THET*SIN(PHIS)
+ 12   CONTINUE							 12   CONTINUE
+      VSCAT  = SQRT(SUMX**2 + SUMY**2)				      VSCAT  = SQRT(SUMX**2 + SUMY**2)
+ 								 
+      RETURN							      RETURN
+      END							      END

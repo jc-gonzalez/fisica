@@ -1,0 +1,126 @@
+      SUBROUTINE MUDECY						      SUBROUTINE MUDECY
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  MU(ON) DEC(A)Y						C  MU(ON) DEC(A)Y
+C								C
+C  TREATES DECAY OF MUON INTO ELECTRON (INCLUDING POLARISATIO	C  TREATES DECAY OF MUON INTO ELECTRON (INCLUDING POLARISATIO
+C  INCLUDING NEUTRINOS, IF SELECTED				C  INCLUDING NEUTRINOS, IF SELECTED
+C  THIS SUBROUTINE IS CALLED FROM MUTRAC			C  THIS SUBROUTINE IS CALLED FROM MUTRAC
+C								C
+C  DESIGN  : D. HECK    IK3  FZK KARLSRUHE			C  DESIGN  : D. HECK    IK3  FZK KARLSRUHE
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,CONST.							*KEEP,CONST.
+      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER			      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER
+      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER			      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER
+*KEEP,GENER.							*KEEP,GENER.
+      COMMON /GENER/   GEN,ALEVEL				      COMMON /GENER/   GEN,ALEVEL
+      DOUBLE PRECISION GEN,ALEVEL				      DOUBLE PRECISION GEN,ALEVEL
+*KEEP,PAM.							*KEEP,PAM.
+      COMMON /PAM/     PAMA,SIGNUM				      COMMON /PAM/     PAMA,SIGNUM
+      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)			      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)
+*KEEP,PARPAR.							*KEEP,PARPAR.
+      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,		      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,
+     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE	     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE
+      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA	      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA
+     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH	     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH
+      INTEGER          ITYPE,LEVL				      INTEGER          ITYPE,LEVL
+*KEEP,PARPAE.							*KEEP,PARPAE.
+      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,	      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,
+      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)	      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)
+     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )	     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )
+     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )	     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )
+     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )	     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )
+     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )	     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )
+     *                 (CURPAR(12),ECM )			     *                 (CURPAR(12),ECM )
+*KEEP,POLAR.							*KEEP,POLAR.
+      COMMON /POLAR/   POLART,POLARF				      COMMON /POLAR/   POLART,POLARF
+      DOUBLE PRECISION POLART,POLARF				      DOUBLE PRECISION POLART,POLARF
+*KEEP,RANDPA.							*KEEP,RANDPA.
+      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR		      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR
+      DOUBLE PRECISION FAC,U1,U2				      DOUBLE PRECISION FAC,U1,U2
+      REAL             RD(3000)					      REAL             RD(3000)
+      INTEGER          ISEED(103,10),NSEQ			      INTEGER          ISEED(103,10),NSEQ
+      LOGICAL          KNOR					      LOGICAL          KNOR
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEND.								*KEND.
+ 								 
+      DOUBLE PRECISION AUX2,COSDE,COSTH3,COS3CM,COS3C1,COS3C2	      DOUBLE PRECISION AUX2,COSDE,COSTH3,COS3CM,COS3C1,COS3C2
+     *                 E3CM,GAMMA3,PHI3CM,PHI3C2,PHI31,		     *                 E3CM,GAMMA3,PHI3CM,PHI3C2,PHI31,
+     *                 P3CM,XI					     *                 P3CM,XI
+      INTEGER          I					      INTEGER          I
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,444) (CURPAR(I),I=1,9)		      IF ( DEBUG ) WRITE(MDEBUG,444) (CURPAR(I),I=1,9)
+  444 FORMAT(' MUDECY: CURPAR=',1P,9E10.3)			  444 FORMAT(' MUDECY: CURPAR=',1P,9E10.3)
+ 								 
+C  MUON DECAYS INTO ELECTRON AND NEUTRINOS			C  MUON DECAYS INTO ELECTRON AND NEUTRINOS
+      XI     = 2*ITYPE - 11					      XI     = 2*ITYPE - 11
+C  ELECTRON ENERGY SPECTRUM  N(E) * DE = CONST * E**2 * (3/2*	C  ELECTRON ENERGY SPECTRUM  N(E) * DE = CONST * E**2 * (3/2*
+C  IS GAINED BY THE REJECTION/REFLECTION METHOD			C  IS GAINED BY THE REJECTION/REFLECTION METHOD
+   6  CALL RMMAR( RD,4,1 )					   6  CALL RMMAR( RD,4,1 )
+      IF ( RD(1)**2*(3.-RD(1)*2.)  .LT.  RD(2) )  RD(1) = 1.-	      IF ( RD(1)**2*(3.-RD(1)*2.)  .LT.  RD(2) )  RD(1) = 1.-
+      E3CM   = PAMA(2) + RD(1) * ( C(8) - PAMA(2) )		      E3CM   = PAMA(2) + RD(1) * ( C(8) - PAMA(2) )
+      IF ( E3CM .GT. 0.5D0*PAMA(5) )  GOTO 6			      IF ( E3CM .GT. 0.5D0*PAMA(5) )  GOTO 6
+      P3CM   = SQRT( E3CM**2 - PAMA(2)**2 )			      P3CM   = SQRT( E3CM**2 - PAMA(2)**2 )
+C  NOW DETERMINE COS3C1 AND PHI31 BY RANDOM SELECTION		C  NOW DETERMINE COS3C1 AND PHI31 BY RANDOM SELECTION
+C  WITH RESPECT TO THE POLARIZATION DIRECTION OF THE MUON IN 	C  WITH RESPECT TO THE POLARIZATION DIRECTION OF THE MUON IN 
+C  GIVEN BY POLART, POLARF					C  GIVEN BY POLART, POLARF
+      COSDE  = 2.D0 * RD(4) - 1.D0				      COSDE  = 2.D0 * RD(4) - 1.D0
+      AUX2   = ( 1. - 2.*RD(1) ) / ( 3. - 2.*RD(1) )		      AUX2   = ( 1. - 2.*RD(1) ) / ( 3. - 2.*RD(1) )
+      IF ( ABS(AUX2) .GT. 1.D-2 ) THEN				      IF ( ABS(AUX2) .GT. 1.D-2 ) THEN
+        COS3C1 = XI*(SQRT(1.D0-(2.D0*COSDE-AUX2)*AUX2) - 1.D0	        COS3C1 = XI*(SQRT(1.D0-(2.D0*COSDE-AUX2)*AUX2) - 1.D0
+      ELSE							      ELSE
+        COS3C1 = -XI * COSDE					        COS3C1 = -XI * COSDE
+      ENDIF							      ENDIF
+      PHI31  = RD(3)*PI2					      PHI31  = RD(3)*PI2
+ 								 
+C  NOW ADD ELECTRON EMISSION ANGLE COS3C1 TO THE POLARISATION	C  NOW ADD ELECTRON EMISSION ANGLE COS3C1 TO THE POLARISATION
+C  TO GET THE DIRECTION (RELATIVE TO THE CORSIKA COORDINATE S	C  TO GET THE DIRECTION (RELATIVE TO THE CORSIKA COORDINATE S
+      CALL ADDANG( POLART,POLARF, COS3C1,PHI31, COS3C2,PHI3C2	      CALL ADDANG( POLART,POLARF, COS3C1,PHI31, COS3C2,PHI3C2
+C  GET THE ELECTRON DIRECTION RELATIVE TO THE MUON LAB DIRECT	C  GET THE ELECTRON DIRECTION RELATIVE TO THE MUON LAB DIRECT
+      CALL ADDANI( CURPAR(3),CURPAR(4), COS3C2,PHI3C2, COS3CM	      CALL ADDANI( CURPAR(3),CURPAR(4), COS3C2,PHI3C2, COS3CM
+C  LORENTZ TRANSFORMATION TO THE LAB SYSTEM			C  LORENTZ TRANSFORMATION TO THE LAB SYSTEM
+      GAMMA3 = GAMMA * ( E3CM + BETA * P3CM * COS3CM ) / PAMA	      GAMMA3 = GAMMA * ( E3CM + BETA * P3CM * COS3CM ) / PAMA
+      COSTH3 = MIN( 1.D0, GAMMA * (P3CM * COS3CM + BETA * E3C	      COSTH3 = MIN( 1.D0, GAMMA * (P3CM * COS3CM + BETA * E3C
+     *                             (PAMA(2) * SQRT(GAMMA3**2 	     *                             (PAMA(2) * SQRT(GAMMA3**2 
+      CALL ADDANG( CURPAR(3),CURPAR(4), COSTH3,PHI3CM,		      CALL ADDANG( CURPAR(3),CURPAR(4), COSTH3,PHI3CM,
+     *                                    SECPAR(3),SECPAR(4)	     *                                    SECPAR(3),SECPAR(4)
+      IF ( SECPAR(3) .GE. C(29) ) THEN				      IF ( SECPAR(3) .GE. C(29) ) THEN
+        SECPAR(1) = ITYPE - 3					        SECPAR(1) = ITYPE - 3
+        SECPAR(2) = GAMMA3					        SECPAR(2) = GAMMA3
+        DO 10  I = 5,8						        DO 10  I = 5,8
+          SECPAR(I) = CURPAR(I)					          SECPAR(I) = CURPAR(I)
+  10    CONTINUE						  10    CONTINUE
+        SECPAR( 9)  = GEN					        SECPAR( 9)  = GEN
+        SECPAR(10)  = ALEVEL					        SECPAR(10)  = ALEVEL
+        CALL TSTACK						        CALL TSTACK
+      ENDIF							      ENDIF
+      POLART = 0.D0						      POLART = 0.D0
+      POLARF = 0.D0						      POLARF = 0.D0
+ 								 
+      RETURN							      RETURN
+      END							      END

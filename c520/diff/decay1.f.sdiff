@@ -1,0 +1,124 @@
+      SUBROUTINE DECAY1( M0,M3,M4 )				      SUBROUTINE DECAY1( M0,M3,M4 )
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  DECAY (INTO TWO PARTICLES)					C  DECAY (INTO TWO PARTICLES)
+C								C
+C  TWO PARTICLE DECAY WITH FULL KINEMATIC; ENERGY AND MOMENTA	C  TWO PARTICLE DECAY WITH FULL KINEMATIC; ENERGY AND MOMENTA
+C  THIS SUBROUTINE IS CALLED FROM KDECAY, RESDEC, AND STRDEC	C  THIS SUBROUTINE IS CALLED FROM KDECAY, RESDEC, AND STRDEC
+C  ARGUMENTS:							C  ARGUMENTS:
+C   M0     = TYPE OF DECAYING PARTICLE				C   M0     = TYPE OF DECAYING PARTICLE
+C   M3     = TYPE OF FIRST PRODUCT PARTICLE			C   M3     = TYPE OF FIRST PRODUCT PARTICLE
+C   M4     = TYPE OF SECOND PRODUCT PARTICLE			C   M4     = TYPE OF SECOND PRODUCT PARTICLE
+C								C
+C  DESIGN  : D. HECK    IK3  FZK KARLSRUHE			C  DESIGN  : D. HECK    IK3  FZK KARLSRUHE
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT NONE						      IMPLICIT NONE
+*KEEP,CONST.							*KEEP,CONST.
+      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER			      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER
+      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER			      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER
+*KEEP,PAM.							*KEEP,PAM.
+      COMMON /PAM/     PAMA,SIGNUM				      COMMON /PAM/     PAMA,SIGNUM
+      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)			      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)
+*KEEP,PARPAR.							*KEEP,PARPAR.
+      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,		      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,
+     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE	     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE
+      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA	      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA
+     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH	     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH
+      INTEGER          ITYPE,LEVL				      INTEGER          ITYPE,LEVL
+*KEEP,PARPAE.							*KEEP,PARPAE.
+      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,	      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,
+      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)	      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)
+     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )	     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )
+     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )	     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )
+     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )	     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )
+     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )	     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )
+     *                 (CURPAR(12),ECM )			     *                 (CURPAR(12),ECM )
+*KEEP,RANDPA.							*KEEP,RANDPA.
+      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR		      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR
+      DOUBLE PRECISION FAC,U1,U2				      DOUBLE PRECISION FAC,U1,U2
+      REAL             RD(3000)					      REAL             RD(3000)
+      INTEGER          ISEED(103,10),NSEQ			      INTEGER          ISEED(103,10),NSEQ
+      LOGICAL          KNOR					      LOGICAL          KNOR
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEND.								*KEND.
+ 								 
+      DOUBLE PRECISION AUX1,AUX2,AUX2A,AUX3,AUX4,COSTCM,COSTH	      DOUBLE PRECISION AUX1,AUX2,AUX2A,AUX3,AUX4,COSTCM,COSTH
+     *                 GAMMA3,GAMMA4,PHI4,WORK1,WORK2		     *                 GAMMA3,GAMMA4,PHI4,WORK1,WORK2
+      INTEGER          I,M0,M3,M4				      INTEGER          I,M0,M3,M4
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,444) BETA,M0,M3,M4		      IF ( DEBUG ) WRITE(MDEBUG,444) BETA,M0,M3,M4
+  444 FORMAT(' DECAY1: BETA,M0,M3,M4=',1P,E10.3,3I5)		  444 FORMAT(' DECAY1: BETA,M0,M3,M4=',1P,E10.3,3I5)
+ 								 
+C  PARTICLE COORDINATES 5..10 ARE COPIED INTO SECPAR IN CALLI	C  PARTICLE COORDINATES 5..10 ARE COPIED INTO SECPAR IN CALLI
+C  CALCULATE AUXILIARY QUANTITIES				C  CALCULATE AUXILIARY QUANTITIES
+      AUX1   = ( ( PAMA(M0)**2 + PAMA(M3)**2 - PAMA(M4)**2 )	      AUX1   = ( ( PAMA(M0)**2 + PAMA(M3)**2 - PAMA(M4)**2 )
+     *            / (2.D0*PAMA(M0)) )**2  - PAMA(M3)**2		     *            / (2.D0*PAMA(M0)) )**2  - PAMA(M3)**2
+      AUX2   = 1.D0 + AUX1 / PAMA(M3)**2			      AUX2   = 1.D0 + AUX1 / PAMA(M3)**2
+      AUX2A  = SQRT(AUX2)					      AUX2A  = SQRT(AUX2)
+      AUX3   = SQRT( 1.D0 - 1.D0 / AUX2 )			      AUX3   = SQRT( 1.D0 - 1.D0 / AUX2 )
+ 								 
+      WORK1  = GAMMA * AUX2A					      WORK1  = GAMMA * AUX2A
+      WORK2  = AUX3 * BETA * WORK1				      WORK2  = AUX3 * BETA * WORK1
+ 								 
+C  DETERMINE POLAR ANGLE IN CM SYSTEM				C  DETERMINE POLAR ANGLE IN CM SYSTEM
+      CALL RMMAR( RD,2,1 )					      CALL RMMAR( RD,2,1 )
+      COSTCM = 2.D0 * RD(1) - 1.D0				      COSTCM = 2.D0 * RD(1) - 1.D0
+      GAMMA3 = WORK1 + WORK2 * COSTCM				      GAMMA3 = WORK1 + WORK2 * COSTCM
+C  SECOND PRODUCT PARTICLE WITH NONVANISHING REST MASS		C  SECOND PRODUCT PARTICLE WITH NONVANISHING REST MASS
+      IF ( PAMA(M4) .NE. 0.D0 ) THEN				      IF ( PAMA(M4) .NE. 0.D0 ) THEN
+        GAMMA4 = (PAMA(M0)*GAMMA - PAMA(M3)*GAMMA3) / PAMA(M4	        GAMMA4 = (PAMA(M0)*GAMMA - PAMA(M3)*GAMMA3) / PAMA(M4
+        AUX4   = (PAMA(M0)**2 + PAMA(M4)**2 - PAMA(M3)**2 )	        AUX4   = (PAMA(M0)**2 + PAMA(M4)**2 - PAMA(M3)**2 )
+     *            / (2.D0*PAMA(M0)*PAMA(M4))			     *            / (2.D0*PAMA(M0)*PAMA(M4))
+        COSTH4 = MIN( 1.D0, (GAMMA*GAMMA4 - AUX4)		        COSTH4 = MIN( 1.D0, (GAMMA*GAMMA4 - AUX4)
+     *                     / (BETA * GAMMA * SQRT(GAMMA4**2 -	     *                     / (BETA * GAMMA * SQRT(GAMMA4**2 -
+      ELSE							      ELSE
+C  SECOND PRODUCT PARTICLE IS GAMMA; THEN GAMMA4 IS THE ENERG	C  SECOND PRODUCT PARTICLE IS GAMMA; THEN GAMMA4 IS THE ENERG
+        GAMMA4 = PAMA(M0)*GAMMA - PAMA(M3)*GAMMA3		        GAMMA4 = PAMA(M0)*GAMMA - PAMA(M3)*GAMMA3
+        COSTH4 = MIN( 1.D0, (BETA - COSTCM)/(1.D0 - BETA*COST	        COSTH4 = MIN( 1.D0, (BETA - COSTCM)/(1.D0 - BETA*COST
+      ENDIF							      ENDIF
+      PHI4 = RD(2)*PI2						      PHI4 = RD(2)*PI2
+      CALL ADDANG( COSTHE,PHI, COSTH4,PHI4, SECPAR(3),SECPAR(	      CALL ADDANG( COSTHE,PHI, COSTH4,PHI4, SECPAR(3),SECPAR(
+      IF ( SECPAR(3) .GT. C(29) ) THEN				      IF ( SECPAR(3) .GT. C(29) ) THEN
+        SECPAR(1) = M4						        SECPAR(1) = M4
+        SECPAR(2) = GAMMA4					        SECPAR(2) = GAMMA4
+        IF ( DEBUG ) WRITE(MDEBUG,445) (SECPAR(I),I=1,9)	        IF ( DEBUG ) WRITE(MDEBUG,445) (SECPAR(I),I=1,9)
+  445   FORMAT(' DECAY1: SECPAR=',1P,9E10.3)			  445   FORMAT(' DECAY1: SECPAR=',1P,9E10.3)
+        CALL TSTACK						        CALL TSTACK
+      ENDIF							      ENDIF
+C  FIRST PRODUCT PARTICLE					C  FIRST PRODUCT PARTICLE
+      COSTH3 = MIN( 1.D0, (GAMMA * GAMMA3 - AUX2A)		      COSTH3 = MIN( 1.D0, (GAMMA * GAMMA3 - AUX2A)
+     *                   / (BETA * GAMMA * SQRT(GAMMA3**2 - 1	     *                   / (BETA * GAMMA * SQRT(GAMMA3**2 - 1
+      CALL ADDANG( COSTHE,PHI, COSTH3,PHI4+PI, SECPAR(3),SECP	      CALL ADDANG( COSTHE,PHI, COSTH3,PHI4+PI, SECPAR(3),SECP
+      IF ( SECPAR(3) .GT. C(29) ) THEN				      IF ( SECPAR(3) .GT. C(29) ) THEN
+        SECPAR(1) = M3						        SECPAR(1) = M3
+        SECPAR(2) = GAMMA3					        SECPAR(2) = GAMMA3
+        IF ( DEBUG ) WRITE(MDEBUG,445) (SECPAR(I),I=1,9)	        IF ( DEBUG ) WRITE(MDEBUG,445) (SECPAR(I),I=1,9)
+        CALL TSTACK						        CALL TSTACK
+      ENDIF							      ENDIF
+ 								 
+      RETURN							      RETURN
+      END							      END

@@ -1,0 +1,504 @@
+      SUBROUTINE VSTORE						      SUBROUTINE VSTORE
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  V(ENUS PARTICLES) STORE (INTO CORSIKA STACK)			C  V(ENUS PARTICLES) STORE (INTO CORSIKA STACK)
+C								C
+C  STORES VENUS OUTPUT PARTICLES INTO CORSIKA STACK		C  STORES VENUS OUTPUT PARTICLES INTO CORSIKA STACK
+C  THIS SUBROUTINE IS CALLED FROM VENLNK			C  THIS SUBROUTINE IS CALLED FROM VENLNK
+C								C
+C  DESIGN   : D. HECK    IK3  FZK KARLSRUHE			C  DESIGN   : D. HECK    IK3  FZK KARLSRUHE
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+*KEEP,CONST.							*KEEP,CONST.
+      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER			      COMMON /CONST/   PI,PI2,OB3,TB3,ENEPER
+      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER			      DOUBLE PRECISION PI,PI2,OB3,TB3,ENEPER
+*KEEP,DPMFLG.							*KEEP,DPMFLG.
+      COMMON /DPMFLG/  NFLAIN,NFLDIF,NFLPI0,NFLCHE,NFLPIF,NFR	      COMMON /DPMFLG/  NFLAIN,NFLDIF,NFLPI0,NFLCHE,NFLPIF,NFR
+      INTEGER          NFLAIN,NFLDIF,NFLPI0,NFLCHE,NFLPIF,NFR	      INTEGER          NFLAIN,NFLDIF,NFLPI0,NFLCHE,NFLPIF,NFR
+*KEEP,ELADPM.							*KEEP,ELADPM.
+      COMMON /ELADPM/  ELMEAN,ELMEAA,IELDPM,IELDPA		      COMMON /ELADPM/  ELMEAN,ELMEAA,IELDPM,IELDPA
+      DOUBLE PRECISION ELMEAN(37),ELMEAA(37)			      DOUBLE PRECISION ELMEAN(37),ELMEAA(37)
+      INTEGER          IELDPM(37,13),IELDPA(37,13)		      INTEGER          IELDPM(37,13),IELDPA(37,13)
+*KEEP,ELASTY.							*KEEP,ELASTY.
+      COMMON /ELASTY/  ELAST,IELIS,IELHM,IELNU,IELPI		      COMMON /ELASTY/  ELAST,IELIS,IELHM,IELNU,IELPI
+      DOUBLE PRECISION ELAST					      DOUBLE PRECISION ELAST
+      INTEGER          IELIS(20),IELHM(20),IELNU(20),IELPI(20	      INTEGER          IELIS(20),IELHM(20),IELNU(20),IELPI(20
+*KEEP,INTER.							*KEEP,INTER.
+      COMMON /INTER/   AVCH,AVCH3,DC0,DLOG,DMLOG,ECMDIF,ECMDP	      COMMON /INTER/   AVCH,AVCH3,DC0,DLOG,DMLOG,ECMDIF,ECMDP
+     *                 FNEUT,FNEUT2,GNU,PLAB,POSC2,POSC3,POSN	     *                 FNEUT,FNEUT2,GNU,PLAB,POSC2,POSC3,POSN
+     *                 RC3TO2,S,SEUGF,SEUGP,SLOG,SLOGSQ,SMLOG	     *                 RC3TO2,S,SEUGF,SEUGP,SLOG,SLOGSQ,SMLOG
+     *                 WIDC2,WIDC3,WIDN2,WIDN3,YCM,YY0,ZN,	     *                 WIDC2,WIDC3,WIDN2,WIDN3,YCM,YY0,ZN,
+     *                 IDIF,ITAR				     *                 IDIF,ITAR
+      DOUBLE PRECISION AVCH,AVCH3,DC0,DLOG,DMLOG,ECMDIF,ECMDP	      DOUBLE PRECISION AVCH,AVCH3,DC0,DLOG,DMLOG,ECMDIF,ECMDP
+     *                 FNEUT,FNEUT2,GNU,PLAB,POSC2,POSC3,POSN	     *                 FNEUT,FNEUT2,GNU,PLAB,POSC2,POSC3,POSN
+     *                 RC3TO2,S,SEUGF,SEUGP,SLOG,SLOGSQ,SMLOG	     *                 RC3TO2,S,SEUGF,SEUGP,SLOG,SLOGSQ,SMLOG
+     *                 WIDC2,WIDC3,WIDN2,WIDN3,YCM,YY0,ZN	     *                 WIDC2,WIDC3,WIDN2,WIDN3,YCM,YY0,ZN
+      INTEGER          IDIF,ITAR				      INTEGER          IDIF,ITAR
+*KEEP,ISTA.							*KEEP,ISTA.
+      COMMON /ISTA/    IFINET,IFINNU,IFINKA,IFINPI,IFINHY	      COMMON /ISTA/    IFINET,IFINNU,IFINKA,IFINPI,IFINHY
+      INTEGER          IFINET,IFINNU,IFINKA,IFINPI,IFINHY	      INTEGER          IFINET,IFINNU,IFINKA,IFINPI,IFINHY
+*KEEP,MULT.							*KEEP,MULT.
+      COMMON /MULT/    EKINL,MSMM,MULTMA,MULTOT			      COMMON /MULT/    EKINL,MSMM,MULTMA,MULTOT
+      DOUBLE PRECISION EKINL					      DOUBLE PRECISION EKINL
+      INTEGER          MSMM,MULTMA(37,13),MULTOT(37,13)		      INTEGER          MSMM,MULTMA(37,13),MULTOT(37,13)
+*KEEP,PAM.							*KEEP,PAM.
+      COMMON /PAM/     PAMA,SIGNUM				      COMMON /PAM/     PAMA,SIGNUM
+      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)			      DOUBLE PRECISION PAMA(6000),SIGNUM(6000)
+*KEEP,PARPAR.							*KEEP,PARPAR.
+      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,		      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,
+     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE	     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE
+      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA	      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA
+     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH	     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH
+      INTEGER          ITYPE,LEVL				      INTEGER          ITYPE,LEVL
+*KEEP,PARPAE.							*KEEP,PARPAE.
+      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,	      DOUBLE PRECISION GAMMA,COSTHE,PHI,H,T,X,Y,CHI,BETA,GCM,
+      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)	      EQUIVALENCE      (CURPAR(2),GAMMA),  (CURPAR(3),COSTHE)
+     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )	     *                 (CURPAR(4), PHI ),  (CURPAR(5), H    )
+     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )	     *                 (CURPAR(6), T   ),  (CURPAR(7), X    )
+     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )	     *                 (CURPAR(8), Y   ),  (CURPAR(9), CHI  )
+     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )	     *                 (CURPAR(10),BETA),  (CURPAR(11),GCM  )
+     *                 (CURPAR(12),ECM )			     *                 (CURPAR(12),ECM )
+*KEEP,RANDPA.							*KEEP,RANDPA.
+      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR		      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR
+      DOUBLE PRECISION FAC,U1,U2				      DOUBLE PRECISION FAC,U1,U2
+      REAL             RD(3000)					      REAL             RD(3000)
+      INTEGER          ISEED(103,10),NSEQ			      INTEGER          ISEED(103,10),NSEQ
+      LOGICAL          KNOR					      LOGICAL          KNOR
+*KEEP,REST.							*KEEP,REST.
+      COMMON /REST/    CONTNE,TAR,LT				      COMMON /REST/    CONTNE,TAR,LT
+      DOUBLE PRECISION CONTNE(3),TAR				      DOUBLE PRECISION CONTNE(3),TAR
+      INTEGER          LT					      INTEGER          LT
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEND.								*KEND.
+ 								 
+      PARAMETER (KOLLMX=2500)					      PARAMETER (KOLLMX=2500)
+      PARAMETER (MXPTL=70000)					      PARAMETER (MXPTL=70000)
+      PARAMETER (MXSTR=3000)					      PARAMETER (MXSTR=3000)
+      PARAMETER (NDEP=129)					      PARAMETER (NDEP=129)
+      PARAMETER (NDET=129)					      PARAMETER (NDET=129)
+      COMMON /ACCUM/   AMSAC,ILAMAS,IMSG,INOIAC,IPAGE,JERR,NA	      COMMON /ACCUM/   AMSAC,ILAMAS,IMSG,INOIAC,IPAGE,JERR,NA
+     *                ,NRPTL,NRSTR,NTEVT			     *                ,NRPTL,NRSTR,NTEVT
+      COMMON /CEVT/    BIMEVT,COLEVT,EGYEVT,PHIEVT,PMXEVT	      COMMON /CEVT/    BIMEVT,COLEVT,EGYEVT,PHIEVT,PMXEVT
+     *                ,KOLEVT,NEVT,NPJEVT,NTGEVT		     *                ,KOLEVT,NEVT,NPJEVT,NTGEVT
+      COMMON /COL/     BIMP,BMAX,COORD(4,KOLLMX),DISTCE(KOLLM	      COMMON /COL/     BIMP,BMAX,COORD(4,KOLLMX),DISTCE(KOLLM
+     *                ,QDEP(NDEP),QDET14(NDET),QDET16(NDET),Q	     *                ,QDEP(NDEP),QDET14(NDET),QDET16(NDET),Q
+     *                ,QDET99(NDET),RMPROJ,RMTARG(4),XDEP(NDE	     *                ,QDET99(NDET),RMPROJ,RMTARG(4),XDEP(NDE
+     *                ,XDET14(NDET),XDET16(NDET),XDET40(NDET)	     *                ,XDET14(NDET),XDET16(NDET),XDET40(NDET)
+     *                ,XDET99(NDET)				     *                ,XDET99(NDET)
+     *                ,KOLL,LTARG,NORD(KOLLMX),NPROJ,NRPROJ(K	     *                ,KOLL,LTARG,NORD(KOLLMX),NPROJ,NRPROJ(K
+     *                ,NRTARG(KOLLMX),NTARG			     *                ,NRTARG(KOLLMX),NTARG
+      COMMON /CPTL/    PPTL(5,MXPTL),TIVPTL(2,MXPTL),XORPTL(4	      COMMON /CPTL/    PPTL(5,MXPTL),TIVPTL(2,MXPTL),XORPTL(4
+     *                ,IBPTL(4,MXPTL),ICLPTL(MXPTL),IDPTL(MXP	     *                ,IBPTL(4,MXPTL),ICLPTL(MXPTL),IDPTL(MXP
+     *                ,IFRPTL(2,MXPTL),IORPTL(MXPTL),ISTPTL(M	     *                ,IFRPTL(2,MXPTL),IORPTL(MXPTL),ISTPTL(M
+     *                ,JORPTL(MXPTL),NPTL,NQJPTL(MXPTL)		     *                ,JORPTL(MXPTL),NPTL,NQJPTL(MXPTL)
+      COMMON /CSTR/    PSTR(5,MXSTR),ROTSTR(3,MXSTR),XORSTR(4	      COMMON /CSTR/    PSTR(5,MXSTR),ROTSTR(3,MXSTR),XORSTR(4
+     *                ,ICSTR(4,MXSTR),IORSTR(MXSTR),IRLSTR(MX	     *                ,ICSTR(4,MXSTR),IORSTR(MXSTR),IRLSTR(MX
+      COMMON /FILES/   IFCH,IFDT,IFHI,IFMT,IFOP			      COMMON /FILES/   IFCH,IFDT,IFHI,IFMT,IFOP
+      COMMON /PARO2/   AMPROJ,AMTARG,ANGMUE,ELEPTI,ELEPTO,ENG	      COMMON /PARO2/   AMPROJ,AMTARG,ANGMUE,ELEPTI,ELEPTO,ENG
+     *                ,PNLL,PNLLX,PROB(99),PROSEA,RHOPHI,TAUR	     *                ,PNLL,PNLLX,PROB(99),PROSEA,RHOPHI,TAUR
+     *                ,YHAHA,YMXIMI,YPJTL			     *                ,YHAHA,YMXIMI,YPJTL
+     *                ,ICBAC(99,2),ICFOR(99,2),ICHOIC,ICLHIS,	     *                ,ICBAC(99,2),ICFOR(99,2),ICHOIC,ICLHIS,
+     *                ,IDPROJ,IDTARG,IENTRO,IJPHIS,IMIHIS,IPA	     *                ,IDPROJ,IDTARG,IENTRO,IJPHIS,IMIHIS,IPA
+     *                ,ISHEVT,ISHSUB,ISPALL,ISPHIS,ISTMAX,ISU	     *                ,ISHEVT,ISHSUB,ISPALL,ISPHIS,ISTMAX,ISU
+     *                ,JPSI,JPSIFI,KUTDIQ,LAPROJ,LATARG,MAPRO	     *                ,JPSI,JPSIFI,KUTDIQ,LAPROJ,LATARG,MAPRO
+     *                ,MODSHO,NDECAX,NDECAY,NEVENT		     *                ,MODSHO,NDECAX,NDECAY,NEVENT
+      COMMON /PARO3/   ASUHAX(7),ASUHAY(7),OMEGA,SIGPPD,SIGPP	      COMMON /PARO3/   ASUHAX(7),ASUHAY(7),OMEGA,SIGPPD,SIGPP
+     *                ,IWZZZZ					     *                ,IWZZZZ
+ 								 
+      DOUBLE PRECISION EA,ELASTI,EMAX,GAMMAX,COSTET,PHIV,PL2,	      DOUBLE PRECISION EA,ELASTI,EMAX,GAMMAX,COSTET,PHIV,PL2,
+      DOUBLE PRECISION PFRX(60),PFRY(60)			      DOUBLE PRECISION PFRX(60),PFRY(60)
+      INTEGER          ITYP(60),NRPTLA(MXPTL)			      INTEGER          ITYP(60),NRPTLA(MXPTL)
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IF ( DEBUG ) WRITE(MDEBUG,*) 'VSTORE:'			      IF ( DEBUG ) WRITE(MDEBUG,*) 'VSTORE:'
+ 								 
+C  NUMBER OF SPECTATORS OF REMAINING NUCLEUS IS NREST		C  NUMBER OF SPECTATORS OF REMAINING NUCLEUS IS NREST
+      NREST = ITYPE/100 - NPJEVT				      NREST = ITYPE/100 - NPJEVT
+      IREST = ITYPE						      IREST = ITYPE
+      NNEW  = 0							      NNEW  = 0
+      INEW  = 0							      INEW  = 0
+      ETOT  = 0.						      ETOT  = 0.
+ 								 
+      LEVT  = 1							      LEVT  = 1
+      LPTL  = 3							      LPTL  = 3
+      NPTLS = 0							      NPTLS = 0
+      DO  1 I=1,NPTL						      DO  1 I=1,NPTL
+        NRPTLA(I) = -999					        NRPTLA(I) = -999
+        IF ( ISTPTL(I) .GT. ISTMAX ) GOTO 1			        IF ( ISTPTL(I) .GT. ISTMAX ) GOTO 1
+        NPTLS = NPTLS+1						        NPTLS = NPTLS+1
+        NRPTLA(I) = NPTLS					        NRPTLA(I) = NPTLS
+ 1    CONTINUE							 1    CONTINUE
+ 								 
+C  EVENT VARIABLES:						C  EVENT VARIABLES:
+C     LEVT................... RECORD LABEL (LEVT=1)		C     LEVT................... RECORD LABEL (LEVT=1)
+C     NREVT.................. EVENT NUMBER			C     NREVT.................. EVENT NUMBER
+C     NPTLS ................. NUMBER OF (STORED!) PARTICLES P	C     NPTLS ................. NUMBER OF (STORED!) PARTICLES P
+C     BIMEVT ................ IMPACT PARAMETER			C     BIMEVT ................ IMPACT PARAMETER
+C     KOLEVT,COLEVT ......... REAL/EFFECTIVE # OF COLLISIONS	C     KOLEVT,COLEVT ......... REAL/EFFECTIVE # OF COLLISIONS
+C     PMXEVT ................ REFERENCE MOMENTUM		C     PMXEVT ................ REFERENCE MOMENTUM
+C     EGYEVT ................ PP CM ENERGY (HAD) OR STRING EN	C     EGYEVT ................ PP CM ENERGY (HAD) OR STRING EN
+C     NPJEVT,NTGEVT ......... # OF PROJ/TARG PARTICIPANTS	C     NPJEVT,NTGEVT ......... # OF PROJ/TARG PARTICIPANTS
+ 								 
+      GNU = KOLEVT						      GNU = KOLEVT
+      GNU = COLEVT						      GNU = COLEVT
+C  SET COORDINATES, WHICH ARE IDENTICAL FOR ALL SECONDARY PAR	C  SET COORDINATES, WHICH ARE IDENTICAL FOR ALL SECONDARY PAR
+      DO  6 I=5,8						      DO  6 I=5,8
+        SECPAR(I) = CURPAR(I)					        SECPAR(I) = CURPAR(I)
+ 6    CONTINUE							 6    CONTINUE
+CC    GAMMAX = 0.D0						CC    GAMMAX = 0.D0
+      EMAX   = 0.D0						      EMAX   = 0.D0
+ 								 
+C  PARTICLE LOOP						C  PARTICLE LOOP
+      DO  5 I=1,NPTL						      DO  5 I=1,NPTL
+        IF ( NRPTLA(I) .LE. 0 ) GOTO 5				        IF ( NRPTLA(I) .LE. 0 ) GOTO 5
+ 								 
+C  PARTICLE VARIABLES:						C  PARTICLE VARIABLES:
+C     LPTL ......... RECORD LABEL (LPTL=3)			C     LPTL ......... RECORD LABEL (LPTL=3)
+C     NREVT ........ EVENT NUMBER				C     NREVT ........ EVENT NUMBER
+C     NRPTL ........ PARTICLE NUMBER				C     NRPTL ........ PARTICLE NUMBER
+C     I ............ ORIGINAL PTL NUMBER			C     I ............ ORIGINAL PTL NUMBER
+C     IDPTL ........ PARTICLE ID				C     IDPTL ........ PARTICLE ID
+C     PPTL ......... 5-MOMENTUM (PX,PY,PZ,EN,MASS) IN LAB	C     PPTL ......... 5-MOMENTUM (PX,PY,PZ,EN,MASS) IN LAB
+C     IOPTL ........ ORIGIN (-999:PARENT NOT STORED, -1,0:NO 	C     IOPTL ........ ORIGIN (-999:PARENT NOT STORED, -1,0:NO 
+C     JOPTL ........ ORIGIN (SECOND PARENT)			C     JOPTL ........ ORIGIN (SECOND PARENT)
+C     ISTPTL ....... STABLE (=0) OR NOT (=1)			C     ISTPTL ....... STABLE (=0) OR NOT (=1)
+C     XORPTL ....... SPACE-TIME POINT (X,Y,Z,T) ON PTL TRACK 	C     XORPTL ....... SPACE-TIME POINT (X,Y,Z,T) ON PTL TRACK 
+C     TIVPTL ....... TIME INTERVAL OF EXISTENCE			C     TIVPTL ....... TIME INTERVAL OF EXISTENCE
+C     NQJPTL ....... QUARK NUMBERS OF JETS			C     NQJPTL ....... QUARK NUMBERS OF JETS
+ 								 
+C  ELIMINATE TARGET SPECTATORS					C  ELIMINATE TARGET SPECTATORS
+        IF ( PPTL(3,I) .EQ. 0. ) GOTO 5				        IF ( PPTL(3,I) .EQ. 0. ) GOTO 5
+ 								 
+C  ELIMINATE BACKWARD GOING PARTICLES				C  ELIMINATE BACKWARD GOING PARTICLES
+        IF ( PPTL(3,I) .LT. 0. ) GOTO 5				        IF ( PPTL(3,I) .LT. 0. ) GOTO 5
+C  CONVERT PARTICLE CODE  VEN(US) ---> C(O)RS(IKA)		C  CONVERT PARTICLE CODE  VEN(US) ---> C(O)RS(IKA)
+C  MOST FREQUENT PARTICLES COME FIRST				C  MOST FREQUENT PARTICLES COME FIRST
+        KODVEN = IDPTL(I)					        KODVEN = IDPTL(I)
+C  MESONS							C  MESONS
+        IF     ( KODVEN .EQ.   110 ) THEN			        IF     ( KODVEN .EQ.   110 ) THEN
+          KODCRS = 7						          KODCRS = 7
+        ELSEIF ( KODVEN .EQ.   120 ) THEN			        ELSEIF ( KODVEN .EQ.   120 ) THEN
+          KODCRS = 8						          KODCRS = 8
+        ELSEIF ( KODVEN .EQ.  -120 ) THEN			        ELSEIF ( KODVEN .EQ.  -120 ) THEN
+          KODCRS = 9						          KODCRS = 9
+        ELSEIF ( KODVEN .EQ.   220 ) THEN			        ELSEIF ( KODVEN .EQ.   220 ) THEN
+          KODCRS = 17						          KODCRS = 17
+C  NUCLEONS							C  NUCLEONS
+        ELSEIF ( KODVEN .EQ.  1220 ) THEN			        ELSEIF ( KODVEN .EQ.  1220 ) THEN
+          KODCRS = 13						          KODCRS = 13
+        ELSEIF ( KODVEN .EQ.  1120 ) THEN			        ELSEIF ( KODVEN .EQ.  1120 ) THEN
+          KODCRS = 14						          KODCRS = 14
+        ELSEIF ( KODVEN .EQ. -1120 ) THEN			        ELSEIF ( KODVEN .EQ. -1120 ) THEN
+          KODCRS = 15						          KODCRS = 15
+        ELSEIF ( KODVEN .EQ. -1220 ) THEN			        ELSEIF ( KODVEN .EQ. -1220 ) THEN
+          KODCRS = 25						          KODCRS = 25
+C  STRANGE MESONS						C  STRANGE MESONS
+        ELSEIF ( KODVEN .EQ.   -20 ) THEN			        ELSEIF ( KODVEN .EQ.   -20 ) THEN
+          KODCRS = 10						          KODCRS = 10
+        ELSEIF ( KODVEN .EQ.   130 ) THEN			        ELSEIF ( KODVEN .EQ.   130 ) THEN
+          KODCRS = 11						          KODCRS = 11
+        ELSEIF ( KODVEN .EQ.  -130 ) THEN			        ELSEIF ( KODVEN .EQ.  -130 ) THEN
+          KODCRS = 12						          KODCRS = 12
+        ELSEIF ( KODVEN .EQ.    20 ) THEN			        ELSEIF ( KODVEN .EQ.    20 ) THEN
+          KODCRS = 16						          KODCRS = 16
+C  STRANGE BARYONS						C  STRANGE BARYONS
+        ELSEIF ( KODVEN .EQ.  2130 ) THEN			        ELSEIF ( KODVEN .EQ.  2130 ) THEN
+          KODCRS = 18						          KODCRS = 18
+        ELSEIF ( KODVEN .EQ.  1130 ) THEN			        ELSEIF ( KODVEN .EQ.  1130 ) THEN
+          KODCRS = 19						          KODCRS = 19
+        ELSEIF ( KODVEN .EQ.  1230 ) THEN			        ELSEIF ( KODVEN .EQ.  1230 ) THEN
+          KODCRS = 20						          KODCRS = 20
+        ELSEIF ( KODVEN .EQ.  2230 ) THEN			        ELSEIF ( KODVEN .EQ.  2230 ) THEN
+          KODCRS = 21						          KODCRS = 21
+        ELSEIF ( KODVEN .EQ.  1330 ) THEN			        ELSEIF ( KODVEN .EQ.  1330 ) THEN
+          KODCRS = 22						          KODCRS = 22
+        ELSEIF ( KODVEN .EQ.  2330 ) THEN			        ELSEIF ( KODVEN .EQ.  2330 ) THEN
+          KODCRS = 23						          KODCRS = 23
+        ELSEIF ( KODVEN .EQ.  3331 ) THEN			        ELSEIF ( KODVEN .EQ.  3331 ) THEN
+          KODCRS = 24						          KODCRS = 24
+        ELSEIF ( KODVEN .EQ. -2130 ) THEN			        ELSEIF ( KODVEN .EQ. -2130 ) THEN
+          KODCRS = 26						          KODCRS = 26
+        ELSEIF ( KODVEN .EQ. -1130 ) THEN			        ELSEIF ( KODVEN .EQ. -1130 ) THEN
+          KODCRS = 27						          KODCRS = 27
+        ELSEIF ( KODVEN .EQ. -1230 ) THEN			        ELSEIF ( KODVEN .EQ. -1230 ) THEN
+          KODCRS = 28						          KODCRS = 28
+        ELSEIF ( KODVEN .EQ. -2230 ) THEN			        ELSEIF ( KODVEN .EQ. -2230 ) THEN
+          KODCRS = 29						          KODCRS = 29
+        ELSEIF ( KODVEN .EQ. -1330 ) THEN			        ELSEIF ( KODVEN .EQ. -1330 ) THEN
+          KODCRS = 30						          KODCRS = 30
+        ELSEIF ( KODVEN .EQ. -2330 ) THEN			        ELSEIF ( KODVEN .EQ. -2330 ) THEN
+          KODCRS = 31						          KODCRS = 31
+        ELSEIF ( KODVEN .EQ. -3331 ) THEN			        ELSEIF ( KODVEN .EQ. -3331 ) THEN
+          KODCRS = 32						          KODCRS = 32
+C  LEPTONS							C  LEPTONS
+        ELSEIF ( KODVEN .EQ.    10 ) THEN			        ELSEIF ( KODVEN .EQ.    10 ) THEN
+          KODCRS = 1						          KODCRS = 1
+        ELSEIF ( KODVEN .EQ.   -12 ) THEN			        ELSEIF ( KODVEN .EQ.   -12 ) THEN
+          KODCRS = 2						          KODCRS = 2
+        ELSEIF ( KODVEN .EQ.    12 ) THEN			        ELSEIF ( KODVEN .EQ.    12 ) THEN
+          KODCRS = 3						          KODCRS = 3
+        ELSEIF ( KODVEN .EQ.   -14 ) THEN			        ELSEIF ( KODVEN .EQ.   -14 ) THEN
+          KODCRS = 5						          KODCRS = 5
+        ELSEIF ( KODVEN .EQ.    14 ) THEN			        ELSEIF ( KODVEN .EQ.    14 ) THEN
+          KODCRS = 6						          KODCRS = 6
+C  NEUTRINOS ARE SKIPPED					C  NEUTRINOS ARE SKIPPED
+        ELSEIF ( KODVEN .EQ.    11 ) THEN			        ELSEIF ( KODVEN .EQ.    11 ) THEN
+          GOTO 5						          GOTO 5
+        ELSEIF ( KODVEN .EQ.   -11 ) THEN			        ELSEIF ( KODVEN .EQ.   -11 ) THEN
+          GOTO 5						          GOTO 5
+        ELSEIF ( KODVEN .EQ.    13 ) THEN			        ELSEIF ( KODVEN .EQ.    13 ) THEN
+          GOTO 5						          GOTO 5
+        ELSEIF ( KODVEN .EQ.   -13 ) THEN			        ELSEIF ( KODVEN .EQ.   -13 ) THEN
+          GOTO 5						          GOTO 5
+        ELSE							        ELSE
+          WRITE(MONIOU,*)'VSTORE: UNKNOWN PARTICLE CODE IDPTL	          WRITE(MONIOU,*)'VSTORE: UNKNOWN PARTICLE CODE IDPTL
+          GOTO 5						          GOTO 5
+        ENDIF							        ENDIF
+        SECPAR(1) = KODCRS					        SECPAR(1) = KODCRS
+ 								 
+        IF ( KODCRS .NE. 1  .AND. KODCRS .LE. 65 ) THEN		        IF ( KODCRS .NE. 1  .AND. KODCRS .LE. 65 ) THEN
+C  ORDINARY SECONDARY PARTICLES					C  ORDINARY SECONDARY PARTICLES
+          SECPAR(2) = PPTL(4,I)/PAMA(KODCRS)			          SECPAR(2) = PPTL(4,I)/PAMA(KODCRS)
+C  LOOK FOR SPECTATOR NUCLEONS					C  LOOK FOR SPECTATOR NUCLEONS
+          IF ( KODCRS .EQ. 13  .OR.  KODCRS .EQ. 14 ) THEN	          IF ( KODCRS .EQ. 13  .OR.  KODCRS .EQ. 14 ) THEN
+C  ELIMINATE TARGET SPECTATORS					C  ELIMINATE TARGET SPECTATORS
+            IF ( SECPAR(2) .LE. 1.002D0 ) GOTO 5		            IF ( SECPAR(2) .LE. 1.002D0 ) GOTO 5
+C  TREAT PROJECTILE SPECTATORS					C  TREAT PROJECTILE SPECTATORS
+            IF ( SECPAR(2) .GT. 0.999D0*GAMMA  .AND.		            IF ( SECPAR(2) .GT. 0.999D0*GAMMA  .AND.
+     *           SECPAR(2) .LT. 1.001D0*GAMMA  .AND.		     *           SECPAR(2) .LT. 1.001D0*GAMMA  .AND.
+     *           PPTL(1,I).EQ.0.  .AND.  PPTL(2,I).EQ.0. ) TH	     *           PPTL(1,I).EQ.0.  .AND.  PPTL(2,I).EQ.0. ) TH
+              IF ( NFRAGM .NE. 0 ) THEN				              IF ( NFRAGM .NE. 0 ) THEN
+C  COMPOSE PROJECTILE SPECTATORS TO REMAINING NUCLEUS		C  COMPOSE PROJECTILE SPECTATORS TO REMAINING NUCLEUS
+                NREST = NREST - 1				                NREST = NREST - 1
+                NNEW  = NNEW + 1				                NNEW  = NNEW + 1
+                IF     ( KODCRS .EQ. 14 ) THEN			                IF     ( KODCRS .EQ. 14 ) THEN
+                  INEW  = INEW + 101				                  INEW  = INEW + 101
+                  IREST = IREST - 101				                  IREST = IREST - 101
+                ELSEIF ( KODCRS .EQ. 13 ) THEN			                ELSEIF ( KODCRS .EQ. 13 ) THEN
+                  INEW  = INEW + 100				                  INEW  = INEW + 100
+                  IREST = IREST - 100				                  IREST = IREST - 100
+                ENDIF						                ENDIF
+                GOTO 5						                GOTO 5
+              ENDIF						              ENDIF
+C  DISREGARD PROJECTILE SPECTATORS FOR ELASTICITY		C  DISREGARD PROJECTILE SPECTATORS FOR ELASTICITY
+              GOTO 7						              GOTO 7
+            ENDIF						            ENDIF
+          ENDIF							          ENDIF
+ 								 
+CC        IF ( SECPAR(2) .GT. GAMMAX ) THEN			CC        IF ( SECPAR(2) .GT. GAMMAX ) THEN
+CC          GAMMAX = SECPAR(2)					CC          GAMMAX = SECPAR(2)
+C  CALCULATE ELASTICITY FROM ENERGY OF FASTEST PARTICLE (LEAD	C  CALCULATE ELASTICITY FROM ENERGY OF FASTEST PARTICLE (LEAD
+CC          ELASTI = GAMMAX * PAMA(KODCRS) / ELAB		CC          ELASTI = GAMMAX * PAMA(KODCRS) / ELAB
+CC        ENDIF							CC        ENDIF
+          IF ( SECPAR(2)*PAMA(KODCRS) .GT. EMAX ) THEN		          IF ( SECPAR(2)*PAMA(KODCRS) .GT. EMAX ) THEN
+            EMAX = SECPAR(2)*PAMA(KODCRS)			            EMAX = SECPAR(2)*PAMA(KODCRS)
+C  CALCULATE ELASTICITY FROM MOST ENERGETIC PARTICLE (LEADER)	C  CALCULATE ELASTICITY FROM MOST ENERGETIC PARTICLE (LEADER)
+            ELASTI = EMAX / ELAB				            ELASTI = EMAX / ELAB
+          ENDIF							          ENDIF
+        ELSE							        ELSE
+C  GAMMAS AND NEUTRINOS						C  GAMMAS AND NEUTRINOS
+          SECPAR(2) = PPTL(4,I)					          SECPAR(2) = PPTL(4,I)
+        ENDIF							        ENDIF
+ 								 
+C  COUNTER FOR ENERGY-MULTIPLICITY MATRIX			C  COUNTER FOR ENERGY-MULTIPLICITY MATRIX
+        MSMM = MSMM + 1						        MSMM = MSMM + 1
+ 								 
+C  DETERMINE ANGLES FROM LONGITUDINAL AND TRANSVERSAL MOMENTA	C  DETERMINE ANGLES FROM LONGITUDINAL AND TRANSVERSAL MOMENTA
+ 7      CONTINUE						 7      CONTINUE
+        PT2 = DBLE(PPTL(1,I))**2 + DBLE(PPTL(2,I))**2		        PT2 = DBLE(PPTL(1,I))**2 + DBLE(PPTL(2,I))**2
+        PL2 = DBLE(PPTL(3,I))**2				        PL2 = DBLE(PPTL(3,I))**2
+ 								 
+        IF ( PL2+PT2 .LE. 0.D0 ) THEN				        IF ( PL2+PT2 .LE. 0.D0 ) THEN
+          COSTET = 0.D0						          COSTET = 0.D0
+        ELSE							        ELSE
+          COSTET = PPTL(3,I) / SQRT(PL2+PT2)			          COSTET = PPTL(3,I) / SQRT(PL2+PT2)
+        ENDIF							        ENDIF
+        COSTET = MAX( MIN(COSTET, 1.D0), -1.D0 )		        COSTET = MAX( MIN(COSTET, 1.D0), -1.D0 )
+        IF ( PPTL(1,I)  .NE. 0.  .OR.  PPTL(2,I) .NE. 0. ) TH	        IF ( PPTL(1,I)  .NE. 0.  .OR.  PPTL(2,I) .NE. 0. ) TH
+          PHIV = ATAN2( DBLE(PPTL(1,I)), DBLE(PPTL(2,I)) )	          PHIV = ATAN2( DBLE(PPTL(1,I)), DBLE(PPTL(2,I)) )
+        ELSE							        ELSE
+          PHIV = 0.D0						          PHIV = 0.D0
+        ENDIF							        ENDIF
+ 								 
+ 								 
+        ETOT = ETOT + PPTL(4,I)					        ETOT = ETOT + PPTL(4,I)
+        CALL ADDANG( COSTHE,PHI, COSTET,PHIV, SECPAR(3),SECPA	        CALL ADDANG( COSTHE,PHI, COSTET,PHIV, SECPAR(3),SECPA
+        IF ( SECPAR(3) .GE. C(29) ) THEN			        IF ( SECPAR(3) .GE. C(29) ) THEN
+          CALL TSTACK						          CALL TSTACK
+        ENDIF							        ENDIF
+ 								 
+C  COUNTERS FOR FIRST INTERACTION				C  COUNTERS FOR FIRST INTERACTION
+        IF ( FIRSTI ) THEN					        IF ( FIRSTI ) THEN
+          IF     ( SECPAR(1) .EQ.  7.D0  .OR.  SECPAR(1) .EQ.	          IF     ( SECPAR(1) .EQ.  7.D0  .OR.  SECPAR(1) .EQ.
+     *       .OR.  SECPAR(1) .EQ.  9.D0                      	     *       .OR.  SECPAR(1) .EQ.  9.D0                      
+            IFINPI = IFINPI + 1					            IFINPI = IFINPI + 1
+          ELSEIF ( SECPAR(1) .EQ. 13.D0  .OR.  SECPAR(1) .EQ.	          ELSEIF ( SECPAR(1) .EQ. 13.D0  .OR.  SECPAR(1) .EQ.
+     *       .OR.  SECPAR(1) .EQ. 15.D0 .OR. SECPAR(1) .EQ. 2	     *       .OR.  SECPAR(1) .EQ. 15.D0 .OR. SECPAR(1) .EQ. 2
+            IFINNU = IFINNU + 1					            IFINNU = IFINNU + 1
+          ELSEIF ( SECPAR(1) .EQ. 10.D0  .OR.  SECPAR(1) .EQ.	          ELSEIF ( SECPAR(1) .EQ. 10.D0  .OR.  SECPAR(1) .EQ.
+     *       .OR.  SECPAR(1) .EQ. 12.D0 .OR. SECPAR(1) .EQ. 1	     *       .OR.  SECPAR(1) .EQ. 12.D0 .OR. SECPAR(1) .EQ. 1
+            IFINKA = IFINKA + 1					            IFINKA = IFINKA + 1
+          ELSEIF ( SECPAR(1) .EQ. 17.D0 ) THEN			          ELSEIF ( SECPAR(1) .EQ. 17.D0 ) THEN
+            IFINET = IFINET + 1					            IFINET = IFINET + 1
+          ELSEIF ((SECPAR(1) .GE. 18.D0 .AND. SECPAR(1) .LE. 	          ELSEIF ((SECPAR(1) .GE. 18.D0 .AND. SECPAR(1) .LE. 
+     *       .OR. (SECPAR(1) .GE. 26.D0 .AND. SECPAR(1) .LE. 	     *       .OR. (SECPAR(1) .GE. 26.D0 .AND. SECPAR(1) .LE. 
+            IFINHY = IFINHY + 1					            IFINHY = IFINHY + 1
+          ENDIF							          ENDIF
+        ENDIF							        ENDIF
+ 								 
+ 5    CONTINUE							 5    CONTINUE
+ 								 
+      IF (DEBUG) WRITE(MDEBUG,*) 'VSTORE: NTGEVT,ETOT =',NTGE	      IF (DEBUG) WRITE(MDEBUG,*) 'VSTORE: NTGEVT,ETOT =',NTGE
+ 								 
+      IF ( NFRAGM .NE. 0  .AND.  INEW .GT. 0 ) THEN		      IF ( NFRAGM .NE. 0  .AND.  INEW .GT. 0 ) THEN
+C  TREAT REMAINING NUCLEUS					C  TREAT REMAINING NUCLEUS
+        IF ( DEBUG ) WRITE(MDEBUG,150) INEW,(CURPAR(I),I=2,8)	        IF ( DEBUG ) WRITE(MDEBUG,150) INEW,(CURPAR(I),I=2,8)
+ 150    FORMAT(' VSTORE: REMNNT=',1P,I10,7E10.3)		 150    FORMAT(' VSTORE: REMNNT=',1P,I10,7E10.3)
+        SECPAR(2) = CURPAR(2)					        SECPAR(2) = CURPAR(2)
+        SECPAR(3) = CURPAR(3)					        SECPAR(3) = CURPAR(3)
+        SECPAR(4) = CURPAR(4)					        SECPAR(4) = CURPAR(4)
+ 								 
+        IF     ( INEW .EQ. 100 ) THEN				        IF     ( INEW .EQ. 100 ) THEN
+C  REMAINING NUCLEUS IS SINGLE NEUTRON				C  REMAINING NUCLEUS IS SINGLE NEUTRON
+          SECPAR(1) = 13.D0					          SECPAR(1) = 13.D0
+          CALL TSTACK						          CALL TSTACK
+          ETOT = ETOT + SECPAR(2) * PAMA(13)			          ETOT = ETOT + SECPAR(2) * PAMA(13)
+          GOTO 140						          GOTO 140
+ 								 
+        ELSEIF ( INEW .EQ. 101 ) THEN				        ELSEIF ( INEW .EQ. 101 ) THEN
+C  REMAINING NUCLEUS IS SINGLE PROTON				C  REMAINING NUCLEUS IS SINGLE PROTON
+          SECPAR(1) = 14.D0					          SECPAR(1) = 14.D0
+          CALL TSTACK						          CALL TSTACK
+          ETOT = ETOT + SECPAR(2) * PAMA(14)			          ETOT = ETOT + SECPAR(2) * PAMA(14)
+          GOTO 140						          GOTO 140
+ 								 
+        ELSEIF ( NFRAGM .GE. 2 ) THEN				        ELSEIF ( NFRAGM .GE. 2 ) THEN
+C  REMAINING NUCLEUS IS EVAPORATING NUCLEONS AND ALPHA PARTIC	C  REMAINING NUCLEUS IS EVAPORATING NUCLEONS AND ALPHA PARTIC
+          NZNEW = MOD(INEW,100)					          NZNEW = MOD(INEW,100)
+          NNNEW = INEW/100 - NZNEW				          NNNEW = INEW/100 - NZNEW
+          JFIN  = 0						          JFIN  = 0
+          CALL VAPOR(MAPROJ,INEW,JFIN,ITYP,PFRX,PFRY)		          CALL VAPOR(MAPROJ,INEW,JFIN,ITYP,PFRX,PFRY)
+          IF ( JFIN .EQ. 0 ) GOTO 139				          IF ( JFIN .EQ. 0 ) GOTO 139
+C  LOOP TO TREAT THE REMANENTS OF THE DESINTEGRATED FRAGMENT	C  LOOP TO TREAT THE REMANENTS OF THE DESINTEGRATED FRAGMENT
+          KNEW = 0						          KNEW = 0
+          DO  135  J=1,JFIN					          DO  135  J=1,JFIN
+            EA = GAMMA * PAMA(ITYP(J))				            EA = GAMMA * PAMA(ITYP(J))
+            IF(DEBUG)WRITE(MDEBUG,*)'VSTORE: J,ITYP,EA=',J,IT	            IF(DEBUG)WRITE(MDEBUG,*)'VSTORE: J,ITYP,EA=',J,IT
+C  MOMENTA SQUARED						C  MOMENTA SQUARED
+            PTM = EA**2 - PAMA(ITYP(J))**2			            PTM = EA**2 - PAMA(ITYP(J))**2
+            PT2 = PFRX(J)**2 + PFRY(J)**2			            PT2 = PFRX(J)**2 + PFRY(J)**2
+            IF ( PT2 .GE. PTM ) THEN				            IF ( PT2 .GE. PTM ) THEN
+              IF(DEBUG)WRITE(MDEBUG,*)'VSTORE: PT REJECT PART	              IF(DEBUG)WRITE(MDEBUG,*)'VSTORE: PT REJECT PART
+              GOTO 135						              GOTO 135
+            ENDIF						            ENDIF
+            IF ( PTM .GT. 0.D0 ) THEN				            IF ( PTM .GT. 0.D0 ) THEN
+              COSTET = SQRT( 1.D0 - PT2/PTM )			              COSTET = SQRT( 1.D0 - PT2/PTM )
+            ELSE						            ELSE
+              COSTET = 1.D0					              COSTET = 1.D0
+            ENDIF						            ENDIF
+            IF ( PFRX(J) .NE. 0.D0  .OR.  PFRY(J) .NE. 0.D0 )	            IF ( PFRX(J) .NE. 0.D0  .OR.  PFRY(J) .NE. 0.D0 )
+              PHIV = ATAN2( PFRY(J), PFRX(J) )			              PHIV = ATAN2( PFRY(J), PFRX(J) )
+            ELSE						            ELSE
+              PHIV = 0.D0					              PHIV = 0.D0
+            ENDIF						            ENDIF
+            CALL ADDANG( COSTHE,PHI, COSTET,PHIV, SECPAR(3),S	            CALL ADDANG( COSTHE,PHI, COSTET,PHIV, SECPAR(3),S
+            IF ( SECPAR(3) .GE. C(29) ) THEN			            IF ( SECPAR(3) .GE. C(29) ) THEN
+              IF ( J .LT. JFIN ) THEN				              IF ( J .LT. JFIN ) THEN
+                SECPAR(1) = ITYP(J)				                SECPAR(1) = ITYP(J)
+                CALL TSTACK					                CALL TSTACK
+              ELSE						              ELSE
+                KNEW  = ITYP(JFIN)				                KNEW  = ITYP(JFIN)
+              ENDIF						              ENDIF
+            ELSE						            ELSE
+              IF(DEBUG)WRITE(MDEBUG,*)'VSTORE: ANGLE REJECT P	              IF(DEBUG)WRITE(MDEBUG,*)'VSTORE: ANGLE REJECT P
+            ENDIF						            ENDIF
+ 135      CONTINUE						 135      CONTINUE
+ 								 
+        ELSEIF ( NFRAGM .EQ. 1 ) THEN				        ELSEIF ( NFRAGM .EQ. 1 ) THEN
+C  REMAINING NUCLEUS IS ONE FRAGMENT				C  REMAINING NUCLEUS IS ONE FRAGMENT
+          NZNEW = MOD(INEW,100)					          NZNEW = MOD(INEW,100)
+          NNNEW = INEW/100 - NZNEW				          NNNEW = INEW/100 - NZNEW
+          KNEW  = INEW						          KNEW  = INEW
+        ENDIF							        ENDIF
+ 								 
+        IF     ( KNEW/100 .EQ. 5 ) THEN				        IF     ( KNEW/100 .EQ. 5 ) THEN
+C  REMAINING NUCLEUS: MASS 5 CANNOT BE TREATED IN BOX2		C  REMAINING NUCLEUS: MASS 5 CANNOT BE TREATED IN BOX2
+          IF ( MOD(KNEW,100) .GE. 3 ) THEN			          IF ( MOD(KNEW,100) .GE. 3 ) THEN
+C  MASS 5: SPLIT OFF ONE PROTON					C  MASS 5: SPLIT OFF ONE PROTON
+            SECPAR(1) = 14.D0					            SECPAR(1) = 14.D0
+            CALL TSTACK						            CALL TSTACK
+            KNEW = KNEW - 101					            KNEW = KNEW - 101
+          ELSE							          ELSE
+C  MASS 5: SPLIT OFF ONE NEUTRON				C  MASS 5: SPLIT OFF ONE NEUTRON
+            SECPAR(1) = 13.D0					            SECPAR(1) = 13.D0
+            CALL TSTACK						            CALL TSTACK
+            KNEW = KNEW - 100					            KNEW = KNEW - 100
+          ENDIF							          ENDIF
+        ELSEIF ( KNEW/100 .EQ. 8 ) THEN				        ELSEIF ( KNEW/100 .EQ. 8 ) THEN
+C  REMAINING NUCLEUS: MASS 8 CANNOT BE TREATED IN BOX2		C  REMAINING NUCLEUS: MASS 8 CANNOT BE TREATED IN BOX2
+          IF     ( MOD(KNEW,100) .GE. 5 ) THEN			          IF     ( MOD(KNEW,100) .GE. 5 ) THEN
+C  MASS 8: SPLIT OFF ONE PROTON					C  MASS 8: SPLIT OFF ONE PROTON
+            SECPAR(1) = 14.D0					            SECPAR(1) = 14.D0
+            CALL TSTACK						            CALL TSTACK
+            KNEW = KNEW - 101					            KNEW = KNEW - 101
+          ELSEIF ( MOD(KNEW,100) .LE. 3 ) THEN			          ELSEIF ( MOD(KNEW,100) .LE. 3 ) THEN
+C  MASS 8: SPLIT OFF ONE NEUTRON				C  MASS 8: SPLIT OFF ONE NEUTRON
+            SECPAR(1) = 13.D0					            SECPAR(1) = 13.D0
+            CALL TSTACK						            CALL TSTACK
+            KNEW = KNEW - 100					            KNEW = KNEW - 100
+          ELSE							          ELSE
+C  MASS 8: SPLIT OFF ONE ALPHA PARTICLE				C  MASS 8: SPLIT OFF ONE ALPHA PARTICLE
+            SECPAR(1) = 402.D0					            SECPAR(1) = 402.D0
+            CALL TSTACK						            CALL TSTACK
+            KNEW = KNEW - 402					            KNEW = KNEW - 402
+          ENDIF							          ENDIF
+        ENDIF							        ENDIF
+ 								 
+        SECPAR(1) = KNEW					        SECPAR(1) = KNEW
+        CALL TSTACK						        CALL TSTACK
+      ENDIF							      ENDIF
+ 								 
+ 139  ETOT = ETOT + SECPAR(2)*(PAMA(13)*NNNEW + PAMA(14)*NZNE	 139  ETOT = ETOT + SECPAR(2)*(PAMA(13)*NNNEW + PAMA(14)*NZNE
+ 140  CONTINUE							 140  CONTINUE
+      IF ( DEBUG ) WRITE(MDEBUG,*)'VSTORE: ELASTI,ETOT,ELAB='	      IF ( DEBUG ) WRITE(MDEBUG,*)'VSTORE: ELASTI,ETOT,ELAB='
+     *                               SNGL(ELASTI),ETOT,ELAB	     *                               SNGL(ELASTI),ETOT,ELAB
+ 								 
+C  FILL ELASTICITY IN MATRICES					C  FILL ELASTICITY IN MATRICES
+      MEL = MIN ( 1.D0+10.D0*      MAX( 0.D0, ELASTI ) , 11.D	      MEL = MIN ( 1.D0+10.D0*      MAX( 0.D0, ELASTI ) , 11.D
+      MEN = MIN ( 4.D0+ 3.D0*LOG10(MAX( .1D0, EKINL  )), 37.D	      MEN = MIN ( 4.D0+ 3.D0*LOG10(MAX( .1D0, EKINL  )), 37.D
+      IELDPM(MEN,MEL) = IELDPM(MEN,MEL) + 1			      IELDPM(MEN,MEL) = IELDPM(MEN,MEL) + 1
+      IELDPA(MEN,MEL) = IELDPA(MEN,MEL) + 1			      IELDPA(MEN,MEL) = IELDPA(MEN,MEL) + 1
+      IF ( ELASTI .LT. 1.D0 ) THEN				      IF ( ELASTI .LT. 1.D0 ) THEN
+        ELMEAN(MEN) = ELMEAN(MEN) + ELASTI			        ELMEAN(MEN) = ELMEAN(MEN) + ELASTI
+        ELMEAA(MEN) = ELMEAA(MEN) + ELASTI			        ELMEAA(MEN) = ELMEAA(MEN) + ELASTI
+      ENDIF							      ENDIF
+ 								 
+      IF ( FIRSTI ) THEN					      IF ( FIRSTI ) THEN
+        ELAST  = ELASTI						        ELAST  = ELASTI
+        FIRSTI = .FALSE.					        FIRSTI = .FALSE.
+      ENDIF							      ENDIF
+ 								 
+      RETURN							      RETURN
+      END							      END

@@ -1,0 +1,59 @@
+      DOUBLE PRECISION FUNCTION PCL( A,B )			      DOUBLE PRECISION FUNCTION PCL( A,B )
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+C  P (MOMENTUM) C(ENTER OF MASS) L(ONGITUDINAL)			C  P (MOMENTUM) C(ENTER OF MASS) L(ONGITUDINAL)
+C								C
+C  RANDOM SELECTION OF LONGITUDINAL MOMENTUM IN CENTER OF MAS	C  RANDOM SELECTION OF LONGITUDINAL MOMENTUM IN CENTER OF MAS
+C  EXPONENTIAL DISTRIBUTION   PCL(X) = EXP(-X/A)		C  EXPONENTIAL DISTRIBUTION   PCL(X) = EXP(-X/A)
+C  THIS FUNCTION IS CALLED FORM HMESON, ISOBAR, AND VHMESO	C  THIS FUNCTION IS CALLED FORM HMESON, ISOBAR, AND VHMESO
+C  ARGUMENTS:							C  ARGUMENTS:
+C   A      = MEAN VALUE OF DISTRIBUTION				C   A      = MEAN VALUE OF DISTRIBUTION
+C   B      = CUT FOR LIMITING MOMENTUM				C   B      = CUT FOR LIMITING MOMENTUM
+C								C
+C  CHANGES : J. KNAPP   IK1  FZK KARLSRUHE			C  CHANGES : J. KNAPP   IK1  FZK KARLSRUHE
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)			      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+*KEEP,RANDPA.							*KEEP,RANDPA.
+      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR		      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR
+      DOUBLE PRECISION FAC,U1,U2				      DOUBLE PRECISION FAC,U1,U2
+      REAL             RD(3000)					      REAL             RD(3000)
+      INTEGER          ISEED(103,10),NSEQ			      INTEGER          ISEED(103,10),NSEQ
+      LOGICAL          KNOR					      LOGICAL          KNOR
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEND.								*KEND.
+ 								 
+C------------------------------------------------------------	C------------------------------------------------------------
+ 								 
+C     IF ( DEBUG ) WRITE(MDEBUG,*) 'PCL   : A,B=',SNGL(A),SNG	C     IF ( DEBUG ) WRITE(MDEBUG,*) 'PCL   : A,B=',SNGL(A),SNG
+ 								 
+    1 CONTINUE							    1 CONTINUE
+      CALL RMMAR( RD,1,1 )					      CALL RMMAR( RD,1,1 )
+      PCL = -A * LOG ( RD(1) )					      PCL = -A * LOG ( RD(1) )
+      IF ( PCL .GT. B ) GOTO 1					      IF ( PCL .GT. B ) GOTO 1
+      IF ( DEBUG ) WRITE(MDEBUG,*) 'PCL   : PCL =',SNGL(PCL)	      IF ( DEBUG ) WRITE(MDEBUG,*) 'PCL   : PCL =',SNGL(PCL)
+ 								 
+      RETURN							      RETURN
+      END							      END

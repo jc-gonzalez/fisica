@@ -1,0 +1,566 @@
+      SUBROUTINE ELECTR(IRCODE)					      SUBROUTINE ELECTR(IRCODE)
+C                                VERSION 4.00  --  26 JAN 198	C                                VERSION 4.00  --  26 JAN 198
+C************************************************************	C************************************************************
+      DOUBLE PRECISION PEIE					      DOUBLE PRECISION PEIE
+      COMMON/BOUNDS/ECUT(6),PCUT(6),VACDST			      COMMON/BOUNDS/ECUT(6),PCUT(6),VACDST
+*KEEP,BUFFS.							*KEEP,BUFFS.
+      COMMON /BUFFS/   RUNH,RUNE,EVTH,EVTE,DATAB,LH		      COMMON /BUFFS/   RUNH,RUNE,EVTH,EVTE,DATAB,LH
+      INTEGER          MAXBUF,MAXLEN				      INTEGER          MAXBUF,MAXLEN
+      PARAMETER        (MAXBUF=39*7)				      PARAMETER        (MAXBUF=39*7)
+      PARAMETER        (MAXLEN=12)				      PARAMETER        (MAXLEN=12)
+      REAL             RUNH(MAXBUF),EVTH(MAXBUF),EVTE(MAXBUF)	      REAL             RUNH(MAXBUF),EVTH(MAXBUF),EVTE(MAXBUF)
+     *                 RUNE(MAXBUF),DATAB(MAXBUF)		     *                 RUNE(MAXBUF),DATAB(MAXBUF)
+      INTEGER          LH					      INTEGER          LH
+      CHARACTER*4      CRUNH,CRUNE,CEVTH,CEVTE			      CHARACTER*4      CRUNH,CRUNE,CEVTH,CEVTE
+      EQUIVALENCE      (RUNH(1),CRUNH), (RUNE(1),CRUNE)		      EQUIVALENCE      (RUNH(1),CRUNH), (RUNE(1),CRUNE)
+      EQUIVALENCE      (EVTH(1),CEVTH), (EVTE(1),CEVTE)		      EQUIVALENCE      (EVTH(1),CEVTH), (EVTE(1),CEVTE)
+*KEEP,CEREN1.							*KEEP,CEREN1.
+      COMMON /CEREN1/  CERELE,CERHAD,ETADSN,WAVLGL,WAVLGU,CYI	      COMMON /CEREN1/  CERELE,CERHAD,ETADSN,WAVLGL,WAVLGU,CYI
+     *                 CERSIZ,LCERFI				     *                 CERSIZ,LCERFI
+      DOUBLE PRECISION CERELE,CERHAD,ETADSN,WAVLGL,WAVLGU,CYI	      DOUBLE PRECISION CERELE,CERHAD,ETADSN,WAVLGL,WAVLGU,CYI
+      REAL             CERSIZ					      REAL             CERSIZ
+      LOGICAL          LCERFI					      LOGICAL          LCERFI
+*KEND.								*KEND.
+      COMMON/ELECIN/EKELIM,ICOMP,EKE0,EKE1,CMFP0,CMFP1,RANGE0	      COMMON/ELECIN/EKELIM,ICOMP,EKE0,EKE1,CMFP0,CMFP1,RANGE0
+     *0,TEFF0,BLCC,XCC,PICMP0(1),PICMP1(1),EICMP0(1),EICMP1(1	     *0,TEFF0,BLCC,XCC,PICMP0(1),PICMP1(1),EICMP0(1),EICMP1(1
+     * ESIG0(500),ESIG1(500),PSIG0(500),PSIG1(500),EDEDX0(500	     * ESIG0(500),ESIG1(500),PSIG0(500),PSIG1(500),EDEDX0(500
+     *0),PDEDX0(500),PDEDX1(500),EBR10(500),EBR11(500),PBR10(	     *0),PDEDX0(500),PDEDX1(500),EBR10(500),EBR11(500),PBR10(
+     *500),PBR20(500),PBR21(500),TMXS0(500),TMXS1(500),CMFPE0	     *500),PBR20(500),PBR21(500),TMXS0(500),TMXS1(500),CMFPE0
+     *1),CMFPP0(1),CMFPP1(1),ERANG0(1),ERANG1(1),PRANG0(1),PR	     *1),CMFPP0(1),CMFPP1(1),ERANG0(1),ERANG1(1),PRANG0(1),PR
+     *2E0(1),CXC2E1(1),CXC2P0(1),CXC2P1(1),CLXAE0(1),CLXAE1(1	     *2E0(1),CXC2E1(1),CXC2P0(1),CXC2P1(1),CLXAE0(1),CLXAE1(1
+     *,CLXAP1(1), THR0(1,1),THR1(1,1),THR2(1,1),THRI0(1,1),TH	     *,CLXAP1(1), THR0(1,1),THR1(1,1),THR2(1,1),THRI0(1,1),TH
+     *RI2(1,1),FSTEP(16),FSQR(16),MSMAP(200), VERT1(1000),VER	     *RI2(1,1),FSTEP(16),FSQR(16),MSMAP(200), VERT1(1000),VER
+     *MSTEPS,JRMAX,MXV1, MXV2,NBLC,NRNTH,NRNTHI,BLC0,BLC1,RTH	     *MSTEPS,JRMAX,MXV1, MXV2,NBLC,NRNTH,NRNTHI,BLC0,BLC1,RTH
+     *HRI0,RTHRI1						     *HRI0,RTHRI1
+*KEEP,EPCONT.							*KEEP,EPCONT.
+      COMMON/EPCONT/   EDEP,RATIO,TSTEP,TUSTEP,USTEP,TVSTEP,V	      COMMON/EPCONT/   EDEP,RATIO,TSTEP,TUSTEP,USTEP,TVSTEP,V
+     *                 IROLD,IRNEW,RHOFAC, EOLD,ENEW,EKE,ELKE	     *                 IROLD,IRNEW,RHOFAC, EOLD,ENEW,EKE,ELKE
+     *                 TSCAT,IAUSFL				     *                 TSCAT,IAUSFL
+      DOUBLE PRECISION EDEP,RATIO				      DOUBLE PRECISION EDEP,RATIO
+      REAL             TSTEP,TUSTEP,USTEP,TVSTEP,VSTEP,RHOFAC	      REAL             TSTEP,TUSTEP,USTEP,TVSTEP,VSTEP,RHOFAC
+     *                 EKE,ELKE,BETA2,GLE,TSCAT			     *                 EKE,ELKE,BETA2,GLE,TSCAT
+      INTEGER          IDISC,IROLD,IRNEW,IAUSFL(29)		      INTEGER          IDISC,IROLD,IRNEW,IAUSFL(29)
+*KEND.								*KEND.
+      COMMON/GEOM/ZALTIT,BOUND(6),NEWOBS,OBSLVL(10)		      COMMON/GEOM/ZALTIT,BOUND(6),NEWOBS,OBSLVL(10)
+*KEEP,LONGI.							*KEEP,LONGI.
+      COMMON /LONGI/   APLONG,HLONG,PLONG,SPLONG,THSTEP,THSTP	      COMMON /LONGI/   APLONG,HLONG,PLONG,SPLONG,THSTEP,THSTP
+     *                 NSTEP,LLONGI,FLGFIT			     *                 NSTEP,LLONGI,FLGFIT
+      DOUBLE PRECISION APLONG(0:1040,9),HLONG(0:1024),PLONG(0	      DOUBLE PRECISION APLONG(0:1040,9),HLONG(0:1024),PLONG(0
+     *                 SPLONG(0:1040,9),THSTEP,THSTPI		     *                 SPLONG(0:1040,9),THSTEP,THSTPI
+      INTEGER          NSTEP					      INTEGER          NSTEP
+      LOGICAL          LLONGI,FLGFIT				      LOGICAL          LLONGI,FLGFIT
+*KEEP,MAGNET.							*KEEP,MAGNET.
+      COMMON /MAGNET/  BX,BZ,BVAL,BNORMC,BNORM,COSB,SINB,BLIM	      COMMON /MAGNET/  BX,BZ,BVAL,BNORMC,BNORM,COSB,SINB,BLIM
+      DOUBLE PRECISION BX,BZ,BVAL,BNORMC			      DOUBLE PRECISION BX,BZ,BVAL,BNORMC
+      REAL             BNORM,COSB,SINB,BLIMIT			      REAL             BNORM,COSB,SINB,BLIMIT
+*KEND.								*KEND.
+      COMMON /MEDIA/ NMED, RLC,RLDU,RLDUI,RHO,MSGE,MGE,MSEKE,	      COMMON /MEDIA/ NMED, RLC,RLDU,RLDUI,RHO,MSGE,MGE,MSEKE,
+     *MCMFP,MRANGE,IRAYLM,HBARO(6),HBAROI(6)			     *MCMFP,MRANGE,IRAYLM,HBARO(6),HBAROI(6)
+      CHARACTER MEDIA*24					      CHARACTER MEDIA*24
+      COMMON/MEDIAC/MEDIA					      COMMON/MEDIAC/MEDIA
+      COMMON/MISC/KMPI,KMPO,DUNIT,NOSCAT,MED(6),RHOR(6),IRAYL	      COMMON/MISC/KMPI,KMPO,DUNIT,NOSCAT,MED(6),RHOR(6),IRAYL
+      DOUBLE PRECISION PRRMMU					      DOUBLE PRECISION PRRMMU
+      COMMON/MUON/PRRMMU,RMMU,RMMUT2				      COMMON/MUON/PRRMMU,RMMU,RMMUT2
+*KEEP,OBSPAR.							*KEEP,OBSPAR.
+      COMMON /OBSPAR/  OBSLEV,THCKOB,XOFF,YOFF,THETAP,PHIP,	      COMMON /OBSPAR/  OBSLEV,THCKOB,XOFF,YOFF,THETAP,PHIP,
+     *                 THETPR,PHIPR,NOBSLV			     *                 THETPR,PHIPR,NOBSLV
+      DOUBLE PRECISION OBSLEV(10),THCKOB(10),XOFF(10),YOFF(10	      DOUBLE PRECISION OBSLEV(10),THCKOB(10),XOFF(10),YOFF(10
+     *                 THETAP,THETPR(2),PHIP,PHIPR(2)		     *                 THETAP,THETPR(2),PHIP,PHIPR(2)
+      INTEGER          NOBSLV					      INTEGER          NOBSLV
+*KEEP,PARPAR.							*KEEP,PARPAR.
+      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,		      COMMON /PARPAR/  CURPAR,SECPAR,PRMPAR,OUTPAR,C,
+     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE	     *                 E00,E00PN,PTOT0,PTOT0N,THICKH,ITYPE,LE
+      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA	      DOUBLE PRECISION CURPAR(14),SECPAR(14),PRMPAR(14),OUTPA
+     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH	     *                 C(50),E00,E00PN,PTOT0,PTOT0N,THICKH
+      INTEGER          ITYPE,LEVL				      INTEGER          ITYPE,LEVL
+*KEND.								*KEND.
+      COMMON/PATHCM/NPTH,B0PTH,B1PTH,PTH0(6),PTH1(6),PTH2(6)	      COMMON/PATHCM/NPTH,B0PTH,B1PTH,PTH0(6),PTH1(6),PTH2(6)
+*KEEP,RANDPA.							*KEEP,RANDPA.
+      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR		      COMMON /RANDPA/  FAC,U1,U2,RD,NSEQ,ISEED,KNOR
+      DOUBLE PRECISION FAC,U1,U2				      DOUBLE PRECISION FAC,U1,U2
+      REAL             RD(3000)					      REAL             RD(3000)
+      INTEGER          ISEED(103,10),NSEQ			      INTEGER          ISEED(103,10),NSEQ
+      LOGICAL          KNOR					      LOGICAL          KNOR
+*KEEP,REJECT.							*KEEP,REJECT.
+      COMMON /REJECT/  AVNREJ,					      COMMON /REJECT/  AVNREJ,
+     *                 ALTMIN,ANEXP,THICKA,THICKD,CUTLN,EONCU	     *                 ALTMIN,ANEXP,THICKA,THICKD,CUTLN,EONCU
+     *                 FNPRIM					     *                 FNPRIM
+      DOUBLE PRECISION AVNREJ(10)				      DOUBLE PRECISION AVNREJ(10)
+      REAL             ALTMIN(10),ANEXP(10),THICKA(10),THICKD	      REAL             ALTMIN(10),ANEXP(10),THICKA(10),THICKD
+     *                 CUTLN,EONCUT				     *                 CUTLN,EONCUT
+      LOGICAL          FNPRIM					      LOGICAL          FNPRIM
+*KEEP,RUNPAR.							*KEEP,RUNPAR.
+      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,		      COMMON /RUNPAR/  FIXHEI,THICK0,HILOECM,HILOELB,
+     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,	     *                 STEPFC,NRRUN,NSHOW,PATAPE,MONIIN,
+     *                 MONIOU,MDEBUG,NUCNUC,			     *                 MONIOU,MDEBUG,NUCNUC,
+     *                 CETAPE,					     *                 CETAPE,
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE,				     *                 N1STTR,MDBASE,
+     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	     *                 DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+      COMMON /RUNPAC/  DSN,HOST,USER				      COMMON /RUNPAC/  DSN,HOST,USER
+      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB		      DOUBLE PRECISION FIXHEI,THICK0,HILOECM,HILOELB
+      REAL             STEPFC					      REAL             STEPFC
+      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU	      INTEGER          NRRUN,NSHOW,PATAPE,MONIIN,MONIOU,MDEBU
+     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,	     *                 SHOWNO,ISHW,NOPART,NRECS,NBLKS,MAXPRT,
+     *                 N1STTR,MDBASE				     *                 N1STTR,MDBASE
+      INTEGER          CETAPE					      INTEGER          CETAPE
+      CHARACTER*79     DSN					      CHARACTER*79     DSN
+      CHARACTER*20     HOST,USER				      CHARACTER*20     HOST,USER
+ 								 
+      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC	      LOGICAL          DEBDEL,DEBUG,FDECAY,FEGS,FIRSTI,FIXINC
+     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE		     *                 FIX1I,FMUADD,FNKG,FPRINT,FDBASE
+     *                ,GHEISH,GHESIG				     *                ,GHEISH,GHESIG
+*KEEP,STACKE.							*KEEP,STACKE.
+      COMMON/STACKE/   E,TIME,X,Y,Z,U,V,W,DNEAR,IQ,IGEN,IR,IO	      COMMON/STACKE/   E,TIME,X,Y,Z,U,V,W,DNEAR,IQ,IGEN,IR,IO
+      DOUBLE PRECISION E(60),TIME(60)				      DOUBLE PRECISION E(60),TIME(60)
+      REAL             X(60),Y(60),Z(60),U(60),V(60),W(60),DN	      REAL             X(60),Y(60),Z(60),U(60),V(60),W(60),DN
+      INTEGER          IQ(60),IGEN(60),IR(60),IOBS(60),LPCTE(	      INTEGER          IQ(60),IGEN(60),IR(60),IOBS(60),LPCTE(
+*KEND.								*KEND.
+      COMMON/THRESH/RMT2,RMSQ,ESCD2,AP,API,AE,UP,UE,TE,THMOLL	      COMMON/THRESH/RMT2,RMSQ,ESCD2,AP,API,AE,UP,UE,TE,THMOLL
+      COMMON/UPHIIN/SINC0,SINC1,SIN0(20002),SIN1(20002)		      COMMON/UPHIIN/SINC0,SINC1,SIN0(20002),SIN1(20002)
+      COMMON/UPHIOT/THETA,SINTHE,COSTHE,SINPHI, COSPHI,PI,TWO	      COMMON/UPHIOT/THETA,SINTHE,COSTHE,SINPHI, COSPHI,PI,TWO
+      DOUBLE PRECISION PZERO,PRM,PRMT2,RMI,VC			      DOUBLE PRECISION PZERO,PRM,PRMT2,RMI,VC
+      COMMON/USEFUL/PZERO,PRM,PRMT2,RMI,VC,RM,MEDIUM,MEDOLD,I	      COMMON/USEFUL/PZERO,PRM,PRMT2,RMI,VC,RM,MEDIUM,MEDOLD,I
+      COMMON/ACLOCK/NCLOCK,JCLOCK				      COMMON/ACLOCK/NCLOCK,JCLOCK
+      DOUBLE PRECISION THICK					      DOUBLE PRECISION THICK
+      DATA NSTPCN/0/						      DATA NSTPCN/0/
+ 								 
+ 								 
+ 								 
+C_____NCLOCK = NCLOCK+1						C_____NCLOCK = NCLOCK+1
+C_____IF (NCLOCK.GT.JCLOCK) THEN				C_____IF (NCLOCK.GT.JCLOCK) THEN
+C______WRITE(MDEBUG,* )' ELECTR:NP=',NP,' IR=',IR(NP),' IOBS=	C______WRITE(MDEBUG,* )' ELECTR:NP=',NP,' IR=',IR(NP),' IOBS=
+C______CALL AUSGB2						C______CALL AUSGB2
+C_____END IF							C_____END IF
+      NEWOBS=IOBS(NP)						      NEWOBS=IOBS(NP)
+      IRCODE=1							      IRCODE=1
+      IROLD=IR(NP)						      IROLD=IR(NP)
+      IRL=IR(NP)						      IRL=IR(NP)
+      MEDIUM=MED(IRL)						      MEDIUM=MED(IRL)
+380   CONTINUE							380   CONTINUE
+381    CONTINUE							381    CONTINUE
+       LELEC=5-2*IQ(NP)						       LELEC=5-2*IQ(NP)
+       PEIE=E(NP)						       PEIE=E(NP)
+       EIE=PEIE							       EIE=PEIE
+       IF((EIE.LE.ECUT(IRL)))GO TO 390				       IF((EIE.LE.ECUT(IRL)))GO TO 390
+       MEDIUM=MED(IRL)						       MEDIUM=MED(IRL)
+400    CONTINUE							400    CONTINUE
+401     CONTINUE						401     CONTINUE
+        IF (MEDIUM.NE.0) THEN					        IF (MEDIUM.NE.0) THEN
+         EKE=EIE-RM						         EKE=EIE-RM
+         ELKE=LOG(EKE)						         ELKE=LOG(EKE)
+         CALL RMMAR(RNNE1,1,2)					         CALL RMMAR(RNNE1,1,2)
+         IF ((RNNE1.EQ.0.0)) THEN				         IF ((RNNE1.EQ.0.0)) THEN
+          RNNE1=1.E-30						          RNNE1=1.E-30
+         END IF							         END IF
+         DEMFP=AMAX1(-ALOG(RNNE1),1.E-6)			         DEMFP=AMAX1(-ALOG(RNNE1),1.E-6)
+         LELKE=EKE1*ELKE+EKE0					         LELKE=EKE1*ELKE+EKE0
+         IF (LELEC.LT.0) THEN					         IF (LELEC.LT.0) THEN
+          SIG0=ESIG1(LELKE)*ELKE+ESIG0(LELKE)			          SIG0=ESIG1(LELKE)*ELKE+ESIG0(LELKE)
+         ELSE							         ELSE
+          SIG0=PSIG1(LELKE)*ELKE+PSIG0(LELKE)			          SIG0=PSIG1(LELKE)*ELKE+PSIG0(LELKE)
+         END IF							         END IF
+        END IF							        END IF
+450     CONTINUE						450     CONTINUE
+451      CONTINUE						451      CONTINUE
+         IF (MEDIUM.EQ.0) THEN					         IF (MEDIUM.EQ.0) THEN
+          TSTEP=VACDST						          TSTEP=VACDST
+          USTEP=TSTEP						          USTEP=TSTEP
+          TUSTEP=USTEP						          TUSTEP=USTEP
+         ELSE							         ELSE
+          RHOFAC=RHOR(IRL)/RHO					          RHOFAC=RHOR(IRL)/RHO
+          RHOFI=1./RHOFAC					          RHOFI=1./RHOFAC
+          SIG=SIG0*RHOFAC					          SIG=SIG0*RHOFAC
+          IF (SIG.LE.0.0) THEN					          IF (SIG.LE.0.0) THEN
+           TSTEP=VACDST						           TSTEP=VACDST
+          ELSE							          ELSE
+           TSTEP=DEMFP/SIG					           TSTEP=DEMFP/SIG
+          END IF						          END IF
+          TMXS=TMXS1(LELKE)*ELKE+TMXS0(LELKE)			          TMXS=TMXS1(LELKE)*ELKE+TMXS0(LELKE)
+          TMXS=MIN(TMXS,STEPFC*200.*TEFF0)			          TMXS=MIN(TMXS,STEPFC*200.*TEFF0)
+          TMXS=TMXS*RHOFI					          TMXS=TMXS*RHOFI
+          TUSTEP=MIN(TSTEP,TMXS)				          TUSTEP=MIN(TSTEP,TMXS)
+          IF (LELEC.LT.0) THEN					          IF (LELEC.LT.0) THEN
+           DEDX0=EDEDX1(LELKE)*ELKE+EDEDX0(LELKE)		           DEDX0=EDEDX1(LELKE)*ELKE+EDEDX0(LELKE)
+          ELSE							          ELSE
+           DEDX0=PDEDX1(LELKE)*ELKE+PDEDX0(LELKE)		           DEDX0=PDEDX1(LELKE)*ELKE+PDEDX0(LELKE)
+          END IF						          END IF
+          DEDX=RHOFAC*MIN(DEDX0,(86.65-Z(NP)*8.E-6)*RLDUI)	          DEDX=RHOFAC*MIN(DEDX0,(86.65-Z(NP)*8.E-6)*RLDUI)
+          RANGE=(EIE-ECUT(IRL)+0.001)/DEDX			          RANGE=(EIE-ECUT(IRL)+0.001)/DEDX
+          BETA2=MAX(1.E-8,1.-RMSQ/(EIE*EIE))			          BETA2=MAX(1.E-8,1.-RMSQ/(EIE*EIE))
+          BETA3=EIE*BETA2*0.094315				          BETA3=EIE*BETA2*0.094315
+          TSCAT=RLDU*BETA3*BETA3				          TSCAT=RLDU*BETA3*BETA3
+          TSCAT=TSCAT*RHOFI					          TSCAT=TSCAT*RHOFI
+          TUSTEP=MIN(TUSTEP,0.3*TSCAT,RANGE)			          TUSTEP=MIN(TUSTEP,0.3*TSCAT,RANGE)
+          RATIO=TUSTEP/TSCAT					          RATIO=TUSTEP/TSCAT
+          USTEP=TUSTEP*(1.D0-RATIO)				          USTEP=TUSTEP*(1.D0-RATIO)
+          USTEPU=USTEP						          USTEPU=USTEP
+          ALTEXP=EXP(-Z(NP)*HBAROI(IRL))			          ALTEXP=EXP(-Z(NP)*HBAROI(IRL))
+          USTEP=USTEP*ALTEXP					          USTEP=USTEP*ALTEXP
+          DISC=W(NP)*USTEP*HBAROI(IRL)				          DISC=W(NP)*USTEP*HBAROI(IRL)
+          IF (ABS(DISC).LT.0.065) THEN				          IF (ABS(DISC).LT.0.065) THEN
+           USTEP=USTEP*(1.-0.5*DISC*(1.-0.6666667*DISC* (1.-0	           USTEP=USTEP*(1.-0.5*DISC*(1.-0.6666667*DISC* (1.-0
+     *     (1.-0.8*DISC))))					     *     (1.-0.8*DISC))))
+          ELSE IF(DISC.LE.-1.) THEN				          ELSE IF(DISC.LE.-1.) THEN
+           USTEP=VACDST						           USTEP=VACDST
+          ELSE							          ELSE
+           USTEP=USTEP/DISC*LOG(DISC+1.)			           USTEP=USTEP/DISC*LOG(DISC+1.)
+          END IF						          END IF
+          TUSTPC=USTEP/(1.D0-RATIO)				          TUSTPC=USTEP/(1.D0-RATIO)
+         END IF							         END IF
+         IRNEW=IR(NP)						         IRNEW=IR(NP)
+         IDISC=0						         IDISC=0
+         USTEP0=USTEP						         USTEP0=USTEP
+         USTEP=MIN(USTEP,BLIMIT*EIE)				         USTEP=MIN(USTEP,BLIMIT*EIE)
+         IF((USTEP.GT.DNEAR(NP) ))CALL HOWFAR			         IF((USTEP.GT.DNEAR(NP) ))CALL HOWFAR
+         IF((IDISC.GT.0))GO TO 420				         IF((IDISC.GT.0))GO TO 420
+         IF (USTEP.LE.0.0) THEN					         IF (USTEP.LE.0.0) THEN
+          IF (USTEP.LT.-1.E-4) THEN				          IF (USTEP.LT.-1.E-4) THEN
+           WRITE(KMPO,460)USTEP					           WRITE(KMPO,460)USTEP
+460        FORMAT(' ELECTR: NEGATIVE USTEP=',G20.10,' CM')	460        FORMAT(' ELECTR: NEGATIVE USTEP=',G20.10,' CM')
+           WRITE(KMPO,470)Z(NP),DNEAR(NP),IR(NP),IRNEW,W(NP)	           WRITE(KMPO,470)Z(NP),DNEAR(NP),IR(NP),IRNEW,W(NP)
+470        FORMAT (' Z=',G15.7, ' DNEAR=',G15.7,' IR=',I5, ' 	470        FORMAT (' Z=',G15.7, ' DNEAR=',G15.7,' IR=',I5, ' 
+     *      ' W=',G15.7)					     *      ' W=',G15.7)
+           NSTPCN=NSTPCN+1					           NSTPCN=NSTPCN+1
+           IF (NSTPCN.GE.20) THEN				           IF (NSTPCN.GE.20) THEN
+            CALL AUSGB2						            CALL AUSGB2
+            WRITE(KMPO,480) NSTPCN				            WRITE(KMPO,480) NSTPCN
+480         FORMAT (' ELECTR: PROGRAM STOPPED BECAUSE OF FREQ	480         FORMAT (' ELECTR: PROGRAM STOPPED BECAUSE OF FREQ
+     *       'TIVE USTEP, COUNTER = ',I5)			     *       'TIVE USTEP, COUNTER = ',I5)
+            STOP						            STOP
+           END IF						           END IF
+          END IF						          END IF
+          USTEP=0.						          USTEP=0.
+         END IF							         END IF
+         IF (USTEP.EQ.0.0.OR.MEDIUM.EQ.0) THEN			         IF (USTEP.EQ.0.0.OR.MEDIUM.EQ.0) THEN
+          IF (USTEP.NE.0.0) THEN				          IF (USTEP.NE.0.0) THEN
+           VSTEP=USTEP						           VSTEP=USTEP
+           TVSTEP=VSTEP						           TVSTEP=VSTEP
+           EDEP=PZERO						           EDEP=PZERO
+           TVSTPC=TVSTEP					           TVSTPC=TVSTEP
+           ALPHA=VSTEP*LELEC*BNORM/EIE				           ALPHA=VSTEP*LELEC*BNORM/EIE
+           TVSTPC=TVSTPC*(1.+0.04166667*ALPHA*ALPHA)		           TVSTPC=TVSTPC*(1.+0.04166667*ALPHA*ALPHA)
+           U0=U(NP)						           U0=U(NP)
+           V0=V(NP)						           V0=V(NP)
+           W0=W(NP)						           W0=W(NP)
+           FNORM=1.-0.5*(ALPHA*ALPHA)*(1.-0.75*(ALPHA*ALPHA))	           FNORM=1.-0.5*(ALPHA*ALPHA)*(1.-0.75*(ALPHA*ALPHA))
+           F1SIN=(1.-FNORM)*SINB				           F1SIN=(1.-FNORM)*SINB
+           F1COS=(1.-FNORM)*COSB				           F1COS=(1.-FNORM)*COSB
+           V1=V0*ALPHA*FNORM					           V1=V0*ALPHA*FNORM
+           U(NP)=U0*(1.-F1SIN*SINB)+W0*F1SIN*COSB+V1*SINB	           U(NP)=U0*(1.-F1SIN*SINB)+W0*F1SIN*COSB+V1*SINB
+           V(NP)=FNORM*(V0-ALPHA*(U0*SINB-W0*COSB))		           V(NP)=FNORM*(V0-ALPHA*(U0*SINB-W0*COSB))
+           W(NP)=W0*(1.-F1COS*COSB)+U0*F1COS*SINB-V1*COSB	           W(NP)=W0*(1.-F1COS*COSB)+U0*F1COS*SINB-V1*COSB
+           RADINV=1.5-0.5*(U(NP)**2+V(NP)**2+W(NP)**2)		           RADINV=1.5-0.5*(U(NP)**2+V(NP)**2+W(NP)**2)
+           U(NP)=U(NP)*RADINV					           U(NP)=U(NP)*RADINV
+           V(NP)=V(NP)*RADINV					           V(NP)=V(NP)*RADINV
+           W(NP)=W(NP)*RADINV					           W(NP)=W(NP)*RADINV
+           X(NP)=X(NP)+(VSTEP*0.5)*(U0+U(NP))			           X(NP)=X(NP)+(VSTEP*0.5)*(U0+U(NP))
+           Y(NP)=Y(NP)+(VSTEP*0.5)*(V0+V(NP))			           Y(NP)=Y(NP)+(VSTEP*0.5)*(V0+V(NP))
+           ZOLD =Z(NP)						           ZOLD =Z(NP)
+           Z(NP)=Z(NP)+(VSTEP*0.5)*(W0+W(NP))			           Z(NP)=Z(NP)+(VSTEP*0.5)*(W0+W(NP))
+           TIME(NP)=TIME(NP)+TVSTPC*VC*E(NP)/SQRT((E(NP)-PRM)	           TIME(NP)=TIME(NP)+TVSTPC*VC*E(NP)/SQRT((E(NP)-PRM)
+     *     ))							     *     ))
+ 								 
+ 								 
+C     GENERATE CERENKOV PHOTONS					C     GENERATE CERENKOV PHOTONS
+           IF ( FNPRIM ) CALL CERENE(TVSTPC)			           IF ( FNPRIM ) CALL CERENE(TVSTPC)
+C  ADD ELECTRONS TO THE LONGITUDINAL DEVELOPMENT		C  ADD ELECTRONS TO THE LONGITUDINAL DEVELOPMENT
+C  FIND FIRST THE EQUIVALENT LEVELS				C  FIND FIRST THE EQUIVALENT LEVELS
+           IF ( LLONGI ) THEN					           IF ( LLONGI ) THEN
+C  IF STARTING POINT BELOW LOWEST LEVEL THEN DON'T CHECK	C  IF STARTING POINT BELOW LOWEST LEVEL THEN DON'T CHECK
+            IF ( HLONG(NSTEP) .LE. -ZOLD ) THEN			            IF ( HLONG(NSTEP) .LE. -ZOLD ) THEN
+              LPCT1 = LPCTE(NP)					              LPCT1 = LPCTE(NP)
+C  Z NEW IS PROBABLY ONLY LITTLE BELOW Z OLD, THEREFORE INCRE	C  Z NEW IS PROBABLY ONLY LITTLE BELOW Z OLD, THEREFORE INCRE
+              DO 6002 I1 = LPCT1,NSTEP				              DO 6002 I1 = LPCT1,NSTEP
+                IF ( HLONG(I1) .LT. -Z(NP) ) GOTO 6003		                IF ( HLONG(I1) .LT. -Z(NP) ) GOTO 6003
+ 6002         CONTINUE						 6002         CONTINUE
+              I1 = NSTEP + 1					              I1 = NSTEP + 1
+ 6003         CONTINUE						 6003         CONTINUE
+              LPCT2 = I1 - 1					              LPCT2 = I1 - 1
+              DO 485 I=LPCT1,LPCT2				              DO 485 I=LPCT1,LPCT2
+                PLONG(I,IQ(NP)) = PLONG(I,IQ(NP)) + 1.D0	                PLONG(I,IQ(NP)) = PLONG(I,IQ(NP)) + 1.D0
+ 485          CONTINUE						 485          CONTINUE
+C  STORE END POINT AS POSSIBLE STARTPOINT OF NEXT TRACK		C  STORE END POINT AS POSSIBLE STARTPOINT OF NEXT TRACK
+              LPCTE(NP) = LPCT2 + 1				              LPCTE(NP) = LPCT2 + 1
+            ENDIF						            ENDIF
+           ENDIF						           ENDIF
+           DNEAR(NP)=DNEAR(NP)-VSTEP				           DNEAR(NP)=DNEAR(NP)-VSTEP
+           IROLD=IR(NP)						           IROLD=IR(NP)
+          END IF						          END IF
+          IR(NP)=IRNEW						          IR(NP)=IRNEW
+          IRL=IRNEW						          IRL=IRNEW
+          MEDIUM=MED(IRL)					          MEDIUM=MED(IRL)
+          IF((EIE.LE.ECUT(IRL)))GO TO 390			          IF((EIE.LE.ECUT(IRL)))GO TO 390
+          IF (USTEP.NE.0.0) THEN				          IF (USTEP.NE.0.0) THEN
+           IF (NEWOBS.GT.IOBS(NP)) THEN				           IF (NEWOBS.GT.IOBS(NP)) THEN
+            CALL AUSGAB						            CALL AUSGAB
+            IOBS(NP)=NEWOBS					            IOBS(NP)=NEWOBS
+           END IF						           END IF
+          END IF						          END IF
+          GO TO 401						          GO TO 401
+         END IF							         END IF
+         VSTEP=USTEP						         VSTEP=USTEP
+         IF (USTEP.EQ.USTEP0) THEN				         IF (USTEP.EQ.USTEP0) THEN
+          TVSTEP=TUSTEP						          TVSTEP=TUSTEP
+          TVSTPC=TUSTPC						          TVSTPC=TUSTPC
+         ELSE							         ELSE
+          VSTEPU=VSTEP						          VSTEPU=VSTEP
+          DISC=W(NP)*VSTEPU*HBAROI(IRL)				          DISC=W(NP)*VSTEPU*HBAROI(IRL)
+          VSTEPU=VSTEPU/ALTEXP					          VSTEPU=VSTEPU/ALTEXP
+          IF (ABS(DISC).LT.0.16) THEN				          IF (ABS(DISC).LT.0.16) THEN
+           VSTEPU=VSTEPU*(1.+.5*DISC*(1.+.33333333*DISC* (1.+	           VSTEPU=VSTEPU*(1.+.5*DISC*(1.+.33333333*DISC* (1.+
+     *     (1.+0.2*DISC))))					     *     (1.+0.2*DISC))))
+          ELSE							          ELSE
+           VSTEPU=VSTEPU/DISC*(EXP(DISC)-1.)			           VSTEPU=VSTEPU/DISC*(EXP(DISC)-1.)
+          END IF						          END IF
+          VSTP=VSTEPU/TSCAT					          VSTP=VSTEPU/TSCAT
+          IPTH=B0PTH+B1PTH*VSTP					          IPTH=B0PTH+B1PTH*VSTP
+          IF (IPTH.GT.NPTH) THEN				          IF (IPTH.GT.NPTH) THEN
+           CALL AUSGB2						           CALL AUSGB2
+           WRITE(KMPO,490) VSTP,IPTH,NPTH			           WRITE(KMPO,490) VSTP,IPTH,NPTH
+490        FORMAT (' ELECTR: OUT OF BOUNDS IPTH: VSTP,IPTH,NP	490        FORMAT (' ELECTR: OUT OF BOUNDS IPTH: VSTP,IPTH,NP
+     *      G15.6,2I10)						     *      G15.6,2I10)
+           STOP							           STOP
+          END IF						          END IF
+          PTH=PTH0(IPTH)+VSTP*(PTH1(IPTH)+VSTP*PTH2(IPTH))	          PTH=PTH0(IPTH)+VSTP*(PTH1(IPTH)+VSTP*PTH2(IPTH))
+          TVSTEP=PTH*VSTEPU					          TVSTEP=PTH*VSTEPU
+          TVSTPC=PTH*VSTEP					          TVSTPC=PTH*VSTEP
+         END IF							         END IF
+         ALPHA=VSTEP*LELEC*BNORM/EIE				         ALPHA=VSTEP*LELEC*BNORM/EIE
+         TVSTPC=TVSTPC*(1.+0.04166667*ALPHA*ALPHA)		         TVSTPC=TVSTPC*(1.+0.04166667*ALPHA*ALPHA)
+         DE=DEDX*TVSTEP						         DE=DEDX*TVSTEP
+         EDEP=DE						         EDEP=DE
+         EKEF=EKE-DE						         EKEF=EKE-DE
+         EOLD=EIE						         EOLD=EIE
+         ENEW=EOLD-DE						         ENEW=EOLD-DE
+         CALL MSCAT						         CALL MSCAT
+         U0=U(NP)						         U0=U(NP)
+         V0=V(NP)						         V0=V(NP)
+         W0=W(NP)						         W0=W(NP)
+         FNORM=1.-0.5*(ALPHA*ALPHA)*(1.-0.75*(ALPHA*ALPHA))	         FNORM=1.-0.5*(ALPHA*ALPHA)*(1.-0.75*(ALPHA*ALPHA))
+         F1SIN=(1.-FNORM)*SINB					         F1SIN=(1.-FNORM)*SINB
+         F1COS=(1.-FNORM)*COSB					         F1COS=(1.-FNORM)*COSB
+         V1=V0*ALPHA*FNORM					         V1=V0*ALPHA*FNORM
+         U(NP)=U0*(1.-F1SIN*SINB)+W0*F1SIN*COSB+V1*SINB		         U(NP)=U0*(1.-F1SIN*SINB)+W0*F1SIN*COSB+V1*SINB
+         V(NP)=FNORM*(V0-ALPHA*(U0*SINB-W0*COSB))		         V(NP)=FNORM*(V0-ALPHA*(U0*SINB-W0*COSB))
+         W(NP)=W0*(1.-F1COS*COSB)+U0*F1COS*SINB-V1*COSB		         W(NP)=W0*(1.-F1COS*COSB)+U0*F1COS*SINB-V1*COSB
+         RADINV=1.5-0.5*(U(NP)**2+V(NP)**2+W(NP)**2)		         RADINV=1.5-0.5*(U(NP)**2+V(NP)**2+W(NP)**2)
+         U(NP)=U(NP)*RADINV					         U(NP)=U(NP)*RADINV
+         V(NP)=V(NP)*RADINV					         V(NP)=V(NP)*RADINV
+         W(NP)=W(NP)*RADINV					         W(NP)=W(NP)*RADINV
+         X(NP)=X(NP)+(VSTEP*0.5)*(U0+U(NP))			         X(NP)=X(NP)+(VSTEP*0.5)*(U0+U(NP))
+         Y(NP)=Y(NP)+(VSTEP*0.5)*(V0+V(NP))			         Y(NP)=Y(NP)+(VSTEP*0.5)*(V0+V(NP))
+         ZOLD = Z(NP)						         ZOLD = Z(NP)
+         Z(NP)=Z(NP)+(VSTEP*0.5)*(W0+W(NP))			         Z(NP)=Z(NP)+(VSTEP*0.5)*(W0+W(NP))
+         TIME(NP)=TIME(NP)+TVSTPC*VC*E(NP)/SQRT((E(NP)-PRM)*(	         TIME(NP)=TIME(NP)+TVSTPC*VC*E(NP)/SQRT((E(NP)-PRM)*(
+ 								 
+ 								 
+C   GENERATE CERENKOV PHOTONS					C   GENERATE CERENKOV PHOTONS
+         IF ( FNPRIM ) CALL CERENE(TVSTPC)			         IF ( FNPRIM ) CALL CERENE(TVSTPC)
+C  ADD ELECTRONS TO THE LONGITUDINAL DEVELOPMENT		C  ADD ELECTRONS TO THE LONGITUDINAL DEVELOPMENT
+C  FIND FIRST THE EQUIVALENT LEVELS				C  FIND FIRST THE EQUIVALENT LEVELS
+         IF ( LLONGI ) THEN					         IF ( LLONGI ) THEN
+C  IF STARTING POINT BELOW LOWEST LEVEL THEN DON'T CHECK	C  IF STARTING POINT BELOW LOWEST LEVEL THEN DON'T CHECK
+           IF ( HLONG(NSTEP) .LE. -ZOLD ) THEN			           IF ( HLONG(NSTEP) .LE. -ZOLD ) THEN
+             LPCT1 = LPCTE(NP)					             LPCT1 = LPCTE(NP)
+C  Z NEW IS PROBABLY ONLY LITTLE BELOW Z OLD, THEREFORE INCRE	C  Z NEW IS PROBABLY ONLY LITTLE BELOW Z OLD, THEREFORE INCRE
+             DO 6102 I1 = LPCT1,NSTEP				             DO 6102 I1 = LPCT1,NSTEP
+               IF ( HLONG(I1) .LT. -Z(NP) ) GOTO 6103		               IF ( HLONG(I1) .LT. -Z(NP) ) GOTO 6103
+ 6102        CONTINUE						 6102        CONTINUE
+             I1 = NSTEP + 1					             I1 = NSTEP + 1
+ 6103        CONTINUE						 6103        CONTINUE
+             LPCT2 = I1 - 1					             LPCT2 = I1 - 1
+             DO 495 I=LPCT1,LPCT2				             DO 495 I=LPCT1,LPCT2
+                PLONG(I,IQ(NP)) = PLONG(I,IQ(NP)) + 1.D0	                PLONG(I,IQ(NP)) = PLONG(I,IQ(NP)) + 1.D0
+ 495         CONTINUE						 495         CONTINUE
+             LPCTE(NP) = LPCT2 + 1				             LPCTE(NP) = LPCT2 + 1
+           ENDIF						           ENDIF
+         ENDIF							         ENDIF
+         DNEAR(NP)=DNEAR(NP)-VSTEP				         DNEAR(NP)=DNEAR(NP)-VSTEP
+         IROLD=IR(NP)						         IROLD=IR(NP)
+         CALL RMMAR(RNNO38,1,2)					         CALL RMMAR(RNNO38,1,2)
+         PHI=RNNO38*TWOPI					         PHI=RNNO38*TWOPI
+         LPHI=SINC1*PHI+SINC0					         LPHI=SINC1*PHI+SINC0
+         SINPHI=SIN1(LPHI)*PHI+SIN0(LPHI)			         SINPHI=SIN1(LPHI)*PHI+SIN0(LPHI)
+         CPHI=PI5D2-PHI						         CPHI=PI5D2-PHI
+         LCPHI=SINC1*CPHI+SINC0					         LCPHI=SINC1*CPHI+SINC0
+         COSPHI=SIN1(LCPHI)*CPHI+SIN0(LCPHI)			         COSPHI=SIN1(LCPHI)*CPHI+SIN0(LCPHI)
+         A=U(NP)						         A=U(NP)
+         B=V(NP)						         B=V(NP)
+         CC=W(NP)						         CC=W(NP)
+         SINPS2=A*A+B*B						         SINPS2=A*A+B*B
+         IF (SINPS2.LT.1.0E-10) THEN				         IF (SINPS2.LT.1.0E-10) THEN
+          U(NP)=SINTHE*COSPHI					          U(NP)=SINTHE*COSPHI
+          V(NP)=SINTHE*SINPHI					          V(NP)=SINTHE*SINPHI
+          W(NP)=CC*COSTHE					          W(NP)=CC*COSTHE
+         ELSE							         ELSE
+          SINPSI=SQRT(SINPS2)					          SINPSI=SQRT(SINPS2)
+          US=SINTHE*COSPHI					          US=SINTHE*COSPHI
+          VS=SINTHE*SINPHI					          VS=SINTHE*SINPHI
+          SINDEL=B*(1./SINPSI)					          SINDEL=B*(1./SINPSI)
+          COSDEL=A*(1./SINPSI)					          COSDEL=A*(1./SINPSI)
+          U(NP)=CC*COSDEL*US-SINDEL*VS+A*COSTHE			          U(NP)=CC*COSDEL*US-SINDEL*VS+A*COSTHE
+          V(NP)=CC*SINDEL*US+COSDEL*VS+B*COSTHE			          V(NP)=CC*SINDEL*US+COSDEL*VS+B*COSTHE
+          W(NP)=-SINPSI*US+CC*COSTHE				          W(NP)=-SINPSI*US+CC*COSTHE
+         END IF							         END IF
+         RADINV=1.5-0.5*(U(NP)**2+V(NP)**2+W(NP)**2)		         RADINV=1.5-0.5*(U(NP)**2+V(NP)**2+W(NP)**2)
+         U(NP)=U(NP)*RADINV					         U(NP)=U(NP)*RADINV
+         V(NP)=V(NP)*RADINV					         V(NP)=V(NP)*RADINV
+         W(NP)=W(NP)*RADINV					         W(NP)=W(NP)*RADINV
+         PEIE=PEIE-EDEP						         PEIE=PEIE-EDEP
+         EIE=PEIE						         EIE=PEIE
+         E(NP)=PEIE						         E(NP)=PEIE
+         IF((EIE.LE.ECUT(IRL)))GO TO 390			         IF((EIE.LE.ECUT(IRL)))GO TO 390
+         MEDOLD=MEDIUM						         MEDOLD=MEDIUM
+         IF (MEDIUM.NE.0) THEN					         IF (MEDIUM.NE.0) THEN
+          EKEOLD=EKE						          EKEOLD=EKE
+          EKE=EIE-RM						          EKE=EIE-RM
+          ELKE=LOG(EKE)						          ELKE=LOG(EKE)
+          LELKE=EKE1*ELKE+EKE0					          LELKE=EKE1*ELKE+EKE0
+         END IF							         END IF
+         IF (IRNEW.NE.IROLD) THEN				         IF (IRNEW.NE.IROLD) THEN
+          IR(NP)=IRNEW						          IR(NP)=IRNEW
+          IRL=IRNEW						          IRL=IRNEW
+          MEDIUM=MED(IRL)					          MEDIUM=MED(IRL)
+         END IF							         END IF
+         IF((EIE.LE.ECUT(IRL)))GO TO 390			         IF((EIE.LE.ECUT(IRL)))GO TO 390
+         IF (NEWOBS.GT.IOBS(NP)) THEN				         IF (NEWOBS.GT.IOBS(NP)) THEN
+          CALL AUSGAB						          CALL AUSGAB
+          IOBS(NP)=NEWOBS					          IOBS(NP)=NEWOBS
+         END IF							         END IF
+         IF((IDISC.LT.0))GO TO 420				         IF((IDISC.LT.0))GO TO 420
+         IF((MEDIUM.NE.MEDOLD))GO TO 401			         IF((MEDIUM.NE.MEDOLD))GO TO 401
+         DEMFP=MAX(0.,DEMFP-TVSTEP*SIG)				         DEMFP=MAX(0.,DEMFP-TVSTEP*SIG)
+         IF(((DEMFP.LT.1.E-6)))GO TO452				         IF(((DEMFP.LT.1.E-6)))GO TO452
+        GO TO 451						        GO TO 451
+452     CONTINUE						452     CONTINUE
+        IF (LELEC.LT.0) THEN					        IF (LELEC.LT.0) THEN
+         SIGF=ESIG1(LELKE)*ELKE+ESIG0(LELKE)			         SIGF=ESIG1(LELKE)*ELKE+ESIG0(LELKE)
+        ELSE							        ELSE
+         SIGF=PSIG1(LELKE)*ELKE+PSIG0(LELKE)			         SIGF=PSIG1(LELKE)*ELKE+PSIG0(LELKE)
+        END IF							        END IF
+        CALL RMMAR(RFICT,1,2)					        CALL RMMAR(RFICT,1,2)
+        IF(((RFICT.LE.SIGF/SIG0)))GO TO402			        IF(((RFICT.LE.SIGF/SIG0)))GO TO402
+       GO TO 401						       GO TO 401
+402    CONTINUE							402    CONTINUE
+       IF ( .NOT. FNPRIM ) THEN					       IF ( .NOT. FNPRIM ) THEN
+        X(1)=0.							        X(1)=0.
+        Y(1)=0.							        Y(1)=0.
+        EVTH(5)=X(1)						        EVTH(5)=X(1)
+        EVTH(6)=-Y(1)						        EVTH(6)=-Y(1)
+        IF (FIX1I) THEN						        IF (FIX1I) THEN
+         Z(1)=-FIXHEI						         Z(1)=-FIXHEI
+         NP=1							         NP=1
+         LPCTE(1)=MIN(NSTEP,INT(THICK(FIXHEI)*THSTPI)+1)	         LPCTE(1)=MIN(NSTEP,INT(THICK(FIXHEI)*THSTPI)+1)
+         SITHET=SQRT(1.D0-SECPAR(3)**2)				         SITHET=SQRT(1.D0-SECPAR(3)**2)
+         U(1)=SITHET*COS(-SECPAR(4))				         U(1)=SITHET*COS(-SECPAR(4))
+         V(1)=SITHET*SIN(-SECPAR(4))				         V(1)=SITHET*SIN(-SECPAR(4))
+         W(1)=SECPAR(3)						         W(1)=SECPAR(3)
+         RADINV=1.5-0.5*(U(1)**2+V(1)**2+W(1)**2)		         RADINV=1.5-0.5*(U(1)**2+V(1)**2+W(1)**2)
+         U(1)=U(1)*RADINV					         U(1)=U(1)*RADINV
+         V(1)=V(1)*RADINV					         V(1)=V(1)*RADINV
+         W(1)=W(1)*RADINV					         W(1)=W(1)*RADINV
+        END IF							        END IF
+        EVTH(7)=-Z(1)						        EVTH(7)=-Z(1)
+        CALL TOBUF(EVTH,0)					        CALL TOBUF(EVTH,0)
+C   OUTPUT OF EVENTHEADER TO THE CERENKOV FILE			C   OUTPUT OF EVENTHEADER TO THE CERENKOV FILE
+        IF (LCERFI) CALL TOBUFC(EVTH,0)				        IF (LCERFI) CALL TOBUFC(EVTH,0)
+        CALL COORIN(DBLE(-Z(1)))				        CALL COORIN(DBLE(-Z(1)))
+        TIME(1)=0.D0						        TIME(1)=0.D0
+        FNPRIM =.TRUE.						        FNPRIM =.TRUE.
+        IF (FPRINT) THEN					        IF (FPRINT) THEN
+C  Aitor 25-2-2000. He puesto que saque la Thickness del punt |	         WRITE(KMPO,* )' FIRST INTERACTION AT ',EVTH(7)*0.01,
+          WRITE(KMPO,* )' FIRST INTERACTION AT ',EVTH(7)*0.01 <
+     *        THICK(DBLE(EVTH(7))), ' M g/cm^2'		      <
+        END IF							        END IF
+      END IF						      |	       END IF
+       IF (LELEC.LT.0) THEN					       IF (LELEC.LT.0) THEN
+        EBR1=EBR11(LELKE)*ELKE+EBR10(LELKE)			        EBR1=EBR11(LELKE)*ELKE+EBR10(LELKE)
+        CALL RMMAR(RNNO24,1,2)					        CALL RMMAR(RNNO24,1,2)
+        IF (RNNO24.LE.EBR1) THEN				        IF (RNNO24.LE.EBR1) THEN
+         GO TO 500						         GO TO 500
+        ELSE							        ELSE
+         IF (E(NP).LE.THMOLL) THEN				         IF (E(NP).LE.THMOLL) THEN
+          IF((EBR1.LE.0.0))GO TO 380				          IF((EBR1.LE.0.0))GO TO 380
+          GO TO 500						          GO TO 500
+         END IF							         END IF
+         CALL MOLLER						         CALL MOLLER
+        END IF							        END IF
+        GO TO 380						        GO TO 380
+       END IF							       END IF
+       PBR1=PBR11(LELKE)*ELKE+PBR10(LELKE)			       PBR1=PBR11(LELKE)*ELKE+PBR10(LELKE)
+       CALL RMMAR(RNNO25,1,2)					       CALL RMMAR(RNNO25,1,2)
+       IF((RNNO25.LT.PBR1))GO TO 500				       IF((RNNO25.LT.PBR1))GO TO 500
+       PBR2=PBR21(LELKE)*ELKE+PBR20(LELKE)			       PBR2=PBR21(LELKE)*ELKE+PBR20(LELKE)
+       IF (RNNO25.LT.PBR2) THEN					       IF (RNNO25.LT.PBR2) THEN
+        CALL BHABHA						        CALL BHABHA
+       ELSE							       ELSE
+        CALL ANNIH						        CALL ANNIH
+        GO TO 382						        GO TO 382
+       END IF							       END IF
+      GO TO 381							      GO TO 381
+382   CONTINUE							382   CONTINUE
+      RETURN							      RETURN
+500   CONTINUE							500   CONTINUE
+      CALL BREMS						      CALL BREMS
+      IF (IQ(NP).EQ.1) THEN					      IF (IQ(NP).EQ.1) THEN
+       RETURN							       RETURN
+      ELSE							      ELSE
+       GO TO 380						       GO TO 380
+      END IF							      END IF
+390   IF (EIE.GT.AE) THEN					390   IF (EIE.GT.AE) THEN
+       IDR=1							       IDR=1
+       IF (LELEC.LT.0) THEN					       IF (LELEC.LT.0) THEN
+        EDEP=PEIE-PRM						        EDEP=PEIE-PRM
+       ELSE							       ELSE
+        EDEP=PEIE-PRM						        EDEP=PEIE-PRM
+       END IF							       END IF
+      ELSE							      ELSE
+       IDR=2							       IDR=2
+       EDEP=PEIE-PRM						       EDEP=PEIE-PRM
+      END IF							      END IF
+      IF (LELEC.GT.0) THEN					      IF (LELEC.GT.0) THEN
+       IF (EDEP.LT.PEIE) THEN					       IF (EDEP.LT.PEIE) THEN
+        CALL RMMAR(RD,2,2)					        CALL RMMAR(RD,2,2)
+        COSTHE=RD(1)						        COSTHE=RD(1)
+        FLIP=RD(2)						        FLIP=RD(2)
+        IF((FLIP.LE.0.5))COSTHE=-COSTHE				        IF((FLIP.LE.0.5))COSTHE=-COSTHE
+        SINTHE=SQRT(MAX(0.,1.0-COSTHE*COSTHE))			        SINTHE=SQRT(MAX(0.,1.0-COSTHE*COSTHE))
+        E(NP)=PRM						        E(NP)=PRM
+        IQ(NP)=1						        IQ(NP)=1
+        U(NP)=0.						        U(NP)=0.
+        V(NP)=0.						        V(NP)=0.
+        W(NP)=1.						        W(NP)=1.
+        CALL UPHI(2,1)						        CALL UPHI(2,1)
+        NP=NP+1							        NP=NP+1
+        E(NP)=PRM						        E(NP)=PRM
+        IQ(NP)=1						        IQ(NP)=1
+        X(NP)=X(NP-1)						        X(NP)=X(NP-1)
+        Y(NP)=Y(NP-1)						        Y(NP)=Y(NP-1)
+        Z(NP)=Z(NP-1)						        Z(NP)=Z(NP-1)
+        LPCTE(NP)=LPCTE(NP-1)					        LPCTE(NP)=LPCTE(NP-1)
+        IR(NP)=IR(NP-1)						        IR(NP)=IR(NP-1)
+        DNEAR(NP)=DNEAR(NP-1)					        DNEAR(NP)=DNEAR(NP-1)
+        TIME(NP)=TIME(NP-1)					        TIME(NP)=TIME(NP-1)
+        IGEN(NP)=IGEN(NP-1)					        IGEN(NP)=IGEN(NP-1)
+        IOBS(NP)=IOBS(NP-1)					        IOBS(NP)=IOBS(NP-1)
+        U(NP)=-U(NP-1)						        U(NP)=-U(NP-1)
+        V(NP)=-V(NP-1)						        V(NP)=-V(NP-1)
+        W(NP)=-W(NP-1)						        W(NP)=-W(NP-1)
+        RETURN							        RETURN
+       END IF							       END IF
+      END IF							      END IF
+      NP=NP-1							      NP=NP-1
+      IRCODE=2							      IRCODE=2
+      RETURN							      RETURN
+420   IF (LELEC.LT.0) THEN					420   IF (LELEC.LT.0) THEN
+       EDEP=PEIE-PRM						       EDEP=PEIE-PRM
+      ELSE							      ELSE
+       EDEP=PEIE+PRM						       EDEP=PEIE+PRM
+      END IF							      END IF
+      IRCODE=2							      IRCODE=2
+      NP=NP-1							      NP=NP-1
+      RETURN							      RETURN
+      END							      END
