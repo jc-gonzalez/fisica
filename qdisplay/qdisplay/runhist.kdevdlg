@@ -1,0 +1,55 @@
+// KDevelop Dialog Editor File (.kdevdlg)
+// 
+// Created by KDlgEdit Version 0.1alpha (C) 1999 by Pascal Krahmer
+// Get KDevelop including KDlgEdit at "www.beast.de/kdevelop"
+// 
+data Information
+{
+   Filename="/home/gonzalez/devel/qdisplay/qdisplay/runhist.kdevdlg"
+   KDevelopVersion="1.1"
+   DlgEditVersion="0.1alpha"
+   LastChanged="Fri Oct 13 11:36:46 2000"
+}
+
+data SessionManagement
+{
+   OpenedRootCount="0"
+}
+
+item QWidget
+{
+   Name="NoName"
+   VarName="this"
+   X="0"
+   Y="0"
+   Width="540"
+   Height="400"
+   MinWidth="0"
+   MinHeight="0"
+
+   item QWidget
+   {
+      Name="NoName"
+      VarName="QWidget_1"
+      X="10"
+      Y="10"
+      Width="520"
+      Height="340"
+      MinWidth="0"
+      MinHeight="0"
+   }
+
+   item QPushButton
+   {
+      Name="NoName"
+      VarName="QPushButton_1"
+      X="220"
+      Y="360"
+      Width="100"
+      Height="30"
+      MinWidth="0"
+      MinHeight="0"
+      Text="&OK"
+      isAutoDefault="true"
+   }
+}

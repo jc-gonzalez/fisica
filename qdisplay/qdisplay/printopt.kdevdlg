@@ -1,0 +1,279 @@
+// KDevelop Dialog Editor File (.kdevdlg)
+// 
+// Created by KDlgEdit Version 0.1alpha (C) 1999 by Pascal Krahmer
+// Get KDevelop including KDlgEdit at "www.beast.de/kdevelop"
+// 
+data Information
+{
+   Filename="/home/gonzalez/devel/qdisplay/qdisplay/printopt.kdevdlg"
+   KDevelopVersion="1.1"
+   DlgEditVersion="0.1alpha"
+   LastChanged="Fri Oct 13 10:14:16 2000"
+}
+
+data SessionManagement
+{
+   OpenedRootCount="0"
+}
+
+item QWidget
+{
+   Name="NoName"
+   VarName="this"
+   X="0"
+   Y="0"
+   Width="440"
+   Height="330"
+   MinWidth="0"
+   MinHeight="0"
+
+   item QPushButton
+   {
+      Name="NoName"
+      VarName="btnOK"
+      X="220"
+      Y="280"
+      Width="100"
+      Height="30"
+      MinWidth="0"
+      MinHeight="0"
+      Text="&OK"
+      isDefault="true"
+   }
+
+   item QPushButton
+   {
+      Name="NoName"
+      VarName="btnCancel"
+      X="330"
+      Y="280"
+      Width="100"
+      Height="30"
+      MinWidth="0"
+      MinHeight="0"
+      Text="&Cancel"
+   }
+
+   item QCheckBox
+   {
+      ToolTip="Activate this to using current color palette in printer output,\nor desactivate it to using gray scale."
+      Name="NoName"
+      VarName="chkbxPrintInColor"
+      X="10"
+      Y="20"
+      Width="200"
+      Height="30"
+      MinWidth="0"
+      MinHeight="0"
+      Text="Print using color palette"
+   }
+
+   item QCheckBox
+   {
+      ToolTip="Activate this to print camera image in printer output."
+      Name="NoName"
+      VarName="chkbxPrintImage"
+      X="10"
+      Y="50"
+      Width="200"
+      Height="30"
+      MinWidth="0"
+      MinHeight="0"
+      Text="Print camera image"
+      isChecked="true"
+   }
+
+   item QCheckBox
+   {
+      ToolTip="Activate this to print image parameters and statistics in printer output"
+      Name="NoName"
+      VarName="chkbxPrintStatistics"
+      X="10"
+      Y="80"
+      Width="200"
+      Height="30"
+      MinWidth="0"
+      MinHeight="0"
+      Text="Print statistics"
+      isChecked="true"
+   }
+
+   item QCheckBox
+   {
+      ToolTip="Activate this to print histograms in printer output"
+      Name="NoName"
+      VarName="chkbxPrintHistograms"
+      X="10"
+      Y="110"
+      Width="200"
+      Height="30"
+      MinWidth="0"
+      MinHeight="0"
+      Text="Print histograms"
+      isChecked="true"
+   }
+
+   item QButtonGroup
+   {
+      Name="NoName"
+      VarName="btngrpOutput"
+      X="240"
+      Y="20"
+      Width="190"
+      Height="150"
+      MinWidth="0"
+      MinHeight="0"
+      Title=" Print output "
+
+      item QRadioButton
+      {
+         ToolTip="Shows printer dialog"
+         Name="NoName"
+         VarName="rbPrinterSetup"
+         X="10"
+         Y="20"
+         Width="100"
+         Height="30"
+         MinWidth="0"
+         MinHeight="0"
+         Text="Setup dialog"
+         isChecked="true"
+      }
+
+      item QRadioButton
+      {
+         ToolTip="Send output directly to the default printer"
+         Name="NoName"
+         VarName="rbPrinterPrinter"
+         X="10"
+         Y="50"
+         Width="130"
+         Height="30"
+         MinWidth="0"
+         MinHeight="0"
+         Text="Directly to printer"
+      }
+
+      item QRadioButton
+      {
+         Name="NoName"
+         VarName="rbPrinterFile"
+         X="10"
+         Y="80"
+         Width="100"
+         Height="30"
+         MinWidth="0"
+         MinHeight="0"
+         Text="Print to files"
+      }
+
+      item QRadioButton
+      {
+         ToolTip="Appends all the images to one single file"
+         Name="NoName"
+         VarName="rbPrinterFileAll"
+         X="10"
+         Y="110"
+         Width="170"
+         Height="30"
+         MinWidth="0"
+         MinHeight="0"
+         Text="Everything to one file"
+      }
+   }
+
+   item QLineEdit
+   {
+      Name="NoName"
+      VarName="lePrintCommand"
+      X="140"
+      Y="150"
+      Width="90"
+      Height="30"
+      MinWidth="0"
+      MinHeight="0"
+      Text="lpr "
+      hasFrame="true"
+   }
+
+   item QLabel
+   {
+      Name="NoName"
+      VarName="QLabel_1"
+      X="10"
+      Y="150"
+      Width="100"
+      Height="30"
+      MinWidth="0"
+      MinHeight="0"
+      Text="Print command:"
+   }
+
+   item QLabel
+   {
+      Name="NoName"
+      VarName="QLabel_2"
+      X="10"
+      Y="190"
+      Width="130"
+      Height="30"
+      MinWidth="0"
+      MinHeight="0"
+      Text="Multiple output prefix:"
+   }
+
+   item QLineEdit
+   {
+      ToolTip="Prefix to be used when selecting 'Print to files'"
+      Name="NoName"
+      VarName="lePrintPrefix"
+      X="140"
+      Y="190"
+      Width="90"
+      Height="30"
+      MinWidth="0"
+      MinHeight="0"
+      Text="/tmp/qd_"
+      hasFrame="true"
+   }
+
+   item QLabel
+   {
+      Name="NoName"
+      VarName="QLabel_3"
+      X="10"
+      Y="230"
+      Width="120"
+      Height="30"
+      MinWidth="0"
+      MinHeight="0"
+      Text="Output File:"
+   }
+
+   item QLineEdit
+   {
+      Name="NoName"
+      VarName="lePrintFilename"
+      X="140"
+      Y="230"
+      Width="210"
+      Height="30"
+      MinWidth="0"
+      MinHeight="0"
+      Text="/tmp/qd.ps"
+      hasFrame="true"
+   }
+
+   item QPushButton
+   {
+      Name="NoName"
+      VarName="QPushButton_3"
+      X="360"
+      Y="230"
+      Width="70"
+      Height="30"
+      MinWidth="0"
+      MinHeight="0"
+      Text="Browse..."
+   }
+}

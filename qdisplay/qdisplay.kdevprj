@@ -226,7 +226,7 @@ sgml_file=/home/gonzalez/devel/qdisplay/qdisplay/docs/en/index.sgml
 short_info=,
 email=gonzalez@gae.ucm.es
 kdevprj_version=1.2
-configure_args=--with-qt-dir=/usr/lib/qt-2.2.0
+configure_args=--with-qt-dir=/usr/lib/qt2
 modifyMakefiles=true
 [qdisplay/qprintoptions.h]
 install_location=
