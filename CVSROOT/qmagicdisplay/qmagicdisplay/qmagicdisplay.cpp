@@ -1,42 +1,42 @@
 /*************************************************************************
- *                                                                          
- * qmagicdisplay.cpp  -  description
- *
- * Copyright (C) 2001  J C Gonzalez
- * gonzalez@gae.ucm.es
- *
- *------------------------------------------------------------------------
- *
- * Copyright (C) 2001 J C Gonzalez
- *  
- * This program is free software;  you can redistribute it and/or  modify
- * it under the terms  of the GNU General  Public License as published by
- * the Free Software Foundation; either version  2 of the License, or (at
- * your option) any later version.
- * 
- * This piece of code is distributed in the hope  that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of FITNESS
- * FOR A PARTICULAR PURPOSE.
- * 
- * In no  event shall his author  be liable for  any special, incidental,
- * indirect  or  consequential  damages  of any  kind,   or  any  damages
- * whatsoever resulting from loss of use, data or profits, whether or not
- * advised of the possibility of damage, and on  any theory of liability,
- * arising out  of or in connection  with the use  or performance of this
- * software. You've been warned.
- * 
- ************************************************************************/
+*                                                                          
+* qmagicdisplay.cpp  -  description
+*
+* Copyright (C) 2001  J C Gonzalez
+* gonzalez@gae.ucm.es
+*
+*------------------------------------------------------------------------
+*
+* Copyright (C) 2001 J C Gonzalez
+*  
+* This program is free software;  you can redistribute it and/or  modify
+* it under the terms  of the GNU General  Public License as published by
+* the Free Software Foundation; either version  2 of the License, or (at
+* your option) any later version.
+* 
+* This piece of code is distributed in the hope  that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of FITNESS
+* FOR A PARTICULAR PURPOSE.
+* 
+* In no  event shall his author  be liable for  any special, incidental,
+* indirect  or  consequential  damages  of any  kind,   or  any  damages
+* whatsoever resulting from loss of use, data or profits, whether or not
+* advised of the possibility of damage, and on  any theory of liability,
+* arising out  of or in connection  with the use  or performance of this
+* software. You've been warned.
+* 
+************************************************************************/
 
 
 #include "qmagicdisplay.h"
 #include "filesave.xpm"
 #include "fileopen.xpm"
-#include "filenew.xpm"
+//#include "filenew.xpm"
 
 QMAGICDisplay::QMAGICDisplay()
 {
   setCaption("QMAGICDisplay " VERSION);
-  
+
   ///////////////////////////////////////////////////////////////////
   // call inits to invoke all other construction parts
   initMenuBar();
@@ -56,79 +56,107 @@ void QMAGICDisplay::initMenuBar()
   ///////////////////////////////////////////////////////////////////
   // MENUBAR
 
-  ///////////////////////////////////////////////////////////////////
-  // menuBar entry fileMenu
+///////////////////////////////////////////////////////////////////
+// menuBar entry fileMenu
 
   fileMenu=new QPopupMenu();
-  fileMenu->insertItem("&New", this, SLOT(slotFileNew()), CTRL+Key_N, ID_FILE_NEW);
-  fileMenu->insertItem("&Open...", this, SLOT(slotFileOpen()), CTRL+Key_O, ID_FILE_OPEN);
+  //  fileMenu->insertItem("&New", this, SLOT(slotFileNew()),
+  //                       CTRL+Key_N, ID_FILE_NEW);
+  fileMenu->insertItem("&Open...", this, SLOT(slotFileOpen()), 
+                       CTRL+Key_O, ID_FILE_OPEN);
   fileMenu->insertSeparator();
-  fileMenu->insertItem("&Save", this, SLOT(slotFileSave()), CTRL+Key_S, ID_FILE_SAVE);
-  fileMenu->insertItem("Save &as...", this, SLOT(slotFileSaveAs()), 0, ID_FILE_SAVE_AS);
-  fileMenu->insertItem("&Close", this, SLOT(slotFileClose()), CTRL+Key_W, ID_FILE_CLOSE);
+  fileMenu->insertItem("&Save", this, SLOT(slotFileSave()), 
+                       CTRL+Key_S, ID_FILE_SAVE);
+  fileMenu->insertItem("Save &as...", this, SLOT(slotFileSaveAs()),
+                       0, ID_FILE_SAVE_AS);
+  fileMenu->insertItem("&Close", this, SLOT(slotFileClose()), 
+                       CTRL+Key_W, ID_FILE_CLOSE);
   fileMenu->insertSeparator();
-  fileMenu->insertItem("&Print", this, SLOT(slotFilePrint()), CTRL+Key_P, ID_FILE_PRINT);
+  fileMenu->insertItem("&Print", this, SLOT(slotFilePrint()), 
+                       CTRL+Key_P, ID_FILE_PRINT);
   fileMenu->insertSeparator();
-  fileMenu->insertItem("E&xit", this, SLOT(slotFileQuit()), CTRL+Key_Q, ID_FILE_QUIT);
+  fileMenu->insertItem("E&xit", this, SLOT(slotFileQuit()), 
+                       CTRL+Key_Q, ID_FILE_QUIT);
 
   ///////////////////////////////////////////////////////////////////
   // menuBar entry editMenu
   editMenu=new QPopupMenu();
-  editMenu->insertItem("Cu&t", this, SLOT(slotEditCut()), CTRL+Key_X, ID_EDIT_CUT);
-  editMenu->insertItem("&Copy", this, SLOT(slotEditCopy()), CTRL+Key_C, ID_EDIT_COPY);
-  editMenu->insertItem("&Paste", this, SLOT(slotEditPaste()), CTRL+Key_V, ID_EDIT_PASTE);
- 
-  
+  editMenu->insertItem("Cu&t", this, SLOT(slotEditCut()), 
+                       CTRL+Key_X, ID_EDIT_CUT);
+  editMenu->insertItem("&Copy", this, SLOT(slotEditCopy()), 
+                       CTRL+Key_C, ID_EDIT_COPY);
+  editMenu->insertItem("&Paste", this, SLOT(slotEditPaste()), 
+                       CTRL+Key_V, ID_EDIT_PASTE);
+
+
   ///////////////////////////////////////////////////////////////////
   // menuBar entry viewMenu
   viewMenu=new QPopupMenu();
   viewMenu->setCheckable(true);
-  viewMenu->insertItem("Tool&bar", this, SLOT(slotViewToolBar()), 0, ID_VIEW_TOOLBAR);
-  viewMenu->insertItem("&Statusbar", this, SLOT(slotViewStatusBar()), 0, ID_VIEW_STATUSBAR);
+  viewMenu->insertItem("Tool&bar", this, SLOT(slotViewToolBar()),
+                       0, ID_VIEW_TOOLBAR);
+  viewMenu->insertItem("&Statusbar", this, SLOT(slotViewStatusBar()),
+                       0, ID_VIEW_STATUSBAR);
 
   viewMenu->setItemChecked(ID_VIEW_TOOLBAR, true);
   viewMenu->setItemChecked(ID_VIEW_STATUSBAR, true);
 
   ///////////////////////////////////////////////////////////////////
   // EDIT YOUR APPLICATION SPECIFIC MENUENTRIES HERE
-  
+
   ///////////////////////////////////////////////////////////////////
-  // menuBar entry helpMenu
+  // menuBar entry optMenu
+  optMenu=new QPopupMenu();
+  optMenu->setCheckable(true);
+  optMenu->insertItem("Read &DAT files", this, SLOT(slotOptReadDAT()),
+                      0, ID_OPT_READDAT);
+  optMenu->insertItem("Read &PHE files", this, SLOT(slotOptReadPHE()),
+                      0, ID_OPT_READPHE);
+  optMenu->insertItem("Read &RFL files", this, SLOT(slotOptReadRFL()),
+                      0, ID_OPT_READRFL);
+
+  optMenu->setItemChecked(ID_OPT_READDAT, true);
+
+///////////////////////////////////////////////////////////////////
+// menuBar entry helpMenu
   helpMenu=new QPopupMenu();
-  helpMenu->insertItem("About...", this, SLOT(slotHelpAbout()), 0, ID_HELP_ABOUT);
+  helpMenu->insertItem("About...", this, SLOT(slotHelpAbout()),
+                       0, ID_HELP_ABOUT);
 
 
-  ///////////////////////////////////////////////////////////////////
-  // MENUBAR CONFIGURATION
-  // set menuBar() the current menuBar 
+///////////////////////////////////////////////////////////////////
+// MENUBAR CONFIGURATION
+// set menuBar() the current menuBar 
 
   menuBar()->insertItem("&File", fileMenu);
   menuBar()->insertItem("&Edit", editMenu);
   menuBar()->insertItem("&View", viewMenu);
+  menuBar()->insertItem("&Options", optMenu);
   menuBar()->insertSeparator();
   menuBar()->insertItem("&Help", helpMenu);
-  
-  ///////////////////////////////////////////////////////////////////
-  // CONNECT THE SUBMENU SLOTS WITH SIGNALS
+
+///////////////////////////////////////////////////////////////////
+// CONNECT THE SUBMENU SLOTS WITH SIGNALS
 
   connect(fileMenu, SIGNAL(highlighted(int)), SLOT(statusCallback(int)));
   connect(editMenu, SIGNAL(highlighted(int)), SLOT(statusCallback(int)));
   connect(viewMenu, SIGNAL(highlighted(int)), SLOT(statusCallback(int)));
+  connect(optMenu,  SIGNAL(highlighted(int)), SLOT(statusCallback(int)));
   connect(helpMenu, SIGNAL(highlighted(int)), SLOT(statusCallback(int)));
-  
+
 }
 
 void QMAGICDisplay::initToolBar()
 {
   ///////////////////////////////////////////////////////////////////
   // TOOLBAR
-  QPixmap openIcon, saveIcon, newIcon;
+  QPixmap openIcon, saveIcon; //, newIcon;
 
   fileToolbar = new QToolBar(this, "file operations");
- 
-  newIcon = QPixmap(filenew);
-  QToolButton *fileNew = new QToolButton(newIcon, "New File", 0, this,
-                                         SLOT(slotFileNew()), fileToolbar);
+
+//  newIcon = QPixmap(filenew);
+//  QToolButton *fileNew = new QToolButton(newIcon, "New File", 0, this,
+//                                         SLOT(slotFileNew()), fileToolbar);
 
   openIcon = QPixmap(fileopen);
   QToolButton *fileOpen = new QToolButton(openIcon, "Open File", 0, this,
@@ -137,18 +165,18 @@ void QMAGICDisplay::initToolBar()
   saveIcon = QPixmap(filesave);
   QToolButton *fileSave = new QToolButton(saveIcon, "Save File", 0, this,
                                           SLOT(slotFileSave()), fileToolbar);
-  
-  
+
+
   fileToolbar->addSeparator();
   QWhatsThis::whatsThisButton(fileToolbar);
-  QWhatsThis::add(fileNew,"Click this button to create a new file.\n\n"
-                  "You can also select the New command from the File menu.");
+  //  QWhatsThis::add(fileNew,"Click this button to create a new file.\n\n"
+  //                  "You can also select the New command from the File menu.");
   QWhatsThis::add(fileOpen,"Click this button to open a new file.\n\n"
                   "You can also select the Open command from the File menu.");
   QWhatsThis::add(fileSave,"Click this button to save the file you are "
                   "editing. You will be prompted for a file name.\n\n"
                   "You can also select the Save command from the File menu.");
-  
+
 }
 
 void QMAGICDisplay::initStatusBar()
@@ -160,15 +188,18 @@ void QMAGICDisplay::initStatusBar()
 
 void QMAGICDisplay::initDoc()
 {
-   doc=new QMAGICDisplayDoc();
+  //doc = new QMAGICDisplayDoc();
+  doc = 0;
+  readMode = ID_OPT_READDAT;
 }
 
 void QMAGICDisplay::initView()
 { 
   ////////////////////////////////////////////////////////////////////
   // set the main widget here
-  view=new QMAGICDisplayView(this, doc);
-  setCentralWidget(view);
+  view = 0;
+  //view = new QMAGICDisplayView(this, doc);
+  //setCentralWidget(view);
 }
 
 bool QMAGICDisplay::queryExit()
@@ -176,14 +207,8 @@ bool QMAGICDisplay::queryExit()
   int exit=QMessageBox::information(this, "Quit...",
                                     "Do your really want to quit?",
                                     QMessageBox::Ok, QMessageBox::Cancel);
-
-  if (exit==1)
-  {
-
-  }
-  else
-  {
-
+  if (exit==1) {
+  } else {
   };
 
   return (exit==1);
@@ -194,29 +219,53 @@ bool QMAGICDisplay::queryExit()
 /////////////////////////////////////////////////////////////////////
 
 
-void QMAGICDisplay::slotFileNew()
-{
-  statusBar()->message("Creating new file...");
-  doc->newDoc();
-  statusBar()->message(IDS_STATUS_DEFAULT);
-}
+//void QMAGICDisplay::slotFileNew()
+//{
+//  statusBar()->message("Creating new file...");
+//  doc->newDoc();
+//  statusBar()->message(IDS_STATUS_DEFAULT);
+//}
 
 void QMAGICDisplay::slotFileOpen()
 {
   statusBar()->message("Opening file...");
 
+
   QString fileName = QFileDialog::getOpenFileName(0,0,this);
   if (!fileName.isEmpty())
-  {
-    doc->load(fileName);
-    setCaption(fileName);
-    QString message="Loaded document: "+fileName;
-    statusBar()->message(message, 2000);
-  }
+    {
+      if (doc != 0) 
+        QMAGICDisplay::slotFileClose();
+
+      doc = new QMAGICDisplayDoc();
+      CHECK_PTR( doc );
+      
+      switch (readMode) {
+      case ID_OPT_READDAT: doc->setDocType( QMAGICDisplayDoc::DATDocType );
+        break;
+      case ID_OPT_READPHE: doc->setDocType( QMAGICDisplayDoc::PHEDocType );
+        break;
+      case ID_OPT_READRFL: doc->setDocType( QMAGICDisplayDoc::RFLDocType );
+        break;
+      }
+ 
+      view = new QMAGICDisplayView(this, doc,
+                                   doc->getEvtH(),
+                                   doc->getEvtD(),
+                                   doc->getEvtPD());
+      CHECK_PTR( view );
+      setCentralWidget(view);
+
+      doc->load(fileName);
+
+      setCaption(fileName);
+      QString message="Loaded document: "+fileName;
+      statusBar()->message(message, 2000);
+    }
   else
-  {
-    statusBar()->message("Opening aborted", 2000);
-  }
+    {
+      statusBar()->message("Opening aborted", 2000);
+    }
 }
 
 
@@ -231,12 +280,9 @@ void QMAGICDisplay::slotFileSaveAs()
 {
   statusBar()->message("Saving file under new filename...");
   QString fn = QFileDialog::getSaveFileName(0, 0, this);
-  if (!fn.isEmpty())
-  {
+  if (!fn.isEmpty()) {
     doc->saveAs(fn);
-  }
-  else
-  {
+  } else {
     statusBar()->message("Saving aborted", 2000);
   }
 
@@ -245,6 +291,12 @@ void QMAGICDisplay::slotFileSaveAs()
 
 void QMAGICDisplay::slotFileClose()
 {
+  delete doc;
+  doc = 0;
+
+  delete view;
+  view = 0;
+
   statusBar()->message("Closing file...");
 
   statusBar()->message(IDS_STATUS_DEFAULT);
@@ -255,15 +307,15 @@ void QMAGICDisplay::slotFilePrint()
   statusBar()->message("Printing...");
   QPrinter printer;
   if (printer.setup(this))
-  {
-    QPainter painter;
-    painter.begin(&printer);
+    {
+      QPainter painter;
+      painter.begin(&printer);
 
-    ///////////////////////////////////////////////////////////////////
-    // TODO: Define printing by using the QPainter methods here
+      ///////////////////////////////////////////////////////////////////
+      // TODO: Define printing by using the QPainter methods here
 
-    painter.end();
-  };
+      painter.end();
+    };
 
   statusBar()->message(IDS_STATUS_DEFAULT);
 }
@@ -271,24 +323,18 @@ void QMAGICDisplay::slotFilePrint()
 void QMAGICDisplay::slotFileQuit()
 { 
   statusBar()->message("Exiting application...");
+
   ///////////////////////////////////////////////////////////////////
   // exits the Application
-  if(doc->isModified())
-  {
-    if(queryExit())
-    {
+  if((doc!=0) && (doc->isModified())) {
+    if(queryExit()) {
       qApp->quit();
-    }
-    else
-    {
-
+    } else {
     };
-  }
-  else
-  {
+  } else {
     qApp->quit();
   };
-
+  
   statusBar()->message(IDS_STATUS_DEFAULT);
 }
 
@@ -302,14 +348,14 @@ void QMAGICDisplay::slotEditCut()
 void QMAGICDisplay::slotEditCopy()
 {
   statusBar()->message("Copying selection to clipboard...");
-  
+
   statusBar()->message(IDS_STATUS_DEFAULT);
 }
 
 void QMAGICDisplay::slotEditPaste()
 {
   statusBar()->message("Inserting clipboard contents...");
-  
+
   statusBar()->message(IDS_STATUS_DEFAULT);
 }
 
@@ -319,17 +365,17 @@ void QMAGICDisplay::slotViewToolBar()
   statusBar()->message("Toggle toolbar...");
   ///////////////////////////////////////////////////////////////////
   // turn Toolbar on or off
-  
+
   if (fileToolbar->isVisible())
-  {
-    fileToolbar->hide();
-    viewMenu->setItemChecked(ID_VIEW_TOOLBAR, false);
-  } 
+    {
+      fileToolbar->hide();
+      viewMenu->setItemChecked(ID_VIEW_TOOLBAR, false);
+    } 
   else
-  {
-    fileToolbar->show();
-    viewMenu->setItemChecked(ID_VIEW_TOOLBAR, true);
-  };
+    {
+      fileToolbar->show();
+      viewMenu->setItemChecked(ID_VIEW_TOOLBAR, true);
+    };
 
   statusBar()->message(IDS_STATUS_DEFAULT);
 }
@@ -339,19 +385,59 @@ void QMAGICDisplay::slotViewStatusBar()
   statusBar()->message("Toggle statusbar...");
   ///////////////////////////////////////////////////////////////////
   //turn Statusbar on or off
-  
+
   if (statusBar()->isVisible())
-  {
-    statusBar()->hide();
-    viewMenu->setItemChecked(ID_VIEW_STATUSBAR, false);
-  }
+    {
+      statusBar()->hide();
+      viewMenu->setItemChecked(ID_VIEW_STATUSBAR, false);
+    }
   else
-  {
-    statusBar()->show();
-    viewMenu->setItemChecked(ID_VIEW_STATUSBAR, true);
-  }
-  
+    {
+      statusBar()->show();
+      viewMenu->setItemChecked(ID_VIEW_STATUSBAR, true);
+    }
+
   statusBar()->message(IDS_STATUS_DEFAULT);
+}
+
+void QMAGICDisplay::slotOptReadDAT()
+{
+  if (doc == 0) {
+    // files to read will be a DAT one
+    optMenu->setItemChecked(ID_OPT_READDAT, true );
+    optMenu->setItemChecked(ID_OPT_READPHE, false);
+    optMenu->setItemChecked(ID_OPT_READRFL, false);
+    readMode = ID_OPT_READDAT;
+  } else {
+    QMessageBox::about(this,"Error",MSG_ERRORSETMODE);
+  }
+}
+
+void QMAGICDisplay::slotOptReadPHE()
+{
+  if (doc == 0) {
+    // files to read will be a PHE one
+    optMenu->setItemChecked(ID_OPT_READDAT, false);
+    optMenu->setItemChecked(ID_OPT_READPHE, true );
+    optMenu->setItemChecked(ID_OPT_READRFL, false);
+    readMode = ID_OPT_READPHE;
+  } else {
+    QMessageBox::about(this,"Error",MSG_ERRORSETMODE);
+  }
+}
+
+void QMAGICDisplay::slotOptReadRFL()
+{
+  if (doc == 0) {
+    // files to read will be a RFL one
+    optMenu->setItemChecked(ID_OPT_READDAT, false);
+    optMenu->setItemChecked(ID_OPT_READPHE, false);
+    optMenu->setItemChecked(ID_OPT_READRFL, true );
+    readMode = ID_OPT_READRFL;
+  } else {
+    QMessageBox::about(this,"Error",MSG_ERRORSETMODE);
+  }
+
 }
 
 void QMAGICDisplay::slotHelpAbout()
@@ -370,62 +456,79 @@ void QMAGICDisplay::slotStatusHelpMsg(const QString &text)
 void QMAGICDisplay::statusCallback(int id_)
 {
   switch (id_)
-  {
-    case ID_FILE_NEW:
-         slotStatusHelpMsg("Creates a new document");
-         break;
+    {
+      //    case ID_FILE_NEW:
+      //         slotStatusHelpMsg("Creates a new document");
+      //         break;
 
     case ID_FILE_OPEN:
-         slotStatusHelpMsg("Opens an existing document");
-         break;
+      slotStatusHelpMsg("Opens an existing document");
+      break;
 
     case ID_FILE_SAVE:
-         slotStatusHelpMsg("Saves the actual document");
-         break;
+      slotStatusHelpMsg("Saves the actual document");
+      break;
 
     case ID_FILE_SAVE_AS:
-         slotStatusHelpMsg("Saves the actual document as...");
-         break;
+      slotStatusHelpMsg("Saves the actual document as...");
+      break;
 
     case ID_FILE_CLOSE:
-         slotStatusHelpMsg("Closes the actual document");
-         break;
+      slotStatusHelpMsg("Closes the actual document");
+      break;
 
     case ID_FILE_PRINT:
-         slotStatusHelpMsg("Prints out the actual document");
-         break;
+      slotStatusHelpMsg("Prints out the actual document");
+      break;
 
     case ID_FILE_QUIT:
-         slotStatusHelpMsg("Quits the application");
-         break;
+      slotStatusHelpMsg("Quits the application");
+      break;
 
     case ID_EDIT_CUT:
-         slotStatusHelpMsg("Cuts the selected section and puts it to the clipboard");
-         break;
+      slotStatusHelpMsg("Cuts the selected section and puts it to the clipboard");
+      break;
 
     case ID_EDIT_COPY:
-         slotStatusHelpMsg("Copies the selected section to the clipboard");
-         break;
+      slotStatusHelpMsg("Copies the selected section to the clipboard");
+      break;
 
     case ID_EDIT_PASTE:
-         slotStatusHelpMsg("Pastes the clipboard contents to actual position");
-         break;
+      slotStatusHelpMsg("Pastes the clipboard contents to actual position");
+      break;
 
     case ID_EDIT_SELECT_ALL:
-         slotStatusHelpMsg("Selects the whole document contents");
-         break;
+      slotStatusHelpMsg("Selects the whole document contents");
+      break;
 
     case ID_VIEW_TOOLBAR:
-         slotStatusHelpMsg("Enables/disables the toolbar");
-         break;
+      slotStatusHelpMsg("Enables/disables the toolbar");
+      break;
 
     case ID_VIEW_STATUSBAR:
-         slotStatusHelpMsg("Enables/disables the statusbar");
-         break;
+      slotStatusHelpMsg("Enables/disables the statusbar");
+      break;
+
+    case ID_OPT_READDAT:
+      slotStatusHelpMsg("Sets >Read DAT files< mode");
+      break;
+
+    case ID_OPT_READPHE:
+      slotStatusHelpMsg("Sets >Read PHE files< mode");
+      break;
+
+    case ID_OPT_READRFL:
+      slotStatusHelpMsg("Sets >Read RFL files< mode");
+      break;
 
     case ID_HELP_ABOUT:
-         slotStatusHelpMsg("Shows an aboutbox");
-         break;
-  }
+      slotStatusHelpMsg("Shows an aboutbox");
+      break;
+    }
 }
 
+
+// Local Variables:
+// mode: c++
+// End:
+//EOF
