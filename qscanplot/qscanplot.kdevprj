@@ -154,7 +154,7 @@ AMChanged=true
 sgml_file=/home/gonzalez/devel/qscanplot/qscanplot/docs/en/index.sgml
 email=gonzalez@gae.ucm.es
 kdevprj_version=1.2
-configure_args=--with-qt-dir=/usr/lib/qt-2.2.0
+configure_args=--with-qt-dir=/usr/lib/qt-2.2.4
 [TODO]
 install_location=
 dist=true
