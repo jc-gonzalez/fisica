@@ -13,8 +13,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\documentclass[11pt,a4paper,twoside]{book}
-%\documentclass[11pt,a4paper,oneside]{book}
+%\documentclass[11pt,a4paper,twoside]{book}
+\documentclass[11pt,a4paper,oneside]{book}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Compatibility LaTeX - pdfLaTeX
@@ -43,7 +43,7 @@
 
 \ifpdf 
   \def\special#1{\write16{special: #1}}
-  \pdfcompresslevel=9
+  \pdfcompresslevel=0
 \fi
 
 %%----------------------------------------------------------------------
@@ -58,7 +58,7 @@
 %\usepackage{epsfig}
 \ifpdf 
   \usepackage[pdftex]{graphicx}
-%  \usepackage{thumbpdf}
+  \usepackage{thumbpdf}
 \else
   \usepackage[dvips]{graphicx}
 \fi
@@ -82,7 +82,10 @@
 \usepackage{longtable} 
 \usepackage{lscape}
 %\usepackage{draft}
-\usepackage[cam]{crop}
+%%\usepackage[cam]{crop}   %% option 'mirror' for mirroring every page
+
+\usepackage[indent,footnotesize,sc]{caption2}
+\setlength{\captionmargin}{5mm}
 
 \setlength{\overfullrule}{10pt}
 
@@ -170,10 +173,10 @@
 %\item{\bf #1.} #2
 %\end{list}\vskip\belowcaptionskip}
 
-\long\def\@makecaption#1#2{%
-\centering%
-\parbox[t]{0.8\linewidth}{\small{\bf #1}.\quad #2}%
-}
+%\long\def\@makecaption#1#2{%
+%\centering%
+%\parbox[t]{0.8\linewidth}{\small{\bf #1}.\quad #2}%
+%}
 
 \newcolumntype{d}[1]{D{.}{\cdot}{#1}}
 \newcolumntype{.}[1]{D{.}{.}{-1}}
@@ -280,13 +283,20 @@
 \def\Ntrialrand{\ensuremath{%
   \mathcal{N}^{\mathrm{t+r}}_{\mathrm{ph.e.s}}}\xspace}
 
+\def\rhump{\ensuremath{\rho_{\mathrm{hump}}}\xspace}
+
 \def\tRC{\ensuremath{\tau_{\mathrm{RC}}}\xspace}
 
-\def\thetaCT{\ensuremath{\theta_{\mathrm{CT}}}}
-\def\phiCT{\ensuremath{\phi_{\mathrm{CT}}}}
+\def\thetaCT{\ensuremath{\theta_{\mathrm{CT}}}\xspace}
+\def\phiCT{\ensuremath{\phi_{\mathrm{CT}}}\xspace}
 
-\def\thetam{\ensuremath{\theta_{\mathrm{m}}}} 
-\def\phim{\ensuremath{\phi_{\mathrm{m}}}}
+\def\thetam{\ensuremath{\theta_{\mathrm{m}}}\xspace} 
+\def\phim{\ensuremath{\phi_{\mathrm{m}}}\xspace}
+
+\newcommand{\trigM}[2]{\ensuremath{\mathrm{M}[#1;#2]}\xspace}
+\newcommand{\trigNN}[2]{\ensuremath{\mathrm{NN}[#1;#2]}\xspace}
+\newcommand{\trigNNc}[2]{\ensuremath{\mathrm{NN}^{\mathrm{c}}[#1;#2]}\xspace}
+\newcommand{\trigTop}[2]{\ensuremath{\mathrm{Top}[#1;#2]}\xspace}
 
 \newcommand{\eqcomm}[2][2cm]{\mbox{\hspace{#1} #2}} 
 
@@ -295,7 +305,9 @@
 \newcommand{\pow}[1]{\ensuremath{^{#1}}}        %% a\pow{x} = a^x
 \newcommand{\E}[1]{\ensuremath{\cdot 10^{#1}}}  %% a\E{x}   = a.10^x
 
-\def\MORE{\centerline{\Huge{\par MORE HERE NEEDED \par}}}  %% signal for me
+\def\MORE{\par{\centering \mbox{} \hbox spread 200pt{%
+--- T O --- B E --- C O N T I N U E D ---%
+}\\}\par}
 
 %-------------------- getting a chapter into the main TeX file
 
@@ -328,6 +340,8 @@ in page \protect\pageref{#1}\xspace}                 %% id.
 
 %\usepackage{oldgerm} 
 %\usepackage{utopia} 
+
+\usepackage{letterspace}
 
 \makeatletter
 
@@ -382,6 +396,21 @@ in page \protect\pageref{#1}\xspace}                 %% id.
     \Huge \sffamily #1\par\nobreak
     \vskip 20\p@
   }}
+
+%\def\mymakechapterhead#1{%
+%  \vspace*{20\p@}%
+%  {\parindent \z@ \centering \normalfont
+%    \ifnum \c@secnumdepth >\m@ne
+%      \if@mainmatter
+%        \Large \thechapter
+%        \par\nobreak
+%        \vskip 15\p@
+%      \fi
+%    \fi
+%    \interlinepenalty\@M \Large \scshape
+%    \centering  \letterspace to \linewidth{#1} \par\nobreak
+%    \vskip 20\p@
+%  }}
 
 %%----------------------------------------------------------------------
 

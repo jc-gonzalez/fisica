@@ -52,7 +52,7 @@ selected observation levels. We use only one main observation level,
 concentrate in the analysis of this light produced in the atmosphere.
 
 The information stored in disk for each \Cherenkov photon was shown in
-Table \fullref{tab:cphstruct}, and consists, for each \Cherenkov photon,
+Table \fullref{tab:cphstruct}, and consists for each \Cherenkov photon
 of the 7-tuple $\{\lambda,x,y,u,v,t,h\}$, where:
 %
 \begin{center}
@@ -62,7 +62,7 @@ $x,y$     & Position of the \Cherenkov photon in the horizontal\\
           & plane of the observation level \\
 $u,v$     & Director cosines in X and Y directions of the \\
           & incoming photon\\
-$t$       & Time elapsed from the first interaction of the primary \\
+$t$       & Time elapsed since the first interaction of the primary \\
           & until the photon was emitted\\
 $h$       & Height of production of the photon\\
 \end{tabular}
@@ -79,7 +79,7 @@ Fig.\ref{fig:coordsys}):
   the variables from the output of CORSIKA are measured
   
 \item[$S' \equiv O'X'Y'Z'$] The system of the global frame of the
-  telescope (we have $O\equiv O'$)
+  telescope (we have that $O\equiv O'$)
   
 \item[$S" \equiv O"X"Y"Z"$] The local system of the small mirror
   where each incoming photon is actually hitting
@@ -98,11 +98,10 @@ In the simulation of the reflexion, we obey the following algorithm:
   
   \begin{enumerate}[\theenumi.1.]
   \item Calculate, for this photon, the transmitance of the
-    atmosphere, and test whether the photon passed the absorption or
-    not.
+    atmosphere, and test whether the photon passed the absorption.
     
   \item Apply the reflectivity of the mirrors, possible dead zones and
-    simulation of possible mirror imperfections.
+    simulation of mirror imperfections.
 
   \item If the photon survives to all these effects, its way to the
     camera plane is traced and the photon is saved to the output file.
@@ -156,7 +155,7 @@ P & Point of emission of the photon \\
 \hc & Height given by CORSIKA, in the vertical of the observer\\
 \hv & Height in the vertical of the photon\\
 $R \equiv R_\oplus$ & Earth's radius\\
-$\theta$ & Zenith Angle at observer's level\\
+$\theta$ & Zenith Angle in observer's level\\
 $\omega$ & Zenith Angle at sea level\\
 $\alpha$ & Angle from Earth's center between A and P\\
 \end{tabular}
@@ -180,7 +179,7 @@ becomes:
 In the simplest approximation, the air mass factor (AM, the relation
 between the optical travel path at a given zenith angle and the
 optical path at the vertical) can be estimated from geometrical
-considerations. Using this simple approach, the air mass factor will
+consideratins. Using this simple approach, the air mass factor will
 be:
 %
 \mgeomeq
@@ -189,13 +188,13 @@ be:
 \subsubsection{Calculation of the air mass using an 
 exponential density model}
 
-The above expression in Eq.\eqref{eq:mgeom} uses just geometrical
+The above expression in Eq.\eqref{eq:mgeom} uses just geometrical 
 arguments to estimate the ratio represented by m. We would like to go
 one step beyond, by introducing an exponential density model. In our
-simulations we are using an atmospheric model represented by four
-exponentials and a linear function at the top of the atmosphere.
-Therefore, although the expression that we want to obtain is not fully
-correct, it will be closer to the reality.
+simulations we are using an atmospheric model represented by 4
+exponentials and a linear function in the top of the
+atmosphere. Therefore, although the expression that we want to get is
+not fully correct, will be closer to the reality.
 
 We will use then the following density model:
 %
@@ -229,7 +228,7 @@ moderately large $X\equiv\sqrt{{R\,\cos^2\theta}/{2\,\Hs}}$ is
 
 \paragraph{Correction for refraction.} We have defined $R \equiv
 R_\oplus$, the radius of the Earth. A simple correction for refraction
-can be obtained by taking instead \cite{KK}:
+can be obtained by taking instead
 %
 \refracapproxeq
 
@@ -265,8 +264,8 @@ $\mathrm{sec}(x)$ is shown for illustration.)
 
 Once we determined the \emph{true vertical height} of production of a
 photon, \hv, and its correspondent \emph{airmass} $\mathcal{AM}$, we
-calculate the \emph{atmospheric transmission}. Three effects have been
-included in the final calculation of this coefficient:
+calculate the atmospheric transmission. Three effects have been
+included in the final calculation of this quantity:
 
 \paragraph{Rayleigh scattering.} The molecules in the atmosphere
 produce scattering of the photons. This effect is strongly correlated
@@ -309,36 +308,36 @@ extinction in magnitudes per unit of air mass:
 %
 where $k(\lambda)$ is the absorption coefficient in \u{cm^{-1}}, and
 $T(\hv)$ is the total ozone concentration for a typical Tropical
-region, above the vertical in each position, in \u{atm}\u{cm} (we
-choose this because it was very similar to the actual profile at La
-Palma). The coefficient 1.11 was chosen to correspond to Elterman's
-optical thickness for ozone at 320\u{nm}\cite{Elterman:book}.
+region (we coose this because was very similar to the actual profile
+in La Palma), above the vertical in each position, in \u{atm cm}. The
+coefficient 1.11 was chosen to correspond to Elterman's optical
+thickness for ozone at 320\u{nm}\cite{Elterman:book}.
 
 With this value, we can estimate the extinction in magnitudes per air
-mass between two heights, and using the Pogson law we can determine
-the transmission coefficient, which results in:
+mass between two height, and using the Pogson law we can determine the
+transmission coefficient, which results in:
 %
 \Ozoneeq
 
-As a result, the total transmission coefficient will be:
+In consequence, the total transmission coefficient will be:
 %
 \TotalTransmissioneq
 
 %%------------------------------------------------------------
 \subsection{Reflection in the mirrors}
 
-If a photon survived to atmospheric attenuation, we apply the
+If a photon survived to the atmospheric attenuation, we apply the
 reflectivity of the mirrors and some other minor effects, like
 possible dead zones, and calculate the reflected trajectory of the
 photons, and its position in the camera plane. The reflectivity has
 been assumed constant in the interval of wavelengths
 $[290\u{nm},600\u{nm}]$, our range of interest.
 
-In general, the telescope pointing to any direction, and a photon is
+In general, the telescope is looking in any direction, and a photon is
 coming from another different direction (of course, if it comes
 outside the limits of the field of view of the telescope, it will not
 be reflected in the mirrors). We associate a coordinate system to the
-telescope (see Fig.\ref{fig:coordsys}), $S'$. The system at the
+telescope (see Fig.\ref{fig:coordsys}), $S'$. The system in the
 observer's level is $S$, and it is in this system where we have the
 parameters of the trajectory of the photon, the direction vector,
 $\mathbf{r}$, and the incident point in the observation level,
@@ -351,40 +350,38 @@ direction, and $\Omega(\theta,\phi)$ is defined as:
 %
 \omegaAeq
 %
-Here $R_x(\alpha)$ is a positive rotation of the space around the axis
-$X$ of $\alpha$ degrees (the same for $Y$ and $Z$). Therefore, the
-expression for the matrix of change of coordinate system is:
+Here $R_x(\alpha)$ it's a positive rotation of the space around the
+axis $X$ of $\alpha$ degrees (the same for $Y$ and $Z$). Therefore,
+the expression for the matrix of change of coordinate system is:
 %
 \transformAeq
 %
 with $\theta=\thetaCT$ and $\phi=\phiCT$. Once we are in the system
-$S'$, we can calculate which mirror hits the photon in. In our
+$S'$, we can calculate in which mirror hits the photon. In our
 simulation we have 920 square mirrors of $50\times 50\u{cm^2}$,
 located in realistic positions with the proper inclination for
-focusing in the camera. Due to this fact, there are small gaps between
-two adjacent mirrors, and the photon could be lost through one of
-these ``holes''.
+focussing in the camera. Due to this fact, there are small gaps
+between to adjacent mirrors, and the photon could be lost through one
+of these ``holes''.
 
 If the photon indeed hit a mirror, we calculate the reflected
 trajectory from the point were the photon arrives to the mirror,
-$\mathbf{x}_{\mathrm{cut}}$. For this purpose we must again change our
-coordinate system, to the mirror's. This means now not only a
-rotation, but an additional traslation to the center of the mirror.
+$\mathbf{x}_{\mathrm{cut}}$. For this purpose we must once more change
+our coordinate system, to that of the mirror. This means now not only
+a rotation, but an additional traslation to the center of the mirror.
 The transformation is:
 %
 \transformBeq
 %
 where $\mathbf{x}_{\mathrm{m}}$ and $(\thetam,\phim)$ give the
 position of the center of the mirror in the system of the telescope,
-$S'$, and the direction of the normal vector at the center, in the
+$S'$, and the direction of the normal vector in the center, in the
 same system.
 
 With these $\mathbf{x}"$ and $\mathbf{r}"$, we can calculate the
 reflected trajectory, given by a new vector $\hat{\mathbf{r}}"$, and
 therefore the final position of the reflected photon in the camera
 plane.
-
-\medskip
 
 Every single mirror in the global frame is pointing towards the
 optical axis of the whole telescope, with an angle and a focal length
@@ -395,25 +392,23 @@ determined by two factors:
 \item The focal length of the whole system
 \end{enumerate}
 
-This parameter, the \emph{overall focal length}, is fixed to
+This later parameter, the \emph{overall focal length}, if fixed to
 $F=1700\u{cm}$. In Fig.\ref{fig:spotsperfecth} we show the image of a
 point-like source of light, located at different heights \hv in the
-vertical of the telescope (pointing to the Zenith). We can see that
+vertical of the telescope (pointing to the Zenit). We can see that
 when the source is virtually at infinity ($\hv=100\u{km}$) we get the
 best focus. The reflectivity taken here is 100\%, a perfect,
 mathematical reflexion has been done, and any atmospheric effect has
 been removed.
-
-\collimationfig
 
 Our system is focussed \emph{at infinity}. But the bulk of our data
 will be showers which have their maximum development at around
 $12\u{km}$ a.s.l., this means, a height of $\hv\simeq 10\u{km}$ above
 the observation level.  So we should focus our telescope to this
 height.  This effect is called \emph{collimation}. In
-Fig.\ref{fig:collimation} we see a geometrical construction which can
+Fig.\ref{fig:collimation} we can see a geometrical construction which
 help us to understand this behaviour.  For simplicity, let us assume
-that the telescope is pointing at the Zenith. A single mirror is
+that the telescope is pointingat the Zenith. A single mirror is
 located at a distance $r$ of the optical axis of the telescope,
 $\overline{\mathrm{OP}}$. This mirror is fixed to the global,
 parabolic shape of the telescope, and therefore at a height with
@@ -433,7 +428,11 @@ our data is coming from heights around $\hv\simeq 10\u{km}$ above the
 observation level, i.e., the trajectory of a photon hitting in the
 center of the mirror will be $\mathbf{s}$. The angle between this and
 the ``original'' trajectory is $\widehat{\mathbf{rs}}\equiv\zeta$. The
-reflected photon will cross the optical axis in $\mathrm{C}$ instead.
+reflected photon will cross the optical axis instead in $\mathrm{C}$.
+
+\collimationfig
+
+\colldeltafig
 
 We have then two options: either we reorient our mirrors, or we shift
 the camera from $\mathrm{F}$ to $\mathrm{C}$. We choose this last
@@ -450,31 +449,29 @@ Therefore, the displacement to apply is given by the expression:
 \collimationeq
 %
 In our case, this displacement is in the range
-2.9--3.3\u{cm}$\approx$3\u{cm} (see Fig.\ref{fig:colldelta}),
-depending on the mirror position. We will take a new value for the
-focal length of $F=1703\u{cm}$, and will say that this new position of
-the camera is the \emph{optimal-focus position}.
+2.9--3.3\u{cm}$\approx$3\u{cm} (see Fig.\ref{fig:colldelta}, depending
+of the mirror position. We will take a new value for the focal length
+of $F=1703\u{cm}$, and will say that this new position of the camera
+is the \emph{optimal-focus position}.
 
-\colldeltafig
-
-Another effect, already taken into account, is the following: the
+Another effect, already taken into account is the following: the
 actual \emph{focal surface} is no longer a plane. In general, it will
-be a surface of revolution, similar to a paraboloid. For a spherical
+be a surface of revolution, similar to a paraboloid. For an spherical
 mirror of radius of curvature $R_{\mathrm{c}}$ lies at a distance
-$R_{\mathrm{c}}/2$ from the center of the mirror, for an incident beam
-of light coming parallel to the optical mirror axis (incident angle of
-0\deg).  If the incident angle is different from 0\deg, the smallest
-blur size is at somewhat shorter distances than $R_{\mathrm{c}}/2$.
-This is the so called \emph{shortening of the focal length}, which
-depends on the incident angle of the light.
+$R_{\mathrm{c}}/2$ from the center of the mirror, for an incident
+parallel beam of light coming parallel to the optical mirror axis
+(incident angle of 0\deg).  If the incident angle is different from
+0\deg, the smallest blur size is at somewhat shorter distances than
+$R_{\mathrm{c}}/2$. This is the so called \emph{shortening of the
+  focal length}, which depends of the incident angle of the light.
 
 In the case of the tessellated mirror of \MAGIC and a parallel beam of
-light (incident angle of 0\deg with respect to the optical axis of the
+light (incident angle of 0\deg with respect of the optical axis of the
 whole system), all the single mirror elements will receive the light
 at angles different from 0\deg. In particular, the distance from the
 mirror where we get the smallest blur size will decrease when we take
 mirrors with increasing distances to the optical axis of the system.
-Therefore, we must \emph{increase} the focal length of the mirrors.
+Therefore, we must \emph{increase} the focal length of the mirrors. 
 
 Having this in mind, all the mirrors have been grouped in a total of
 eight sets or \emph{zones}, each of them characterized by a constant
@@ -488,13 +485,13 @@ these focal lengths $f_i$ are summarized in Table
 We used a \emph{perfect} system in Fig.\ref{fig:spotsperfecth}:
 reflectivity 100\%, no imperfections, no atmospheric absorption. If we
 apply the effect of a non-perfect reflexion, possible axis-deviations,
-imperfections in the mirrors and the effect of the atmosphere, we will
+imperfections in the mirrors and the effect of the atmorphere, we will
 get the results shown in Fig.\ref{fig:spotsh}.
 
 %%------------------------------------------------------------
 \subsection{Plate-scale in the camera of \MAGIC}
 
-We are now interested in the \emph{plate-scale}, that is, the
+We are now interested on the \emph{plate-scale}, that is, the
 equivalence between linear distance in the camera plane, and angular
 distance in the sky. For this, we change the Zenith Angle of our
 point-like source (initially 0\deg) to several values. In
@@ -508,12 +505,6 @@ The value taken for the plate-scale in the camera plane of \MAGIC is:
 \platescaleeq
 
 \zonefocalstbl
-
-\zonesfig
-
-\zonesfocalsfig
-
-\randpoifig
 
 %%------------------------------------------------------------
 \section{Detection in the camera}
@@ -539,6 +530,10 @@ few words, the steps taken in this program are:
 
 \item Characterization of images in the camera
 \end{enumerate}
+
+\zonesfig
+
+\zonesfocalsfig
 
 %%------------------------------------------------------------
 \subsection{Pixelization}
@@ -592,7 +587,9 @@ question is:
 where $\mathbf{r}$ is your position, $r_i$ is the $i$-th component of
 the vector $\mathbf{r}$ and $\mathcal{R}$ is a rounding function.
 
-\triaxisfig
+\axesfigs
+
+%\triaxisfig
 
 With this definition of the axes, we pre-calculate the coordinates
 $(x',y',z')$, in order to use them afterwards in the simulation code.
@@ -614,7 +611,7 @@ shown in Fig.\ref{fig:biaxis}. The units of the axes X and Y are
 millimeters, and the units of the axes I and J are both two times the
 apotheme of one pixel ($2 \times a$).
 
-\biaxisfig
+%\biaxisfig
 
 With this definition of the axis, we use the intermediate
 $(i,j)$-coordinates, in order to use them to calculate the
@@ -812,8 +809,6 @@ the spread of the $r$-distribution.
 
 \varquotfig
 
-\vonneumannfig
-
 The main use of the binomial distribution is in the limits:
 %
 \begin{itemize}
@@ -840,8 +835,6 @@ comfortable to use mean values and the corresponding Poisson
 distribution: we are sure that $N$ is going to be large enough. But we
 still have to be sure that our \QEo is small enough to allow us to use
 this approach. Fortunately, this is normally the case.
-
-\timeresponsefig
 
 In order to show the possible deviations we can get by using the
 \emph{Poisson approach}, a simple simulation was done: a pre-fixed
@@ -890,6 +883,8 @@ the interval $(a,b)$. Find a constant $C$ such that $C$ times this
 uniform p.d.f.  is everywhere greater than or equal to $S(x)$. This
 scenario is shown in Fig. \ref{fig:vonneumann}.
 
+\vonneumannfig
+
 First, simulate a random value $x$ uniformly on $(a,b)$. Then generate
 a $y$ on $(0,C/(b-a))$. The point $(x,y)$ will uniformly populate the
 box shown in Fig. \ref{fig:vonneumann}. If $y\le S(x)$, we accept $x$
@@ -902,6 +897,8 @@ and try again.  This method is very simple and has an efficiency
 (Note that if the function $S(x)$ has sharp peaks, the efficiency can
 be very low; one can then use different constants for different
 regions in the interval $(a,b)$.)
+
+\timeresponsefig
 
 For each photoelectron we will get, by using this procedure, the
 amplitude of the registered signal. In order to simulate a realistic
@@ -949,14 +946,128 @@ $\tRC=5\,\mu\mathrm{s}$.
 
 Since the rate of incoming pulses is typically larger than this \tRC,
 the \emph{zero-voltage level} will become a baseline with a voltage
-\emph{greater that zero}. This baseline will fluctuate randomly around
+\emph{greater that zero}. The baseline will fluctuate randomly around
 a given level: this level depends on the value of \tRC and the rate of
 incoming pulses.
+
+In the simulation programs, we have the option of using or not the
+simulation of this fluctuating baseline, as well as the discretization
+of the pulses in time bins. In case of using this later option, the
+signal is integrated in a defined number of bins that depends on the
+trigger gate. In case of not using this discretization, the whole
+charge developed in the pulse is integrated. I will explain this more
+in detail in section \ref{sec:triggerlogic}.
 
 \pulsefig
 
 %%------------------------------------------------------------
 \subsection{Trigger Logic}
+\label{sec:triggerlogic}
+%
+First, we defined a \emph{trigger area} in the camera: the area where
+we allow the pixels to give trigger is not the whole camera. The
+defined \emph{trigger area} is a disc centered in the center of the
+camera, with a radius of $0.8\deg$. We made investigations also
+varying the size of this area, and even using the whole camera, but
+this is the canonical value of the radius. In Fig.\ref{fig:trigarea}
+we see how big in the whole camera is this area. The estimation of
+this radius is given as follows. We are interested mainly in the low
+energy gamma-ray showers, i.e., with primary energies in the range
+$10-100\u{GeV}$. The maximum development of this showers, as we said
+above, is at around $10-12\u{km}$ a.s.l., this means, a height of
+$\hv\simeq 8-10\u{km}$, when looking at the Zenith. On the other hand,
+the \Cherenkov pull of light extends up to about $\rhump\simeq
+100-120\u{m}$ from the shower axis: let's take $\rhump=110\u{m}$.
+This distance fixes an upper bound for the area where we have the
+maximum detection efficiency for these showers. Looking from the
+telescope, and in the case of looking at the Zenith, this distance
+corresponds to an angular distance calculated as
+%
+\trigradeq
+%
+The value of $\varphi$ oscillates in the range $\simeq
+0.7\deg-0.8\deg$ for primaries in the energy range indicated. We chose
+the larger, more conservative value of $0.8\deg$.
+
+\trigareafig
+
+Inside this \emph{trigger area} is where we define the different
+trigger conditions. The most elementary trigger conditions are the so
+called \emph{multiplicity triggers}:
+
+\begin{description}
+\item[\emph{Multiplicity trigger} \trigM{n}{q_0}:] An image is said
+  to give trigger if there are at least $n$ pixels in the
+  \emph{trigger area} with a charge of at least $q_0$ photoelectrons
+  each.
+\end{description}
+
+\noindent
+Another kind of trigger conditions are the \emph{next-neighbour
+  triggers}:
+
+\begin{description}
+\item[\emph{Next-neighbour trigger} \trigNN{n}{q_0}:] An image is said
+  to give trigger if there is a simply connected area of at least
+  $n$ pixels in the \emph{trigger area} with a charge of at least
+  $q_0$ each.
+\end{description}
+
+\noindent 
+We should note that for fixed values of $n$ and $q_0$ we can define a
+subset of \emph{next neighbour trigger} conditions, namely, those
+which require that those pixels in the simply connected area form
+what is called a \emph{closed packet}. We will denote this sub-class
+of conditions with the symbol \trigNNc{n}{q_0}.
+
+Yet another type of trigger conditions, a superset of the
+\emph{next-neighbour} conditions, are the so called \emph{topological
+  triggers}. For this type of conditions we must define a
+\emph{topology} of pixels $S$, consisting of a set of pixels following
+a given geometrical pattern.
+
+\begin{description}
+\item[\emph{Topological trigger} \trigTop{S}{q_0}:] An image is
+  said to give trigger if there is a pattern of pixels coincident with
+  the pattern given by $S$, with a charge of at least $q_0$ each.
+  (Actually, a different minimum number of photoelectrons can be
+  defined for each pixel in $S$.)
+\end{description}
+
+The studies presented in this work have been done using the following
+trigger conditions (the notation ``$a:b$'' denotes the range of
+integer values from $a$ to $b$):
+%%
+\begin{center}
+  \begin{tabular}[t]{rl}
+    \trigNN{k}{q_0} & Next neighbour trigger with multiplicity \\
+    & $k=3:5$, and charge per pixel $q_0$\\
+    
+    \trigNNc{k}{q_0} & Next neighbour in a closed packet trigger with \\
+    &  multiplicity $k=3:5$, and charge per pixel $q_0$\\
+  \end{tabular}
+\end{center}
+%%
+In the simulation of the trigger logic, even for \trigNN{k}{q_0} and
+\trigNNc{k}{q_0}, a pattern approach has been taken. For a given value
+of $k$, and both for \trigNN{k}{q_0} and \trigNNc{k}{q_0} conditions,
+we define the set of possible geometric arrangements of triggering
+pixels (following the selected trigger condition) in a fictitious
+group of seven pixels ( a central pixel plus its seven neighbours),
+where the charges of the pixels are supposed to be either $0$ or $\geq
+q_0$. We give then a name to each of these sets of arrangements.
+Finally, in the simulation process, only those patterns in the sets
+selected by the user will be searched for in the camera. In
+Fig.\ref{fig:trigpatt} we can see a graphical illustration of these
+sets of patterns.
+
+\trigpattfig
+
+\MORE%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\randpoifig
 
 %%------------------------------------------------------------
 \section{Results}
@@ -978,6 +1089,7 @@ incoming pulses.
 
 %%------------------------------------------------------------
 \subsubsection{Hadronic, electronic and muonic backgrounds}
+
 
 \endinput
 %

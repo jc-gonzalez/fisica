@@ -1,0 +1,52 @@
+
+"Alain Nadeau" <alain.nadeau@bfs.admin.ch> writes:
+
+> The printer wants me to deliver "on film" a book I just finished
+> typesetting. This means, of course, I need to print a "mirror-image" of
+> each page on film. 
+> 
+> I cannot find any way to go from dvi to "reversed-ps" with dvips (but I
+> might be wrong), nor can I get ps2ps to do what it claims option U should
+> do (but the documentation is very sparse...).
+> 
+> I do recall that some months (or even years?) ago, someone had proposed a
+> way to achieve this. I typically neglected to save that posting. A search
+> on deja-news with the terms "mirror and image" fails to deliver anything
+> meaningful. 
+> 
+> Maybe someone remembers the solution, or else knows of a way to achieve
+> this.
+> 
+> Thanks to all in advance,
+> 
+> Alain.
+> ---
+
+Edit your PostScript file, and insert at the beginning of the code section:
+
+<</MirrorPrint true>> setpagedevice
+
+If this does not work, substitute the previous line with
+
+clippath pathbbox newpath
+pop exch translate
+pop -1 1 scale
+
+If this also does not work, ask your publisher ...
+
+-- 
+Maurizio Loreti                         http://www.pd.infn.it/~loreti/mlo.html
+Univ. of Padova, Dept. of Physics - Padova, Italy            loreti@pd.infn.it
+
+============================================================
+
+
+The crop-package provides an option named mirror, which reflects a
+whole document.
+
+--
+Branka Loncarevic
+
+
+Sent via Deja.com http://www.deja.com/
+Before you buy.

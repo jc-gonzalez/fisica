@@ -37,10 +37,10 @@
 \begin{figure}[p]
 \centering
 \ifenglish
-\includegraphics[width=0.95\textwidth]{gsources}
+\includegraphics[width=0.95\textwidth]{gsources_bis}
 \caption[A Gamma-Ray Sources Skymap]{A Gamma-Ray Sources Skymap [??].}  
 \else
-\includegraphics[width=0.95\textwidth]{gsources_e}
+\includegraphics[width=0.95\textwidth]{gsources_bis_e}
 \caption[Mapa del cielo de fuentes de rayos gamma]{Mapa del cielo de
   fuentes de rayos gamma [??].}
 \fi
@@ -79,6 +79,26 @@
   del espectro electromagn'etico}
 \fi
 \label{fig:pulsarsch}
+\end{figure}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\bhstarevolfig{
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.95\textwidth]{bhstarevol}
+\ifenglish
+\caption[Possible evoutionary sequence for massive gas
+clouds]{Schematic representation of the possible evoutionary sequence
+  for massive gas clouds. Almost all tracks lead to the black hole
+  state (take from \cite{BarrowTipler:Antrop})}
+\else
+\caption[Posible secuencia evolutiva de nubes de gas
+masivas]{Representaci'on esquem'atica de la posible secuencia
+  evolutiva de nubes de gas masivas. Casi todos los caminos llevan al
+  estado de agujero negro (tomado de \cite{BarrowTipler:Antrop})} 
+\fi
+\label{fig:bhstarevol}
 \end{figure}
 }
 
@@ -665,27 +685,80 @@ $\mathcal{AM}_{\mathrm{refraction}}$]{Comparaci'on de los valores de
 \end{figure}
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\collimationfigs{
+%\begin{figure}[t]
+%\begin{minipage}[c]{0.5\textwidth}%mbox{}
+%\centering
+%\includegraphics[width=\textwidth]{collimation}
+%\ifenglish
+%\caption{Illustration of the \emph{collimation} effect in \MAGIC.}
+%\else 
+%\caption{Ilustraci'on del efecto \emph{colimaci'on} in \MAGIC.}
+%\fi
+%\label{fig:collimation}
+%\end{minipage}
+%\begin{minipage}[c]{0.48\textwidth}%mbox{}
+%\centering
+%\includegraphics[width=\linewidth]{colldelta}
+%\ifenglish
+%\caption[Displacement of the camera position as a function of the
+%distance of the mirror to the optical axis of \MAGIC]{Value of the
+%  displacement of the camera position, $\delta$, in order to get an
+%  optimal focussing, as a function of the distance of the mirror to
+%  the optical axis of \MAGIC, $r$.} 
+%\else
+%\caption[Desplazamiento de la c'amara en funci'on de la 
+%distancia del espejo al eje 'optico de \MAGIC]{Valor del
+%  desplazamiento de la posici'on de la c'amara, $\delta$, para obtener
+%  un enfoque 'optimo, en funci'on de la distancia del espejo al eje
+%  'optico de \MAGIC, $r$.}  
+%\fi
+%\end{minipage}
+%\end{figure}
+%}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\def\randpoifig{
-\begin{figure}[b]
+\def\collimationfig{
+%\begin{wrapfigure}[38]{r}{0.44\textwidth}
+\begin{figure}[p]
 \centering
+\includegraphics[height=0.8\textheight]{collimation}
 \ifenglish
-\includegraphics[width=0.8\textwidth]{coordinates}
-\caption[Angles used in the \emph{random pointing} operation]{Angles 
-  used in the \emph{random pointing} mode of operation of the 
-  \texttt{reflector} program}
-\else \includegraphics[width=0.8\textwidth]{coordinates_e}
-\caption['Angulos usados con la opci'on \emph{random pointing}]{'Angulos
-  usados al seleccionar la opci'on \emph{random pointing} en el programa 
-  \texttt{reflector}}
+\caption{Illustration of the \emph{collimation} effect in \MAGIC.}
+\else 
+\caption{Ilustraci'on del efecto \emph{colimaci'on} in \MAGIC.}
 \fi
-\label{fig:randpoi}
+\label{fig:collimation}
+\end{figure}
+%\end{wrapfigure}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\colldeltafig{
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.6\textwidth]{colldelta}
+\ifenglish
+\caption[Displacement of the camera position as a function of the
+distance of the mirror to the optical axis of \MAGIC]{Value of the
+  displacement of the camera position, $\delta$, in order to get an
+  optimal focussing, as a function of the distance of the mirror to
+  the optical axis of \MAGIC, $r$.} 
+\else
+\caption[Desplazamiento de la c'amara en funci'on de la 
+distancia del espejo al eje 'optico de \MAGIC]{Valor del
+  desplazamiento de la posici'on de la c'amara, $\delta$, para obtener
+  un enfoque 'optimo, en funci'on de la distancia del espejo al eje
+  'optico de \MAGIC, $r$.}  
+\fi
+\label{fig:colldelta}
 \end{figure}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\zonesfig{
-\begin{figure}[b]
+\begin{figure}[p]
 \centering 
 \ifenglish
 \includegraphics[width=0.8\textwidth]{magic_focalsview}
@@ -707,7 +780,7 @@ zonas]{Los espejos de \MAGIC han sido agrupados en ocho zonas. Cada
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\zonesfocalsfig{
-\begin{figure}[b]
+\begin{figure}[p]
 \centering
 \ifenglish
 \includegraphics[width=0.8\textwidth]{nfocals}
@@ -722,48 +795,11 @@ zonas]{Los espejos de \MAGIC han sido agrupados en ocho zonas. Cada
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\def\collimationfig{
-%\begin{wrapfigure}[38]{r}{0.44\textwidth}
-\begin{figure}[p]
+\def\axesfigs{
+\begin{figure}[t]
+\begin{minipage}[b]{0.48\textwidth}%mbox{}
 \centering
-\includegraphics[width=0.45\textwidth]{collimation}
-\ifenglish
-\caption{Illustration of the \emph{collimation} effect in \MAGIC.}
-\else 
-\caption{Ilustraci'on del efecto \emph{colimaci'on} in \MAGIC.}
-\fi
-\label{fig:collimation}
-\end{figure}
-%\end{wrapfigure}
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\def\colldeltafig{
-\begin{figure}[p]
-\centering
-\includegraphics[width=0.8\textwidth]{colldelta}
-\ifenglish
-\caption[Displacement of the camera position as a function of the
-distance of the mirror to the optical axis of \MAGIC]{Value of the
-  displacement of the camera position, $\delta$, in order to get an
-  optimal focussing, as a function of the distance of the mirror to
-  the optical axis of \MAGIC, $r$.} 
-\else
-\caption[Desplazamiento de la c'amara en funci'on de la 
-distancia del espejo al eje 'optico de \MAGIC]{Valor del
-  desplazamiento de la posici'on de la c'amara, $\delta$, para obtener
-  un enfoque 'optimo, en funci'on de la distancia del espejo al eje
-  'optico de \MAGIC, $r$.}  
-\fi
-\label{fig:colldelta}
-\end{figure}
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\def\triaxisfig{
-\begin{figure}[p]
-\centering
-\includegraphics[width=0.8\textwidth]{pixels}
+\includegraphics[width=0.95\textwidth]{pixels}
 \ifenglish
 \caption{Tri-axis hexagonal coordinate system 
    used in the pixel characterization}
@@ -772,14 +808,11 @@ distancia del espejo al eje 'optico de \MAGIC]{Valor del
   identificaci'on de los p'ixeles}
 \fi
 \label{fig:triaxis}
-\end{figure}
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\def\biaxisfig{
-\begin{figure}[p]
+\end{minipage}
+\hfill
+\begin{minipage}[b]{0.48\textwidth}%mbox{}
 \centering
-\includegraphics[width=0.8\textwidth]{pixelspre}
+\includegraphics[width=0.95\textwidth]{pixelspre}
 \ifenglish
 \caption{Bi-axis coordinate system 
   used in the pixel numbering, and in the calculation of the
@@ -790,8 +823,43 @@ distancia del espejo al eje 'optico de \MAGIC]{Valor del
   los centros} 
 \fi
 \label{fig:biaxis}
+\end{minipage}
 \end{figure}
 }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\triaxisfig{
+%\begin{figure}[htb]
+%\centering
+%\includegraphics[width=0.8\textwidth]{pixels}
+%\ifenglish
+%\caption{Tri-axis hexagonal coordinate system 
+%   used in the pixel characterization}
+%\else
+%\caption{Systema de coordenadas tri-axial usado en la 
+%  identificaci'on de los p'ixeles}
+%\fi
+%\label{fig:triaxis}
+%\end{figure}
+%}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\biaxisfig{
+%\begin{figure}[htb]
+%\centering
+%\includegraphics[width=0.8\textwidth]{pixelspre}
+%\ifenglish
+%\caption{Bi-axis coordinate system 
+%  used in the pixel numbering, and in the calculation of the
+%  coordinates of the centers of the pixels} 
+%\else
+%\caption{Systema de coordenadas bi-axial usado en la 
+%  numeraci'on de los p'ixeles, y en el cálculo de las posiciones de
+%  los centros} 
+%\fi
+%\label{fig:biaxis}
+%\end{figure}
+%}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\def\qealgorfig{
@@ -808,9 +876,9 @@ distancia del espejo al eje 'optico de \MAGIC]{Valor del
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\noutphotfig{
-\begin{figure}[tb]
+\begin{figure}[p]
   \begin{center}
-    \includegraphics[width=0.8\textwidth]{qehistqe}
+    \includegraphics[width=0.7\textwidth]{qehistqe}
     \ifenglish
     \caption[Distributions of number of photoelectrons for several 
     \QE]{Distributions of the number of outcoming photoelectrons
@@ -829,9 +897,9 @@ distancia del espejo al eje 'optico de \MAGIC]{Valor del
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\noutqesmallfig{
-\begin{figure}[bt]
+\begin{figure}[p]
   \begin{center}
-    \includegraphics[width=0.8\textwidth]{varwithp}
+    \includegraphics[width=0.6\textwidth]{varwithp}
     \ifenglish
     \caption[Distributions of \Ntrial for  $\QEo=0.2$]{Distributions 
       of the number of outcoming photoelectrons (\Ntrial) for
@@ -853,9 +921,9 @@ distancia del espejo al eje 'optico de \MAGIC]{Valor del
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\varquotfig{
-\begin{figure}[tb]
+\begin{figure}[p]
   \begin{center}
-    \includegraphics[width=0.6\textwidth,angle=-90,clip=]{varwithqe}
+    \includegraphics[width=0.4\textwidth,angle=-90,clip=]{varwithqe}
     \ifenglish
     \caption[Variation of $z$ with \QEo]{Variation of the quotient 
       $z=\sigma(\Nrand)/\sigma(\Ntrial)$ with different values of
@@ -874,7 +942,7 @@ distancia del espejo al eje 'optico de \MAGIC]{Valor del
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\vonneumannfig{
-\begin{figure}[bt]
+\begin{figure}[p]
   \begin{center}
     \includegraphics[width=0.5\textwidth,clip=]{qefig2}
     \ifenglish
@@ -937,10 +1005,92 @@ distancia del espejo al eje 'optico de \MAGIC]{Valor del
 \end{figure}
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\trigareafig{
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.5\textwidth]{magic-camera_4ring-trigarea}
+\ifenglish
+\caption[Trigger area in the camera of \MAGIC]{Trigger area in the
+  camera of \MAGIC. Actually, only those pixels with the center lying
+  in the shaded zone are included in the trigger.}
+\else
+\caption['Area de \trigger en la c'amara de \MAGIC]{'Area de \trigger
+  en la c'amara de \MAGIC. En realidad, s'olo aquellos pixels cuyos
+  centros queden situados en el interior de la zona sombreada son
+  inclu'idos en la l'ogica de \trigger.}  
+\fi
+\label{fig:trigarea}
+\end{figure}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\trigpattfig{
+\begin{figure}[ht]
+%%
+\fbox{\includegraphics[width=0.48\linewidth]{3pix_NN}}
+\hfill
+\fbox{\includegraphics[width=0.48\linewidth]{3pix_NotNN}}\\
+\mbox{}\hfill(a)\quad \trigNNc{3}{q_0} \hfill%
+\mbox{}\hfill(b)\quad \trigNN{3}{q_0}  \hfill\mbox{}\\[10pt]
+%%
+\fbox{\includegraphics[width=0.48\linewidth]{4pix_NN}}
+\hfill
+\fbox{\includegraphics[width=0.48\linewidth]{4pix_NotNN}}\\
+\mbox{}\hfill(c)\quad \trigNNc{4}{q_0} \hfill%
+\mbox{}\hfill(d)\quad \trigNN{4}{q_0}  \hfill\mbox{}\\[10pt]
+%%
+\fbox{\includegraphics[width=0.48\linewidth]{5pix_NN}}
+\hfill
+\fbox{\includegraphics[width=0.48\linewidth]{5pix_NotNN}}\\
+\mbox{}\hfill(e)\quad \trigNNc{5}{q_0} \hfill%
+\mbox{}\hfill(f)\quad \trigNN{5}{q_0}  \hfill\mbox{}\\
+%%
+\ifenglish
+\caption[Different trigger patterns used in the simulation program]%
+{Different trigger patterns used in the simulation programs: (a) 3
+  pixels, next-neighbour, \emph{closed packet}; (b) simple group of 3
+  pixels, next-neighbour; (c) 4 pixels, next-neighbour, \emph{closed
+    packet}; (d) simple group of 4 pixels, next-neighbour; (e) 5
+  pixels, next-neighbour, \emph{closed packet}; (f) simple group of 5
+  pixels, next-neighbour. Note that the patterns are defined assuming
+  that there is already a pixel (the central one in this figures)
+  which already has a charge greater or equal to $q_0$} 
+\else
+\caption[Patrones de \trigger usados en la simulaci'on]%
+{Patrones de \trigger usados en la simulaci'on: (a) 3 p'ixeles,
+  vecinos, \emph{empaquetados}; (b) grupo sencillo de 3 p'ixeles,
+  vecinos; (c) 4 p'ixeles, vecinos, \emph{empaquetados}; (d) grupo
+  sencillo de 4 p'ixeles, vecinos; (e) 5 p'ixeles, vecinos,
+  \emph{empaquetados}; (f) grupo sencillo de 5 p'ixeles, vecinos.
+  N'otese que los patrones has sido definidos asumiendo que existe un
+  p'ixel (el central en estas figuras) que posee una carga mayor o
+  igual a $q_0$} \fi
+\label{fig:trigpatt}
+\end{figure}
+}
 
 
 
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\randpoifig{
+\begin{figure}[b]
+\centering
+\ifenglish
+\includegraphics[width=0.8\textwidth]{coordinates}
+\caption[Angles used in the \emph{random pointing} operation]{Angles 
+  used in the \emph{random pointing} mode of operation of the 
+  \texttt{reflector} program}
+\else \includegraphics[width=0.8\textwidth]{coordinates_e}
+\caption['Angulos usados con la opci'on \emph{random pointing}]{'Angulos
+  usados al seleccionar la opci'on \emph{random pointing} en el programa 
+  \texttt{reflector}}
+\fi
+\label{fig:randpoi}
+\end{figure}
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
