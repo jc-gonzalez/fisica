@@ -1256,23 +1256,22 @@ rays
   \label{eq:gFlux}
   \Phi_\gamma(E) = 
   10^{-8} \left(\frac{E}{10\u{GeV}}\right)^{-1.5} 
-  \u{ph}\u{cm^{-2}}\u{s^{-1}}
+  \u{cm^{-2}}\u{s^{-1}}
 \end{equation}
 %
 normalized at $10\u{GeV}$, and extrapolated to higher energies.
-This means, in the same normalization, a differential flux of
+This means, a differential flux of
 %
-\begin{equation}
+\begin{eqnarray}
   \label{eq:gdFlux}
-  \frac{\d\Phi_\gamma}{\d E}(E) = 
-  1.5\E{-9} \left(\frac{E}{10\u{GeV}}\right)^{-2.5} 
-  \u{ph}\u{cm^{-2}}\u{s^{-1}}\u{GeV^{-1}}
-\end{equation}
-%
-We will call $\alpha=2.5$ to the (positive) exponent of the
-differential flux.
+  \frac{\d\Phi_\gamma}{\d E}(E) & = 
+  1.5\E{-9} \left(\displaystyle\frac{E}{10\u{GeV}}\right)^{-2.5} 
+  \u{cm^{-2}}\u{s^{-1}}\u{GeV^{-1}} \\
+  ~ & = 1.5\E{-7} \left(\displaystyle\frac{E}{1\u{TeV}}\right)^{-2.5} 
+  \u{m^{-2}}\u{s^{-1}}\u{TeV^{-1}} \\ 
+\end{eqnarray}
 
-For the cosmic rays, we used the measured flux:
+For cosmic rays, we used the measured flux:
 %
 \begin{equation}
   \label{eq:crFlux}
@@ -1280,6 +1279,18 @@ For the cosmic rays, we used the measured flux:
   10.91\E{-2} \left(\frac{E}{1\u{TeV}}\right)^{-2.75} 
   \u{m^{-2}}\u{s^{-1}}\u{sr^{-1}}\u{TeV^{-1}}
 \end{equation}
+
+We will call \emph{spectral index}, $\alpha$, to the (positive)
+exponent of the differential flux. Therefore, we have in our
+simulations
+%
+\begin{equation}
+  \label{eq:alphas}
+  \alpha_\gamma = 2.5 \hspace{2cm} \alpha_{\mathrm{cr}} = 2.75
+\end{equation}
+
+%%------------------------------------------------------------
+\subsubsection{Differential rates of detection}
 
 With these differential fluxes, we can calculate the differential
 detection rates as follows: for gamma rays
@@ -1297,10 +1308,14 @@ where we do not write the dependency in $\Theta$; for cosmic rays
   \frac{\d R_{\mathrm{cr}}}{\d E}(E) = S_{\mathrm{cr}}(E) \cdot
   \frac{\d\Phi_{\mathrm{cr}}}{\d E}(E) 
 \end{equation}
-%
-From this, the expressions for the integral detection rates is, for
-gammas (forgetting once more the dependency with $\Theta$; i.e., for a
-given value of the Zenith Angle)
+
+
+%%------------------------------------------------------------
+\subsubsection{Integral rates of detection}
+
+From the Eq. \ref{eq:gdRate}, the expression for the integral
+detection rate for gammas is (forgetting once more the dependency with
+$\Theta$; i.e., for a given value of the Zenith Angle)
 %
 \begin{equation}
   \label{eq:gRate}
@@ -1308,21 +1323,14 @@ given value of the Zenith Angle)
   S_\gamma(E) \, \frac{\d\Phi_\gamma}{\d E}(E) \, \d E
 \end{equation}
 %
-whereas for cosmic rays becomes
+and similarly for cosmic rays
 %
 \begin{equation}
   \label{eq:crRate}
   R_{\mathrm{cr}}(E) = \int_E^\infty \,
   S_{\mathrm{cr}}(E) \, \frac{\d\Phi_{\mathrm{cr}}}{\d E}(E) \, \d E
 \end{equation}
-%
 
-
-%%------------------------------------------------------------
-\subsubsection{Differential rates of detection}
-
-%%------------------------------------------------------------
-\subsubsection{Integral rates of detection}
 
 %%------------------------------------------------------------
 \subsubsection{Hadronic, electronic and muonic backgrounds}
