@@ -47,6 +47,10 @@ MEMFILE=$(SCRATCH_PATH)/memory
 
 ANALYZELOG=$(COMMON_PATH)/log.awk
 
+NOTATIONLST=$(COMMON_PATH)/notation.lst
+NOTATIONAWK=$(COMMON_PATH)/notation.awk
+NOTATIONTBL=$(COMMON_PATH)/notation.tbl
+
 DOCSRC=$(COMMON_PATH)/$(DOC).tex
 BIBSRC=$(COMMON_PATH)/jc.bst
 BIBLIO=$(COMMON_PATH)/tesis.bib $(COMMON_PATH)/magic.bib
@@ -57,9 +61,9 @@ FORMATS=$(FORMATS1) $(FORMATS2)
 
 COMMON_FILES=$(DOCSRC) $(BIBSRC) $(BIBLIO) $(ENGINES) $(FORMATS)
 
-.PHONY: eng esp ps pdf dvi all prepare banner log
+.PHONY: eng esp ps pdf dvi all prepare banner log notation
 .PHONY: clean mrproper redo
-.PHONY: clearlang lang
+.PHONY: clearlang lang 
 .PHONY: engpdf pdfeng esppdf pdfesp
 .PHONY: engps pseng espps psesp
 .PHONY: virtex 
@@ -87,7 +91,7 @@ dvi: prepare $(OUTDVI) log clearlang
 
 pdf:: prepare $(OUTPDF) log clearlang
 
-prepare: banner common lang
+prepare: banner common lang notation
 
 virtex: 
 	cd $(COMMON_PATH);\
@@ -133,6 +137,32 @@ lang:
 	echo "\usepackage[spanish,activeacute]{babel}";\
 	echo "\fi";\
 	echo "\endinput" ) >> language.tex
+
+notation:
+	if [ -f .esp ]; then \
+	  awk -v lang=esp -f $(NOTATIONAWK) $(NOTATIONLST) > $(NOTATIONTBL) ;\
+	else \
+	  awk -f $(NOTATIONAWK) $(NOTATIONLST) > $(NOTATIONTBL) ;\
+	fi
+
+log:
+	-rm -f $(FULFILE)
+	-rm -f $(LSTFILE)
+	-rm -f $(WRNFILE)
+	cd $(SCRATCH_PATH);\
+	awk -f $(ANALYZELOG) $(LOGFILE);\
+	if [ -f .esp ]; then \
+	  tail -30 $(DOC)-esp.log | grep "^ [0-9]" > $(MEMFILE);\
+	else \
+	  tail -30 $(DOC)-eng.log | grep "^ [0-9]" > $(MEMFILE);\
+	fi; \
+	cd -
+	echo "";echo "#### Over/Underfuls ########################"
+	cat $(FULFILE)
+	echo "";echo "#### List of files #########################"
+	cat $(LSTFILE)
+	echo "";echo "#### Warnings ##############################"
+	cat $(WRNFILE)
 
 $(OUTDVI):
 	if [ -f .esp ];then \
@@ -190,25 +220,6 @@ $(OUTPDF):
 	else \
 	  ln -sf {$(SCRATCH_PATH),$(THIS)}/$(DOC)-eng.pdf;\
 	fi
-
-log:
-	-rm -f $(FULFILE)
-	-rm -f $(LSTFILE)
-	-rm -f $(WRNFILE)
-	cd $(SCRATCH_PATH);\
-	awk -f $(ANALYZELOG) $(LOGFILE);\
-	if [ -f .esp ]; then \
-	  tail -30 $(DOC)-esp.log | grep "^ [0-9]" > $(MEMFILE);\
-	else \
-	  tail -30 $(DOC)-eng.log | grep "^ [0-9]" > $(MEMFILE);\
-	fi; \
-	cd -
-	echo "";echo "#### Over/Underfuls ########################"
-	cat $(FULFILE)
-	echo "";echo "#### List of files #########################"
-	cat $(LSTFILE)
-	echo "";echo "#### Warnings ##############################"
-	cat $(WRNFILE)
 
 banner:
 	@echo "----------------------------------------"
