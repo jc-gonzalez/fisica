@@ -1,1 +1,1 @@
-%%BoundingBox: 0 0 319 478
+%%BoundingBox: 0 0 353 478

@@ -1,8 +1,8 @@
 \documentclass[12pt]{article}
 
-\usepackage{brain_damage}
+%\usepackage{brain_damage}
 
-%\usepackage{graphicx}
+\usepackage{graphicx}
 \usepackage{a4wide}
 
 \def\MAGIC{MAGIC}
@@ -822,7 +822,51 @@ thou also dead--dead to the World, to Heaven, and to hope!  In me
 didst thou exist--and, in my death, see by this image, which is
 thine own, how utterly thou hast murdered thyself.'
 
-\end{document}
+\begin{figure}[htbp]
+  \makeatletter
+  \let\oldcaption\@makecaption
+  \long\def\@makecaption#1#2{\vskip \abovecaptionskip 
+    \centering #1
+    \vskip\belowcaptionskip}
+
+  \centering
+    \includegraphics[width=.9\textwidth]{dummy-plot.eps}
+    \caption{Esta es la figura sin caption}
+    \label{fig:Hola}
+
+  \let\@makecaption\oldcaption
+  \makeatother
+\end{figure}
+
+\makeatletter
+\newcommand\emptycaption[1]{%
+  \let\oldcaption\@makecaption
+  \long\def\@makecaption##1##2{\vskip \abovecaptionskip 
+    \centering ##1
+    \vskip\belowcaptionskip}
+  \caption[#1]{#1}
+  \let\@makecaption\oldcaption}
+\makeatother
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.9\textwidth]{dummy-plot.eps}
+  \emptycaption{Esta es la figura sin caption}
+  \label{fig:Holabis}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.9\textwidth]{dummy-plot.eps}
+  \caption{Esta es la figura CON caption}
+  \label{fig:Hola2}
+\end{figure}
+
+\input{humpoutline.pstex_t}
+
+\listoffigures
+
+\end{document} 
 
 %%% Local Variables: 
 %%% mode: latex

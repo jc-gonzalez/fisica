@@ -325,9 +325,88 @@ responsible for this absorption are:
 
 As a result of the fact that the refraction index changes with the
 height, as expressed in Eq.\eqref{eq:refractionidx}, the \Cherenkov
-angle is changing as well. This leads to a sort of focussing effect of
-the \Cherenkov light emitted by the charged particles, when reaching
-the observation leves, as sketched in Fig. {fig:humpfocus}
+angle is changing as well: its value increases from the top to the
+lower part of the atmosphere. This leads to a sort of focussing effect
+of the \Cherenkov light emitted by the charged particles, when
+reaching the observation levels, as sketched in Fig.
+\ref{fig:humpfocus}.  The result is a an enhancement of the density of
+light in the ground (as compared to the surrounding area), at a
+typical distance that depends on the energy of the primary. 
+
+Just for illustration purposes, we'll try to simulate this effect. We
+assume a single charged particle, that emits \Cherenkov photons at a
+density and angle given by the equations
+\eqref{eq:Cherenkovangle}-\eqref{eq:cherenkovlight} (see Fig.
+\ref{humpsketch}). We assume also that the trajectory of this particle
+is a straight line; that is, it does not interact or decay during its
+flight until it reaches the observation level. If we register the
+distance at which the photons hit the ground (at the points A and B,
+as outlined in Fig. \ref{humpsketch}), we will get, for different
+Zenith Angles ($\Theta$), the histograms in blue shown in Figs.
+\ref{fig:humpfigs}.(a)-(f). For completeness, we introduced a small
+\emph{smoothing} effect, to show the effect of the scattering of the
+charged particles in the atmosphere.  The result is shown in the
+histograms drawn in red in Figs. \ref{fig:humpfigs}.(a)-(f). The
+distance $r_{\text{max}}$ where these histograms (for all Zenith
+Angles between 0\deg to 88\deg) have their maxima is shown in Fig.
+\ref{fig:humps} (the red curve).
+
+One can get similar results by theoretical arguments: at a given
+height (or thickness $\tau$), the magnitude of the \Cherenkov angle will
+determine the distance (from the axis $\mathbf{s}$) where the emitted
+photon hits the plane $P$ (perpendicular to the trajectory of the
+charged particle).  Due to a sort of compromise between the decreasing
+height of the flying particle and the increase of the \Cherenkov
+angle, there will be a maximum value for this distance. The maximum of
+the distribution of hits in the plane P, and hence the position of the
+\emph{hump}, will be close to this maximum. This is shown in the
+embeded graph in Fig.  \ref{fig:humps}, (the green curve): this curve
+represents the theoretical values of $r$ for different values of the
+thickness $\tau$, for a particle trajectory of 0\deg of Zenith Angle.
+One can see that the position of the maximum obtained in Fig.
+\ref{fig:humpfigs}.(a) (where the Zenith Angle is 0\deg) agrees very
+well with our theoretical estimation.
+
+\begin{figure}[tb]
+  \centering
+  \mbox{}\hfill
+  \subfigure[\label{fig:humpfocus}]{%
+    \includegraphics[width=.25\textwidth]{humpfocus}}
+  \hfill
+  \subfigure[\label{fig:humpsketch}]{%
+    \includegraphics[width=.4\textwidth]{humpsketch}}
+  \hfill\mbox{}
+  \caption{(a) Sketch of the focussing of the \Cherenkov light in 
+    the atmosphere. (b) Geometrical construction used in our
+    \emph{toy-model}.}
+  \label{fig:humpfigs}
+\end{figure}
+
+\begin{figure}[tb]
+  \centering \includegraphics[width=.90\textwidth]{hump_ldist}
+  \caption{Histograms of the hits of the \Cherenkov
+    photons in the plane perpendicular to the trajectory of the
+    charged particle, for different values of the Zenith Angle, in
+    arbitrary units --- in blue, without smoothing; in red, with a
+    gaussian smoothing function, assuming $\sigma(\theta_{\text{c}}) =
+    0.05\text{\%}$. Note that in the first three histograms, (a)-(c),
+    the scale in the X axis is the same, while in the last three,
+    (d)-(f), the scale is doubling.}
+  \label{fig:humpldist}
+\end{figure}
+
+\begin{figure}[tb]
+  \centering \includegraphics[width=.7\textwidth]{humps}
+  \caption{Maxima of the radial distributions of \Cherenkov photons 
+    obtained for different initial Zenith Angles. In the embeded
+    graph, the theoretical values of the radial distances of the
+    emitted \Cherenkov photons are shown as a function of the
+    atmospheric thickness $\tau$, for Zenith Angle 0\deg. We can see that
+    the theoretical value of the maximum $r$, around $150\u{m}$, is
+    very close (and higher) to our calculated value of the position of
+    the hump for 0\deg, $r_{\text{max}}\simeq125\u{m}$, as expected.}
+  \label{fig:humps}
+\end{figure}
 
 
 %\begin{description}

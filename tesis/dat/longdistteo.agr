@@ -1,6 +1,6 @@
 # Grace project file
 #
-@version 50102
+@version 50103
 @page size 842, 595
 @page scroll 5%
 @page inout 5%
@@ -54,7 +54,7 @@
 @timestamp rot 0
 @timestamp font 0
 @timestamp char size 1.000000
-@timestamp def "Thu Mar 29 22:44:14 2001"
+@timestamp def "Sun Jun 17 21:56:04 2001"
 @with box
 @    box on
 @    box loctype world
@@ -581,9 +581,10 @@
 @    xaxis  bar color 1
 @    xaxis  bar linestyle 1
 @    xaxis  bar linewidth 1.0
-@    xaxis  label "\f{Symbol}t\f{} (radiation lengths)"
+@    xaxis  label "\f{Symbol}\qt\Q\f{} (radiation lengths)"
 @    xaxis  label layout para
-@    xaxis  label place auto
+@    xaxis  label place spec
+@    xaxis  label place 0.000000, 0.080000
 @    xaxis  label char size 1.400000
 @    xaxis  label font 0
 @    xaxis  label color 1
@@ -634,7 +635,8 @@
 @    yaxis  bar linewidth 1.0
 @    yaxis  label "log\s10\N \f{Times-Italic}N\f{}\se\N"
 @    yaxis  label layout para
-@    yaxis  label place auto
+@    yaxis  label place spec
+@    yaxis  label place 0.000000, 0.080000
 @    yaxis  label char size 1.400000
 @    yaxis  label font 0
 @    yaxis  label color 1
