@@ -1,0 +1,48 @@
+# Makefile-libs -- Small makefile for just compiling and installing 
+#                  the libraries in directory ./libs/lib* and their
+#                  include files
+#
+# JCG - Feb 2000
+
+LIBS = \
+	libcnr \
+	libctscuts \
+	libctshplot \
+	libctsminuit \
+	libctsbase \
+	libctshbook \
+	libctsmath
+
+LIBSPATH=cts/libs
+
+# ADDCFLAGS=-I$(HOME)/include -lnsl -lg2c
+ADDCFLAGS=-I$(HOME)/include -O0 -g3 -ieee
+
+all: includes preparelib libs clean
+
+includes: 
+	echo making include directory . . .
+	if [ ! -d $(HOME)/include ];then  mkdir $(HOME)/include;fi
+	find $(LIBSPATH) -name "*.h" -print -exec cp {} $(HOME)/include/ \;
+	echo done.
+
+preparelib:
+	if [ ! -d $(HOME)/lib ];then  mkdir $(HOME)/lib;fi
+
+libs: $(LIBS)
+
+$(LIBS):
+	echo compiling $@ in libs/$@ . . .
+	$(MAKE) CC="$(CC) $(ADDCFLAGS)" \
+	OSTYPE="linux-gnu" \
+	CERNLIBS="-L/cern/pro/lib -lmathlib -lpacklib -lkernlib -L/usr/lib -lnsl -lg2c" \
+	-C $(LIBSPATH)/$@
+	mv $(LIBSPATH)/$@/lib* $(HOME)/lib/
+	echo done $@ . . .
+
+clean:
+	echo cleanning . . .
+	find . -name "*.o" -exec rm {} \;
+
+
+
