@@ -17096,7 +17096,7 @@ C  REMEMBERS NEVT,NSTR,NPTL,PROJ,TARG
 C-----------------------------------------------------------------------
       PARAMETER (MXPTL=70000)
       PARAMETER (MXSTR=3000)
-      PARAMETER (NSI=6)
+      PARAMETER (NSI=6) 
       PARAMETER (NSIX=40)
       PARAMETER (NHA=NSIX+2)
       COMMON /CEVT/    BIMEVT,COLEVT,EGYEVT,PHIEVT,PMXEVT

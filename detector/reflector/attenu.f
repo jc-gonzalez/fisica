@@ -364,14 +364,14 @@ c-- with Hs = hscale = 7.4 km
       e3 = derfc(x3)
       e4 = derfc(x4)
 
-      write(*,*) '>>',wavelength,height,theta
-      write(*,99) x1,x2,x3,x4
-      write(*,99) e1,e2,e3,e4
+c      write(*,*) '>>',wavelength,height,theta
+c      write(*,99) x1,x2,x3,x4
+c      write(*,99) e1,e2,e3,e4
 
  99   format(' >> ',4(F8.4,1X))
       m = exp(-Rsin2 / (2. * hscale)) * ((e1 - e2) / (e3 - e4))
 
-      write(*,*) '>> ',m
+c      write(*,*) '>> ',m
 
 **********************************************************************   
 *          
