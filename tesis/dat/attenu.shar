@@ -1,0 +1,1257 @@
+#!/bin/sh
+# This is a shell archive (produced by GNU sharutils 4.2c).
+# To extract the files from this archive, save it to some FILE, remove
+# everything before the `!/bin/sh' line above, then type `sh FILE'.
+#
+# Made on 2000-12-30 13:23 CET by <gonzalez@calvin>.
+# Source directory was `/home/gonzalez/LaTeX/attenu'.
+#
+# Existing files will *not* be overwritten unless `-c' is specified.
+#
+# This shar contains:
+# length mode       name
+# ------ ---------- ------------------------------------------
+#    378 -rwxr-xr-x GOTCHA.sh
+#    147 -rw-rw-r-- README
+#   1191 -rw-rw-r-- am.cc
+#   3537 -rw-rw-r-- am.emacs
+#   2640 -rw-rw-r-- am.kumac
+#   6532 -rw-rw-r-- am.txt
+#   1908 -rw-rw-r-- am2.cc
+#   2696 -rw-rw-r-- am2.kumac
+#   5829 -rw-rw-r-- answer
+#  21923 -rw-r--r-- attenu.f
+#  20537 -rw-rw-r-- attenu.tex
+#    795 -rw-rw-r-- attenu.toc
+#   2311 -rw-rw-r-- geomview.fig
+#   6015 -rw-r--r-- jcdoc.sty
+#  25327 -rw-r--r-- jcdoc.tex
+#
+save_IFS="${IFS}"
+IFS="${IFS}:"
+gettext_dir=FAILED
+locale_dir=FAILED
+first_param="$1"
+for dir in $PATH
+do
+  if test "$gettext_dir" = FAILED && test -f $dir/gettext \
+     && ($dir/gettext --version >/dev/null 2>&1)
+  then
+    set `$dir/gettext --version 2>&1`
+    if test "$3" = GNU
+    then
+      gettext_dir=$dir
+    fi
+  fi
+  if test "$locale_dir" = FAILED && test -f $dir/shar \
+     && ($dir/shar --print-text-domain-dir >/dev/null 2>&1)
+  then
+    locale_dir=`$dir/shar --print-text-domain-dir`
+  fi
+done
+IFS="$save_IFS"
+if test "$locale_dir" = FAILED || test "$gettext_dir" = FAILED
+then
+  echo=echo
+else
+  TEXTDOMAINDIR=$locale_dir
+  export TEXTDOMAINDIR
+  TEXTDOMAIN=sharutils
+  export TEXTDOMAIN
+  echo="$gettext_dir/gettext -s"
+fi
+if (echo "testing\c"; echo 1,2,3) | grep c >/dev/null; then
+  if (echo -n testing; echo 1,2,3) | sed s/-n/xn/ | grep xn >/dev/null; then
+    shar_n= shar_c='
+'
+  else
+    shar_n=-n shar_c=
+  fi
+else
+  shar_n= shar_c='\c'
+fi
+if touch -am -t 200112312359.59 $$.touch >/dev/null 2>&1 && test ! -f 200112312359.59 -a -f $$.touch; then
+  shar_touch='touch -am -t $1$2$3$4$5$6.$7 "$8"'
+elif touch -am 123123592001.59 $$.touch >/dev/null 2>&1 && test ! -f 123123592001.59 -a ! -f 123123592001.5 -a -f $$.touch; then
+  shar_touch='touch -am $3$4$5$6$1$2.$7 "$8"'
+elif touch -am 1231235901 $$.touch >/dev/null 2>&1 && test ! -f 1231235901 -a -f $$.touch; then
+  shar_touch='touch -am $3$4$5$6$2 "$8"'
+else
+  shar_touch=:
+  echo
+  $echo 'WARNING: not restoring timestamps.  Consider getting and'
+  $echo "installing GNU \`touch', distributed in GNU File Utilities..."
+  echo
+fi
+rm -f 200112312359.59 123123592001.59 123123592001.5 1231235901 $$.touch
+#
+$echo $shar_n 'x -' 'lock directory' "\`_sh01670': "$shar_c
+if mkdir _sh01670; then
+  $echo 'created'
+else
+  $echo 'failed to create'
+  exit 1
+fi
+# ============= GOTCHA.sh ==============
+if test -f 'GOTCHA.sh' && test "$first_param" != -c; then
+  $echo 'x -' SKIPPING 'GOTCHA.sh' '(file already exists)'
+else
+  $echo 'x -' extracting 'GOTCHA.sh' '(gzipped)'
+  sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _sh01670/gzi
+M'XL(`*G233H"`SU0RVK#0`R\ZRNF;DX.7CMN<VEIH(3>2BFY]%@V]L86V8>Q
+M'=I#/KYR["U":!":&4GW=_F1?3ZT1*9J`Y)]<!U;]@VZ/C2]=M!.5174%`DU
+MZ_72R(*`?Y8UVON)5>M1X\36#)'2.X3O%*DRW4!T"CT8[%&H0G*+C=2-U%)J
+MJ4K)+1X$/ZKB&74`$3";'"ZSA>PTJ;2&FW;$"U:,LXMNR[#TKM/@%:,QXK]B
+M)9MAMQ.LK26J@S=Q^RC\^?H59?+]V^$CEQ?<WM/I'V1'T2O5^>)TA<A\YV$4
+CYE-"=D!FE]?H^6+MTMO)\^AD*,)D?GE$0?0'IM*MJ7H!``#5
+`
+end
+SHAR_EOF
+  $echo 'gunzipping file' 'GOTCHA.sh' &&
+  gzip -d < _sh01670/gzi > 'GOTCHA.sh' &&
+  (set 20 00 12 30 13 18 49 'GOTCHA.sh'; eval "$shar_touch") &&
+  chmod 0755 'GOTCHA.sh' ||
+  $echo 'restore of' 'GOTCHA.sh' 'failed'
+  if ( md5sum --help </dev/null 2>&1 | grep 'sage: md5sum \[' ) >/dev/null 2>&1 \
+  && ( md5sum --version </dev/null 2>&1 | grep -v 'textutils 1.12' ) >/dev/null; then
+    md5sum -c << SHAR_EOF >/dev/null 2>&1 \
+    || $echo 'GOTCHA.sh:' 'MD5 check failed'
+54cb421d0a29b5dc0c6819465ae4863e  GOTCHA.sh
+SHAR_EOF
+  else
+    shar_count="`LC_ALL=C wc -c < 'GOTCHA.sh'`"
+    test 378 -eq "$shar_count" ||
+    $echo 'GOTCHA.sh:' 'original size' '378,' 'current size' "$shar_count!"
+  fi
+fi
+# ============= README ==============
+if test -f 'README' && test "$first_param" != -c; then
+  $echo 'x -' SKIPPING 'README' '(file already exists)'
+else
+  $echo 'x -' extracting 'README' '(gzipped)'
+  sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _sh01670/gzi
+M'XL(`&C333H"`SW-.0Y",0P`T=ZG\`&0"THZ1`$%$A1<P/)W%B`)BAV6VY,&
+MFM%T#X[-,&1)VN?D\FC=N;H:6JL;@/WILCMLR1)P(9'9-=U&88&HK3RSOBCD
+M".RN=5#XC>L;DBQ-R/P#<.;.:"S<\3Z9V'F2S5:H5Y7AC'^&`+[^01(&DP``
+!`.RN
+`
+end
+SHAR_EOF
+  $echo 'gunzipping file' 'README' &&
+  gzip -d < _sh01670/gzi > 'README' &&
+  (set 20 00 12 30 13 22 00 'README'; eval "$shar_touch") &&
+  chmod 0664 'README' ||
+  $echo 'restore of' 'README' 'failed'
+  if ( md5sum --help </dev/null 2>&1 | grep 'sage: md5sum \[' ) >/dev/null 2>&1 \
+  && ( md5sum --version </dev/null 2>&1 | grep -v 'textutils 1.12' ) >/dev/null; then
+    md5sum -c << SHAR_EOF >/dev/null 2>&1 \
+    || $echo 'README:' 'MD5 check failed'
+768efe95d4a5a096d9ede2eabb175fc7  README
+SHAR_EOF
+  else
+    shar_count="`LC_ALL=C wc -c < 'README'`"
+    test 147 -eq "$shar_count" ||
+    $echo 'README:' 'original size' '147,' 'current size' "$shar_count!"
+  fi
+fi
+# ============= am.cc ==============
+if test -f 'am.cc' && test "$first_param" != -c; then
+  $echo 'x -' SKIPPING 'am.cc' '(file already exists)'
+else
+  $echo 'x -' extracting 'am.cc' '(gzipped)'
+  sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _sh01670/gzi
+M'XL(`!-;9#D"`X54;6^;,!#^[E]Q4C[4-)2:E[;93)"B:E*K*=(4Y5.G:F)@
+MAA&!#$@5*<I_W]D0(%FF(3C;S_/<G7VVF<@BRG>Q`%^6=5.)<!.028]%F[!)
+M`T(:L=GF8:.0/*QK6`=D#?7OBJYA;\`!*M'LJ@+H'FX1X'`D9!*+1!8"GE^^
+M/'^EH0$0B:H"WX=)J.S-YQO5Z+XHXIP0632P"65!/TH9&^1`T*4LZ@;B<O<S
+M%["5,(?ECV^O_))9(?'H/LTLAOF?++B'1^LOT4L=A=C,4>!Q<LFF'V&^$_7W
+M=Q0<'BP3(YBH-&&&G\V4<911E*.&#QICS#IRP&#X=I'>%K'XQ<=CG>V49\2D
+M;,RLHK)V3%C5LG#X6<3%\GR<V"8D*$U<_+Q10(&$0$(@(;S.2955FI"U:Y8%
+M!('.K,FDK(#*.>,@?5O9Z13W4RD!4BS%J2SRG6M,&^V4*:?,_\1L;$9>T!8`
+M?3/<#&;9O(<1:[E;M9?W8,^8Q4]>>OFH6"&K3A8.Z=O",$[NNBXC'H<=WPD2
+M&UED&DH=U*0,IFU0`U-IJ#T!0\C$.?>`_WNX5W+\6^U=B7]%W<F%6H"HDH@F
+M=A]#.#WH#*#;@^X`>CWH#4$72X7NM_2N+>!%<NQ2BHGO,)&>&8;&OC>:5E3N
+M&G5)I;ZUH&]MUO4[B7X0P7H,FO2ZICT!@PPGV/T!VH4<55YMNI\*'M4C^0-F
+'TE&JIP0``&]M
+`
+end
+SHAR_EOF
+  $echo 'gunzipping file' 'am.cc' &&
+  gzip -d < _sh01670/gzi > 'am.cc' &&
+  (set 20 00 07 06 12 10 27 'am.cc'; eval "$shar_touch") &&
+  chmod 0664 'am.cc' ||
+  $echo 'restore of' 'am.cc' 'failed'
+  if ( md5sum --help </dev/null 2>&1 | grep 'sage: md5sum \[' ) >/dev/null 2>&1 \
+  && ( md5sum --version </dev/null 2>&1 | grep -v 'textutils 1.12' ) >/dev/null; then
+    md5sum -c << SHAR_EOF >/dev/null 2>&1 \
+    || $echo 'am.cc:' 'MD5 check failed'
+7e25c9c92cc2b221b90aea573c5b2885  am.cc
+SHAR_EOF
+  else
+    shar_count="`LC_ALL=C wc -c < 'am.cc'`"
+    test 1191 -eq "$shar_count" ||
+    $echo 'am.cc:' 'original size' '1191,' 'current size' "$shar_count!"
+  fi
+fi
+# ============= am.emacs ==============
+if test -f 'am.emacs' && test "$first_param" != -c; then
+  $echo 'x -' SKIPPING 'am.emacs' '(file already exists)'
+else
+  $echo 'x -' extracting 'am.emacs' '(gzipped)'
+  sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _sh01670/gzi
+M'XL(`-KF83D"`[5576O;,!1]UZ_0HZ3:=2O*6@9Y",'#?1@+VIYJ]!""MP2V
+M)+4]%C+VWR?9LJS(DC_2U!`0TLW5N>><>_6\*[,?^:K,TOAX2,-3E/#HZVM>
+MIJ<;%E$>_#T%=\'F'X<$HGRSOX/5H3S"`(#G77K_@7^<@6_9L?RTSW^E\\\<
+M@"^_2[D?1<WV#,"K??3MN1A<[(OT9<[M5'1*EHJ)4'^\!RS2-T(<(0H3[*W.
+MN9OTE(!"A&(?O.66*\4T``Y1>`]O8)Q_-]"K&C"&4:<P+*+?3'J5E#I)2H!?
+MY"YSBM'ADA_@1@!GU4_FH%!DX=Y*G.%@4':3O6&2DDON]NLU)-W9N3@>`CC"
+M_\E4)S`PM:5TY:R_5SJ88H_W'9;G&$SV+JBT0.&4;T3O]!!D\7$M21JQ*].!
+MBSK9MOQ8J;R=<(8&>9140=X1UFV"23H/#JL$J$?O43YZ"^O%>Q0OWJ)^[N10
+M7N[_9#F*`\1(O12=C5[F.*!8CK);DF!,Y$UHN54+1R0Q\.NJ417M3)S@ZOU&
+M8HW5TA/76O,2J`]$CRPBHRD1\09:&ZL[7L*EMRU2;Q2.5/=IK,S'(2;6W<Q%
+M"G,SX,M*:V"=W/K`2;QQB&OC/$GC"(^4^6IGV>=)V,<XF1E4BA>>$*FCTH40
+MZK>0$:/D"'L<9&9T>^<\HN4LK#MU++!>PX3OZ9HJ?4/B56W34O">OJFF278\
+M2)Z+UQRM:ZZ;UBS6JY^9N+B0?SULU<(*[8Z13$`IE,3G657&J&AA]08:;305
+MI:G<VCM%6JCN>(VX-L68T':>2,BLE\E&/`V#>2EB'DYZ+[`\TE;;VL"GB!V!
+*P7_92%"VT0T``(VX
+`
+end
+SHAR_EOF
+  $echo 'gunzipping file' 'am.emacs' &&
+  gzip -d < _sh01670/gzi > 'am.emacs' &&
+  (set 20 00 07 04 15 30 02 'am.emacs'; eval "$shar_touch") &&
+  chmod 0664 'am.emacs' ||
+  $echo 'restore of' 'am.emacs' 'failed'
+  if ( md5sum --help </dev/null 2>&1 | grep 'sage: md5sum \[' ) >/dev/null 2>&1 \
+  && ( md5sum --version </dev/null 2>&1 | grep -v 'textutils 1.12' ) >/dev/null; then
+    md5sum -c << SHAR_EOF >/dev/null 2>&1 \
+    || $echo 'am.emacs:' 'MD5 check failed'
+295dc297a08dbec9ffd0648f8c94e1c8  am.emacs
+SHAR_EOF
+  else
+    shar_count="`LC_ALL=C wc -c < 'am.emacs'`"
+    test 3537 -eq "$shar_count" ||
+    $echo 'am.emacs:' 'original size' '3537,' 'current size' "$shar_count!"
+  fi
+fi
+# ============= am.kumac ==============
+if test -f 'am.kumac' && test "$first_param" != -c; then
+  $echo 'x -' SKIPPING 'am.kumac' '(file already exists)'
+else
+  $echo 'x -' extracting 'am.kumac' '(gzipped)'
+  sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _sh01670/gzi
+M'XL(`+5E9#D"`YU6;8_:1A#^[E\Q**IL0X'=!<.ARHI(TZB1+KJHB=0J"%5[
+M9GUL\=O9A@NG_OC.K.TK&"M!X0ZTLSO/,[,SL[,;RR!/0<:0*[GQ&62Y3DJ?
+M698.P5G1Y'JD'D?<A7*K$@L@&0>Y`@ZV#3/HX9^&?V#+8`O/$GF,!L%0)?U;
+M1I&EDHT.:S[#WB)47Q5D19J`+>-15M@-H-#/:&>&_U:A2CB@#&PT,8*L!<](
+M02T)RTJS$AYRO3&#I"BE9<4Z>9;^G%D['/DK(ZX'GF7)+(-"/\02'O>ZM`[/
+M&`"9Y_+H+!C[F;_"7W?,&2WXM-B?C/B4>PLQYC<X6ZC`Y^,@+1Q<="W#T>*$
+M?V&IRS2W"PC3/-Y'4ED'N>7^<#:9W@R*Q[QT:-3OBX'CO7"Y1A9]L^2Y+F%$
+M)X8SUHW"!8.+N>_P,=ET^X[!5N!.D%$;T"_.NL.6IJ$3-9VXCDX8.M%-5T6,
+M$K4O:70PE;55VL'BR($U$R%NDR8\++@YW`!GP`5P#P0##\<,JQ7#BT@&.@&&
+MI>!A]7'\%2!&]/5@`E.RH)-L7S8V5HA8=^3L72Z3W5G.PBIG<SZ:<&_0;+P6
+MD:W:M^,-:7R1D99JK48!#:N\?H\7MW@=<Z-HN*O<.^1\-=EWABU`P]<V31BR
+M,6R[4^CDQ8'*B&B,B!\P(JXQ4M4)8)7X=_>%R@^RU-@N(G50$4C,YFO6\TTN
+M81>3(E93I&"U+]=@[VWJ2/LH@OKDPP(+!.L&IV6E:']9@K-1#ZX-]O*#30S4
+M5:(GC4T,A4^_?89WR_>?L*9./U@G&FDE-CLLNU+E&FNP*(_(6*01MJ`&^>M[
+M-/@#R#=W?[R]L/EYJ^`^S3<J!UU@TW[<JZ)4#>3C+1IK0VYUHB!(H]1`[B,9
+M[%#]S=U?,*>3<>/109G#=-8`WN;R"22:^7H6BUDC95&@Z3A5TB9.JS@EXRS"
+M4R?CG_`F<#1U>>:.9+(9.5M&DLF1:RZ-'A010G;J""OJRVN8<KI4EA\@D%&`
+MIPXW!<[OK\.>[V%:,3<]N#TS*;I-+JXW.5E@@^@TB>?H?Z,`5A_C0BUF5S68
+MA9GH-+_:K;_I0`4\^I/9$%7[V*KJ*>VC/."UM`U#'QO?2J_=>@9KU>]R=86J
+M5/B-WLG^5L?U14QI2W\:5;QF<4MG.>47.3V-UHS(8L?<:+^T,P-X[<ILBZ>+
+M`5V60'</;;B=LDLU<9F8*27FS-191DY]GGW39U[Y;#KZ%3Z'W3Z?,(I%Y=H)
+M8ZM8+CG%":?Q65SXW`;AX^+RA$QI,[3R9?D2A]:SBKT\JP">)/9-DV=Z3C7I
+=_MX[+`R;!UBNRGV>6%9_>/7'LOX#*6:ANE`*``"S
+`
+end
+SHAR_EOF
+  $echo 'gunzipping file' 'am.kumac' &&
+  gzip -d < _sh01670/gzi > 'am.kumac' &&
+  (set 20 00 07 06 12 55 49 'am.kumac'; eval "$shar_touch") &&
+  chmod 0664 'am.kumac' ||
+  $echo 'restore of' 'am.kumac' 'failed'
+  if ( md5sum --help </dev/null 2>&1 | grep 'sage: md5sum \[' ) >/dev/null 2>&1 \
+  && ( md5sum --version </dev/null 2>&1 | grep -v 'textutils 1.12' ) >/dev/null; then
+    md5sum -c << SHAR_EOF >/dev/null 2>&1 \
+    || $echo 'am.kumac:' 'MD5 check failed'
+7fe6af20fe4b32f8876a383a9c9ec6e4  am.kumac
+SHAR_EOF
+  else
+    shar_count="`LC_ALL=C wc -c < 'am.kumac'`"
+    test 2640 -eq "$shar_count" ||
+    $echo 'am.kumac:' 'original size' '2640,' 'current size' "$shar_count!"
+  fi
+fi
+# ============= am.txt ==============
+if test -f 'am.txt' && test "$first_param" != -c; then
+  $echo 'x -' SKIPPING 'am.txt' '(file already exists)'
+else
+  $echo 'x -' extracting 'am.txt' '(gzipped)'
+  sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _sh01670/gzi
+M'XL(`$[C83D"`^U7:W.B2!3]//R*.[65*IA$:!H4)(_2O#9NC147338U8JH8
+M@TJ5KQ7<V7%K__O>;M&@MH_$?%N)@:3I>_N>>\YIX78TZ$$&:N,`?AMW`4S0
+MLXYN.ED3*"%$<H-X/.IG*G[<<>"L->A'0=,OA#\BW:9J;SCLC?'<5E^""YS:
+M#,*_@A<'6BQI%+9'X8L:A3UUW.RI003R=`CJNFFI^9RJJY;14*1/WW]"Y+?]
+MOMKV@_E<6\VKAF:KMFHI\".,.W!3+=<J@/'WQ2+-F79>^M0:C."L/>A/_&XP
+M*2PGN3AEN$X0$X/&X`!#EG6(#<>$<G0+)8^[811$"V6L#LVK)ZI!L7Q@Y:]B
+MK92O;^$QJ]*,0>$7P\[9)LY=!')&;I]RA.B_7UX^/OWQM;"2Y@(8PK4`)9#O
+MW:M*#4:MIDWIZ7SBZQ0EZ8&@"?EI$T`NW]3@NEI3=F8P/20@4]#&;6P2TV9D
+M2BDV5[+,Z"2K4"PQGWZK-R2+,@59-%C7#1,)M51VUC^(5/OR\6$MJ1*L![HS
+MJY*H%UMI%9@79-'@O"N&JEL)M\*6SMC%<\)NBER#F#EKF=R=6#4V(,%2A#B*
+MI2?`HK6'JTO(JCE3,U6"16$IQ6)6MRA9USG\S':%:S\.''%5J5FWV$OLZ/H=
+M$>3'L!D/1J$/M]-9\&N"7Y%J`V>#`J1R$*'9@TR(4,]T7-TBIDZSIIJ@$._`
+MU=B/QY$#`-)3ICR8A-VNGYD-VJC)E6'J`$D.O/=0NO[J@)$WOEM-.\='Z8LO
+M2:5^76\XYWB-@_8(NU._^7M8STRTNX96_7,4UR?'L@M7@ZC^K=AXIHI&&R?_
+M3$[(2>??!GP!>=09$.`378UMF??C&!.>2]YG3_9DW=.\`O5D6<+"P2NX'K``
+M#_C_."+CI`R;>>,]LPM.2-;RGJFG8+A,/;C#OQ0/X[UZ)6S,H],'WEL)%L[C
+M*^J>`L=P,VK569Q@V3N^=H%_"0@.7H^V(5;A"T@+Z^X'D2UF>M#!M"[[G6;!
+M2)9(A'49*7)!^0+RQD2L?"%J3\$*-99UEQ3*[,-^)&`ZHUMTYNZB+?I>;;EK
+M&LT#=Q2*FQ;&JP;<M9QO69D/\RX*&!0K-16P2:1I@2Z%I&A!4@Q.RK?B^=&1
+M5"+G1[S)QL'`!P,O*(6IPCRHXJ"*Y?TCF^P?6HEPD611)+ITRFY9[-9TS^87
+MZ[!U?^C6;<^V[NDSURENW]-N\^[GEXC)S[O_,=[<S9D?X<NWNG)/3[[1D7OY
+M$?F4%J&^T8F:M+=?]G;+/E[9PRF;?3*UB$Z8"XKE\Y01<.S@A(,3_F].X&_Y
+MU;`W[(:MG^SER^^_%+O=>K'<F'X]ZZ^O[;R!\GP5#BJ3R*@:]L4R4I*V;D#)
+M,6Z0[[HGP`T"F/.QD`XR(BUO59(@;&.Y;WYX@Q5CK'5$"IGP674![O&[X`HR
+MO\>W,^]-^=V])8E7TVY:$@^>YY):D;88M)NB)JU"D9]%*EFWFK?5E.D=S)L]
++IOT'8]2F`X09``!7
+`
+end
+SHAR_EOF
+  $echo 'gunzipping file' 'am.txt' &&
+  gzip -d < _sh01670/gzi > 'am.txt' &&
+  (set 20 00 07 04 15 14 54 'am.txt'; eval "$shar_touch") &&
+  chmod 0664 'am.txt' ||
+  $echo 'restore of' 'am.txt' 'failed'
+  if ( md5sum --help </dev/null 2>&1 | grep 'sage: md5sum \[' ) >/dev/null 2>&1 \
+  && ( md5sum --version </dev/null 2>&1 | grep -v 'textutils 1.12' ) >/dev/null; then
+    md5sum -c << SHAR_EOF >/dev/null 2>&1 \
+    || $echo 'am.txt:' 'MD5 check failed'
+b87d048a68777e1492e2ce3de2e7b6ab  am.txt
+SHAR_EOF
+  else
+    shar_count="`LC_ALL=C wc -c < 'am.txt'`"
+    test 6532 -eq "$shar_count" ||
+    $echo 'am.txt:' 'original size' '6532,' 'current size' "$shar_count!"
+  fi
+fi
+# ============= am2.cc ==============
+if test -f 'am2.cc' && test "$first_param" != -c; then
+  $echo 'x -' SKIPPING 'am2.cc' '(file already exists)'
+else
+  $echo 'x -' extracting 'am2.cc' '(gzipped)'
+  sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _sh01670/gzi
+M'XL(`"#R83D"`Y556X^:0!1^GU]QDGWHS+B"4--N`IKXUCZ8-,2G?=E0&.I0
+M!3M@8[+QO_<,C,AMK6*8R_F^<P_')YE%NV,LP)=Y42H1[I?DJ9%%11G+O"/9
+MA^5V24@I]H==6&K)+BP*V"S)!HH_BF[@Q.`=E"B/*@-ZXB?FP9D0F96P#V5&
+M_^8R9N2=$(`HSXH2XOSX<R?@(&$!Z[<?W[T^\JV(0MP6\-6:>V#;\'O?IP2(
+M?OD\?[%F%P(R#/:ZBL6O2HR[$J)H0Q[@@Y`*8QEF+6A;(0-CB8[N>EVMG_%U
+M/<W0&<IG2`TCR150N<"`I.\XN$XF6!A-!-ABN!(X.#,+)N!:KE>)JZ722[5>
+MZCMZ;>E!G0QJIQQUO4:(DAKANHXV."]7U&RK-9*HN=1/]P;3WAT)XG08"&LD
+MX+K;45[0UQ5CS!YGN1:ON\=&<::-E/0@S6&4U'^ZGN]287Q`HU,'2R]40N_R
+M3!_TRFR3MWV#6GEVK5O61K"A:.BDLCSHD0F)8>)DV.<!O=6]?J/F%M^BE4"_
+M7&L@52OUZ]RK\H=Z3;6P&GB[C\R@FS>=TBJ1X%;D`>.]H(+&^:4?30C!?TIV
+MTY-KPA\XO"(?>QYRNFUGEZ_;OI0\`?U]!S@!.EW$88"V4&JF*!L;"[7+@QY)
+M05\#37#0R2;50251G47"F$<ZOFDPP5'&'H_`[89@[#P42&V*VRV[D5`*?/_V
+MMZ`)(HMW32I1?BRU4.KE$_YP2UOG;>M<C]SK'6O9-7?66[68_\.91\[D'Q.Y
+&ZY=T!P``
+`
+end
+SHAR_EOF
+  $echo 'gunzipping file' 'am2.cc' &&
+  gzip -d < _sh01670/gzi > 'am2.cc' &&
+  (set 20 00 07 04 16 18 08 'am2.cc'; eval "$shar_touch") &&
+  chmod 0664 'am2.cc' ||
+  $echo 'restore of' 'am2.cc' 'failed'
+  if ( md5sum --help </dev/null 2>&1 | grep 'sage: md5sum \[' ) >/dev/null 2>&1 \
+  && ( md5sum --version </dev/null 2>&1 | grep -v 'textutils 1.12' ) >/dev/null; then
+    md5sum -c << SHAR_EOF >/dev/null 2>&1 \
+    || $echo 'am2.cc:' 'MD5 check failed'
+8f72dd906f8dea223db3aa935b966d46  am2.cc
+SHAR_EOF
+  else
+    shar_count="`LC_ALL=C wc -c < 'am2.cc'`"
+    test 1908 -eq "$shar_count" ||
+    $echo 'am2.cc:' 'original size' '1908,' 'current size' "$shar_count!"
+  fi
+fi
+# ============= am2.kumac ==============
+if test -f 'am2.kumac' && test "$first_param" != -c; then
+  $echo 'x -' SKIPPING 'am2.kumac' '(file already exists)'
+else
+  $echo 'x -' extracting 'am2.kumac' '(gzipped)'
+  sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _sh01670/gzi
+M'XL(`*K033H"`YU6;8_:.!#^[E\QZ%210`';D``?HA6]7J5*6^WI6JE5<ZCR
+M@M.XY&V3P"ZK_O@;.PF%@/90V5WD&<\S,YYY/-Y8K/(41`RY%&N/09:KI/08
+M(2H`R]?*Y5`^#)D-92@3`I",5KD$!MTNN-#!'P4_(*00PK-`/\9"P]`D_2:B
+MB,ADK0)""O6,,!=_22%+V*$,=#@V@J@%QTBK6II44AA*<`A)LQ*^YVIM%DE1
+M"D)BE3P+;TK)!E>>;\1E'VU%ED&AOL<"'K:J)+MG/)K(<[&WYI2^9G_@MSUB
+M5&]X>K,W'K()<^9\Q&:H+>3*8Z-56EBX:1/CH^43?L)"E6G>+2!(\W@;"4EV
+M(F3>P!U/9OWB(2\MO>KU>-]R#KYL(_.>V7)L6V/X10RC]#(*-PPN9I[%1CJF
+MW;,,M@)?!!FSOOY&K3UH61IWO';'KW/'C3M^V5U5,=VH;:E7.\.94"H+>90#
+M;10!'E,K'*32%&;`*#`.S`%.P<$UI81@>1%)025`D14.\HKA-P<^U'\.C&%"
+MD'6&KX:]+<("LK+T1.RC%]S*"J.33Q)PG2;@X_82=35/=R.59-NRR=:@+G3_
+M72Z2S4GW@ZK[4S8<,Z??E+`6T5M50<L9Z/59;UNFM9EN35`QY/_\8K&N\]P8
+M&M\5BRR=?*7L68,6H/'7#JTQ.L:@G4ZADD,"51#>!.&_$81?$Z1B7`^0<-[=
+M?2'SG2@5-C>2.QF!P';>T(Y7-=,8:1F\JKVPB0T6N1I)\+?E$KK;KIYDVRB"
+M>J[`'.F'K$2UJ`R[7Q=(N7^Y2Y=V%[J+#UWCY3"TZ-!UM$*53S!%UDZ-:]*V
+MJ`V<@T%M$3TJ'*(H?/SK$[Q;O/^(S#_^(`<5IB=PV.+E*&6N\*84Y1XS*]((
+M!V6#_/,])OX;R#=W_[P]B_D)T[Y/\[7,017X:#QL95'*!O+W+09K0VY5(F&5
+M1JF!W$=BM4'S-W=?8*KO[\S1UWD*$[<!O,W%(P@,\W12"[>1LFBEJDNOI76<
+M5G5*1EF$LT'$K_`ELI2>`M0>BF0]M$*J)=-LVSQ:'2@BA&SD'GS]>BQAPO2C
+MMO@`5GBSZW@.D@*[VH';DSC\<ISY]7'&<YQ=O^+@;?P5"4#S1<\4V%0#;VX4
+M%V/ZF^6+42O@WAN[`S3MX>BL5<I#N<]J*0P"#P>QKY9VK4%V>X?\?-S7%Z39
+M/#J)OU]6)=/)?S;[.$,Q^9,^L;,^'1?#%#V^*52<1;)S5GK`)U]D(=X]"OJA
+M!OWNZ<.U>W)NQL\JSTWE6\%.ZG^<M_MBWJ[)^XI\@\OY'ON:F+0NTN'<&S_R
+M9O+D9WE6H-E\7H/PWYESMD_T`?3.U\7A["\\H<US&03ZI8P*:;2/`J?NX>5L
+6FI_+<ILG.`L'5W\(^0^:4C[5B`H``,7A
+`
+end
+SHAR_EOF
+  $echo 'gunzipping file' 'am2.kumac' &&
+  gzip -d < _sh01670/gzi > 'am2.kumac' &&
+  (set 20 00 12 30 13 10 18 'am2.kumac'; eval "$shar_touch") &&
+  chmod 0664 'am2.kumac' ||
+  $echo 'restore of' 'am2.kumac' 'failed'
+  if ( md5sum --help </dev/null 2>&1 | grep 'sage: md5sum \[' ) >/dev/null 2>&1 \
+  && ( md5sum --version </dev/null 2>&1 | grep -v 'textutils 1.12' ) >/dev/null; then
+    md5sum -c << SHAR_EOF >/dev/null 2>&1 \
+    || $echo 'am2.kumac:' 'MD5 check failed'
+7144969bba75cca01a57e8947fb4fc35  am2.kumac
+SHAR_EOF
+  else
+    shar_count="`LC_ALL=C wc -c < 'am2.kumac'`"
+    test 2696 -eq "$shar_count" ||
+    $echo 'am2.kumac:' 'original size' '2696,' 'current size' "$shar_count!"
+  fi
+fi
+# ============= answer ==============
+if test -f 'answer' && test "$first_param" != -c; then
+  $echo 'x -' SKIPPING 'answer' '(file already exists)'
+else
+  $echo 'x -' extracting 'answer' '(gzipped)'
+  sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _sh01670/gzi
+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
+D:U_S]^=_TFOZQ_0!M23YU-CH=I?%=>Y7%'[^`Q,0MO#%%@``
+`
+end
+SHAR_EOF
+  $echo 'gunzipping file' 'answer' &&
+  gzip -d < _sh01670/gzi > 'answer' &&
+  (set 20 00 07 07 16 45 56 'answer'; eval "$shar_touch") &&
+  chmod 0664 'answer' ||
+  $echo 'restore of' 'answer' 'failed'
+  if ( md5sum --help </dev/null 2>&1 | grep 'sage: md5sum \[' ) >/dev/null 2>&1 \
+  && ( md5sum --version </dev/null 2>&1 | grep -v 'textutils 1.12' ) >/dev/null; then
+    md5sum -c << SHAR_EOF >/dev/null 2>&1 \
+    || $echo 'answer:' 'MD5 check failed'
+f68732c88dc852b350db6c9d50ec21ac  answer
+SHAR_EOF
+  else
+    shar_count="`LC_ALL=C wc -c < 'answer'`"
+    test 5829 -eq "$shar_count" ||
+    $echo 'answer:' 'original size' '5829,' 'current size' "$shar_count!"
+  fi
+fi
+# ============= attenu.f ==============
+if test -f 'attenu.f' && test "$first_param" != -c; then
+  $echo 'x -' SKIPPING 'attenu.f' '(file already exists)'
+else
+  $echo 'x -' extracting 'attenu.f' '(gzipped)'
+  sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _sh01670/gzi
+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
+/4K[(.)V+#TX^WYZC50``
+`
+end
+SHAR_EOF
+  $echo 'gunzipping file' 'attenu.f' &&
+  gzip -d < _sh01670/gzi > 'attenu.f' &&
+  (set 20 00 07 04 15 32 10 'attenu.f'; eval "$shar_touch") &&
+  chmod 0644 'attenu.f' ||
+  $echo 'restore of' 'attenu.f' 'failed'
+  if ( md5sum --help </dev/null 2>&1 | grep 'sage: md5sum \[' ) >/dev/null 2>&1 \
+  && ( md5sum --version </dev/null 2>&1 | grep -v 'textutils 1.12' ) >/dev/null; then
+    md5sum -c << SHAR_EOF >/dev/null 2>&1 \
+    || $echo 'attenu.f:' 'MD5 check failed'
+ecdf93ab4a3f44189ee45b7193a25c5d  attenu.f
+SHAR_EOF
+  else
+    shar_count="`LC_ALL=C wc -c < 'attenu.f'`"
+    test 21923 -eq "$shar_count" ||
+    $echo 'attenu.f:' 'original size' '21923,' 'current size' "$shar_count!"
+  fi
+fi
+# ============= attenu.tex ==============
+if test -f 'attenu.tex' && test "$first_param" != -c; then
+  $echo 'x -' SKIPPING 'attenu.tex' '(file already exists)'
+else
+  $echo 'x -' extracting 'attenu.tex' '(gzipped)'
+  sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _sh01670/gzi
+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
+EYB6.J:Z:9+"?11\K;],R#P[XS^[:$;#=LU=/_@4("S2F.5```*8]
+`
+end
+SHAR_EOF
+  $echo 'gunzipping file' 'attenu.tex' &&
+  gzip -d < _sh01670/gzi > 'attenu.tex' &&
+  (set 20 00 07 17 12 06 24 'attenu.tex'; eval "$shar_touch") &&
+  chmod 0664 'attenu.tex' ||
+  $echo 'restore of' 'attenu.tex' 'failed'
+  if ( md5sum --help </dev/null 2>&1 | grep 'sage: md5sum \[' ) >/dev/null 2>&1 \
+  && ( md5sum --version </dev/null 2>&1 | grep -v 'textutils 1.12' ) >/dev/null; then
+    md5sum -c << SHAR_EOF >/dev/null 2>&1 \
+    || $echo 'attenu.tex:' 'MD5 check failed'
+c96762163b33381f67174ffd664f6d34  attenu.tex
+SHAR_EOF
+  else
+    shar_count="`LC_ALL=C wc -c < 'attenu.tex'`"
+    test 20537 -eq "$shar_count" ||
+    $echo 'attenu.tex:' 'original size' '20537,' 'current size' "$shar_count!"
+  fi
+fi
+# ============= attenu.toc ==============
+if test -f 'attenu.toc' && test "$first_param" != -c; then
+  $echo 'x -' SKIPPING 'attenu.toc' '(file already exists)'
+else
+  $echo 'x -' extracting 'attenu.toc' '(gzipped)'
+  sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _sh01670/gzi
+M'XL(``;;<CD"`Y62SV[",`S&[SR%GP!IC"%VYCQMVIF+V[JMI?R3G6RP*N^^
+M%-B!T3$X)K%__K[/V=;>17)1#3N"0:F.[%T>MB[9BN1X^Y`W:.ID<'P#WT+L
+M"0(*6HHDFH=%GFU_@5+U!VL^28N2"#Y((M=HH"?N^G@G=Y'?DA!TY(LL.7!(
+M(]NS.<@"%O5>S8]3FG]8D)1=!^B`=L&[`N0RNR&G'/=@?4,F#\N+<6.`G6#H
+M\[#Q(L?)T'H!H5;P<)SGX>E2YZ3(1=YX6YBLA5)1_"1RT'#;DI16P!#$[TYI
+M%/NK&['3SJ/U&GHJ*9?-H5/+JH?>U36;[[@WXV9!:XSEYY34YO^TO#"=5Z^O
+B5;]^E?@!*_423O&M;_2Y+/&YVB0]QO.<9]]?%6\L&P,``)34
+`
+end
+SHAR_EOF
+  $echo 'gunzipping file' 'attenu.toc' &&
+  gzip -d < _sh01670/gzi > 'attenu.toc' &&
+  (set 20 00 07 17 12 08 06 'attenu.toc'; eval "$shar_touch") &&
+  chmod 0664 'attenu.toc' ||
+  $echo 'restore of' 'attenu.toc' 'failed'
+  if ( md5sum --help </dev/null 2>&1 | grep 'sage: md5sum \[' ) >/dev/null 2>&1 \
+  && ( md5sum --version </dev/null 2>&1 | grep -v 'textutils 1.12' ) >/dev/null; then
+    md5sum -c << SHAR_EOF >/dev/null 2>&1 \
+    || $echo 'attenu.toc:' 'MD5 check failed'
+b5fd7ab0149fe073815418bafe03d7b4  attenu.toc
+SHAR_EOF
+  else
+    shar_count="`LC_ALL=C wc -c < 'attenu.toc'`"
+    test 795 -eq "$shar_count" ||
+    $echo 'attenu.toc:' 'original size' '795,' 'current size' "$shar_count!"
+  fi
+fi
+# ============= geomview.fig ==============
+if test -f 'geomview.fig' && test "$first_param" != -c; then
+  $echo 'x -' SKIPPING 'geomview.fig' '(file already exists)'
+else
+  $echo 'x -' extracting 'geomview.fig' '(gzipped)'
+  sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _sh01670/gzi
+M'XL(`,>E9#D"`[56RXX3,1`\[WR%)<Z)^N'VX[A:"<0!L8(KEQ6*(!):1!3!
+M[U-M.\D^DNP$+8DRTYYQ57>UV^V\>?O^7="E3+<_-]O-W7H[W:SNMZO-]&&U
+MW:R_3M<QM,_$1$NBZ?/Z_MN/U;20B84HR&2!`^[XY8`YN"\X1$QULW]+U:5E
+M#EI*74I)H>*E1J'`G&$9PU*#E0M=0AA5'Q"6O".L:1!&T1TAGR-D*FE9BP86
+MCQ$$C9(ET>!D,0.15EPDJTTIF!5XX$C!*B[1D)XXZ#JM8.A^\#*(PX'NJ`C)
+MW[\0\1,$EP/"9T-%`,`:>Z"&6"1W'BN$$H1:\<QIMCG.&TK97G:NPWG&9&</
+MOP_.G4`L64AX+E7FN&X8#W66;,]1[=SA9N=8CE4&[1?2!_Y^NNJ+A[6BD#2V
+MY/T3V"U(/(Z-I["1;*R*6PVL3\'I,9@=[!-YZ2X]+)19VW`/.!,AW8Q*;)P\
+M.R"'(!'#NA#<"L^2]!)L8+L,_#CL,SMQP3VRDZDXE2&+[BN:#8OVZ_WZOK(,
+M65GH_ZJ*AM(U@9LDW-O0U`LIG:IBG_4P]9Q:M."1J+"2MHT(*WN?++ZJ7N@]
+M=XQ2O^H>S3"SN4WL`=3LFQU]*!?P9$/?*:D8+M%#[1$L^+(;@(\?-YJFD<\=
+M``>-E'1H1`<?&KF6H5%5AT9C[1ICUK+72)C9-!JD#8T^;!K;L&G,-=EK:SS?
+M+P7'246GSH0P/QWIE\<`FAQA:+//$2K/>W+9G981C?S72Q#ORKNPHB*L/W,1
+MX_A$[P]W1Z0`M8>H4O]!!#:RA>LY@-@/EYB@Z.,,@$=BV?\B$(K\MB'^`G7C
+&M+<'"0``
+`
+end
+SHAR_EOF
+  $echo 'gunzipping file' 'geomview.fig' &&
+  gzip -d < _sh01670/gzi > 'geomview.fig' &&
+  (set 20 00 07 06 17 29 11 'geomview.fig'; eval "$shar_touch") &&
+  chmod 0664 'geomview.fig' ||
+  $echo 'restore of' 'geomview.fig' 'failed'
+  if ( md5sum --help </dev/null 2>&1 | grep 'sage: md5sum \[' ) >/dev/null 2>&1 \
+  && ( md5sum --version </dev/null 2>&1 | grep -v 'textutils 1.12' ) >/dev/null; then
+    md5sum -c << SHAR_EOF >/dev/null 2>&1 \
+    || $echo 'geomview.fig:' 'MD5 check failed'
+a06e226d3a2619f357f3e420ce113ccb  geomview.fig
+SHAR_EOF
+  else
+    shar_count="`LC_ALL=C wc -c < 'geomview.fig'`"
+    test 2311 -eq "$shar_count" ||
+    $echo 'geomview.fig:' 'original size' '2311,' 'current size' "$shar_count!"
+  fi
+fi
+# ============= jcdoc.sty ==============
+if test -f 'jcdoc.sty' && test "$first_param" != -c; then
+  $echo 'x -' SKIPPING 'jcdoc.sty' '(file already exists)'
+else
+  $echo 'x -' extracting 'jcdoc.sty' '(gzipped)'
+  sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _sh01670/gzi
+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
+)3TK#1VE_%P``
+`
+end
+SHAR_EOF
+  $echo 'gunzipping file' 'jcdoc.sty' &&
+  gzip -d < _sh01670/gzi > 'jcdoc.sty' &&
+  (set 20 00 07 07 13 22 59 'jcdoc.sty'; eval "$shar_touch") &&
+  chmod 0644 'jcdoc.sty' ||
+  $echo 'restore of' 'jcdoc.sty' 'failed'
+  if ( md5sum --help </dev/null 2>&1 | grep 'sage: md5sum \[' ) >/dev/null 2>&1 \
+  && ( md5sum --version </dev/null 2>&1 | grep -v 'textutils 1.12' ) >/dev/null; then
+    md5sum -c << SHAR_EOF >/dev/null 2>&1 \
+    || $echo 'jcdoc.sty:' 'MD5 check failed'
+572dedb18ce3eebe16a8e11327ccc5b5  jcdoc.sty
+SHAR_EOF
+  else
+    shar_count="`LC_ALL=C wc -c < 'jcdoc.sty'`"
+    test 6015 -eq "$shar_count" ||
+    $echo 'jcdoc.sty:' 'original size' '6015,' 'current size' "$shar_count!"
+  fi
+fi
+# ============= jcdoc.tex ==============
+if test -f 'jcdoc.tex' && test "$first_param" != -c; then
+  $echo 'x -' SKIPPING 'jcdoc.tex' '(file already exists)'
+else
+  $echo 'x -' extracting 'jcdoc.tex' '(gzipped)'
+  sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _sh01670/gzi
+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
+2XV;,9H]?/';_`U4?\P_O8@``
+`
+end
+SHAR_EOF
+  $echo 'gunzipping file' 'jcdoc.tex' &&
+  gzip -d < _sh01670/gzi > 'jcdoc.tex' &&
+  (set 20 00 07 06 16 21 38 'jcdoc.tex'; eval "$shar_touch") &&
+  chmod 0644 'jcdoc.tex' ||
+  $echo 'restore of' 'jcdoc.tex' 'failed'
+  if ( md5sum --help </dev/null 2>&1 | grep 'sage: md5sum \[' ) >/dev/null 2>&1 \
+  && ( md5sum --version </dev/null 2>&1 | grep -v 'textutils 1.12' ) >/dev/null; then
+    md5sum -c << SHAR_EOF >/dev/null 2>&1 \
+    || $echo 'jcdoc.tex:' 'MD5 check failed'
+65b3511348719b9cdc9ebeaf102c766c  jcdoc.tex
+SHAR_EOF
+  else
+    shar_count="`LC_ALL=C wc -c < 'jcdoc.tex'`"
+    test 25327 -eq "$shar_count" ||
+    $echo 'jcdoc.tex:' 'original size' '25327,' 'current size' "$shar_count!"
+  fi
+fi
+$echo $shar_n 'x -' 'lock directory' "\`_sh01670': " $shar_c
+if rm -fr _sh01670; then
+  $echo 'removed'
+else
+  $echo 'failed to remove'
+fi
+exit 0
