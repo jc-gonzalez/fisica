@@ -1,0 +1,44 @@
+
+dnl without this order in this file, autoconf will not work!
+dnl the argument is a source file out of your sources. But
+dnl acinclude.m4 makes the job for all programs ;-)
+AC_INIT(acinclude.m4)
+
+dnl Enable this is if you want to use kde-common
+dnl AC_CONFIG_AUX_DIR(admin)
+
+AC_CANONICAL_SYSTEM
+AC_ARG_PROGRAM
+
+AM_INIT_AUTOMAKE(kscanplot,0.1)
+
+KDE_SET_PREFIX
+
+dnl without this order in this file, automake will be confused!
+dnl the argument 
+AM_CONFIG_HEADER(config.h)
+
+dnl insert here, which version of KDE/QT do you want to use
+KDE_USE_QT(2)
+
+dnl Checks for programs.
+AC_CHECK_COMPILERS
+AC_ENABLE_SHARED(yes)
+AC_ENABLE_STATIC(no)
+KDE_PROG_LIBTOOL
+
+dnl for NLS support. Call them in this order!
+dnl WITH_NLS is for the po files
+AM_KDE_WITH_NLS
+
+AC_PATH_KDE
+
+dnl in this space add everything you want to check for
+dnl examples are specific headers, libraries, etc.
+dnl everything to compile and run a KDE program is already checked
+
+dnl Perform program name transformation
+AC_ARG_PROGRAM
+
+dnl add here all your Makefiles. This are created by configure
+AC_OUTPUT(Makefile kscanplot/Makefile doc/Makefile doc/en/Makefile po/Makefile )
