@@ -1,7 +1,7 @@
 ####### kdevelop will overwrite this part!!! (begin)##########
 bin_PROGRAMS = qscanplot
 qscanplot_SOURCES = qscanplotview.cpp qscanplotdoc.cpp qscanplot.cpp main.cpp 
-qscanplot_LDADD   =  -lqt -lXext -lX11 $(LIBSOCKET)
+qscanplot_LDADD   = -lqt -lXext -lX11 $(LIBSOCKET)
 
 SUBDIRS = docs 
 

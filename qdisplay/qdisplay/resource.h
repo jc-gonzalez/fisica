@@ -1,9 +1,9 @@
 /***************************************************************************
                           resource.h  -  description
                              -------------------
-    begin                : Thu Oct 12 16:57:50 CEST 2000
-    copyright            : (C) 2000 by J C Gonzalez
-    email                : gonzalez@gae.ucm.es
+    begin                : mié ene 12 22:01:32 CET 2000
+    copyright            : (C) 2000 by Jose Carlos Gonzalez
+    email                : gonzalez@mppmu.mpg.de
  ***************************************************************************/
 
 /***************************************************************************
@@ -32,41 +32,40 @@
 
 ///////////////////////////////////////////////////////////////////
 // File-menu entries
-#define ID_FILE_NEW                 10020
-#define ID_FILE_OPEN                10030
+#define ID_FILE_OPEN                10010
+#define ID_FILE_SAVE_SELECTED       10020
+#define ID_FILE_CLOSE               10030
 
-#define ID_FILE_SAVE                10050
-#define ID_FILE_SAVE_AS             10060
-#define ID_FILE_CLOSE               10070
-
-#define ID_FILE_PRINT               10080
+#define ID_FILE_PRINT               10040
 
 #define ID_FILE_QUIT                10100
-
-
-///////////////////////////////////////////////////////////////////
-// Edit-menu entries
-#define ID_EDIT_UNDO                11010
-#define ID_EDIT_REDO                11020
-#define ID_EDIT_COPY                11030
-#define ID_EDIT_CUT                 11040
-#define ID_EDIT_PASTE               11050
-#define ID_EDIT_SELECT_ALL          11060
 
 
 ///////////////////////////////////////////////////////////////////
 // View-menu entries                    
 #define ID_VIEW_TOOLBAR             12010
 #define ID_VIEW_STATUSBAR           12020
+#define ID_VIEW_PALETTE             12030
+
+
+///////////////////////////////////////////////////////////////////
+// Options-menu entries
+#define ID_OPT_PRINT_IN_COLOR       13010
+#define ID_OPT_PRINTOPT             13020
+#define ID_OPT_DISPLAY_SIGNAL       13030
+#define ID_OPT_DISPLAY_TIMES        13040
+
 
 ///////////////////////////////////////////////////////////////////
 // Help-menu entries
 #define ID_HELP_ABOUT               1002
 
+
 ///////////////////////////////////////////////////////////////////
 // General application values
-#define IDS_APP_ABOUT               "Qdisplay\nVersion " VERSION \
-                                    "\n(w) 2000 by J C Gonzalez"
+#define IDS_VERSION                "Version " VERSION
+#define IDS_APP_ABOUT               "QDisplay\n" IDS_VERSION \
+                                    "\nKopyleft (K) 2000 by Jose Carlos Gonzalez"
 #define IDS_STATUS_DEFAULT          "Ready."
 
 #endif // RESOURCE_H

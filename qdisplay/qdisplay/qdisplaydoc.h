@@ -1,9 +1,9 @@
 /***************************************************************************
                           qdisplaydoc.h  -  description
                              -------------------
-    begin                : Thu Oct 12 16:57:50 CEST 2000
-    copyright            : (C) 2000 by J C Gonzalez
-    email                : gonzalez@gae.ucm.es
+    begin                : mié ene 12 22:01:32 CET 2000
+    copyright            : (C) 2000 by Jose Carlos Gonzalez
+    email                : gonzalez@mppmu.mpg.de
  ***************************************************************************/
 
 /***************************************************************************
@@ -19,6 +19,9 @@
 
 // include files for QT
 #include <qobject.h>
+#include <qfile.h>
+
+#include "infinitearray.h"
 
 // application specific includes
 
@@ -26,24 +29,39 @@
   * the Document Class
   */
 
-class QdisplayDoc : public QObject
+class QDisplayDoc : public QObject
 {
   Q_OBJECT
 
   public:
-    QdisplayDoc();
-    ~QdisplayDoc();
-    void newDoc();
-    bool save();
-    bool saveAs(const QString &filename);
-    bool load(const QString &filename);
-    bool isModified() const;
+    QDisplayDoc();
+    ~QDisplayDoc();
+    bool    saveSelected(const QString &filename);
+    bool    load(const QString &filename);
+    bool    close();
+    bool    isModified() const;
+
+    const InfiniteArray<int> * ptr_evt() const;
+   	const InfiniteArray<int> * ptr_evtToSave() const;
+    int                  val_nEvents() const;
+    QFile *              ptr_dataFile() const;
 
   signals:
     void documentChanged();
 
   protected:
     bool modified;
+
+  private:
+  	InfiniteArray<int> evt;
+  	InfiniteArray<int> evtToSave;
+  	
+  	int nEvents;
+
+		QFile *dataFile;
+		
+		void readAllEvents();
+		
 };
 
 #endif

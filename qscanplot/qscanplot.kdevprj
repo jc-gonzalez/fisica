@@ -28,8 +28,8 @@ dist=true
 install=true
 type=DATA
 [Config for BinMakefileAm]
-ldflags= 
-ldadd= -lqt -lXext -lX11
+ldflags=
+ldadd=-lqt -lXext -lX11
 cxxflags=-O0 -g3 -Wall
 bin_program=qscanplot
 [qscanplot/fileopen.xpm]
@@ -148,9 +148,10 @@ version_control=CVS
 author=J C Gonzalez
 project_type=normal_qt2
 sub_dir=qscanplot/
+lfv_open_groups=
 version=0.1
 project_name=QScanPlot
-AMChanged=true
+AMChanged=false
 sgml_file=/home/gonzalez/devel/qscanplot/qscanplot/docs/en/index.sgml
 email=gonzalez@gae.ucm.es
 kdevprj_version=1.2

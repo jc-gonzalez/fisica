@@ -6,14 +6,8 @@
 /* Version number of package */
 #undef VERSION
 
-/* Define if NLS is requested */
-#undef ENABLE_NLS
-
-/* Define if you have libz */
-#undef HAVE_LIBZ
-
-/* Define if you have libpng */
-#undef HAVE_LIBPNG
+/* C++ compiler supports template repository */
+#undef HAVE_TEMPLATE_REPOSITORY
 
 /* Defines if your system has the crypt function */
 #undef HAVE_CRYPT
@@ -21,4 +15,13 @@
 /* Define the type of the third argument for getsockname
  */
 #undef ksize_t
+
+/* Define if the C++ compiler supports BOOL */
+#undef HAVE_BOOL
+
+/* Define if you have libz */
+#undef HAVE_LIBZ
+
+/* Define if you have libpng */
+#undef HAVE_LIBPNG
 

@@ -1,9 +1,9 @@
 /***************************************************************************
                           qdisplay.cpp  -  description
                              -------------------
-    begin                : Thu Oct 12 16:57:50 CEST 2000
-    copyright            : (C) 2000 by J C Gonzalez
-    email                : gonzalez@gae.ucm.es
+    begin                : mié ene 12 22:01:32 CET 2000
+    copyright            : (C) 2000 by Jose Carlos Gonzalez
+    email                : gonzalez@mppmu.mpg.de
  ***************************************************************************/
 
 /***************************************************************************
@@ -18,11 +18,15 @@
 #include "qdisplay.h"
 #include "filesave.xpm"
 #include "fileopen.xpm"
-#include "filenew.xpm"
+#include "fileprint.xpm"
+#include "prncolor.xpm"
+#include "filequit.xpm"
 
-Qdisplay::Qdisplay()
+#include "qrunhist.h"
+
+QDisplay::QDisplay()
 {
-  setCaption("Qdisplay " VERSION);
+  setCaption("QDisplay " VERSION);
   
   ///////////////////////////////////////////////////////////////////
   // call inits to invoke all other construction parts
@@ -34,11 +38,11 @@ Qdisplay::Qdisplay()
   initView();  
 }
 
-Qdisplay::~Qdisplay()
+QDisplay::~QDisplay()
 {
 }
 
-void Qdisplay::initMenuBar()
+void QDisplay::initMenuBar()
 {
   ///////////////////////////////////////////////////////////////////
   // MENUBAR
@@ -47,34 +51,40 @@ void Qdisplay::initMenuBar()
   // menuBar entry fileMenu
 
   fileMenu=new QPopupMenu();
-  fileMenu->insertItem("&New", this, SLOT(slotFileNew()), CTRL+Key_N, ID_FILE_NEW);
   fileMenu->insertItem("&Open...", this, SLOT(slotFileOpen()), CTRL+Key_O, ID_FILE_OPEN);
-  fileMenu->insertSeparator();
-  fileMenu->insertItem("&Save", this, SLOT(slotFileSave()), CTRL+Key_S, ID_FILE_SAVE);
-  fileMenu->insertItem("Save &as...", this, SLOT(slotFileSaveAs()), 0, ID_FILE_SAVE_AS);
+  fileMenu->insertItem("&Save selected...", this, SLOT(slotFileSaveSelected()), CTRL+Key_S, ID_FILE_SAVE_SELECTED);
   fileMenu->insertItem("&Close", this, SLOT(slotFileClose()), CTRL+Key_W, ID_FILE_CLOSE);
   fileMenu->insertSeparator();
-  fileMenu->insertItem("&Print", this, SLOT(slotFilePrint()), CTRL+Key_P, ID_FILE_PRINT);
+  fileMenu->insertItem("&Print...", this, SLOT(slotFilePrint()), CTRL+Key_P, ID_FILE_PRINT);
   fileMenu->insertSeparator();
   fileMenu->insertItem("E&xit", this, SLOT(slotFileQuit()), CTRL+Key_Q, ID_FILE_QUIT);
 
-  ///////////////////////////////////////////////////////////////////
-  // menuBar entry editMenu
-  editMenu=new QPopupMenu();
-  editMenu->insertItem("Cu&t", this, SLOT(slotEditCut()), CTRL+Key_X, ID_EDIT_CUT);
-  editMenu->insertItem("&Copy", this, SLOT(slotEditCopy()), CTRL+Key_C, ID_EDIT_COPY);
-  editMenu->insertItem("&Paste", this, SLOT(slotEditPaste()), CTRL+Key_V, ID_EDIT_PASTE);
- 
-  
   ///////////////////////////////////////////////////////////////////
   // menuBar entry viewMenu
   viewMenu=new QPopupMenu();
   viewMenu->setCheckable(true);
   viewMenu->insertItem("Tool&bar", this, SLOT(slotViewToolBar()), 0, ID_VIEW_TOOLBAR);
-  viewMenu->insertItem("&Statusbar", this, SLOT(slotViewStatusBar()), 0, ID_VIEW_STATUSBAR);
+  viewMenu->insertItem("Stat&usbar", this, SLOT(slotViewStatusBar()), 0, ID_VIEW_STATUSBAR);
+  viewMenu->insertItem("&Palette", this, SLOT(slotViewPalette()), 0, ID_VIEW_PALETTE);
 
   viewMenu->setItemChecked(ID_VIEW_TOOLBAR, true);
   viewMenu->setItemChecked(ID_VIEW_STATUSBAR, true);
+  viewMenu->setItemChecked(ID_VIEW_PALETTE, true);
+
+  ///////////////////////////////////////////////////////////////////
+  // menuBar entry optMenu
+  optMenu=new QPopupMenu();
+  optMenu->setCheckable(true);
+  optMenu->insertItem("Print in &color", this, SLOT(slotOptPrintInColor()), 0, ID_OPT_PRINT_IN_COLOR);
+  optMenu->insertSeparator();
+  optMenu->insertItem("Printing op&tions...", this, SLOT(slotOptPrintopt()), 0, ID_OPT_PRINTOPT);
+  optMenu->insertSeparator();
+  optMenu->insertItem("Display Cherenkov &Signal", this, SLOT(slotOptDisplaySignal()), 0, ID_OPT_DISPLAY_SIGNAL);
+  optMenu->insertItem("Display Arrival Times", this, SLOT(slotOptDisplayTimes()), 0, ID_OPT_DISPLAY_TIMES);
+
+  optMenu->setItemChecked(ID_OPT_PRINT_IN_COLOR, false);
+  optMenu->setItemChecked(ID_OPT_DISPLAY_SIGNAL, true);
+  optMenu->setItemChecked(ID_OPT_DISPLAY_TIMES, false);
 
   ///////////////////////////////////////////////////////////////////
   // EDIT YOUR APPLICATION SPECIFIC MENUENTRIES HERE
@@ -90,8 +100,8 @@ void Qdisplay::initMenuBar()
   // set menuBar() the current menuBar 
 
   menuBar()->insertItem("&File", fileMenu);
-  menuBar()->insertItem("&Edit", editMenu);
   menuBar()->insertItem("&View", viewMenu);
+  menuBar()->insertItem("&Options", optMenu);
   menuBar()->insertSeparator();
   menuBar()->insertItem("&Help", helpMenu);
   
@@ -99,66 +109,88 @@ void Qdisplay::initMenuBar()
   // CONNECT THE SUBMENU SLOTS WITH SIGNALS
 
   connect(fileMenu, SIGNAL(highlighted(int)), SLOT(statusCallback(int)));
-  connect(editMenu, SIGNAL(highlighted(int)), SLOT(statusCallback(int)));
   connect(viewMenu, SIGNAL(highlighted(int)), SLOT(statusCallback(int)));
+  connect(optMenu,  SIGNAL(highlighted(int)), SLOT(statusCallback(int)));
   connect(helpMenu, SIGNAL(highlighted(int)), SLOT(statusCallback(int)));
   
 }
 
-void Qdisplay::initToolBar()
+void QDisplay::initToolBar()
 {
   ///////////////////////////////////////////////////////////////////
   // TOOLBAR
-  QPixmap openIcon, saveIcon, newIcon;
+  QPixmap openIcon, saveIcon, printIcon, prncolorIcon, quitIcon;
 
   fileToolbar = new QToolBar(this, "file operations");
  
-  newIcon = QPixmap(filenew);
-  QToolButton *fileNew = new QToolButton(newIcon, "New File", 0, this,
-                                         SLOT(slotFileNew()), fileToolbar);
-
   openIcon = QPixmap(fileopen);
   QToolButton *fileOpen = new QToolButton(openIcon, "Open File", 0, this,
                                           SLOT(slotFileOpen()), fileToolbar);
 
   saveIcon = QPixmap(filesave);
-  QToolButton *fileSave = new QToolButton(saveIcon, "Save File", 0, this,
-                                          SLOT(slotFileSave()), fileToolbar);
+  QToolButton *fileSave = new QToolButton(saveIcon, "Save selected events in separate file", 0, this,
+                                          SLOT(slotFileSaveSelected()), fileToolbar);
   
-  
+  printIcon = QPixmap(fileprint);
+  QToolButton *filePrint = new QToolButton(printIcon, "Print this event", 0, this,
+                                           SLOT(slotFilePrint()), fileToolbar);
+
+
   fileToolbar->addSeparator();
+
+  prncolorIcon = QPixmap(prncolor);
+  filePrintColor = new QToolButton(prncolorIcon, "Print this event in color", 0, this,
+                                   SLOT(slotOptPrintInColor()), fileToolbar);
+  filePrintColor->setToggleButton(TRUE);
+
+  fileToolbar->addSeparator();
+
   QWhatsThis::whatsThisButton(fileToolbar);
-  QWhatsThis::add(fileNew,"Click this button to create a new file.\n\n"
-                  "You can also select the New command from the File menu.");
   QWhatsThis::add(fileOpen,"Click this button to open a new file.\n\n"
                   "You can also select the Open command from the File menu.");
   QWhatsThis::add(fileSave,"Click this button to save the file you are "
                   "editing. You will be prompted for a file name.\n\n"
                   "You can also select the Save command from the File menu.");
-  
+  QWhatsThis::add(filePrint,"Click this button to print the image and information"
+                  "of the current event in the printer.\n\n"
+                  "You can also select the Print command from the File menu.");
+  QWhatsThis::add(filePrintColor,"Click this button to toggle between using color"
+                  " for printing an event, or using gray scale.\n\n"
+                  "You can also select the Print in color command from the Options menu.");
+
+  fileToolbar->addSeparator();
+
+  quitIcon = QPixmap(filequit);
+  QToolButton *fileQuit = new QToolButton(quitIcon, "Quit the application", 0, this,
+                                          SLOT(slotFileQuit()), fileToolbar);
+
+  QWhatsThis::add(fileQuit,"Click this button to end the application.\n\n"
+                  "You can also select the Exit command from the File menu.");
 }
 
-void Qdisplay::initStatusBar()
+void QDisplay::initStatusBar()
 {
   ///////////////////////////////////////////////////////////////////
   //STATUSBAR
   statusBar()->message(IDS_STATUS_DEFAULT, 2000);
 }
 
-void Qdisplay::initDoc()
+void QDisplay::initDoc()
 {
-   doc=new QdisplayDoc();
+   doc=new QDisplayDoc();
+
+   printOpt=new QPrintOptions();
 }
 
-void Qdisplay::initView()
+void QDisplay::initView()
 { 
   ////////////////////////////////////////////////////////////////////
   // set the main widget here
-  view=new QdisplayView(this, doc);
+  view=new QDisplayView(this, doc);
   setCentralWidget(view);
 }
 
-bool Qdisplay::queryExit()
+bool QDisplay::queryExit()
 {
   int exit=QMessageBox::information(this, "Quit...",
                                     "Do your really want to quit?",
@@ -181,14 +213,7 @@ bool Qdisplay::queryExit()
 /////////////////////////////////////////////////////////////////////
 
 
-void Qdisplay::slotFileNew()
-{
-  statusBar()->message("Creating new file...");
-  doc->newDoc();
-  statusBar()->message(IDS_STATUS_DEFAULT);
-}
-
-void Qdisplay::slotFileOpen()
+void QDisplay::slotFileOpen()
 {
   statusBar()->message("Opening file...");
 
@@ -196,7 +221,7 @@ void Qdisplay::slotFileOpen()
   if (!fileName.isEmpty())
   {
     doc->load(fileName);
-    setCaption(fileName);
+    setCaption("File: "+fileName);
     QString message="Loaded document: "+fileName;
     statusBar()->message(message, 2000);
   }
@@ -206,21 +231,13 @@ void Qdisplay::slotFileOpen()
   }
 }
 
-
-void Qdisplay::slotFileSave()
+void QDisplay::slotFileSaveSelected()
 {
-  statusBar()->message("Saving file...");
-  doc->save();
-  statusBar()->message(IDS_STATUS_DEFAULT);
-}
-
-void Qdisplay::slotFileSaveAs()
-{
-  statusBar()->message("Saving file under new filename...");
+  statusBar()->message("Saving selected events under new filename...");
   QString fn = QFileDialog::getSaveFileName(0, 0, this);
   if (!fn.isEmpty())
   {
-    doc->saveAs(fn);
+    doc->saveSelected(fn);
   }
   else
   {
@@ -230,32 +247,24 @@ void Qdisplay::slotFileSaveAs()
   statusBar()->message(IDS_STATUS_DEFAULT);
 }
 
-void Qdisplay::slotFileClose()
+void QDisplay::slotFileClose()
 {
-  statusBar()->message("Closing file...");
+  statusBar()->message("Closing file...", 2000);
+
+  doc->close();
+  setCaption("File: <none>");
 
   statusBar()->message(IDS_STATUS_DEFAULT);
 }
 
-void Qdisplay::slotFilePrint()
+void QDisplay::slotFilePrint()
 {
   statusBar()->message("Printing...");
-  QPrinter printer;
-  if (printer.setup(this))
-  {
-    QPainter painter;
-    painter.begin(&printer);
-
-    ///////////////////////////////////////////////////////////////////
-    // TODO: Define printing by using the QPainter methods here
-
-    painter.end();
-  };
-
+  view->print();
   statusBar()->message(IDS_STATUS_DEFAULT);
 }
 
-void Qdisplay::slotFileQuit()
+void QDisplay::slotFileQuit()
 { 
   statusBar()->message("Exiting application...");
   ///////////////////////////////////////////////////////////////////
@@ -279,29 +288,8 @@ void Qdisplay::slotFileQuit()
   statusBar()->message(IDS_STATUS_DEFAULT);
 }
 
-void Qdisplay::slotEditCut()
-{
-  statusBar()->message("Cutting selection...");
 
-  statusBar()->message(IDS_STATUS_DEFAULT);
-}
-
-void Qdisplay::slotEditCopy()
-{
-  statusBar()->message("Copying selection to clipboard...");
-  
-  statusBar()->message(IDS_STATUS_DEFAULT);
-}
-
-void Qdisplay::slotEditPaste()
-{
-  statusBar()->message("Inserting clipboard contents...");
-  
-  statusBar()->message(IDS_STATUS_DEFAULT);
-}
-
-
-void Qdisplay::slotViewToolBar()
+void QDisplay::slotViewToolBar()
 {
   statusBar()->message("Toggle toolbar...");
   ///////////////////////////////////////////////////////////////////
@@ -321,7 +309,7 @@ void Qdisplay::slotViewToolBar()
   statusBar()->message(IDS_STATUS_DEFAULT);
 }
 
-void Qdisplay::slotViewStatusBar()
+void QDisplay::slotViewStatusBar()
 {
   statusBar()->message("Toggle statusbar...");
   ///////////////////////////////////////////////////////////////////
@@ -341,37 +329,123 @@ void Qdisplay::slotViewStatusBar()
   statusBar()->message(IDS_STATUS_DEFAULT);
 }
 
-void Qdisplay::slotHelpAbout()
+void QDisplay::slotViewPalette()
+{
+  statusBar()->message("Toggle palette...");
+  ///////////////////////////////////////////////////////////////////
+  //turn Statusbar on or off
+
+  if (view->isPaletteVisible()) {
+    view->hidePalette();
+    viewMenu->setItemChecked(ID_VIEW_PALETTE, false);
+  } else {
+    view->showPalette();
+    viewMenu->setItemChecked(ID_VIEW_PALETTE, true);
+  }
+
+  statusBar()->message(IDS_STATUS_DEFAULT);
+}
+
+void QDisplay::slotOptDisplaySignal()
+{
+  statusBar()->message("Display Cheremkov Signal...");
+
+  bool newstatus = ! view->isDisplaySignal();
+
+  view->setDisplaySignal(newstatus);
+  optMenu->setItemChecked(ID_OPT_DISPLAY_SIGNAL, newstatus);
+
+  view->setDisplayTimes(!newstatus);
+  optMenu->setItemChecked(ID_OPT_DISPLAY_TIMES, !newstatus);
+
+  statusBar()->message(IDS_STATUS_DEFAULT);
+}
+
+void QDisplay::slotOptDisplayTimes()
+{
+  statusBar()->message("Display Cheremkov Pulse Arrival Times...");
+
+  bool newstatus = ! view->isDisplayTimes();
+
+  view->setDisplayTimes(newstatus);
+  optMenu->setItemChecked(ID_OPT_DISPLAY_TIMES, newstatus);
+
+  view->setDisplaySignal(!newstatus);
+  optMenu->setItemChecked(ID_OPT_DISPLAY_SIGNAL, !newstatus);
+
+  statusBar()->message(IDS_STATUS_DEFAULT);
+}
+
+void QDisplay::slotOptPrintInColor()
+{
+  statusBar()->message("Toggle printing in color...");
+  ///////////////////////////////////////////////////////////////////
+  //turn Statusbar on or off
+  bool newstatus = ! view->isPrintInColor();
+  view->printInColor(newstatus);
+  optMenu->setItemChecked(ID_OPT_PRINT_IN_COLOR, newstatus);
+  filePrintColor->setOn(newstatus);
+
+  statusBar()->message(IDS_STATUS_DEFAULT);
+}
+
+void QDisplay::slotOptPrintopt()
+{
+  statusBar()->message("Setting printing options...", 2000);
+  ///////////////////////////////////////////////////////////////////
+  //turn Statusbar on or off
+
+  QRunHist d;
+  d.exec();
+
+  printOpt->set_PrintInColor( view->isPrintInColor() );
+
+  printOpt->show();
+
+  // process dialog results if OK button was pressed
+  if ( printOpt->result() ) {
+
+    view->printSetOptions( printOpt->get_PrintInColor(),
+                           printOpt->get_PrintImage(),
+                           printOpt->get_PrintStat(),
+                           printOpt->get_PrintHist(),
+                           printOpt->get_PrintCommand(),
+                           printOpt->get_PrintFilePrefix(),
+                           printOpt->get_PrintFileName(),
+                           printOpt->get_PrintOutputTo() );
+
+    optMenu->setItemChecked(ID_OPT_PRINT_IN_COLOR, view->isPrintInColor());
+    filePrintColor->setOn(view->isPrintInColor());
+
+
+  }
+
+  statusBar()->message(IDS_STATUS_DEFAULT);
+}
+
+void QDisplay::slotHelpAbout()
 {
   QMessageBox::about(this,"About...",
                      IDS_APP_ABOUT );
 }
 
-void Qdisplay::slotStatusHelpMsg(const QString &text)
+void QDisplay::slotStatusHelpMsg(const QString &text)
 {
   ///////////////////////////////////////////////////////////////////
   // change status message of whole statusbar temporary (text, msec)
   statusBar()->message(text, 2000);
 }
 
-void Qdisplay::statusCallback(int id_)
+void QDisplay::statusCallback(int id_)
 {
   switch (id_)
   {
-    case ID_FILE_NEW:
-         slotStatusHelpMsg("Creates a new document");
-         break;
-
     case ID_FILE_OPEN:
-         slotStatusHelpMsg("Opens an existing document");
+         slotStatusHelpMsg("Opens a data file");
          break;
 
-    case ID_FILE_SAVE:
-         slotStatusHelpMsg("Saves the actual document");
-         break;
-
-    case ID_FILE_SAVE_AS:
-         slotStatusHelpMsg("Saves the actual document as...");
+    case ID_FILE_SAVE_SELECTED:
+         slotStatusHelpMsg("Saves the selected events in a separate file...");
          break;
 
     case ID_FILE_CLOSE:
@@ -386,22 +460,6 @@ void Qdisplay::statusCallback(int id_)
          slotStatusHelpMsg("Quits the application");
          break;
 
-    case ID_EDIT_CUT:
-         slotStatusHelpMsg("Cuts the selected section and puts it to the clipboard");
-         break;
-
-    case ID_EDIT_COPY:
-         slotStatusHelpMsg("Copies the selected section to the clipboard");
-         break;
-
-    case ID_EDIT_PASTE:
-         slotStatusHelpMsg("Pastes the clipboard contents to actual position");
-         break;
-
-    case ID_EDIT_SELECT_ALL:
-         slotStatusHelpMsg("Selects the whole document contents");
-         break;
-
     case ID_VIEW_TOOLBAR:
          slotStatusHelpMsg("Enables/disables the toolbar");
          break;
@@ -410,9 +468,16 @@ void Qdisplay::statusCallback(int id_)
          slotStatusHelpMsg("Enables/disables the statusbar");
          break;
 
+    case ID_VIEW_PALETTE:
+         slotStatusHelpMsg("Enables/disables the view of the current palette");
+         break;
+
+    case ID_OPT_PRINTOPT:
+         slotStatusHelpMsg("Sets the options for printing");
+         break;
+
     case ID_HELP_ABOUT:
          slotStatusHelpMsg("Shows an aboutbox");
          break;
   }
 }
-

@@ -1,9 +1,9 @@
 /***************************************************************************
                           qdisplay.h  -  description
                              -------------------
-    begin                : Thu Oct 12 16:57:50 CEST 2000
-    copyright            : (C) 2000 by J C Gonzalez
-    email                : gonzalez@gae.ucm.es
+    begin                : mié ene 12 22:01:32 CET 2000
+    copyright            : (C) 2000 by Jose Carlos Gonzalez
+    email                : gonzalez@mppmu.mpg.de
  ***************************************************************************/
 
 /***************************************************************************
@@ -40,21 +40,24 @@
 #include "qdisplaydoc.h"
 #include "resource.h"
 
+#include "qprintoptions.h"
+
 /**
   * This Class is the base class for your application. It sets up the main
   * window and providing a menubar, toolbar
-  * and statusbar. For the main view, an instance of class QdisplayView is
+  * and statusbar. For the main view, an instance of class QDisplayView is
   * created which creates your view.
   */
-class Qdisplay : public QMainWindow
+class QDisplay : public QMainWindow
 {
   Q_OBJECT
-  
+  friend class QCamera;
+
   public:
     /** construtor */
-    Qdisplay();
+    QDisplay();
     /** destructor */
-    ~Qdisplay();
+    ~QDisplay();
     /** initMenuBar creates the menu_bar and inserts the menuitems */
     void initMenuBar();
     /** this creates the toolbars. Change the toobar look and add new toolbars in this
@@ -69,39 +72,40 @@ class Qdisplay : public QMainWindow
   
     /** overloaded for Message box on last window exit */
     bool queryExit();
-  
+
   public slots:
   
     /** switch argument for Statusbar help entries on slot selection */
     void statusCallback(int id_);
     /** open a new application window */
   
-    /** generate a new document in the actual view */
-    void slotFileNew();
     /** open a document */
     void slotFileOpen();
     /** save a document */
-    void slotFileSave();
-    /** save a document under a different filename*/
-    void slotFileSaveAs();
+    void slotFileSaveSelected();
     /** close the actual file */
     void slotFileClose();
-    /** print the actual file */
+    /** print the actual view */
     void slotFilePrint();
     /** exits the application */
     void slotFileQuit();
-    /** put the marked text/object into the clipboard and remove
-     * it from the document */
-    void slotEditCut();
-    /** put the marked text/object into the clipboard*/
-    void slotEditCopy();
-    /** paste the clipboard into the document*/
-    void slotEditPaste();
+
     /** toggle the toolbar*/
     void slotViewToolBar();
     /** toggle the statusbar*/
     void slotViewStatusBar();
-  
+    /** toggle the statusbar*/
+    void slotViewPalette();
+
+    /** toggle printing uses color*/
+    void slotOptPrintInColor();
+    /** set printing options*/
+    void slotOptPrintopt();
+    /** display Cherenkov Signal*/
+    void slotOptDisplaySignal();
+    /** display Cherenkov Signal*/
+    void slotOptDisplayTimes();
+
     /** shows an about dlg*/
     void slotHelpAbout();
   
@@ -115,22 +119,25 @@ class Qdisplay : public QMainWindow
      * you can create your view according to your application's needs by
      * changing the view class.
      */
-    QdisplayView *view;
+    QDisplayView *view;
     /** doc represents your actual document and is created only once. It keeps
      * information such as filename and does the serialization of your files.
      */
-    QdisplayDoc *doc;
+    QDisplayDoc *doc;
   
     /** file_menu contains all items of the menubar entry "File" */
     QPopupMenu *fileMenu;
-    /** edit_menu contains all items of the menubar entry "Edit" */
-    QPopupMenu *editMenu;
     /** view_menu contains all items of the menubar entry "View" */
     QPopupMenu *viewMenu;
+    /** opt_menu contains all items of the menubar entry "Options" */
+    QPopupMenu *optMenu;
     /** view_menu contains all items of the menubar entry "Help" */
     QPopupMenu *helpMenu;
-  
+
     QToolBar *fileToolbar;
+
+    QToolButton *filePrintColor;
+    QPrintOptions *printOpt;
 
 };
 #endif 

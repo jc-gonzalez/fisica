@@ -1,9 +1,9 @@
 /***************************************************************************
                           main.cpp  -  description
                              -------------------
-    begin                : Thu Oct 12 16:57:50 CEST 2000
-    copyright            : (C) 2000 by J C Gonzalez
-    email                : gonzalez@gae.ucm.es
+    begin                : mié ene 12 22:01:32 CET 2000
+    copyright            : (C) 2000 by Jose Carlos Gonzalez
+    email                : gonzalez@mppmu.mpg.de
  ***************************************************************************/
 
 /***************************************************************************
@@ -18,19 +18,27 @@
 #include <qapplication.h>
 #include <qfont.h>
 
+#include <qplatinumstyle.h>
+
 #include "qdisplay.h"
 
 int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
+
+  a.setStyle( new QPlatinumStyle() );
+
+  /* set here the font you want, although helvetica-12 is OK */
   a.setFont(QFont("helvetica", 12));
+
   /* uncomment the following line, if you want a Windows 95 look*/
-  // a.setStyle(WindowsStyle);
+  //a.setStyle(WindowsStyle);
     
-  Qdisplay *qdisplay=new Qdisplay();
+  QDisplay *qdisplay=new QDisplay();
   a.setMainWidget(qdisplay);
 
-  qdisplay->setCaption("Document 1");
+  qdisplay->setCaption("File: <none>");
+  qdisplay->setFixedSize( 700, 600 );
   qdisplay->show();
 
   return a.exec();

@@ -1,9 +1,9 @@
 /***************************************************************************
                           qdisplaydoc.cpp  -  description
                              -------------------
-    begin                : Thu Oct 12 16:57:50 CEST 2000
-    copyright            : (C) 2000 by J C Gonzalez
-    email                : gonzalez@gae.ucm.es
+    begin                : mié ene 12 22:01:32 CET 2000
+    copyright            : (C) 2000 by Jose Carlos Gonzalez
+    email                : gonzalez@mppmu.mpg.de
  ***************************************************************************/
 
 /***************************************************************************
@@ -17,36 +17,98 @@
 
 #include "qdisplaydoc.h"
 
-QdisplayDoc::QdisplayDoc()
+QDisplayDoc::QDisplayDoc()
 {
   modified = false;
+  dataFile = 0;
 }
 
-QdisplayDoc::~QdisplayDoc()
+QDisplayDoc::~QDisplayDoc()
 {
 }
 
-void QdisplayDoc::newDoc()
-{
-}
-
-bool QdisplayDoc::save()
+bool QDisplayDoc::saveSelected(const QString &filename)
 {
   return true;
 }
 
-bool QdisplayDoc::saveAs(const QString &filename)
+bool QDisplayDoc::close(void)
 {
-  return true;
-}
-
-bool QdisplayDoc::load(const QString &filename)
-{
+	if ( ( dataFile != 0 ) && ( dataFile->isOpen() ) ) {
+		dataFile->close();
+		delete dataFile;
+		dataFile = 0;
+	}
+	
+	/* initialize variable with total number of events */
+	nEvents = 0;
+	evt.clear();
+	evtToSave.clear();
+	
   emit documentChanged();
   return true;
 }
 
-bool QdisplayDoc::isModified() const
+bool QDisplayDoc::load(const QString &filename)
+{
+	close();
+	
+	dataFile = new QFile( filename );
+	dataFile->open( IO_ReadOnly );
+	
+	readAllEvents();
+	
+  emit documentChanged();
+  return true;
+}
+
+bool QDisplayDoc::isModified() const
 {
   return modified;
+}
+
+int QDisplayDoc::val_nEvents() const
+{
+  return nEvents;
+}
+
+const InfiniteArray<int> * QDisplayDoc::ptr_evt() const
+{
+  return &evt;
+}
+
+const InfiniteArray<int> * QDisplayDoc::ptr_evtToSave() const
+{
+  return &evtToSave;
+}
+
+QFile * QDisplayDoc::ptr_dataFile() const
+{
+  return dataFile;
+}
+
+
+void QDisplayDoc::readAllEvents()
+{
+	char wholeLine[20000];
+	
+	// cout << "I'm in QDisplayDoc::readAllEvents()" << endl << flush;
+	
+	/* loop while still there are data in the file */
+	while ( ! dataFile->atEnd() ) {
+	
+		evt.append( dataFile->at() );
+		evtToSave.append( 0 );
+		
+		dataFile->readLine( wholeLine, 20000 );
+		dataFile->readLine( wholeLine, 20000 );
+		dataFile->readLine( wholeLine, 20000 );
+		
+		nEvents++;
+		
+		// cout << "Event " << nEvents
+		//      << " starts at pos " << evt[nEvents-1] << endl << flush;
+	
+	}
+	
 }

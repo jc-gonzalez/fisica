@@ -15,15 +15,37 @@
 <H2><A NAME="s2">2. Installation</A></H2>
 
 <P>
-<H2><A NAME="ss2.1">2.1 How to obtain Qdisplay </A>
+<P>
+<H2><A NAME="ss2.1">2.1 How to obtain Qdisplay</A>
 </H2>
 
 <P>
+<P>You can get the last release of Qdisplay from the author's site,
+<A HREF="http://www.gae.ucm.es/~gonzalez">www.gae.ucm.es/~gonzalez</A>.
 <P>
 <H2><A NAME="ss2.2">2.2 Requirements</A>
 </H2>
 
 <P>
+<P>You need the following libraries/programs installed (or merely compiled,
+at least) on your system to be able to compile, link and run Qdisplay.
+<P>
+<UL>
+<LI> Qt libraries, the Troll Tech's cross-platform C++ GUI application
+framework (look at the 
+<A HREF="www.trolltech.com">Troll Tech Homepage</A>).
+
+Qdisplay was originally developed using Qt 1.4x, but in the last
+times it was moved to Qt 2.2.0. You've been warned.
+</LI>
+<LI> The Qwt Widget library, with widgets useful for technical and
+scientifical purposes. Released under the GNU license.
+Copyright (C) 1997 Josef Wilgen.
+</LI>
+<LI> GNU make
+</LI>
+<LI> Hmmm... err... I do not know what else, but I think that was all.</LI>
+</UL>
 <P>
 <H2><A NAME="ss2.3">2.3 Compilation and installation</A>
 </H2>
@@ -46,9 +68,51 @@ autoconf
 </PRE>
  you should have not trouble
 compiling it.
-Should you run into problems please report them to the the author at 
-<A HREF="mailto:gonzalez@gae.ucm.es">J C Gonzalez</A><P>
+<P>The Qwt library is not shipped with Qdisplay. Therefore, be sure that
+your library is installed in your system. If you get any compiler or linker
+error, be sure that:
 <P>
+<UL>
+<LI> Your header files are available, usually under the path
+<PRE>
+/usr/local/include/qwt
+</PRE>
+
+</LI>
+<LI> Your libraries are locate in a pre-configured path for
+dynamic linking (in my system the directory 
+<PRE>
+/usr/local/lib
+</PRE>
+
+does the job). If not, modify the apropriate files in your system (usually
+/etc/ld.so.conf), adding the directory where the library is located,
+and don't forget to run 'ldconfig' if necessary.
+</LI>
+<LI> Your LD_LIBRARY_PATH environment variable contains the directory
+where libqwt.* can be found. Examples:
+
+<UL>
+<LI> sh, bash, zsh:
+<BLOCKQUOTE><CODE>
+<PRE>
+  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:your_libqwt_dir
+</PRE>
+</CODE></BLOCKQUOTE>
+
+        </LI>
+<LI> csh, tcsh:
+<BLOCKQUOTE><CODE>
+<PRE>
+  setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:your_libqwt_dir
+</PRE>
+</CODE></BLOCKQUOTE>
+</LI>
+</UL>
+</LI>
+</UL>
+<P>Should you run into problems please report them to the the author at
+<A HREF="mailto:gonzalez@gae.ucm.es">gonzalez@gae.ucm.es</A><P>
 <P>
 <HR>
 <A HREF="index-3.html">Next</A>

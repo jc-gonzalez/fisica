@@ -1,9 +1,12 @@
 
 <!doctype linuxdoc system>
+
 <article>
+
 <title>The Qdisplay Handbook
 <author>J C Gonzalez <tt>gonzalez@gae.ucm.es</tt>
 <date>Version 0.1 , Thu Oct 12 16:57:50 CEST 2000
+
 <abstract>
 This Handbook describes Qdisplay Version 0.1
 </abstract>
@@ -17,11 +20,36 @@ This Handbook describes Qdisplay Version 0.1
 
 <sect>Installation
 <p>
-<sect1>How to obtain Qdisplay 
+
+<sect1>How to obtain Qdisplay
 <p>
+
+You can get the last release of Qdisplay from the author's site,
+<htmlurl url="http://www.gae.ucm.es/~gonzalez"
+name="www.gae.ucm.es/~gonzalez">.
 
 <sect1>Requirements
 <p>
+
+You need the following libraries/programs installed (or merely compiled,
+at least) on your system to be able to compile, link and run Qdisplay.
+
+<itemize>
+<item> Qt libraries, the Troll Tech's cross-platform C++ GUI application
+       framework (look at the <htmlurl url="www.trolltech.com"
+       name="Troll Tech Homepage">).
+
+       Qdisplay was originally developed using Qt 1.4x, but in the last
+       times it was moved to Qt 2.2.0. You've been warned.
+
+<item> The Qwt Widget library, with widgets useful for technical and
+       scientifical purposes. Released under the GNU license.
+       Copyright (C) 1997 Josef Wilgen.
+
+<item> GNU make
+
+<item> Hmmm... err... I do not know what else, but I think that was all.
+</itemize>
 
 <sect1>Compilation and installation
 <p>
@@ -38,22 +66,53 @@ the base directory of the Qdisplay distribution:
 <p>
 Since Qdisplay uses <verb>autoconf</verb> you should have not trouble
 compiling it.
-Should you run into problems please report them to the the author at 
-<htmlurl url="mailto:gonzalez@gae.ucm.es" name = "J C Gonzalez">
 
+The Qwt library is not shipped with Qdisplay. Therefore, be sure that
+your library is installed in your system. If you get any compiler or linker
+error, be sure that:
 
+<itemize>
+<item> Your header files are available, usually under the path
+       <verb>/usr/local/include/qwt</verb>
+
+<item> Your libraries are locate in a pre-configured path for
+       dynamic linking (in my system the directory <verb>/usr/local/lib</verb>
+       does the job). If not, modify the apropriate files in your system (usually
+       /etc/ld.so.conf), adding the directory where the library is located,
+       and don't forget to run 'ldconfig' if necessary.
+
+<item> Your LD_LIBRARY_PATH environment variable contains the directory
+   where libqwt.* can be found. Examples:
+
+   <itemize>
+   <item> sh, bash, zsh:
+<tscreen><verb>
+  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:your_libqwt_dir
+</verb></tscreen>
+   	
+  <item> csh, tcsh:
+<tscreen><verb>
+  setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:your_libqwt_dir
+</verb></tscreen>
+  </itemize>
+</itemize>
+
+Should you run into problems please report them to the the author at
+<htmlurl url="mailto:gonzalez@gae.ucm.es" name = "gonzalez@gae.ucm.es">
 <p>
-<sect> Usage <p>
+
+<sect> Usage
+<p>
+
 <sect1> General Usage
 <p>
-<sect> Another Section
-<p>
+
 
 <sect>Questions and Answers<p>
 
 <sect>Copyright<p>
 
-Qdisplay Copyright 2000 J C Gonzalez , gonzalez@gae.ucm.es
+Qdisplay Copyright (C) 2000, J C Gonzalez, gonzalez@gae.ucm.es
 
 
 This program is free software; you can redistribute it and/or modify
