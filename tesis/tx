@@ -169,7 +169,7 @@ if [ -z "$args" ]; then
     exit 0
 fi
 
-set -- `getopt eipfx $*`
+set -- `getopt eipfx0 $*`
 if [ $? -ne 0 ]; then
     exit 1
 fi
@@ -198,6 +198,8 @@ while [ $1 != -- ]; do
         -x)  # do full compilation
              full=0
              full2=1;;
+	-0)  # initex
+	     cd common && initex-command && cd .. && exit 0
     esac
     shift
 done
