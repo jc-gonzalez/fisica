@@ -1068,37 +1068,13 @@ DAT Files</comment>
                     <name>checked</name>
                     <bool>false</bool>
                 </property>
+                <property stdset="1">
+                    <name>buttonGroupId</name>
+                    <number>1</number>
+                </property>
                 <property>
                     <name>toolTip</name>
                     <string>Selects logarithmic scaling</string>
-                </property>
-            </widget>
-            <widget>
-                <class>QRadioButton</class>
-                <property stdset="1">
-                    <name>name</name>
-                    <cstring>rbtnPalLin</cstring>
-                </property>
-                <property stdset="1">
-                    <name>geometry</name>
-                    <rect>
-                        <x>10</x>
-                        <y>20</y>
-                        <width>80</width>
-                        <height>21</height>
-                    </rect>
-                </property>
-                <property stdset="1">
-                    <name>text</name>
-                    <string>Linear</string>
-                </property>
-                <property stdset="1">
-                    <name>checked</name>
-                    <bool>true</bool>
-                </property>
-                <property>
-                    <name>toolTip</name>
-                    <string>Selects linear scaling</string>
                 </property>
             </widget>
             <widget>
@@ -1127,6 +1103,38 @@ DAT Files</comment>
                 <property>
                     <name>toolTip</name>
                     <string>Selects automatic scaling</string>
+                </property>
+            </widget>
+            <widget>
+                <class>QRadioButton</class>
+                <property stdset="1">
+                    <name>name</name>
+                    <cstring>rbtnPalLin</cstring>
+                </property>
+                <property stdset="1">
+                    <name>geometry</name>
+                    <rect>
+                        <x>10</x>
+                        <y>20</y>
+                        <width>80</width>
+                        <height>21</height>
+                    </rect>
+                </property>
+                <property stdset="1">
+                    <name>text</name>
+                    <string>Linear</string>
+                </property>
+                <property stdset="1">
+                    <name>checked</name>
+                    <bool>true</bool>
+                </property>
+                <property stdset="1">
+                    <name>buttonGroupId</name>
+                    <number>0</number>
+                </property>
+                <property>
+                    <name>toolTip</name>
+                    <string>Selects linear scaling</string>
                 </property>
             </widget>
         </widget>
@@ -1415,6 +1423,54 @@ DAT Files</comment>
             </property>
         </widget>
     </widget>
+    <widget>
+        <class>QGroupBox</class>
+        <property stdset="1">
+            <name>name</name>
+            <cstring>GroupBox2</cstring>
+        </property>
+        <property stdset="1">
+            <name>geometry</name>
+            <rect>
+                <x>135</x>
+                <y>235</y>
+                <width>156</width>
+                <height>60</height>
+            </rect>
+        </property>
+        <property stdset="1">
+            <name>title</name>
+            <string>Marks:</string>
+        </property>
+        <widget>
+            <class>QPushButton</class>
+            <property stdset="1">
+                <name>name</name>
+                <cstring>PushButton2</cstring>
+            </property>
+            <property stdset="1">
+                <name>geometry</name>
+                <rect>
+                    <x>15</x>
+                    <y>20</y>
+                    <width>130</width>
+                    <height>26</height>
+                </rect>
+            </property>
+            <property stdset="1">
+                <name>text</name>
+                <string>Mark event</string>
+            </property>
+            <property stdset="1">
+                <name>toggleButton</name>
+                <bool>true</bool>
+            </property>
+            <property stdset="1">
+                <name>toggleButton</name>
+                <bool>true</bool>
+            </property>
+        </widget>
+    </widget>
 </widget>
 <connections>
     <connection>
@@ -1459,6 +1515,13 @@ DAT Files</comment>
         <receiver>wDATGUIDesign</receiver>
         <slot>slotToggleShowItem(int)</slot>
     </connection>
+    <connection>
+        <sender>PushButton2</sender>
+        <signal>clicked()</signal>
+        <receiver>wDATGUIDesign</receiver>
+        <slot>slotToggleMarkEvent()</slot>
+    </connection>
+    <slot access="public">slotToggleMarkEvent()</slot>
     <slot access="public">slotBrowsePalettes()</slot>
     <slot access="public">slotSelectEvent(int)</slot>
     <slot access="public">slotSetPalette(int)</slot>
