@@ -14,6 +14,55 @@
 #define EXIT_CANNOT_OPEN    2
 #define EXIT_END_OF_FILE    4
 
+/*
+  In order to enumerate all the possibilities for a given
+  number of pixels, a similar algorithm like the following
+  can be used (here it is shown the case of [3+1]=4 pixels).
+  It is codified in Octave, and next to it the produced output
+  is printed
+
+  <code>
+  
+    m=0;
+    for i=1:4,
+      for j=i+1:5,
+        for k=j+1:6;
+          s="        ";
+          n=1+2^i+2^j+2^k;
+          s(8)='*';
+          s(8-i)='*';
+          s(8-j)='*';
+          s(8-k)='*';
+          m=m+1;
+          printf("%3d: %3d = %02x = %8s\n",m,n,n,s);
+        endfor,
+      endfor,
+    endfor
+  </code>
+
+  <output>  
+      1:  15 = 0f =     ****
+      2:  23 = 17 =    * ***
+      3:  39 = 27 =   *  ***
+      4:  71 = 47 =  *   ***
+      5:  27 = 1b =    ** **
+      6:  43 = 2b =   * * **
+      7:  75 = 4b =  *  * **
+      8:  51 = 33 =   **  **
+      9:  83 = 53 =  * *  **
+     10:  99 = 63 =  **   **
+     11:  29 = 1d =    *** *
+     12:  45 = 2d =   * ** *
+     13:  77 = 4d =  *  ** *
+     14:  53 = 35 =   ** * *
+     15:  85 = 55 =  * * * *
+     16: 101 = 65 =  **  * *
+     17:  57 = 39 =   ***  *
+     18:  89 = 59 =  * **  *
+     19: 105 = 69 =  ** *  *
+     20: 113 = 71 =  ***   *
+   </output>
+*/
 
 int main(int argc, char **argv)
 {
@@ -41,7 +90,7 @@ int main(int argc, char **argv)
   /* if no arguments are give in the command line
    * show help and exit
    */
-  if ( argc < 1 ) {
+  if ( argc < 2 ) {
     puts("patterns - generate hexadecimal values of hexagonal patterns");
     puts("usage:     patterns  [filename]");
     exit( EXIT_NO_FILENAME );
@@ -68,6 +117,9 @@ int main(int argc, char **argv)
 
   printf("/* Command line: '# %s %s'   */\n\n", argv[0], argv[1]);
   
+  puts("#ifndef TRIGGER_PATTERNS");
+  puts("#define TRIGGER_PATTERNS\n");
+
   /* loop over the whole file, until the end is reached */
   while ( ! feof( Finput ) ) {
 
@@ -160,8 +212,10 @@ int main(int argc, char **argv)
   printf( " };\nconst int * iTP_Lists[] = { x%s", ckeys[0]);
   for (i=1; i<idx; i++) 
     printf( ",\n                            x%s", ckeys[i] );
-  printf( " };\n\nconst int nTP_ExclusivePatterns = %d;\n\n\n/* EOF */\n", idx );
+  printf( " };\n\nconst int nTP_ExclusivePatterns = %d;\n\n\n", idx );
   
+  puts("#endif /* TRIGGER_PATTERNS */\n\n/* EOF */");
+
   /* end */
   return(0);
 

@@ -58,7 +58,7 @@
   0 0
  0 1 1
   0 1
-# Four_Pixels_Not_NN : 4 pixels in an "opened" configuration (12 conf.)
+# Four_Pixels_Not_NN : 4 pixels in an "opened" configuration (14 conf.)
   0 1
  1 1 1
   0 0
@@ -105,6 +105,14 @@
 
   1 1
  0 1 0
+  0 1
+
+  1 0
+ 0 1 1
+  1 0
+
+  0 1
+ 1 1 0
   0 1
 # Four_Pixels_NN : 4 pixels in a "closed packet", 2 NN (6 conf.)
   1 1
