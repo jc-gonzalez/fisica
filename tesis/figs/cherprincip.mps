@@ -1,7 +1,7 @@
 %!PS
 %%BoundingBox: -120 -70 120 157 
 %%Creator: MetaPost
-%%CreationDate: 1999.12.26:0456
+%%CreationDate: 2000.05.05:1114
 %%Pages: 1
 %*Font: cmr10 9.96265 9.96265 43:90051002eed952
 %*Font: cmmi10 9.96265 9.96265 12:8
