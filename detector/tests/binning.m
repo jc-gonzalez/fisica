@@ -6,7 +6,7 @@ clear
 
 ## initial values
 
-nevents = 1000000;
+nevents = 200000;
 histobins = -1:.025:5;
 
 llimit = 1;
@@ -15,7 +15,7 @@ ulimit = 10000;
 global res1 = .5;
 global res2 = .5;
 
-diff_spectral_index = -2.5;
+diff_spectral_index = -1.5;
 
 ## generate set of uniform random numbers (0:1000)
 
@@ -67,7 +67,7 @@ gset nolabel
 gset title 'Assumed Energy Resolution'
 gset xlabel 'log(E)'
 gset ylabel 'dE/E'
-plot(x,y,"2-")
+#plot(x,y,"2-")
 
 ## we assume that the estimated energy is calculated as
 ## Ecalc = N(E, sigmaE)
@@ -91,3 +91,10 @@ hold
 data = [xx;nn2]';
 gplot data with steps t 'Restored Spectrum'
 hold off
+
+gset output 'binning.ps'
+gset term postscript
+replot
+gset term x11
+gset output
+

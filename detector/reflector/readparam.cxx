@@ -717,6 +717,7 @@ char *
 get_parallel_beam_pm(float *pb_scale, float *pb_height)
 {
   *pb_scale = pb_Scale;
+  *pb_height = pb_Height;
 
   return(pb_Filename);
 }
@@ -873,6 +874,9 @@ get_repeat_random(void)
 //!@{
 //
 // $Log$
+// Revision 1.1.1.1  2000/11/04 17:08:16  gonzalez
+// ...
+//
 // Revision 1.15  2000/03/22  15:56:42  gonzalez
 // *** empty log message ***
 //

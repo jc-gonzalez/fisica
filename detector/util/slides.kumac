@@ -1,0 +1,36 @@
+n/cre 1 '' 4 ! ! i x y h
+n/read 1 intersec_normals.dat
+
+exe pson camera_planes.ps
+
+set mtyp 1
+set pmci 4
+
+size 30 48
+set xwin 0
+set ywin 0
+zone 5 8
+
+opt nsta
+
+opt utit
+
+title 'Effect of moving th Camera Plane'
+
+do i=1,40
+
+  h=1679+[i]
+
+  tit=h=[h]cm
+
+  null -10 10 -10 10 
+
+  n/pl 1.y%x i=[i] ! ! ! s
+  atitle 'x [cm]' 'y [cm]'
+  itx -9 8 [tit]
+
+  wait
+	
+enddo
+
+exe psoff

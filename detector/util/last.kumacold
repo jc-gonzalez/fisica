@@ -1,0 +1,38 @@
+*** Begin of history file: Thu Dec 14 21:30:54 2000
+pson
+psoff
+fun2 10 sin(x)+cos(2*y) 40 -3 3 40 -3 3
+opt nsta
+jcpal
+sh vi ~/kumac/jcpal.kumac
+jcpal
+h/pl 10 surf2
+h/pl 10 surf3
+h/pl 10 surf4
+h/pl 10 surf1
+h/pl 10 surf2
+jcpal blues
+jcpal blues.pal
+h/pl 10 surf2
+h/pl 10 surf1
+h/pl 10 surf3
+h/pl 10 lego2
+h/pl 10 lego3
+h/pl 10 lego4
+h/pl 10 lego1
+h/pl 10 lego0
+h/pl 10 col
+size 30 30
+zone 2 2
+many 10 10 10 10
+h/pl 10,10,10,10 col
+size 30 30;zone 2 2
+h/pl 10,10,10,10 col
+set xwin 0
+h/pl 10,10,10,10 col
+set ywin 0
+set xwin 0
+size 30 30;zone 2 2
+h/pl 10,10,10,10 col
+quit
+*** End   of history file: Thu Dec 14 21:39:19 2000

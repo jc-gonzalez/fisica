@@ -1,0 +1,34 @@
+read file 'Input file (without .dat): '
+
+n/cre 1 '' 4 ! ! i x y h
+n/read 1 [file].dat
+
+exe pson [file].ps
+
+set mtyp 1
+set pmci 4
+
+size 30 48
+zone 5 8
+
+opt nsta
+
+opt utit
+
+title 'Effect of moving the Camera Plane'
+
+do i=1,40
+
+  h=1679+[i]
+
+  tit=h=[h]cm
+
+  null -10 10 -10 10 
+
+  n/pl 1.y%x i=[i] ! ! ! s
+  atitle 'x (cm)' 'y (cm)'
+  itx -9 8 [tit]
+
+enddo
+
+exe psoff

@@ -47,8 +47,8 @@ endif
 
 #OPTIM    = -arch host -ieee -ieee_with_no_inexact
 #DEBUG    = 
-OPTIM    = -O4 -ieee
-DEBUG    = 
+OPTIM    = -O 
+DEBUG    = -g3
 
 ##-- paths & applications
 

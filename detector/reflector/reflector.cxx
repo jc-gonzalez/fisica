@@ -1043,12 +1043,12 @@ main(int argc, char **argv)
               pby <= (pb_Y + pb_LengthY/2.0);  
               pby += (pb_LengthY/pb_NY) ) {
           
-          pbt = -atan2(sqrt(SQR(pbx)+SQR(pby)),pb_Height);
+          pbt = -atan2(sqrt(SQR(pbx) + SQR(pby)), pb_Height);
           pbp = atan2(pby, pbx);
           photon.fill(450.0, 
                       pbx, pby, 
-                      -sin(pbt) * cos(pbp),
-                      -sin(pbt) * sin(pbp),
+                      sin(pbt) * cos(pbp),
+                      sin(pbt) * sin(pbp),
                       0., pb_Height);
           
           photon.write( pbfile );
@@ -1075,19 +1075,83 @@ main(int argc, char **argv)
 
       // get parameters of the parallel beam of light from PIXMAP
 
-      strcpy(pb_Filename, get_parallel_beam_pm(&pb_Scale,&pb_Height));
+      strcpy(pb_Filename, get_parallel_beam_pm(&pb_Scale, &pb_Height));
 
-      pmfile.open( pb_Filename, ios::out );
-      pmfile.getline( line, 300 );
+      int   wp, hp;
+      float wr, hr;
+      float s;
       
-      do {      
-        pmfile.getline( line, 300 );
-      } while (line[0] == '#');
+      float x, y;
+      float dx, dy;
+      
+      float xp, yp;
+      float dxp, dyp;
+      
+      int   xp0, yp0;
+      int   xp1, yp1;
+      
+      float p, q, pp, qq;
+      float ff;
+      
+      int   nx=1000, ny=1000;
+      
+      int   i, j, k;
 
-      sscanf( line, "%f %f", &pb_NX, &pb_NY );
-      pb_LengthX = pb_NX * pb_Scale;
-      pb_LengthY = pb_NY * pb_Scale;
+      char  pN[2];
+      int   nbytes;
+      int   maxcol;
+      
+      pmfile.open( pb_Filename, ios::out );
+      pmfile.read(pN, 2);
+      nbytes = atoi(pN+1);
 
+      cout << 'P' << nbytes << endl;
+      
+      wp = 0;
+      while (wp == 0) {
+        pmfile >> wp;
+      }
+
+      pmfile >> hp;
+      pmfile >> maxcol;
+
+      cout << wp << 'x' << hp << ',' << maxcol << endl;
+      
+      short **f;
+      f = new short* [wp];
+      for (i=0; i<wp; i++) {
+        f[i] = new short [hp];
+      }
+
+      short valf;
+      for (i=0; i<wp; i++) {
+        for (j=0; j<hp; j++) {
+          f[i][j] = short(0);
+          for (k=0; k<nbytes; k++) {
+            pmfile >> valf;
+            f[i][j] += valf;
+          }
+          f[i][j] = short(f[i][j] / nbytes);
+        }
+      }
+      
+      pmfile.close();
+
+      // calculate actual size of the pixmap in the ground (in meters)
+      
+      wr = wp * pb_Scale;
+      hr = hp * pb_Scale;
+      
+      // calculate spacing of the grid of sample points
+      
+      dx = wr / (nx - 1);
+      dy = hr / (ny - 1);
+      
+      // calculate equivalent spacing in the pixmap
+      
+      dxp = float(wp) / (nx - 1);
+      dyp = float(hp) / (ny - 1);
+      
       // generate artificial file(s)
       
       // a. cerfile
@@ -1100,31 +1164,52 @@ main(int argc, char **argv)
       
       evth.write( pbfile );
       
-      for ( pbx = (pb_X - pb_LengthX/2.0); 
-            pbx <= (pb_X + pb_LengthX/2.0);  
-            pbx += (pb_LengthX/pb_NX) )
+      // double loop (i=0:nx-1,j=0:ny-1)
+      
+      cout << pb_Height << " cm" << endl << flush;
+
+      for (i=0, x=-wr/2., xp=0.; i<nx; i++, x+=dx, xp+=dxp) {
         
-        for ( pby = (pb_Y - pb_LengthY/2.0); 
-              pby <= (pb_Y + pb_LengthY/2.0);  
-              pby += (pb_LengthY/pb_NY) ) {
-          
-          pmfile >> i;
+        xp0 = int(floor(xp));
+        
+        p = xp - xp0;
+        pp = 1. - p;
 
-          if ( i < 1 ) 
-            continue;
-
-          pbt = -atan2(sqrt(SQR(pbx)+SQR(pby)),pb_Height);
-          pbp = atan2(pby, pbx);
-          photon.fill(450.0, 
-                      pbx, pby, 
-                      -sin(pbt) * cos(pbp),
-                      -sin(pbt) * sin(pbp),
-                      0., pb_Height);
+        xp0 = xp0 % wp;
+        xp1 = (xp0 + 1) % wp;
+        
+        for (j=0, y=-hr/2., yp=0.; j<ny; j++, y+=dy, yp+=dyp) {
           
-          photon.write( pbfile );
+          yp0 = int(floor(yp));
+          
+          q = yp - yp0;
+          qq = 1. - q;
+
+          yp0 = yp0 % hp;
+          yp1 = (yp0 + 1) % hp;
+        
+          ff = ((pp * qq * f[xp0][yp0]) +
+                (p  * qq * f[xp1][yp0]) +
+                (pp *  q * f[xp0][yp1]) +
+                (p  *  q * f[xp1][yp1])) / float(maxcol);
+
+          if ( RandomNumber < ff ) {
+            // create a photon and write it
+            pbt = -atan2(sqrt(SQR(x)+SQR(y)), pb_Height);
+            pbp = atan2(y, x);
+            photon.fill(450.0, 
+                        x, y, 
+                        sin(pbt) * cos(pbp),
+                        sin(pbt) * sin(pbp),
+                        0., pb_Height);
+
+            photon.write( pbfile );
+          }
           
         }
-      
+        
+      }
+          
       photon.fill( 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 );
       
       photon.write( pbfile );
@@ -1140,8 +1225,6 @@ main(int argc, char **argv)
       stat.write( pbfile );
       
       pbfile.close();
-
-      pmfile.close();
 
     }      
 
@@ -2078,6 +2161,9 @@ main(int argc, char **argv)
                  << ' ' << xcam[0] 
                  << ' ' << xcam[1] 
                  << ' ' << xcam[2] 
+                 << ' ' << xcutCT[0] 
+                 << ' ' << xcutCT[1] 
+                 << ' ' << xcutCT[2] 
                  << ' ' << phi 
                  << endl << flush;
           }
@@ -3584,6 +3670,9 @@ get_new_ct_pointing(float theta, float phi, float minang, float maxang,
 //!@{
 //
 // $Log$
+// Revision 1.1.1.1  2000/11/04 17:08:16  gonzalez
+// ...
+//
 // Revision 1.22  2000/03/22  15:56:42  gonzalez
 // *** empty log message ***
 //

@@ -1,0 +1,23 @@
+*** Begin of history file: Thu Dec 14 21:39:50 2000
+size 30 30;zone 2 2
+fun2 10 sin(x)+cos(2*y) 40 -3 3 40 -3 3
+opt nsta
+size 30 30;zone 2 2
+h/pl 10,10,10,10 col
+SET XWIN  0.00
+SET YWIN  0.00
+Zone 3 2
+Zone 3 2
+Zone 2 1
+Zone 2 2
+Set FILE 1
+Option FILE
+Option NFIL
+Option FIT
+Option NFIT
+Option STAT
+Option NSTA
+Set DATE 2
+Option DATE
+Option NDAT
+*** End   of history file: Thu Dec 14 21:46:32 2000
