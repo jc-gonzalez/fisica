@@ -1,4 +1,4 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
 %%  ch-simmagic.tex
 %%
@@ -479,32 +479,12 @@ virtually infinity for our purposes. The reflectivity taken here is
 100\%, a perfect, mathematical reflexion has been done, and any
 atmospheric effect has been removed.
 
-%\hfinfhlfivekmfig
-
-%\hftenkmhlfivekmfig
-
-%\hfinfhltenkmfig
-
-%\hftenkmhltenkmfig
-
-%\hfinfhltwelvekmfig
-
-%\hftenkmhltwelvekmfig
-
-%\hfinfhlhundredkmfig
-
-%\hftenkmhlhundredkmfig
-
-%\hfinfhlinffig
-
-%\hftenkmhlinffig
-
 \hlfivekmfig
  
 \hltenkmfig
  
 \hltwelvekmfig
- 
+
 \hlhundredkmfig
  
 \hlinffig
@@ -1261,58 +1241,102 @@ efficiency is zero (here expressed as $\delta_{\mathrm{max}}$).
 Note that this $\hat{S}_{\mathrm{cr}}(E,\Theta)$ has now dimensions
 [area$\times$solid angle]. This means that for any comparison with the
 effective collection area for gammas we must normalize in solid angle.
-The first thing that comes to our mind is to divide by the solid angle
-calculated up to the maximum value of $\delta$, that is by
-$\Omega_{\mathrm{max}}=2\pi(1-\cos\delta_{\mathrm{max}})$. This is
-wrong, since by using an arbitrarily large $\delta'_{\mathrm{max}} \gg
-\delta_{\mathrm{max}}$, and hence $\Omega'_{\mathrm{max}} \gg
-\Omega_{\mathrm{max}}$, we will barely increase the value of
-$\hat{S}_{\mathrm{cr}}(E,\Theta)$, but make the quantity
-$\hat{S}_{\mathrm{cr}}(E,\Theta)/\Omega'_{\mathrm{max}}$ arbitrarily small.
+The first thing that comes to our mind is to divide the whole curve
+$\hat{S}_{\mathrm{cr}}(E,\Theta)$ vs. $E$ by the solid angle used when
+generating the incoming cosmic rays, that is by
+$\Omega_{\mathrm{ALL}}=2\pi(1-\cos\delta_{\mathrm{ALL}})$. This is not
+wrong, as we will see, but it is useless for any comparison between
+gammas and cosmic rays.  Indeed, by using a new arbitrarily large
+$\delta'_{\mathrm{ALL}} \gg \delta_{\mathrm{ALL}}$, and hence
+$\Omega'_{\mathrm{ALL}} \gg \Omega_{\mathrm{ALL}}$, we will at most
+barely increase the value of $\hat{S}_{\mathrm{cr}}(E,\Theta)$, but
+make the quantity
+$\hat{S}_{\mathrm{cr}}(E,\Theta)/\Omega'_{\mathrm{ALL}}$ arbitrarily
+small.
 
-%One solution is to estimate the derivative of $\hat{S}_{\mathrm{cr}}$ with
-%respect to $\delta_{\mathrm{max}}$, at the point $\delta_0 = 0\deg$,
-%%
-%\begin{equation}
-%  \label{eq:Shadron0}
-%  S_{h,0}(E,\Theta) = 
-%  \left.
-%    \frac{\partial\hat{S}_{\mathrm{cr}}(E,\Theta)}{\partial\delta_{\mathrm{max}}}
-%  \right|_{\delta_{\mathrm{max}}=\delta_0}  
-%\end{equation}
+Note nevertheless that this strategy (dividing the quantity
+$\hat{S}_{\mathrm{cr}}(E,\Theta)$ by an arbitrary solid angle,
+expressing explicitly this solid angle) is perfectly valid. The
+actual, physical magnitude measured in reality will be the
+\emph{rate}. In particular, for cosmic rays we will measure a rate
+(for a given Zenith Angle $\Theta$) of incoming particles with
+energies greater or equal to $E_0$ of:
+%
+\begin{equation}
+  \label{eq:Scr}
+  R(E\ge E_0,\Theta) = 
+  \int_{E_0}^{\infty}\,\d E\,\frac{\d F(E)}{\d E}\,
+  \chronopair{
+  \int_0^{2\pi}\,\d \varphi 
+  \int_0^{\infty}\,r\,\d r 
+  \int_{\Omega}\,\varepsilon_{\mathrm{cr}}(r,\delta;E,\Theta)\,\d \Omega}
+\end{equation}
+%
+Grouping the expression marked with
+{\raisebox{6pt}{$\chronopair{\quad}$}\thickspace, we can write this
+  as:
+%
+\begin{equation}
+  \label{eq:Scr}
+  R(E\ge E_0,\Theta) = 
+  \int_{E_0}^{\infty}\,\d E\,\frac{\d F(E)}{\d E}\,\hat{\mathcal{S}}(E,\Theta)
+\end{equation}
+%
+with $\hat{\mathcal{S}}(E,\Theta)$ being our
+$\hat{S}_{\mathrm{cr}}(E,\Theta)$, with units [area$\times$solid
+angle]. If want to get out of there something with units [area], we
+simply multiply and divide, inside the integral, by \emph{any} solid
+angle
+%
+\begin{equation}
+  \label{eq:Scr}
+  R(E\ge E_0,\Theta) = 
+  \int_{E_0}^{\infty}\,\d E\,\frac{\d F(E)}{\d E}\,
+  \frac{1}{\Omega}\,\Omega\,\hat{\mathcal{S}}(E,\Theta) =
+  \int_{E_0}^{\infty}\,\d E\,\frac{\d F(E)}{\d E}\,
+  \frac{1}{\Omega}\,\mathcal{S}(E,\Theta)
+\end{equation}
+%
+and use the new $\mathcal{S}(E,\Theta)$ to compare with the effective
+collection area calculated for gammas. But, as we said, this can be
+always as small as we want, and therefore any comparison would be
+simply useless.
 
-%One solution is to estimate the value of the trigger efficiency for
-%hadrons assuming they all come in the limit $\delta\rightarrow 0\deg$,
-%that is
-%%
-%\begin{equation}
-%  \label{eq:limiteff}
-%  \varepsilon_{h,0}(r;E,\Theta) = 
-%  \lim_{\delta\rightarrow 0\deg} \varepsilon_{\mathrm{cr}}(r,\delta;E,\Theta)
-%\end{equation}
-%%
-%and then use this value to calculate a hypothetic maximum value for
-%$\delta$, $\delta_{\mathrm{calc}}$, the working scenario being that we
-%get all the showers inside this solid angle, and we have in this
-%region a constant trigger efficiency equal to
-%$\varepsilon_{h,0}(r;E,\Theta)$ (and therefore, we would end up with
-%the same value of $\hat{S}_{\mathrm{cr}}(E,\Theta)$).
+One could then think that we should divide just by the solid angle
+where the efficiency is non-zero. But since the efficiency at given
+off-axis angle depends on the energy of the primary, the Zenith Angle
+and the core distance, so will this solid angle do. In other words, we
+can not use a single solid angle for all energies, Zenith Angles and
+core distances.
 
-We will normalize to the solid angle given by the trigger area in the
-camera\footnote{ Note that this does not need to be the same as the
-  field of view. Indeed, usually the trigger area is smaller.}. This
-normalization takes into account, therefore, the different trigger
-efficiency resulting from defining different trigger areas in the
-camera. In our standard scenario, having a trigger area given by
-$\varphi_{\mathrm{trig}} = 0.8\deg$ (see section
-\ref{sec:triggerlogic} above, in particular Eqs.  \ref{eq:trigrad} and
-\ref{eq:phitrigger}, and Fig. \ref{fig:trigarea}) this results:
+Going just a bit further in this approach, We will then calculate a
+new variable, $S_{\mathrm{cr}}(E,\Theta)$, by means of a
+\emph{weighted average of the detection efficiency}. We will use as
+weights the solid angle, integrating until the detection efficiency
+becomes zero. Note that this uses the fact that
+$\delta_{\mathrm{max}}$ depends on $E$, $r$ and $\Theta$. In symbols,
+if we calculate this \emph{weighted average of the detection
+  efficiency},
+$\mean{\varepsilon_{\mathrm{cr}}}_{\mbox{}_{\mathrm{w}}}(r;E,\Theta)$,
+as follows:
 %
-\normsolidangleeq
+\begin{equation}
+  \label{eq:effw}
+  \tilde{\varepsilon}_{\mathrm{cr}}(r;E,\Theta) \equiv 
+  \mean{\varepsilon_{\mathrm{cr}}}_{\mbox{}_{\mathrm{w}}}(r;E,\Theta) =
+  \frac{\displaystyle\int_0^{\delta_{\mathrm{max}}(r;E,\Theta)}\,
+    \varepsilon_{\mathrm{cr}}(r,\delta;E,\Theta)\d\Omega}{
+    \displaystyle\int_0^{\delta_{\mathrm{max}}(r;E,\Theta)}\,\d\Omega}
+\end{equation}
 %
-and 
+with $\d\Omega = \sin\delta\,\d\delta\,\d\phi$, then:
 %
-\Scrnormeq
+\begin{equation}
+  \label{eq:Scrnorm}
+  S_{\mathrm{cr}}(E,\Theta) = 
+  \int_0^{2\pi}\,\d\varphi 
+  \int_0^{\infty}\,\tilde{\varepsilon}_{\mathrm{cr}}(r;E,\Theta)\,r\,\d r 
+\end{equation}
 
 In this way we calculated the effective collection areas for gammas
 and cosmic rays (properly normalized, as we indicated). The results
@@ -1381,16 +1405,12 @@ and similarly for cosmic rays
 \subsubsection{Hadronic, electronic and muonic backgrounds}
 
 
-\randpoifig
+%\randpoifig
 
 
 
 \endinput
 %
-%% Local Variables:
-%% mode:latex
-%% TeX-master: t
-%% End:
 
 %%TODO
 %
@@ -1400,4 +1420,8 @@ and similarly for cosmic rays
 %%TODO
 
 
+%% Local Variables:
+%% mode:latex
+%% TeX-master: t
+%% End:
 %%EOF

@@ -43,7 +43,7 @@
 
 \ifpdf 
   \def\special#1{\write16{special: #1}}
-  \pdfcompresslevel=0
+  \pdfcompresslevel=9
 \fi
 
 %%----------------------------------------------------------------------
@@ -260,6 +260,14 @@
 
 \def\mean#1{\ensuremath{\langle #1 \rangle}}
 \DeclareMathOperator{\sign}{sign}
+
+%%% Macro from "RockMover" <rmover@golovolomka.net>, The Master of Flame
+\def\chronopair#1{\let\saveupbracefill\upbracefill
+  \def\upbracefill{$\mathsurround0pt
+  \kern2pt\vrule height4pt depth1sp 
+  \leaders \hrule depth1sp \hfill
+  \vrule height4pt depth1sp \kern2pt
+  $}\underbrace{#1}\let\upbracefill\saveupbracefill}
 
 \def\deg{\ensuremath{^\circ}\xspace}        %% degrees
 \def\muon{\ensuremath{\mu}}                 %% muon
