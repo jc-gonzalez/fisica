@@ -1,164 +1,164 @@
 \item[ $A$  ] 
-         Atomic mass of a nucleus
+         Masa at'omica de un n'ucleo
 \item[ $\mathit{Airmass}$  ] 
-         Air Mass in Optical Astronomy
+         Masa de aire en Astronom'ia 'Optica
 \item[ $AM$  ] 
-         Air Mass geometrical factor
+         Factor geom'etrico de masa de aire
 \item[ $\mathcal{AM}$  ] 
-         Air Mass, calculated with exponential density model
+         Masa de aire, calculada con m'odelo de densidad exponencial
 \item[ $\mathcal{AM}_{\mathrm{approx}}$  ] 
-         Air Mass, for low Zenith Angle
+         Masa de aire, aproximaci'on para peque~no 'angulo cenital
 \item[ $A_{\mathrm{Ozo}}$  ] 
-         Ozone absorption, in magnitudes
+         Absorci'on por Ozono, en magnitudes
 \item[ $\alpha$  ] 
-         Fine structure constant
+         Constante de estructura fina
 \item[ $\beta$  ] 
-         Velocity of a particle (natural units)
+         Velocidad de una part'icula (unidades naturales)
 \item[ $c$  ] 
-         Speed of light in vacuum
+         Velocidad de la luz en el vac'io
 \item[ $\delta$  ] 
-         ``Off-axis'' angle of an incoming cosmic-ray shower
+         'Angulo ``fuera de eje'' de una cascada de un rayo c'osmico
 \item[ $\delta_{\mathrm{max}}$  ] 
-         Assumed maximum ``off-axis'' angle, where the trigger eff. becomes zero
+         M'aximo 'angulo ``furea de eje'', donde la eficiencia de detecci'on se anula
 \item[ $e$  ] 
-         Charge of the electron
+         Carga del electr'on
 \item[ $E_0$  ] 
-         Energy of a primary particle
+         Energ'ia de una part'icula primaria
 \item[ $E_{\mathrm{c}}$  ] 
-         Critical energy
+         Energ'ia cr'itica
 \item[ $E_{\mathrm{min}}$  ] 
-         Threshold energy for \Cherenkov light emission
+         Energ'ia umbral para la emisi'on de luz \Cherenkov
 \item[ $\varepsilon_{\mathrm{cr}}(r,\delta;E,\Theta)$  ] 
-         Trigger efficiency for cosmic-rays
+         Eficiencia de \emph{trigger} para rayos c'osmicos
 \item[ $\varepsilon_\gamma(r;E,\Theta)$  ] 
-         Trigger efficiency for gamma-rays
+         Eficiencia de \emph{trigger} para rayos gamma
 \item[ $\eta_0$  ] 
-         Parameter for refraction index
+         Par'ametro dentro del 'indice de refracci'on
 \item[ $\varphi_{\mathrm{trig}}$  ] 
-         Radius of the pre-set trigger area in the camera of \MAGIC
+         Radio del 'area de trigger prefijada en la c'amara de \MAGIC
 \item[ $\gamma$  ] 
-         Gamma ray / Photon
+         Rayo gamma / Fot'on
 \item[ $\Gamma$  ] 
-         Lorentz factor
+         Factor de Lorenz
 \item[ $h$  ] 
-         Height abovel sea level
+         Altura sobre el nivel del mar
 \item[ \ho  ] 
-         Height of an observation level 
+         Altura de un nivel de observaci'on
 \item[ \hc  ] 
-         Height given by CORSIKA, in the vertical of the observer
+         Altura dada por CORSIKA, en la vertical del observador
 \item[ $h_{\mathrm{M}}$  ] 
-         Scale height for aerosol distribution
+         Escala de alturas para la distribuci'on de aerosoles
 \item[ $H_{\mathrm{S}}$  ] 
-         Scale-height of the atmosphere
+         Escala de alturas de la atm'osfera
 \item[ \hv  ] 
-         Height in the vertical
+         Altura en la vertical
 \item[ $h_{\mathrm{v,approx}}$  ] 
-         Height in the vertical near the sea level
+         Altura en la vertical, aproximaci'on cerca del nivel del mar
 \item[ $I$  ] 
-         Optical path
+         Camino 'optica
 \item[ $k(\lambda)$  ] 
-         Absorption coefficient for extintion due to Ozone 
+         Coeficiente de absorci'on para la extinci'on debida al Ozono
 \item[ $l$  ] 
-         Path length
+         Longitud de camino
 \item[ $l_{\mathrm{M}}$  ] 
-         Mean free path for Mie scattering
+         Recorrido libre medio para la dispersi'on Mie
 \item[ $\lambda$  ] 
-         Wavelength of a photon 
+         Longitud de onda de un fot'on
 \item[ $\lambda$  ] 
-         Travel distance (in \emph{toy model})
+         Distancia recorrida (en \emph{modelo de juguete})
 \item[ $m$  ] 
-         Air Mass geometrical factor
+         Factor geom'etrico de masa de aire
 \item[ $m_{\mathrm{simple}}$  ] 
-         Simple approximation of $m\equiv AM$ using $h_{\mathrm{v,approx}}$
+         Aproximaci'on de $m\equiv AM$ usando $h_{\mathrm{v,approx}}$
 \item[ $M_\odot$ ] 
-         Mass of the Sun
+         Masa del Sol
 \item[ $n$  ] 
-         Number of branchings (\emph{toy model})
+         N'umero de bifurcaciones (\emph{modelo de juguete})
 \item[ $n$  ] 
-         Refraction index 
+         'Indice de refracci'on
 \item[ $N$  ] 
-         Number of photons generated in an atmospheric shower
+         N'umero de fotones generados en una cascada atmosf'erica
 \item[ $n_{\mathrm{cr}}(r,\delta;E,\Theta)$  ] 
-         Number of incoming cosmic-ray showers
+         N'umero de cascadas de rayos c'osmicos que llegan
 \item[ $n_{\mathrm{cr}}^T(r,\delta;E,\Theta)$  ] 
-         Number of triggered cosmic-ray showers
+         N'umero de cascadas de rayos c'osmicos detectadas
 \item[ $N_{\mathrm{e}}$  ] 
-         Number of electrons generated in an atmospheric shower
+         N'umero de electrones generados en una cascada atmosf'erica
 \item[ $n_\gamma(r;E,\Theta)$  ] 
-         Number of incoming gamma-ray showers
+         N'umero de cascadas de rayos gamma que llegan
 \item[ $n_\gamma^T(r;E,\Theta)$  ] 
-         Number of triggered gamma-ray showers
+         N'umero de cascadas de rayos gamma detectadas
 \item[ $\omega$  ] 
-         Zenith Angle at sea level
+         'Angulo cenital a nivel del mar
 \item[ $\pi^{0}$  ] 
-         Neutral pion
+         Pi'on neutro
 \item[ $r$  ] 
-         Radial distance to the atmospheric shower's axis
+         Distancia radial al eje de la cascada atmosf'erica
 \item[ $R$  ] 
-         Radius
+         Radio
 \item[ $r_{\mathrm{M}}$  ] 
-         \emph{Moli\`ere radius} of multiple scattering 
+         \emph{Radio de Moli\`ere} de dispersi'on m'ultiple
 \item[ $R_\odot$ ] 
-         Radius of the Sun
+         Radio del Sol
 \item[ $R_\oplus$  ] 
-         Earth's radius
+         Radio de la Tierra
 \item[ $\rho_0$  ] 
-         Density of the air at sea level
+         Densidad de aire a nivel del mar
 \item[ $\rho(h)$  ] 
-         Density of the air at a height $h$ above sea level
+         Densidad de aire a la altura $h$ sobre el nivel del mar
 \item[ $\rho(r)$  ] 
-         Density of electrons at a distance $r$
+         Densidad de electrones a una distancia $r$
 \item[ $\rhump$  ] 
-         Distance up to where the \Cherenkov light pool extends
+         Distancia hasta la cual se extiende la zona casi plana de la distribuci'on de luz \Cherenkov
 \item[ $s$  ] 
-         \emph{age parameter} of an atmospheric shower
+         \emph{Par'ametro de edad} de una cascada atmosf'erica
 \item[ $S_\gamma(E,\Theta)$  ] 
-         Effective Collection Area for gamma-rays
+         'Area de colecci'on efectiva para rayos gamma
 \item[ $S_{\mathrm{cr}}(E,\Theta)$  ] 
-         Effective Collection Area for cosmic-rays
+         'Area de colecci'on efectiva para rayos c'osmicos
 \item[ $t$  ] 
-         Time 
+         Tiempo
 \item[ $T$  ] 
-         Temperature 
+         Temperatura
 \item[ $\mathcal{T}$  ] 
-         Total atmospheric transmission
+         Transmisi'on atmosf'erica total
 \item[ $T_{\mathrm{Rayl}}$  ] 
-         Transmission for Rayleigh scattering
+         Transmisi'on por dispersi'on Rayleigh
 \item[ $T_{\mathrm{Mie}}$  ] 
-         Transmission for Mie scattering
+         Transmisi'on por dispersi'on Mie
 \item[ $T_{\mathrm{Ozo}}$  ] 
-         Transmission for Ozone absorption
+         Transmisi'on por absorci'on por el Ozono
 \item[ $T(h)$  ] 
-         Total ozone concentration for a Tropical region at height $h$
+         Concentraci'on total de Ozono para una regi'on tropical a una altura $h$
 \item[ $\tau$  ] 
-         Atmospheric slant depth
+         Profundidad atmosf'erica oblicua
 \item[ $\tau_i$  ] 
-         Atmospheric slant thickness above a height $h_i$
+         Espesor atmosf'erico oblicuo para una altura $h_i$
 \item[ $\tau_{\mathrm{R}}$  ] 
-         Mean free path of Rayleigh scattering in terms of thickness
+         Recorrido libre medio de dispersi'on Rayleigh en t'erminos de espesor
 \item[ $\theta$  ] 
-         Zenith Angle in observer's level
+         'Angulo cenital en el nivel de observaci'on
 \item[ $\Theta$  ] 
-         Zenith Angle of an incoming shower
+         'Angulo cenital de llegada de una cascada atmosf'erica
 \item[ $\theta_{\mathrm{c}}$  ] 
-         \Cherenkov emission angle
+         'Angulo de emisi'on \Cherenkov
 \item[ \trigM{n}{q_0}  ] 
-         Multiplicity trigger, $n$ pixels with at least a charge $q_0$
+         Condici'on de \emph{Trigger} de multiplicidad, $n$ p'ixels con al menos una carga de $q_0$ cada uno
 \item[ \trigNN{n}{q_0}  ] 
-         Next-Neighbour trigger, $n$ pixels with at least a charge $q_0$
+         Condici'on de \emph{Trigger} de vecinos contiguos, $n$ p'ixels con al menos una carga de $q_0$ cada uno
 \item[ \trigNNc{n}{q_0}  ] 
-         Closed-packet Next-Neighbour trigger, $n$ pixels with at least a charge $q_0$
+         Condici'on de \emph{Trigger} de vecinos contiguos empaquetados, $n$ p'ixels con al menos una carga de $q_0$ cada uno
 \item[ \trigTop{S}{q_0}  ] 
-         Topological trigger, given by region $S$ and charge per pixel of at least $q_0$
+         Condici'on de \emph{Trigger} topol'ogico, dada una regi'on $S$ y una carga por p'ixel de al menos $q_0$
 \item[ $u$  ] 
-         Director cosines in X axis
+         Coseno director en eje X
 \item[ $v$  ] 
-         Director cosines in Y axis
+         Coseno director en eje Y
 \item[ $x$  ] 
-         X coordinate 
+         Coordenada X
 \item[ $X$  ] 
-         Atmospheric slant depth
+         Profundidad atmosf'erica oblicua
 \item[ $X_{\mathrm{max}}$  ] 
-         Atmospheric slant depth at maximum development of a shower
+         Profundidad atmosf'erica oblicua a nivel del m'aximo desarrollo de una cascada
 \item[ $y$  ] 
-         Y coordinate 
+         Coordenada Y
