@@ -58,37 +58,37 @@
 bool QDTReportHandler::getIssues(std::vector<Alert*> & issues)
 {
     // Loop on all the products in the report (normally, only 1)
-    json::Object::iterator prodIt = data.begin();
-    while (prodIt != data.end()) {
+    json::Object::iterator prodIt = data.asObject().begin();
+    while (prodIt != data.asObject().end()) {
 
-        json::Value const & p = (*prodIt);
-        std::string product = prodIt.key().asString();
+        json::Value & p = prodIt->second;
+        std::string product = prodIt->second.asString();
         //std::cerr << product << '\n';
 
         // Loop on all the CCDs
-        json::Object::iterator ccdIt = p.begin();
-        while (ccdIt != p.end()) {
+        json::Object::iterator ccdIt = p.asObject().begin();
+        while (ccdIt != p.asObject().end()) {
 
-            json::Value const & c = (*ccdIt);
-            std::string ccdSet = ccdIt.key().asString();
+            json::Value & c = ccdIt->second;
+            std::string ccdSet = ccdIt->second.asString();
             //std::cerr << '\t' << ccdSet << '\n';
 
             if (ccdSet.compare(0, 3, "CCD") == 0) {
                 // Loop on all the quadrant
-                json::Object::iterator quadIt = c.begin();
-                json::Object::iterator quadItEnd = c.end();
+                json::Object::iterator quadIt = c.asObject().begin();
+                json::Object::iterator quadItEnd = c.asObject().end();
                 quadItEnd--;
                 while (quadIt != quadItEnd) {
 
-                    json::Value const & q = (*quadIt);
-                    std::string quadrant = quadIt.key().asString();
+                    json::Value & q = quadIt->second;
+                    std::string quadrant = quadIt->second.asString();
                     //std::cerr << "\t\t" << quadrant << '\n';
 
                     // Loop on all the diagnostics for the quadrant
-                    json::Object::iterator diagIt = q["diagnostics"].begin();
-                    while (diagIt != q["diagnostics"].end()) {
+                    json::Object::iterator diagIt = q.asObject()["diagnostics"].asObject().begin();
+                    while (diagIt != q.asObject()["diagnostics"].asObject().end()) {
 
-                        std::string diagnostic = diagIt.key().asString();
+                        std::string diagnostic = diagIt->second.asString();
                         //std::cerr << "\t\t\t" << diagnostic << '\n';
 
                         std::string location = (product + "." + ccdSet + "." +
@@ -104,10 +104,10 @@ bool QDTReportHandler::getIssues(std::vector<Alert*> & issues)
             }
 
             // Loop on all the diagnostics for the entire CCD or Detector
-            json::Object::iterator diagIt = c["diagnostics"].begin();
-            while (diagIt != c["diagnostics"].end()) {
+            json::Object::iterator diagIt = c.asObject()["diagnostics"].asObject().begin();
+            while (diagIt != c.asObject()["diagnostics"].asObject().end()) {
 
-                std::string diagnostic = diagIt.key().asString();
+                std::string diagnostic = diagIt->second.asString();
                 //std::cerr << "\t\t\t" << diagnostic << '\n';
 
                 std::string location = (product + "." + ccdSet + "." +
@@ -133,18 +133,21 @@ void QDTReportHandler::checkDiagnostic(json::Object::iterator it,
 {
     Alert::Messages msgs;
 
-    json::Value const & d = (*it);
-    std::cerr << d["outcome"].asString();
-    if (d["result"]["outcome"].asString() == "Warning") {
+    std::stringstream ss("");
+    
+    json::Value & d = it->second;
+    std::cerr << d.asObject()["outcome"].asString();
+    if (d.asObject()["result"].asObject()["outcome"].asString() == "Warning") {
         msgs.push_back("Messsages:");
         json::Object::iterator mIt;
-        for (auto & v : d["result"]["messages"]) {
+        for (auto & v : d.asObject()["result"].asObject()["messages"].asArray()) {
             msgs.push_back(v.asString());
         }
 
         msgs.push_back("Values:");
-        json::FastWriter writer;
-        msgs.push_back(writer.write(d["values"]));
+	ss.str("");
+	ss << d.asObject()["values"];
+        msgs.push_back(ss.str());
 
         Alert * alert = new Alert(Alert::Diagnostics,
                                   Alert::Warning,

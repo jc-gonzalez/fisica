@@ -13,12 +13,12 @@ project (filehdl)
 set (libfilehdl_hdr
   genfhdl.h
   jsonfhdl.h
-#  qdtrephdl.h
+  qdtrephdl.h
 )
 
 set (libfilehdl_src
   jsonfhdl.cpp
-#  qdtrephdl.cpp
+  qdtrephdl.cpp
 )
 
 #===== Project sections/libraries =======
