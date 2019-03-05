@@ -170,14 +170,14 @@ C...Choose total energy of sea partons
       N = 2*(NW-1)
       Z1 = LOG(FLOAT(N))
       Z2 = LOG(0.5*SQS*(1.-XJET)/stringmas0-2.)
-100   R=RNDM(0)
+100   R=RAN(0)
       Z=(Z1+AC)*(1.+R*(((Z2+AC)/(Z1+AC))**N-1.))**(1./FLOAT(N))-AC
       XSEA = XMIN*EXP(Z)
-      IF ( (1.-XSEA)**GAMMA .LT. RNDM(0)) GOTO 100
+      IF ( (1.-XSEA)**GAMMA .LT. RAN(0)) GOTO 100
 C...Split the energy  of sea partons among the different partons
       XREM = XSEA - FLOAT(N)*XMIN
       DO J=3,N+1
-         XA = XREM*RNDM(0)
+         XA = XREM*RAN(0)
          XREM = XREM - XA
          XX(J) = XMIN + XA
       ENDDO
@@ -186,7 +186,7 @@ C...Split the energy  of sea partons among the different partons
 C...Flavor of sea partons
       DO J=1,N/2
          J1 =  3 + (J-1)*2
-         IFL(J1) = INT(1.+1.99*RNDM(0))
+         IFL(J1) = INT(1.+1.99*RAN(0))
          IFL(J1+1) = -IFL(J1)
       ENDDO
 C...Prepare the valence partons
@@ -197,7 +197,7 @@ C...Prepare the valence partons
 C      FOR MESONS, SPLIT ENERGY SYMETRICALLY.
 C????? SPLIT K'S WITH ENERGY TO S QUARK?
 C
-      if (abs(l).le.12.and.RNDM(0).le.0.5) xx(1)=XVAL-XX(1)
+      if (abs(l).le.12.and.RAN(0).le.0.5) xx(1)=XVAL-XX(1)
       XX(2) = XVAL-XX(1)
       RETURN
       END
@@ -377,12 +377,12 @@ C      parameter QMAS=0.35
       IF (IFQ.GT.10) IFQ=IABS(IFL2)
 c      CUT=2.*QMAS/SQS
       CUT=2.*stringmas0/SQS
-100      CHIDIS=RNDM(0)**2
+100      CHIDIS=RAN(0)**2
       if (chidis.lt.cut) goto 100
       if (chidis.gt.(1.-cut)) goto 100
 c      IF((CHIDIS**2/(CHIDIS**2+CUT**2))**0.25
       IF((CHIDIS**2/(CHIDIS**2+CUT**2))**0.5
-     +   *(1.-CHIDIS)**CCHIK(IFQ,KPART).LT.RNDM(0)) GOTO 100
+     +   *(1.-CHIDIS)**CCHIK(IFQ,KPART).LT.RAN(0)) GOTO 100
       CHIDIS = MAX(0.5*CUT,CHIDIS)
       CHIDIS = MIN(1.-CUT,CHIDIS)
       IF (IABS(IFL1).GT.10)  CHIDIS=1.-CHIDIS
@@ -484,9 +484,9 @@ C...Phase space decay of the excited state
 100        NPI = AV*(1.+0.5*GASDEV(0))
         IF(NPI.LE.0.OR.NPI.GT.9.OR.AM(LA)+NPI*AM(7)+0.02
      .            .GT.P0(5))  GOTO 100
-        IF (RNDM(0).LT.PCHEX)  THEN
+        IF (RAN(0).LT.PCHEX)  THEN
          LL(NPI+1) = LCON(LA)*ISIGN(1,L0)
-         IF(L0 .EQ. 11)  LL(NPI+1) = LL(NPI+1)+INT(2.*RNDM(0))
+         IF(L0 .EQ. 11)  LL(NPI+1) = LL(NPI+1)+INT(2.*RAN(0))
         ELSE
             LL(NPI+1) = L0
         ENDIF
@@ -494,7 +494,7 @@ C...Phase space decay of the excited state
      .            ICHP(IABS(LL(NPI+1)))*ISIGN(1,LL(NPI+1))
 120        JQTOT = 0.
         DO K=1,NPI-1
-           LL(K) = 6+INT(RNDM(0)*2.99999)
+           LL(K) = 6+INT(RAN(0)*2.99999)
            JQTOT = JQTOT + ICHP(LL(K))
         ENDDO
         JQR = JQQ-JQTOT
@@ -550,22 +550,22 @@ C...Double diffraction
       IF (JDIF .EQ. 3)   THEN
          K = KK(LA)
          AL = LOG(XM2MAX/XM2MIN(K))
-         ALX = ALXMIN(K) + AL*RNDM(0)
+         ALX = ALXMIN(K) + AL*RAN(0)
          XMB2 = EXP(ALX)
          XMB = SQRT (XMB2)
          AL = LOG(XM2MAX/XM2MIN(1))
-         ALX = ALXMIN(1) + AL*RNDM(0)
+         ALX = ALXMIN(1) + AL*RAN(0)
          XMT2 = EXP(ALX)
          XMT = SQRT (XMT2)
          X1 = 1.+(XMB2-XMT2)/S
          X2 = 2.-X1
          SLOPE = MAX(SLOP0, ASLOP+BSLOP*ALX)
-50       T = -LOG(RNDM(0))/SLOPE
+50       T = -LOG(RAN(0))/SLOPE
          PT = SQRT(T)
          PZ1 = 0.25*S*X1*X1-XMB2-PT*PT
          PZ2 = 0.25*S*X2*X2-XMT2-PT*PT
          IF (PZ1.LT.0. .OR. PZ2.LT.0.)   GOTO 50
-         PHI = PI*RNDM(0)
+         PHI = PI*RAN(0)
          P0(5) = XMB
          P0(4) = 0.5*SQS*X1
          P0(1) = PT*COS(PHI)
@@ -597,7 +597,7 @@ C...Single diffraction
       ENDIF
 C      Generate the mass of the diffracted system Mx (1/Mx**2 distribution)
       AL = LOG(XM2MAX/XM2MIN(K))
-      ALX = ALXMIN(K) + AL*RNDM(0)
+      ALX = ALXMIN(K) + AL*RAN(0)
       XM2 = EXP(ALX)
       XM = SQRT (XM2)
       XMB = XM
@@ -607,11 +607,11 @@ C      Generate the Kinematics of the pseudoelastic hadron
       NP = NP+1
       P(NP,4) = 0.5*SQS*X
       SLOPE = MAX(SLOP0, ASLOP+BSLOP*ALX)
-60      T = -LOG(MAX(1.E-10,RNDM(0)))/SLOPE
+60      T = -LOG(MAX(1.E-10,RAN(0)))/SLOPE
       PT = SQRT(T*X)
       PZ2 = P(NP,4)**2-EM2 - PT*PT
       IF (PZ2 .LT.0.)   GOTO 60
-      PHI = PI*RNDM(0)
+      PHI = PI*RAN(0)
       P(NP,3) = SQRT(PZ2)*ZD
       P(NP,1) = PT*COS(PHI)
       P(NP,2) = PT*SIN(PHI)
@@ -678,7 +678,7 @@ C AVERAGE KINETIC ENERGY/NUCLEON IN PREFRAGMENT (MeV)
 C PER PATHLENGTH EQUAL TO THE PREFRAGMENT RADIUS
       ESTARP = 0.
       DO I=1,NW
-      IF (RNDM(0) .GT. 0.5) THEN
+      IF (RAN(0) .GT. 0.5) THEN
       F2 = F1*RDIS(0)
       ESTARP = ESTARP + F2
       ENDIF
@@ -947,7 +947,7 @@ C INTERPOLATE BETWEEN EB=0. (NOTHING HAPPENS) AND EB = 1. MeV
       N1 = 1 + FR
       FR1 = FR/FLOAT(N1)
       DO K=1, N1
-      IF (RNDM(0) .LT. FR1) THEN
+      IF (RAN(0) .LT. FR1) THEN
       JF = JF + 1
       IAF(JF) = J
       NSUM = NSUM + J
@@ -2285,8 +2285,8 @@ C...Gaussian deviation
       SAVE GSET
       DATA ISET/0/
       IF (ISET.EQ.0) THEN
-1       V1=2.*RNDM(0)-1.
-        V2=2.*RNDM(0)-1.
+1       V1=2.*RAN(0)-1.
+        V2=2.*RAN(0)-1.
         R=V1**2+V2**2
         IF(R.GE.1.)GO TO 1
         FAC=SQRT(-2.*LOG(R)/R)
@@ -2332,7 +2332,7 @@ C...........................................................
 
 C...Generate the 'forward' leading particle.
 100   I = NP+1
-      I0 = -1 + 2.*INT(1.9999*RNDM(0))
+      I0 = -1 + 2.*INT(1.9999*RAN(0))
       CALL IFLAV(I0,0,IFL1, LDUM)
       CALL IFLAV(IFL1,0,IFL2, LLIST(I))
       CALL PTDIS(IFL1,PX1,PY1)
@@ -2403,7 +2403,7 @@ C...Fragment the two remaning strings
 
 C...produce new particle: side, pT
 300      I=I+1
-      JT=1.5+RNDM(0)
+      JT=1.5+RAN(0)
       JR=3-JT
 c      CALL PTDIS (IFL(JT), PX(3),PY(3))
 
@@ -2417,7 +2417,7 @@ C...particle ID
 C...test end of fragmentation
       WREM2 = PTOT(4)**2-PTOT(1)**2-PTOT(2)**2-PTOT(3)**2
       IF (WREM2 .LT. 0.1)  GOTO 200
-      WMIN = PMQ(1)+PMQ(2)+2.*PMQ(3)+1.1 + (2.*RNDM(0)-1.)*0.2
+      WMIN = PMQ(1)+PMQ(2)+2.*PMQ(3)+1.1 + (2.*RAN(0)-1.)*0.2
       IF (WREM2 .LT. WMIN**2)  GOTO 400
 
 C...fill transverse momentum
@@ -2649,12 +2649,12 @@ C.................................................
       RETURN
 500      KP1 = 2                  ! k0l, k0s
       KP2 = -3
-      IF (RNDM(0).GT. 0.5)  THEN
+      IF (RAN(0).GT. 0.5)  THEN
         KP1 = 3
         KP2 = -2
       ENDIF
       return       ! bug fix 5-91
-600      R = 6.*RNDM(0)            ! p/pbar
+600      R = 6.*RAN(0)            ! p/pbar
       IF (R .LT.3.)       THEN
         KP1 = 1
         KP2 = 12
@@ -2672,7 +2672,7 @@ C.................................................
       ENDIF
       RETURN
 
-700      R = 6.*RNDM(0)                  ! n/nbar
+700      R = 6.*RAN(0)                  ! n/nbar
       IF (R .LT.3.)       THEN
          KP1 = 2
          KP2 = 12
@@ -2725,13 +2725,13 @@ C...................................................................
           MB = 2
          IF (IFLA .LT. 10)   THEN
              MB = 1
-             IF ((1.+PAR(1))*RNDM(0).LT. 1.)  MB=0
+             IF ((1.+PAR(1))*RAN(0).LT. 1.)  MB=0
          ENDIF
       ENDIF
 
       IF (MB .EQ. 0)  THEN
          IF (IFL2A.EQ.0)
-     +        IFL2=ISIGN(1+INT((2.+PAR(2))*RNDM(0)),-IFL1)
+     +        IFL2=ISIGN(1+INT((2.+PAR(2))*RAN(0)),-IFL1)
          IFLD = MAX(IFL1,IFL2)
          IFLE = MIN(IFL1,IFL2)
          GOTO 100
@@ -2743,21 +2743,21 @@ C...Decide if the diquark must be split
            GOTO 200
       ENDIF
       IF (MB .EQ. 2 .AND. IFLA .EQ. 0)   THEN
-          IF (RNDM(0) .LT. PAR(8))  THEN
+          IF (RAN(0) .LT. PAR(8))  THEN
              MB = 0
              IFLG = MOD(IFL1,10)
              IFLH =(IFL1-IFLG)/10
-             IF (RNDM(0) .GT. 0.5)  THEN
+             IF (RAN(0) .GT. 0.5)  THEN
                 IFLDUM = IFLG
                 IFLG = IFLH
                 IFLH = IFLDUM
              ENDIF
              IFL11=IFLG
-             IFL22=ISIGN(1+INT((2.+PAR(2))*RNDM(0)),-IFL1)
+             IFL22=ISIGN(1+INT((2.+PAR(2))*RAN(0)),-IFL1)
              IFLD = MAX(IFL11,IFL22)
              IFLE = MIN(IFL11,IFL22)
              IFL2 = -IFLH*10+IFL22
-             IF (RNDM(0) .GT. 0.5)  IFL2 = IFL22*10-IFLH
+             IF (RAN(0) .GT. 0.5)  IFL2 = IFL22*10-IFLH
              IFL2 = IFL2+ISIGN(100,IFL2)
           ENDIF
       ENDIF
@@ -2767,15 +2767,15 @@ C...Form a meson: consider spin and flavor mixing for the diagonal states
          IF1 = IABS(IFLD)
          IF2 = IABS(IFLE)
          IFLC = MAX(IF1,IF2)
-         KSP = INT(PAR(5)+RNDM(0))
-         IF (IFLC.EQ.3)  KSP = INT(PAR(6)+RNDM(0))
+         KSP = INT(PAR(5)+RAN(0))
+         IF (IFLC.EQ.3)  KSP = INT(PAR(6)+RAN(0))
 C D.H.
          KSP = MIN(KSP,1)
 
          IF (IF1 .NE. IF2)   THEN
             KF = KFLA(IF1,IF2,KSP+1)
          ELSE
-            R = RNDM(0)
+            R = RAN(0)
             JF=1+INT(R+CDIAG(6*KSP+2*IF1-1))+
      +             INT(R+CDIAG(6*KSP+2*IF1))
 C D.H.
@@ -2803,13 +2803,13 @@ C...Form a baryon
 110          CONTINUE
           IF(MB.EQ.1)   THEN            ! generate diquark
              IFLD = IFLA
-120             IFLE = 1+INT((2.+PAR(2)*PAR(3))*RNDM(0))
-             IFLF = 1+INT((2.+PAR(2)*PAR(3))*RNDM(0))
-             IF(IFLE.GE.IFLF.AND.PAR(4).LT.RNDM(0))    GOTO 120
-             IF(IFLE.LT.IFLF.AND.PAR(4)*RNDM(0).GT.1.) GOTO 120
+120             IFLE = 1+INT((2.+PAR(2)*PAR(3))*RAN(0))
+             IFLF = 1+INT((2.+PAR(2)*PAR(3))*RAN(0))
+             IF(IFLE.GE.IFLF.AND.PAR(4).LT.RAN(0))    GOTO 120
+             IF(IFLE.LT.IFLF.AND.PAR(4)*RAN(0).GT.1.) GOTO 120
              IFL2=ISIGN(10*IFLE+IFLF,IFL1)
           ELSE                  ! generate quark
-             IFL2=ISIGN(1+INT((2.+PAR(2))*RNDM(0)),IFL1)
+             IFL2=ISIGN(1+INT((2.+PAR(2))*RAN(0)),IFL1)
              IFLD=IABS(IFL2)
              IFLE=IFLA/10
              IFLF=MOD(IFLA,10)
@@ -2819,7 +2819,7 @@ C...SU(6) factors for baryon formation
           IF(IFLD.NE.IFLE.AND.IFLD.NE.IFLF)  LFR=LFR+1
           WT = CFR(2*LFR-1)+PAR(7)*CFR(2*LFR)
           IF(IFLE.LT.IFLF)   WT=WT/3.
-          IF (WT.LT.RNDM(0)) GOTO 110
+          IF (WT.LT.RAN(0)) GOTO 110
       ENDIF
 
 C...Form Baryon
@@ -2827,13 +2827,13 @@ C...Form Baryon
       IFLI=MIN(IFLD,IFLE,IFLF)
       IFLH=IFLD+IFLE+IFLF-IFLG-IFLI
       KSP=2+2*INT(1.-CFR(2*LFR-1)+(CFR(2*LFR-1)+PAR(7)*
-     1       CFR(2*LFR))*RNDM(0))
+     1       CFR(2*LFR))*RAN(0))
 
 C...Distinguish Lambda- and Sigma- like particles
       IF (KSP.EQ.2.AND.IFLG.GT.IFLH.AND.IFLH.GT.IFLI)  THEN
-      IF(IFLE.GT.IFLF.AND.IFLD.NE.IFLG) KSP=2+INT(0.75+RNDM(0))
+      IF(IFLE.GT.IFLF.AND.IFLD.NE.IFLG) KSP=2+INT(0.75+RAN(0))
        IF(IFLE.LT.IFLF.AND.IFLD.EQ.IFLG) KSP=3
-       IF(IFLE.LT.IFLF.AND.IFLD.NE.IFLG) KSP=2+INT(0.25+RNDM(0))
+       IF(IFLE.LT.IFLF.AND.IFLD.NE.IFLG) KSP=2+INT(0.25+RAN(0))
       ENDIF
       KF=KFR(16*KSP-16+IFLG)+KFR(16*KSP-8+IFLH)+IFLI
       KF=ISIGN(KBAR(KF-40),IFL1)
@@ -2906,8 +2906,8 @@ C D.H.PARAMETER (IAMAX=110)
       BMAX = 10.                             ! fm
       NTRY = 0
       CALL NUC_CONF (IA, XA, YA)
-1000  B = BMAX*SQRT(RNDM(0))
-      PHI = 2.*PI*RNDM(0)
+1000  B = BMAX*SQRT(RAN(0))
+      PHI = 2.*PI*RAN(0)
       BX = B*COS(PHI)
       BY = B*SIN(PHI)
       NTRY = NTRY+1
@@ -2917,7 +2917,7 @@ C D.H.PARAMETER (IAMAX=110)
          F = EXP(-S/DEN)
          PEL = CC*CC*(1.+RHO*RHO)*F*F
          PINEL  = 2.*CC*F-PEL
-         R = RNDM(0)
+         R = RAN(0)
          IF (R .LT. PINEL)  THEN
             NA = NA + 1
          ENDIF
@@ -2985,8 +2985,8 @@ C-----------------------------------------------------------------------------
             JJINT(JB,JA) = 0
          ENDDO
       ENDDO
-1000      B = BMAX*SQRT(RNDM(0))
-      PHI = 2.*PI*RNDM(0)
+1000      B = BMAX*SQRT(RAN(0))
+      PHI = 2.*PI*RAN(0)
       BX = B*COS(PHI)
       BY = B*SIN(PHI)
       NTRY = NTRY+1
@@ -3072,11 +3072,11 @@ C............................................
       DATA PGG /1./
       E0 = SQRT(S*X1J*X2J)
       TH = ASIN(MIN(0.999999,2.*PTJET/E0))
-      FI = 6.283185*RNDM(0)
+      FI = 6.283185*RAN(0)
       NOLD = NP
-      IF ( (E0.LT.8.) .OR. (RNDM(0).GT.PGG)) THEN
-         IS = -1 + 2.*INT(1.9999*RNDM(0))
-         IFL1 = IS*(INT((2.+0.3)*RNDM(0))+1)
+      IF ( (E0.LT.8.) .OR. (RAN(0).GT.PGG)) THEN
+         IS = -1 + 2.*INT(1.9999*RAN(0))
+         IFL1 = IS*(INT((2.+0.3)*RAN(0))+1)
          CALL STRING_FRAG (E0,IFL1,-IFL1,0.,0.,0.,0.,IFBAD)
       ELSE
          CALL GG_FRAG(E0)
@@ -3196,7 +3196,7 @@ C D.H.
 
       J2 = J1+1
       T = (AL-ASQSMIN)/DASQS - FLOAT(J1-1)
-      R = 0.999*RNDM(0)
+      R = 0.999*RAN(0)
       DO J=0,20
          IF (R .LT. (1.-T)*PJETC(J,J1,K)+T*PJETC(J,J2,K))  GOTO 100
       ENDDO
@@ -3250,14 +3250,14 @@ C...................................................................
       COMMON /CPROFA/ ZMIN, DZ, BBZ(NB,IAMAX)
       DATA PI /3.1415926/
       DO J=1,IA
-         Z = RNDM(0)
+         Z = RAN(0)
          JZ = INT((Z-ZMIN)/DZ)+1
 C D.H.
          JZ = MIN(JZ,400)
          
          T = (Z-ZMIN)/DZ - FLOAT(JZ-1)
          B = BBZ(JZ,IA)*(1.-T) + BBZ(JZ+1,IA)*T
-         PHI = 2.*PI*RNDM(0)
+         PHI = 2.*PI*RAN(0)
          XX(J) = B*COS(PHI)
          YY(J) = B*SIN(PHI)
       ENDDO
@@ -3520,7 +3520,7 @@ C..................................................................
       J1 = (AL - ASQSMIN)/DASQS + 1
       J2 = J1+1
       T = (AL-ASQSMIN)/DASQS - FLOAT(J1-1)
-      R = 0.999*RNDM(0)
+      R = 0.999*RAN(0)
       J = 0
       P = (1.-T)*PJETC(0,J1,K)+T*PJETC(0,J2,K)
       WRITE (LUN, 20)
@@ -3565,8 +3565,8 @@ C.............................................................
       SUBROUTINE PTDIS (IFL,PX,PY)
 C...Generate pT
       COMMON /S_CQDIS/ PPT0(33),ptflag
-      PT = PPT0(IABS(IFL))*SQRT(-ALOG(MAX(1E-10,RNDM(0))))
-      PHI= 6.2831853*RNDM(0)
+      PT = PPT0(IABS(IFL))*SQRT(-ALOG(MAX(1E-10,RAN(0))))
+      PHI= 6.2831853*RAN(0)
       PX=PT*COS(PHI)
       PY=PT*SIN(PHI)
       RETURN
@@ -3633,14 +3633,14 @@ c  quadratic interpolation?
      *      0.43815, 0.51892, 0.60631, 0.70002, 0.79325,
      *      0.88863, 0.98686, 1.10129, 1.21202, 1.32932,
      *      1.44890, 1.57048, 1.70139, 1.83417, 2.00000/
-      nr = 20.*RNDM(0) + 1
+      nr = 20.*RAN(0) + 1
       if (nr .eq. 1) then
       f1 = 0.
       else
       f1 = probr(nr-1)
       endif
       dr = probr(nr) - f1
-      rdis = f1 + dr*RNDM(0)
+      rdis = f1 + dr*RAN(0)
       return
       end
       SUBROUTINE SAMPLE (L, X1,X2,PT)
@@ -3656,10 +3656,10 @@ C.................................................................
 100   Z1=ZSAMPLE (ZMIN,L)
       Z2=ZSAMPLE (ZMIN,1)
       SIG=1.-XMIN*EXP(-Z1-Z2)
-      IF (SIG .LT. RNDM(0))  GOTO 100
+      IF (SIG .LT. RAN(0))  GOTO 100
       X1=EXP(Z1)
       X2=EXP(Z2)
-      Q2=Q2MIN/(1.-RNDM(0)*SIG)
+      Q2=Q2MIN/(1.-RAN(0)*SIG)
       PT=SQRT(Q2*(1.-Q2/(S*X1*X2)))
       RETURN
       END
@@ -3804,7 +3804,7 @@ C---------------------------------------------------------------
 
 C...Target mass
       IF (IAT .EQ. 0) THEN
-         IATARGET = 14 + 2*INT((1.+RPOX)*RNDM(0))
+         IATARGET = 14 + 2*INT((1.+RPOX)*RAN(0))
       ELSE
           IATARGET = IAT
       ENDIF
@@ -3956,7 +3956,7 @@ C
 C      Generate an 'air' interaction by choosing Nitrogen or Oxygen
 C
       IF (IATARGET .EQ. 0) THEN
-          R = RNDM(0)
+          R = RAN(0)
           IATARGET = 14
           IF (R .LT. FOX)  IATARGET = 16
       ENDIF
@@ -4012,7 +4012,7 @@ C     IF (LXBAD .EQ. 1)  GOTO 2000 Bug fix 2-4-94 PL/RSF
          J1=2*(J-1)+1
          J2=J1+1
          KT=13
-         IF (IATARGET .GT. 1)  KT = 13+INT(2.*RNDM(0))
+         IF (IATARGET .GT. 1)  KT = 13+INT(2.*RAN(0))
          CALL HSPLI (KT,IFLT(J2),IFLT(J1))
          XMINA = 2.*stringmas0/(SQS*(1.-X2JET(J)))
 C        XMINA = 2.*0.20/(SQS*(1.-X2JET(J)))  ! change RSF. 5-92
@@ -4251,7 +4251,7 @@ C...diffraction
       JB = 0
       JD = 0
       DO K=1, NA
-         R = RNDM(0)
+         R = RAN(0)
          IF (R .LT. P0)  THEN
             NW = NW + 1
          ELSE IF (R .LT. P1)  THEN
@@ -4323,7 +4323,7 @@ C..........................................................................
       NN = 0
       M = 0
       DO KK=1,NINT
-         IA = 14 + 2*INT((1.+WOX)*RNDM(0))
+         IA = 14 + 2*INT((1.+WOX)*RAN(0))
          CALL INT_NUC (IA, IB, SIG0, SIGEL)
          NN = NN + NTRY
          MMI(NI) = MMI(NI) + 1
@@ -4972,7 +4972,7 @@ c      COMMON /S_CHDCNV/NB,DB,ABPP(200),ABPIP(200)
 
       SUBROUTINE SINCO(S,C)
       DATA PI /3.1415926/
-      F = 2.*PI*RNDM(0)
+      F = 2.*PI*RAN(0)
       C = COS (F)
       S = SIN (F)
       RETURN
@@ -5090,7 +5090,7 @@ C
       IF (IABS(IFL1) .GT. 10 .AND. IABS(IFL2) .GT. 10)  THEN
          IBLEAD = 2
          I = I+1
-         JT = 1.5+RNDM(0)
+         JT = 1.5+RAN(0)
          GOTO 350
       ENDIF
       IF (IABS(IFL1) .GT. 10 .OR. IABS(IFL2) .GT. 10)  THEN
@@ -5109,7 +5109,7 @@ C...produce new particle: side, pT
        ENDIF
 c
  349     continue
-         JT=1.5+RNDM(0)
+         JT=1.5+RAN(0)
  350      JR=3-JT
       LPOINT(I) = JT
       Iflag(i)=0
@@ -5133,8 +5133,8 @@ C...test end of fragmentation
 
       WREM2 = PTOT(4)**2-PTOT(1)**2-PTOT(2)**2-PTOT(3)**2
       IF (WREM2 .LT. 0.1)  GOTO 200
-      WMIN = PMQ(1)+PMQ(2)+2.*PMQ(3)+ 1.1 + (2.*RNDM(0)-1.)*0.2
-c      WMIN = PMQ(jr)+sqrt(xmt2)+pmq(3)+ 1.1 +(2.*RNDM(0)-1.)*0.2
+      WMIN = PMQ(1)+PMQ(2)+2.*PMQ(3)+ 1.1 + (2.*RAN(0)-1.)*0.2
+c      WMIN = PMQ(jr)+sqrt(xmt2)+pmq(3)+ 1.1 +(2.*RAN(0)-1.)*0.2
 c      IF (WREM2 .LT. WMIN**2) goto 400
       IF (WREM2 .LT. WMIN**2)    Then!   goto 400
          if (abs(ifl(3)).ne.3) GOTO 400
@@ -5300,15 +5300,15 @@ c      COMMON /S_SZLEAD/ CLEADs, FLEADs
             IC = ICHP(Lb)*ISIGN(1,Lb)
 
       if (lb.ge.34.and.lb.le.39)  then  ! Lambda's and Sigma's
-  665               ZBLEAD = RNDM(0)
+  665               ZBLEAD = RAN(0)
                 if (zblead.le..01) goto 665
 c          zblead=zdisn(1) ! blead**2   ! soft
       else if (ic.eq.0)     then
           zblead=zdisn(1)   ! blead**2   !soft
       else if (ic.eq.1)  then  ! fast protons only
             if (abs(lb).eq.13) then
-              IF (RNDM(0) .LT. CLEAD)  THEN
-  666               ZBLEAD = RNDM(0)
+              IF (RAN(0) .LT. CLEAD)  THEN
+  666               ZBLEAD = RAN(0)
                 if (zblead.le..01) goto 666
               ELSE
                   zblead=1.-zdisn(1)  ! zblead**2   !hard
@@ -5320,7 +5320,7 @@ c          zblead=zdisn(1) ! blead**2   ! soft
       else if (ic.eq.2)  then  ! fast delta++
           zblead=1.- zdisn(1)  ! (zblead)**.3333
       else
-               zblead=RNDM(0) ! zdisn(1)     !hard
+               zblead=RAN(0) ! zdisn(1)     !hard
       endif
        RETURN
       END
@@ -5345,16 +5345,16 @@ C  following statement corrected by D.H. may 10, 1996
       IF(ZMAX.GT.0.85)
      +     ZDIV=ZMAX-0.6/FB**2+(FA/FB)*ALOG((0.01+FA)/FB)
 C...Choice if z, preweighted for peaks at low or high z
-100      Z=RNDM(0)
+100      Z=RAN(0)
       IDIV=1
       FPRE=1.
       IF (ZMAX.LT.0.1)  THEN
-         IF(1..LT.RNDM(0)*(1.-ALOG(ZDIV)))  IDIV=2
+         IF(1..LT.RAN(0)*(1.-ALOG(ZDIV)))  IDIV=2
          IF (IDIV.EQ.1)  Z=ZDIV*Z
          IF (IDIV.EQ.2)  Z=ZDIV**Z
          IF (IDIV.EQ.2)  FPRE=ZDIV/Z
       ELSEIF (ZMAX.GT.0.85)  THEN
-         IF(1..LT.RNDM(0)*(FB*(1.-ZDIV)+1.)) IDIV=2
+         IF(1..LT.RAN(0)*(FB*(1.-ZDIV)+1.)) IDIV=2
          IF (IDIV.EQ.1)  Z=ZDIV+ALOG(Z)/FB
          IF (IDIV.EQ.1)  FPRE=EXP(FB*(Z-ZDIV))
          IF (IDIV.EQ.2)  Z=ZDIV+Z*(1.-ZDIV)
@@ -5363,7 +5363,7 @@ C...weighting according to the correct formula
       IF (Z.LE.FB/(50.+FB).OR.Z.GE.1.)  GOTO 100
       FVAL=(ZMAX/Z)*EXP(FB*(1./ZMAX-1./Z))
       IF(FA.GT.0.01)  FVAL=((1.-Z)/(1.-ZMAX))**FA*FVAL
-      IF(FVAL.LT.RNDM(0)*FPRE)  GOTO 100
+      IF(FVAL.LT.RAN(0)*FPRE)  GOTO 100
       ZDIS=Z
       RETURN
       END
@@ -5372,7 +5372,7 @@ C...Generate (1-x)**n
       continue
 666   rmin=1.1
       do i=1,n+1
-         R1=RNDM(0)
+         R1=RAN(0)
          IF (R1.LE.RMIN) RMIN=R1
       ENDDO
       ZDISn=RMIN
@@ -5390,7 +5390,7 @@ C.....................................................
      +   FFA(2),FFB(2),
      +   DFX(2),DFZ(2),XX(200,2),ZZ(200,2),FFX(200,2),FFZ(200,2)
 
-      F = PART_INT(ZMIN,L)*RNDM(0)
+      F = PART_INT(ZMIN,L)*RAN(0)
 C D.H.
       IF (F .GE. FFA(L))  THEN
          ZSAMPLE = ZA - (F-FFA(L))/APART(L)
@@ -5575,7 +5575,7 @@ C...Choose decay channel
       ND=0
       IDC = IDB(L)-1
       IF (IDC+1 .LE.0)  RETURN
-      RBR = RNDM(0)
+      RBR = RAN(0)
 110   IDC=IDC+1
       IF(RBR.GT.CBR(IDC))  GOTO 110
 
@@ -5622,7 +5622,7 @@ C...Calculate maximum weight for ND-particle decay
 C...generation of the masses, compute weight, if rejected try again
 240   RORD(1) = 1.
       DO 260 IL1=2,ND-1
-        RSAV = RNDM(0)
+        RSAV = RAN(0)
         DO 250 IL2=IL1-1,1,-1
           IF(RSAV.LE.RORD(IL2))   GOTO 260
 250     RORD(IL2+1)=RORD(IL2)
@@ -5632,13 +5632,13 @@ C...generation of the masses, compute weight, if rejected try again
       DO 270 IL=ND-1,1,-1
       PV(IL,5)=PV(IL+1,5)+P(IL,5)+(RORD(IL)-RORD(IL+1))*(PV(1,5)-PS)
 270   WT=WT*PAWT(PV(IL,5),PV(IL+1,5),P(IL,5))
-      IF (WT.LT.RNDM(0)*WWTMAX)   GOTO 240
+      IF (WT.LT.RAN(0)*WWTMAX)   GOTO 240
 
 C...Perform two particle decays in respective cm frame
 280   DO 300 IL=1,ND-1
       PA=PAWT(PV(IL,5),PV(IL+1,5),P(IL,5))
-      UE(3)=2.*RNDM(0)-1.
-      PHI=2.*PI*RNDM(0)
+      UE(3)=2.*RAN(0)-1.
+      PHI=2.*PI*RAN(0)
       UT = SQRT(1.-UE(3)**2)
       UE(1) = UT*COS(PHI)
       UE(2) = UT*SIN(PHI)
@@ -5673,7 +5673,7 @@ C          WT = P0(5)*P(1,4)*F1
            WT= WT-FLOAT(LA/L)*(P0(4)*BETA*P(1,4)-P0(4)*P(1,3))*F1
          ENDIF
          WTMAX = P0(5)**4/8.
-         IF(WT.LT.RNDM(0)*WTMAX)   GOTO 240
+         IF(WT.LT.RAN(0)*WTMAX)   GOTO 240
       ENDIF
 
 C...Boost back for rapidly moving particle

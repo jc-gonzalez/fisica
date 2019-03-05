@@ -7,7 +7,7 @@
 DESTDIR = .
 
 F77 = f77
-CC = cc
+CC = gcc
 CERNDIR = CERN
 ADDFLAGS =
 
@@ -38,12 +38,12 @@ OSF_F77      = f77
 
 ## linux
 LINUX_CFLAGS = -I. -I/usr/include -funderscoring -DJC_UNDERSCORES \
-		-m486 -DCPU=686 ${ADDFLAGS}
+		${ADDFLAGS}
 LINUX_FFLAGS = ${LINUX_CFLAGS}
 LINUX_EXE    = ${EXE_VERSION}-linux
 LINUX_LIBS   = -lm -lc
 LINUX_CC     = gcc
-LINUX_F77    = g77
+LINUX_F77    = gfortran
 
 ## aix (ibm rs6000)
 AIX_CFLAGS   = -I. -I/usr/include -DJC_NO_UNDERSCORES ${ADDFLAGS}

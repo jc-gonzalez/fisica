@@ -35,6 +35,64 @@ C----------------------------------------------------------------------C
  
 C=======================================================================
 
+      DOUBLE PRECISION FUNCTION PSRAN(B10)
+
+C-----------------------------------------------------------------------
+C  RAN(DOM GENERATOR FOR QGSJET)
+C
+C  SEE SUBROUT. RMMARD
+C  WE USE HERE A SIMPLIFIED FORM OF RMMARD WITH JSEQ=1, LENV=1.
+C  THIS FUNCTON IS CALLED FROM QGSJET01C AND QGSJET_II ROUTINES.
+C  ARGUMENT:
+C  B10    =  DUMMY ARGUMENT
+C-----------------------------------------------------------------------
+
+      IMPLICIT NONE
+
+      INTEGER          KSEQ
+
+      PARAMETER        (KSEQ = 9)
+
+      COMMON /CRRANMA3/CD,CINT,CM,TWOM24,TWOM48,MODCNS
+      DOUBLE PRECISION CD,CINT,CM,TWOM24,TWOM48
+      INTEGER          MODCNS
+
+      COMMON /CRRANMA4/C,U,IJKL,I97,J97,NTOT,NTOT2,JSEQ
+      DOUBLE PRECISION C(KSEQ),U(97,KSEQ),UNI
+      INTEGER          IJKL(KSEQ),I97(KSEQ),J97(KSEQ),
+     *                 NTOT(KSEQ),NTOT2(KSEQ),JSEQ
+
+      DOUBLE PRECISION B10
+      SAVE
+C-----------------------------------------------------------------------
+
+      JSEQ = 1
+
+      UNI = U(I97(JSEQ),JSEQ) - U(J97(JSEQ),JSEQ)
+      IF ( UNI .LT. 0.D0 ) UNI = UNI + 1.D0
+      U(I97(JSEQ),JSEQ) = UNI
+      I97(JSEQ)  = I97(JSEQ) - 1
+      IF ( I97(JSEQ) .EQ. 0 ) I97(JSEQ) = 97
+      J97(JSEQ)  = J97(JSEQ) - 1
+      IF ( J97(JSEQ) .EQ. 0 ) J97(JSEQ) = 97
+      C(JSEQ)    = C(JSEQ) - CD
+      IF ( C(JSEQ) .LT. 0.D0 ) C(JSEQ)  = C(JSEQ) + CM
+      UNI        = UNI - C(JSEQ)
+      IF ( UNI .LT. 0.D0 ) UNI = UNI + 1.D0
+C  AN EXACT ZERO HERE IS VERY UNLIKELY, BUT LET''S BE SAFE.
+      IF ( UNI .EQ. 0.D0 ) UNI = TWOM48
+
+      PSRAN = UNI
+
+      NTOT(JSEQ) = NTOT(JSEQ) + 1
+      IF ( NTOT(JSEQ) .GE. MODCNS )  THEN
+        NTOT2(JSEQ) = NTOT2(JSEQ) + 1
+        NTOT(JSEQ)  = NTOT(JSEQ) - MODCNS
+      ENDIF
+
+      RETURN
+      END
+      
       SUBROUTINE PSAINI
 c Common initialization procedure
 c-----------------------------------------------------------------------

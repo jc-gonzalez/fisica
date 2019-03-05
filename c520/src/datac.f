@@ -184,8 +184,8 @@ C>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
       character*100 cifile
       character*100 cofile
       integer iargc
-      external getarg
-      external iargc
+      intrinsic getarg
+      intrinsic iargc
      
 C-----------------------------------------------------------------------
  

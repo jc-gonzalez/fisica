@@ -1,0 +1,35 @@
+#TERMINAL = "png size 800,800"
+TERMINAL = "x11"
+
+set term TERMINAL 0
+
+#set output 'p.png'
+#plot "<awk '($1 < 1)' output.dat" u 2:3 w d, \
+#     "<awk '($1 > 1)' output.dat" u 2:3 w d, \
+#     "<awk '($1 > 0)' output.dat" u 2:3 w d
+
+set term TERMINAL 1
+
+#set output 'pp.png'
+#plot "<awk '($1 < 1)' output.dat" u 2:3 w d, \
+#     "<awk '($1 == 2)' output.dat" u 12:13 w p pt 7 ps 0.25, \
+#     "<awk '($1 == 1)' output.dat" u 9:10 w p pt 7 ps 0.25
+
+set term TERMINAL 2
+
+#set output 'ppp.png'
+splot "<awk '($1 > 0)' output.dat" u 9:10:11 w p pt 7 ps 0.2, \
+      "<awk '($1 > 1)' output.dat" u 12:13:14 w p pt 7 ps 0.2, \
+      "<awk '($1 == 1)' output.dat" u 9:10:11 w p pt 6 ps 0.6
+
+pause -1
+
+set term TERMINAL 3
+
+set zrange [0:15]
+splot "<awk '/@/' output.dat" u 17:18:19 w p pt 7 ps 0.5
+#, '' u 19:20:21 w p pt 7 ps 0.5
+
+#set output
+
+pause -1
