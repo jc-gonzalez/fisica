@@ -13,15 +13,17 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 #===== Project libraries =====
 
-set (CURDIR ${CMAKE_SOURCE_DIR})
+set (TOPDIR ${CMAKE_SOURCE_DIR})
+string(REGEX REPLACE "/libs$" "" TOPDIR "${TOPDIR}")
+message("## TOPDIR is ${TOPDIR}")
 
-set (FILEHDL_ROOT_DIR ${CURDIR}/filehdl)
-set (INFIX_ROOT_DIR   ${CURDIR}/infix)
-set (JSON_ROOT_DIR    ${CURDIR}/json)
-set (LOG_ROOT_DIR     ${CURDIR}/log)
-set (STR_ROOT_DIR     ${CURDIR}/str)
-set (TOOLS_ROOT_DIR   ${CURDIR}/tools)
-set (UUID_ROOT_DIR    ${CURDIR}/uuid)
+set (FILEHDL_ROOT_DIR ${TOPDIR}/libs/filehdl)
+set (INFIX_ROOT_DIR   ${TOPDIR}/libs/infix)
+set (JSON_ROOT_DIR    ${TOPDIR}/libs/json)
+set (LOG_ROOT_DIR     ${TOPDIR}/libs/log)
+set (STR_ROOT_DIR     ${TOPDIR}/libs/str)
+set (TOOLS_ROOT_DIR   ${TOPDIR}/libs/tools)
+set (UUID_ROOT_DIR    ${TOPDIR}/libs/uuid)
 
 #==== Common directives
 
