@@ -204,6 +204,10 @@ namespace json {
         type = t;
     }
 
+    Array::iterator Array::begin() { return arr.begin(); }
+    
+    Array::iterator Array::end() { return arr.end(); }
+    
     //======================================================================
     
     Value::Value() : type(JSON_UNKNOWN) {}
@@ -231,7 +235,8 @@ namespace json {
     void Value::operator=(Array & x)       { avalue = x; type = JSON_ARRAY; }
     void Value::operator=(Object & x)      { ovalue = x; type = JSON_OBJECT; }
 
-    bool Value::asBool() {
+    bool Value::asBool()
+    {
         switch (type) {
         case JSON_BOOL:   return bvalue; break;
         case JSON_INT:    return bool(ivalue); break;
@@ -242,7 +247,8 @@ namespace json {
         defaut: break;
         }
     }
-    int Value::asInt() {
+    int Value::asInt()
+    {
         switch (type) {
         case JSON_BOOL:   return int(bvalue); break;
         case JSON_INT:    return ivalue; break;
@@ -253,7 +259,8 @@ namespace json {
         defaut: break;
         }
     }
-    double Value::asFloat() {
+    double Value::asFloat()
+    {
         switch (type) {
         case JSON_BOOL:   return float(int(bvalue)); break;
         case JSON_INT:    return float(ivalue); break;
@@ -264,7 +271,8 @@ namespace json {
         defaut: break;
         }
     }
-    std::string Value::asString() {
+    std::string Value::asString()
+    {
         switch (type) {
         case JSON_BOOL:   return (bvalue ? "true" : "false"); break;
         case JSON_INT:    return std::to_string(ivalue); break;
@@ -275,7 +283,8 @@ namespace json {
         defaut: break;
         }
     }
-    Array Value::asArray() {
+    Array Value::asArray()
+    {
         switch (type) {
         case JSON_BOOL:   {
             std::vector<bool> vb {bvalue};
@@ -297,7 +306,8 @@ namespace json {
         defaut: break;
         }
     }
-    Object Value::asObject() {
+    Object Value::asObject()
+    {
         switch (type) {
         case JSON_BOOL:   return Object("value", bvalue); break;
         case JSON_INT:    return Object("value", ivalue); break;
@@ -308,6 +318,27 @@ namespace json {
         defaut: break;
         }
     }
+        
+    Value & Value::operator[](int i)
+    {
+	return avalue[i];
+    }
+
+            
+    Value & Value::operator[](const char * s)
+    {
+	std::string ss(s);
+	return ovalue[ss];
+    }
+
+    Value & Value::operator[](std::string s)
+    {
+	return ovalue[s];
+    }
+
+    Object::iterator Object::begin() { return obj.begin(); }
+    
+    Object::iterator Object::end() { return obj.end(); }
 
     //======================================================================
     

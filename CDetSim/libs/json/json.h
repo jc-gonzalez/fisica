@@ -130,8 +130,8 @@ namespace json {
 
 	typedef std::map<std::string, Value>::iterator iterator;
 
-	iterator begin() { return obj.begin(); }
-	iterator end() { return obj.end(); }
+	iterator begin();
+	iterator end();
 	
     private:
 	std::map<std::string, Value> obj;
@@ -177,6 +177,11 @@ namespace json {
 	void clear();
     
 	friend std::ostream & operator<<(std::ostream & os, const Array & a);
+
+	typedef std::vector<Value>::iterator iterator;
+
+	iterator begin();
+	iterator end();
 
     private:
 	void ensureTypeIs(ValueType t);
@@ -225,6 +230,10 @@ namespace json {
 	std::string asString();
 	Array asArray();
 	Object asObject();
+
+	Value & operator[](int i);
+	Value & operator[](const char * s);
+	Value & operator[](std::string s);
 
 	friend std::ostream & operator<<(std::ostream & os, const Value & v);
     

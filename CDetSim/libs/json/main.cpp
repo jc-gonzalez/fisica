@@ -60,9 +60,15 @@ int main(int argc, char * argv[])
 	json::disableFormattedOutput();
     }
 
-    Array mirr2 = o3["data"].asObject()["mirrors"].asObject()["value"].asArray()[1].asArray();
+    //Array mirr2 = o3["data"].asObject()["mirrors"].asObject()["value"].asArray()[1].asArray();
+    Array mirr2 = o3["data"]["mirrors"]["value"][1].asArray();
     int n = mirr2.size();
     for (int h = 0; h < n; ++h) { std::cout << mirr2[h] << ' '; }
     std::cout << '\n';
+
+    mirr2[1] = 1101;
+    for (int h = 0; h < n; ++h) { std::cout << mirr2[h] << ' '; }
+    std::cout << '\n';
+    
 }
 
