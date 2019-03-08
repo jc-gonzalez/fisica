@@ -506,6 +506,17 @@ namespace json {
 		    item += c;
 		}
 		break;
+            case COMMENT_SLASH:
+            case COMMENT_DASH:
+            case COMMENT_HASH:
+                if (state != IN_STRING) {
+                    if (c != COMMENT_HASH && (s.at(k+1) != c)) {
+                        parseResult = false;
+                        break;
+                    }
+                    size_t kk = s.find(NEWLINE, k);
+                    k += (kk - k + 1); // Ignore until new line
+                }
 	    default:            
 		if (state == IN_STRING) {
 		    if (escaping) {

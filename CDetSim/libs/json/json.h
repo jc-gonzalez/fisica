@@ -76,7 +76,9 @@
 	    T(SEP_DOT, '.'),			\
 	    T(SPACE, ' '),			\
 	    T(TABULATOR, '\t'),			\
-	    T(NEWLINE, '\n'),			\
+	    T(COMMENT_DASH, '-'),               \
+	    T(COMMENT_SLASH, '/'),              \
+	    T(COMMENT_HASH, '#'),               \
 	    T(DIGIT_ZERO, '0'),			\
 	    T(DIGIT_NINE, '9')
 
