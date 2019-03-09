@@ -65,6 +65,7 @@ int main(int argc, char * argv[])
 
     // 8. Extract part of the object, and set a value
     //Array mirr2 = o3["data"].asObject()["mirrors"].asObject()["value"].asArray()[1].asArray();
+    /*
     Array mirr2 = o3["data"]["mirrors"]["value"][1].asArray();
     int n = mirr2.size();
     for (int h = 0; h < n; ++h) { std::cout << mirr2[h] << ' '; }
@@ -73,11 +74,11 @@ int main(int argc, char * argv[])
     mirr2[1] = 1101;
     for (int h = 0; h < n; ++h) { std::cout << mirr2[h] << ' '; }
     std::cout << '\n';
-
+    */
     // 9. Test comments support (//, -- and # styles)
     Object o4;
     if (p.parseFile("with_comments.json", o4)) {
-	json::enableFormattedOutput(" .  ");
+	json::enableFormattedOutput("\t");
         std::cout << o4 << '\n';
 	json::disableFormattedOutput();
     }

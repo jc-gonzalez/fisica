@@ -55,32 +55,33 @@
         T(ARRAY),                               \
         T(OBJECT)
 
-#define TLISTOF_TOKENS				\
-	T(OPEN_BRACE, '{'),			\
-	    T(CLOSE_BRACE, '}'),		\
-	    T(OPEN_BRACKET, '['),		\
-	    T(CLOSE_BRACKET, ']'),		\
-	    T(QUOTES, '"'),			\
-	    T(COLON, ':'),			\
-	    T(COMMA, ','),			\
-	    T(BACKSLASH, '\\'),			\
-	    T(SLASH, '/'),			\
-	    T(EOL_CHAR, 'n'),			\
-	    T(CR_CHAR, 'r'),			\
-	    T(BACKSPACE, 'b'),			\
-	    T(FORMFEED, 'f'),			\
-	    T(TAB_CHAR, 't'),			\
-	    T(UNICODE_CHAR, 'u'),		\
-	    T(SIGN_MINUS, '-'),			\
-	    T(SIGN_PLUS, '+'),			\
-	    T(SEP_DOT, '.'),			\
-	    T(SPACE, ' '),			\
-	    T(TABULATOR, '\t'),			\
-	    T(COMMENT_DASH, '-'),               \
-	    T(COMMENT_SLASH, '/'),              \
-	    T(COMMENT_HASH, '#'),               \
-	    T(DIGIT_ZERO, '0'),			\
-	    T(DIGIT_NINE, '9')
+#define TLISTOF_TOKENS                          \
+        T(OPEN_BRACE, '{'),                     \
+            T(CLOSE_BRACE, '}'),                \
+            T(OPEN_BRACKET, '['),               \
+            T(CLOSE_BRACKET, ']'),              \
+            T(QUOTES, '"'),                     \
+            T(COLON, ':'),                      \
+            T(COMMA, ','),                      \
+            T(BACKSLASH, '\\'),                 \
+            T(SLASH, '/'),                      \
+            T(EOL_CHAR, 'n'),                   \
+            T(CR_CHAR, 'r'),                    \
+            T(BACKSPACE, 'b'),                  \
+            T(FORMFEED, 'f'),                   \
+            T(TAB_CHAR, 't'),                   \
+            T(UNICODE_CHAR, 'u'),               \
+            T(SIGN_MINUS, '-'),                 \
+            T(SIGN_PLUS, '+'),                  \
+            T(SEP_DOT, '.'),                    \
+            T(SPACE, ' '),                      \
+            T(TABULATOR, '\t'),                 \
+            T(NEWLINE, '\n'),                   \
+            T(COMMENT_DASH, '-'),               \
+            T(COMMENT_SLASH, '/'),              \
+            T(COMMENT_HASH, '#'),               \
+            T(DIGIT_ZERO, '0'),                 \
+            T(DIGIT_NINE, '9')
 
 ////////////////////////////////////////////////////////////////////////////
 // Namespace: json
@@ -104,42 +105,42 @@ namespace json {
     //==========================================================================
     class Object {
     public:
-	Object();
-	Object(std::string key, bool bvalue);       
-	Object(std::string key, int ivalue);        
-	Object(std::string key, double xvalue);     
-	Object(std::string key, std::string svalue);
-	Object(std::string key, Array & avalue);    
-	Object(std::string key, Object & ovalue);   
+        Object();
+        Object(std::string key, bool bvalue);       
+        Object(std::string key, int ivalue);        
+        Object(std::string key, double xvalue);     
+        Object(std::string key, std::string svalue);
+        Object(std::string key, Array & avalue);    
+        Object(std::string key, Object & ovalue);   
 
-	~Object();
+        ~Object();
 
-	void append(std::string key, bool bvalue);
-	void append(std::string key, int ivalue);
-	void append(std::string key, double xvalue);
-	void append(std::string key, std::string svalue);
-	void append(std::string key, Array avalue);
-	void append(std::string key, Object ovalue);
+        void append(std::string key, bool bvalue);
+        void append(std::string key, int ivalue);
+        void append(std::string key, double xvalue);
+        void append(std::string key, std::string svalue);
+        void append(std::string key, Array avalue);
+        void append(std::string key, Object ovalue);
 
-	void append(std::string key, Value & ovalue);
+        void append(std::string key, Value & ovalue);
 
-	int size();
+        int size();
 
-	std::pair<std::string, Value> operator[](int i);
-	Value & operator[](std::string s);
+        std::pair<std::string, Value> operator[](int i);
+        Value & operator[](std::string s);
 
-	friend std::ostream & operator<<(std::ostream & os, const Object & o);
+        friend std::ostream & operator<<(std::ostream & os, const Object & o);
 
-	typedef std::map<std::string, Value>::iterator iterator;
+        typedef std::map<std::string, Value>::iterator iterator;
 
-	iterator begin();
-	iterator end();
-	
+        iterator begin();
+        iterator end();
+        
     private:
-	std::map<std::string, Value> obj;
-	std::vector<std::string> keys;
+        std::map<std::string, Value> obj;
+        std::vector<std::string> keys;
     
-	ValueType type;
+        ValueType type;
     };
 
     //==========================================================================
@@ -149,50 +150,50 @@ namespace json {
     //==========================================================================
     class Array {
     public:
-	Array();
-	Array(std::vector<bool> & vb);
-	Array(std::vector<int> & vi);
-	Array(std::vector<double> & vx);
-	Array(std::vector<std::string> & vs);
-	Array(std::vector<Array> & va);
-	Array(std::vector<Object> & vo);
+        Array();
+        Array(std::vector<bool> & vb);
+        Array(std::vector<int> & vi);
+        Array(std::vector<double> & vx);
+        Array(std::vector<std::string> & vs);
+        Array(std::vector<Array> & va);
+        Array(std::vector<Object> & vo);
 
-	void append(bool b);       
-	void append(int i);        
-	void append(double x);     
-	void append(std::string s);
-	void append(Array a);      
-	void append(Object o);     
-	void append(Value & v);
+        void append(bool b);       
+        void append(int i);        
+        void append(double x);     
+        void append(std::string s);
+        void append(Array a);      
+        void append(Object o);     
+        void append(Value & v);
         
-	void assign(std::vector<bool> & v);
-	void assign(std::vector<int> & v);
-	void assign(std::vector<double> & v);
-	void assign(std::vector<std::string> & v);
-	void assign(std::vector<Array> & v);
-	void assign(std::vector<Object> & v);
+        void assign(std::vector<bool> & v);
+        void assign(std::vector<int> & v);
+        void assign(std::vector<double> & v);
+        void assign(std::vector<std::string> & v);
+        void assign(std::vector<Array> & v);
+        void assign(std::vector<Object> & v);
 
-	Value & operator[](int i);
+        Value & operator[](int i);
 
-	int size();
+        int size();
 
-	void clear();
+        void clear();
     
-	friend std::ostream & operator<<(std::ostream & os, const Array & a);
+        friend std::ostream & operator<<(std::ostream & os, const Array & a);
 
-	typedef std::vector<Value>::iterator iterator;
+        typedef std::vector<Value>::iterator iterator;
 
-	iterator begin();
-	iterator end();
+        iterator begin();
+        iterator end();
 
     private:
-	void ensureTypeIs(ValueType t);
+        void ensureTypeIs(ValueType t);
 
     public:
-	ValueType type;
+        ValueType type;
 
     private:
-	std::vector<Value> arr;
+        std::vector<Value> arr;
     };
 
     //==========================================================================
@@ -202,53 +203,53 @@ namespace json {
     //==========================================================================
     class Value {
     public:
-	Value();
-	Value(bool x);
-	Value(int x);
-	Value(double x);
-	Value(std::string & x);
-	Value(Array & x);
-	Value(Object & x);
+        Value();
+        Value(bool x);
+        Value(int x);
+        Value(double x);
+        Value(std::string & x);
+        Value(Array & x);
+        Value(Object & x);
 
-	~Value();
+        ~Value();
 
-	void assign(bool x);
-	void assign(int x);
-	void assign(double x);
-	void assign(std::string & x);
-	void assign(Array & x);
-	void assign(Object & x);
+        void assign(bool x);
+        void assign(int x);
+        void assign(double x);
+        void assign(std::string & x);
+        void assign(Array & x);
+        void assign(Object & x);
 
-	void operator=(bool x);
-	void operator=(int x);
-	void operator=(double x);
-	void operator=(std::string & x);
-	void operator=(Array & x);
-	void operator=(Object & x);
+        void operator=(bool x);
+        void operator=(int x);
+        void operator=(double x);
+        void operator=(std::string & x);
+        void operator=(Array & x);
+        void operator=(Object & x);
 
-	bool asBool();
-	int asInt();
-	double asFloat();
-	std::string asString();
-	Array asArray();
-	Object asObject();
+        bool asBool();
+        int asInt();
+        double asFloat();
+        std::string asString();
+        Array asArray();
+        Object asObject();
 
-	Value & operator[](int i);
-	Value & operator[](const char * s);
-	Value & operator[](std::string s);
+        Value & operator[](int i);
+        Value & operator[](const char * s);
+        Value & operator[](std::string s);
 
-	friend std::ostream & operator<<(std::ostream & os, const Value & v);
+        friend std::ostream & operator<<(std::ostream & os, const Value & v);
     
     public:
-	ValueType type;
+        ValueType type;
 
     private:
-	bool        bvalue;
-	int         ivalue;
-	double      xvalue;
-	std::string svalue;
-	Array       avalue;
-	Object      ovalue;
+        bool        bvalue;
+        int         ivalue;
+        double      xvalue;
+        std::string svalue;
+        Array       avalue;
+        Object      ovalue;
 
     };
 
@@ -259,12 +260,12 @@ namespace json {
     //==========================================================================
     class Parser {
     public:
-	Parser();
-	~Parser();
+        Parser();
+        ~Parser();
 
     public:
-	bool parse(std::string & s, Object & root);
-	bool parseFile(std::string filename, Object & root);
+        bool parse(std::string & s, Object & root);
+        bool parseFile(std::string filename, Object & root);
 
     };
 
@@ -292,7 +293,7 @@ namespace json {
     extern bool formattedOutput;
     extern int         indent;
     extern std::string indentStr;
-    extern std::string indentStep;	
+    extern std::string indentStep;      
 
 }
 

@@ -67,58 +67,58 @@ namespace json {
 
     void Object::append(std::string key, bool bvalue)
     {
-	obj[key] = Value(bvalue); 
-	keys.push_back(key);
+        obj[key] = Value(bvalue); 
+        keys.push_back(key);
     }
     void Object::append(std::string key, int ivalue)
     {
-	obj[key] = Value(ivalue); 
-	keys.push_back(key);
+        obj[key] = Value(ivalue); 
+        keys.push_back(key);
     }
     void Object::append(std::string key, double xvalue)
     {
-	obj[key] = Value(xvalue); 
-	keys.push_back(key);
+        obj[key] = Value(xvalue); 
+        keys.push_back(key);
     }
     void Object::append(std::string key, std::string svalue)
     {
-	obj[key] = Value(svalue); 
-	keys.push_back(key);
+        obj[key] = Value(svalue); 
+        keys.push_back(key);
     }
     void Object::append(std::string key, Array avalue)
     {
-	obj[key] = Value(avalue); 
-	keys.push_back(key);
+        obj[key] = Value(avalue); 
+        keys.push_back(key);
     }
     void Object::append(std::string key, Object ovalue)
     {
-	obj[key] = Value(ovalue); 
-	keys.push_back(key);
+        obj[key] = Value(ovalue); 
+        keys.push_back(key);
     }
 
     void Object::append(std::string key, Value & v)
     {
-	switch (v.type) {
-	case JSON_BOOL:   append(key, v.asBool());    break;
-	case JSON_INT:    append(key, v.asInt());     break;
-	case JSON_FLOAT:  append(key, v.asFloat());   break;
-	case JSON_STRING: append(key, v.asString());  break;
-	case JSON_ARRAY:  append(key, v.asArray());   break;
-	case JSON_OBJECT: append(key, v.asObject());  break;
-	defaut: break;
-	}
+        switch (v.type) {
+        case JSON_BOOL:   append(key, v.asBool());    break;
+        case JSON_INT:    append(key, v.asInt());     break;
+        case JSON_FLOAT:  append(key, v.asFloat());   break;
+        case JSON_STRING: append(key, v.asString());  break;
+        case JSON_ARRAY:  append(key, v.asArray());   break;
+        case JSON_OBJECT: append(key, v.asObject());  break;
+        defaut: break;
+        }
     }           
 
     std::pair<std::string, Value> Object::operator[](int i)
     {
-	std::string k(keys.at(i));
-	return std::pair<std::string, Value>(k, obj[k]);
+        std::string k(keys.at(i));
+        return std::pair<std::string, Value>(k, obj[k]);
     }
 
     Value & Object::operator[](std::string s)
     {
-	std::map<std::string, Value>::iterator it = obj.find(s);
-	return it->second;
+        std::map<std::string, Value>::iterator it = obj.find(s);
+        return it->second;
     }
 
     //======================================================================
@@ -140,58 +140,58 @@ namespace json {
 
     void Array::append(Value & v)
     {
-	ensureTypeIs(v.type);
-	switch (v.type) {
-	case JSON_BOOL:   append(v.asBool());    break;
-	case JSON_INT:    append(v.asInt());     break;
-	case JSON_FLOAT:  append(v.asFloat());   break;
-	case JSON_STRING: append(v.asString());  break;
-	case JSON_ARRAY:  append(v.asArray());   break;
-	case JSON_OBJECT: append(v.asObject());  break;
-	defaut: break;
-	}
+        ensureTypeIs(v.type);
+        switch (v.type) {
+        case JSON_BOOL:   append(v.asBool());    break;
+        case JSON_INT:    append(v.asInt());     break;
+        case JSON_FLOAT:  append(v.asFloat());   break;
+        case JSON_STRING: append(v.asString());  break;
+        case JSON_ARRAY:  append(v.asArray());   break;
+        case JSON_OBJECT: append(v.asObject());  break;
+        defaut: break;
+        }
     }           
         
     Value & Array::operator[](int i)
     {
-	return arr[i];
+        return arr[i];
     }
 
     void Array::assign(std::vector<bool> & v)
     {
-	type = JSON_BOOL;
-	clear();
-	for (auto const & i: v) { arr.push_back(Value(i)); }
+        type = JSON_BOOL;
+        clear();
+        for (auto const & i: v) { arr.push_back(Value(i)); }
     }
     void Array::assign(std::vector<int> & v)
     {
-	type = JSON_INT;
-	clear();
-	for (auto & i: v) { arr.push_back(Value(i)); }
+        type = JSON_INT;
+        clear();
+        for (auto & i: v) { arr.push_back(Value(i)); }
     }
     void Array::assign(std::vector<double> & v)
     {
-	type = JSON_FLOAT;
-	clear();
-	for (auto & i: v) { arr.push_back(Value(i)); }
+        type = JSON_FLOAT;
+        clear();
+        for (auto & i: v) { arr.push_back(Value(i)); }
     }
     void Array::assign(std::vector<std::string> & v)
     {
-	type = JSON_STRING;
-	clear();
-	for (auto & i: v) { arr.push_back(Value(i)); }
+        type = JSON_STRING;
+        clear();
+        for (auto & i: v) { arr.push_back(Value(i)); }
     }
     void Array::assign(std::vector<Array> & v)
     {
-	type = JSON_ARRAY;
-	clear();
-	for (auto & i: v) { arr.push_back(Value(i)); }
+        type = JSON_ARRAY;
+        clear();
+        for (auto & i: v) { arr.push_back(Value(i)); }
     }
     void Array::assign(std::vector<Object> & v)
     {
-	type = JSON_OBJECT;
-	clear();
-	for (auto & i: v) { arr.push_back(Value(i)); }
+        type = JSON_OBJECT;
+        clear();
+        for (auto & i: v) { arr.push_back(Value(i)); }
     }
 
     int Array::size() { return arr.size(); }
@@ -227,7 +227,7 @@ namespace json {
     void Value::assign(std::string & x) { svalue = x; type = JSON_STRING; }
     void Value::assign(Array & x)       { avalue = x; type = JSON_ARRAY; }
     void Value::assign(Object & x)      { ovalue = x; type = JSON_OBJECT; }
-	 
+         
     void Value::operator=(bool x)          { bvalue = x; type = JSON_BOOL; }
     void Value::operator=(int x)           { ivalue = x; type = JSON_INT; }
     void Value::operator=(double x)        { xvalue = x; type = JSON_FLOAT; }
@@ -321,19 +321,19 @@ namespace json {
         
     Value & Value::operator[](int i)
     {
-	return avalue[i];
+        return avalue[i];
     }
 
             
     Value & Value::operator[](const char * s)
     {
-	std::string ss(s);
-	return ovalue[ss];
+        std::string ss(s);
+        return ovalue[ss];
     }
 
     Value & Value::operator[](std::string s)
     {
-	return ovalue[s];
+        return ovalue[s];
     }
 
     Object::iterator Object::begin() { return obj.begin(); }
@@ -348,341 +348,341 @@ namespace json {
 
     bool Parser::parseFile(std::string filename, Object & root)
     {
-	std::ifstream ifs(filename);
-	std::stringstream buffer;
-	buffer << ifs.rdbuf();
-	ifs.close();
-	std::string s = buffer.str();
-	buffer.str("");
+        std::ifstream ifs(filename);
+        std::stringstream buffer;
+        buffer << ifs.rdbuf();
+        ifs.close();
+        std::string s = buffer.str();
+        buffer.str("");
     
-	return parse(s, root);
+        return parse(s, root);
     }
 
     bool Parser::parse(std::string & s, Object & root)
     {
-	Object * o = nullptr;
-	Array * a;
+        Object * o = nullptr;
+        Array * a;
 
-	std::string item;
-	std::string key;
+        std::string item;
+        std::string key;
     
-	std::stack<Object*> ostck;
-	std::stack<Array*> astck;
-	std::stack<std::string> kstck;
+        std::stack<Object*> ostck;
+        std::stack<Array*> astck;
+        std::stack<std::string> kstck;
 
-	enum State { OUT, IN_STRING, IN_ARRAY, IN_OBJECT } state = OUT;
-	const char * StateName[] = {"OUT", "INSTR", "INARR", "INOBJ"};
-	std::stack<State> states;
+        enum State { OUT, IN_STRING, IN_ARRAY, IN_OBJECT } state = OUT;
+        const char * StateName[] = {"OUT", "INSTR", "INARR", "INOBJ"};
+        std::stack<State> states;
     
-	bool escaping = false;
-	bool hexNumber = false;
-	int hexDigits = 0;
-	bool hasKey = false;
+        bool escaping = false;
+        bool hexNumber = false;
+        int hexDigits = 0;
+        bool hasKey = false;
     
-	bool parseResult = true;
-	int k = 0;
-	int sLen = s.size();
+        bool parseResult = true;
+        int k = 0;
+        int sLen = s.size();
     
-	do {
-	    char & c = s.at(k);
+        do {
+            char & c = s.at(k);
         
-	    //std::cerr << c << ' '
-	    //        << TokenName[c] << ' '
-	    //        << StateName[state] << '\n';
+            //std::cerr << c << ' '
+            //        << TokenName[c] << ' '
+            //        << StateName[state] << '\n';
         
-	    switch (c) {
-	    case OPEN_BRACE:
-		if (state != IN_STRING) {
-		    if (hasKey) {
-			kstck.push(key);
-			hasKey = false;
-		    }
-		    states.push(state);
-		    if (state == IN_OBJECT) { ostck.push(o); }
-		    if (o == nullptr) {
-			o = &root;
-		    } else {
-			o = new Object;
-		    }
-		    state = IN_OBJECT;
-		} else {
-		    item += c;
-		}
-		break;
-	    case CLOSE_BRACE:
-		if (state != IN_STRING) {
-		    state = states.top();
-		    states.pop();
-		    if (state == IN_OBJECT) {
-			Object * oo = ostck.top();
-			ostck.pop();
-			key = kstck.top();
-			kstck.pop();
-			oo->append(key, *o);
-			o = oo;
-		    } else if (state == IN_ARRAY) {
-			a->append(*o);
-		    } else {
-			item += c;
-		    }
-		} else {
-		    item += c;
-		}
-		break;
-	    case OPEN_BRACKET:
-		if (state != IN_STRING) {
-		    if (hasKey) {
-			kstck.push(key);
-			hasKey = false;
-		    }
-		    states.push(state);
-		    if (state == IN_ARRAY) { astck.push(a); }
-		    a = new Array;
-		    state = IN_ARRAY;
-		} else {
-		    item += c;
-		}
-		break;
-	    case CLOSE_BRACKET:
-		if (state != IN_STRING) {
-		    state = states.top();
-		    states.pop();
-		    if (state == IN_OBJECT) {
-			key = kstck.top();
-			kstck.pop();
-			o->append(key, *a);
-		    } else if (state == IN_ARRAY) {
-			Array * aa = astck.top();
-			astck.pop();
-			aa->append(*a);
-			a = aa;
-		    } else {
-			item += c;
-		    }
-		} else {
-		    item += c;
-		}
-		break;
-	    case QUOTES:
-		if (state == IN_STRING) {
-		    if (escaping) {
-			// Escaped quotes
-			item += c;
-		    } else {
-			// Closing quotes
-			state = states.top();
-			states.pop();
-			if (state == IN_ARRAY) {
-			    a->append(item);
-			} else if (state == IN_OBJECT) {
-			    if (hasKey) {
-				//std::cerr << "Appending (\"" << key << "\": \"" << item << "\"\n";
-				o->append(key, item);
-				hasKey = false;
-			    } else {
-				key = item;
-				hasKey = true;
-			    }
-			} else {
-			    parseResult = false;                    
-			}
-		    }
-		} else {
-		    // Starting quotes
-		    states.push(state);
-		    state = IN_STRING;
-		    item.clear();
-		}
-		break;
-	    case COLON:
-		if (state == IN_STRING) {
-		    item += c;
-		} else if (state == IN_ARRAY) {
-		    parseResult = false;
-		}
-		break;
-	    case COMMA:
-		if (state == IN_STRING) {
-		    item += c;
-		}
-		break;
-            case COMMENT_SLASH:
-            case COMMENT_DASH:
-            case COMMENT_HASH:
+            switch (c) {
+            case OPEN_BRACE:
                 if (state != IN_STRING) {
-                    if (c != COMMENT_HASH && (s.at(k+1) != c)) {
-                        parseResult = false;
-                        break;
+                    if (hasKey) {
+                        kstck.push(key);
+                        hasKey = false;
                     }
-                    size_t kk = s.find(NEWLINE, k);
-                    k += (kk - k + 1); // Ignore until new line
+                    states.push(state);
+                    if (state == IN_OBJECT) { ostck.push(o); }
+                    if (o == nullptr) {
+                        o = &root;
+                    } else {
+                        o = new Object;
+                    }
+                    state = IN_OBJECT;
+                } else {
+                    item += c;
                 }
-	    default:            
-		if (state == IN_STRING) {
-		    if (escaping) {
-			if ((c == BACKSLASH) ||
-			    (c == SLASH) ||
-			    (c == EOL_CHAR) ||
-			    (c == CR_CHAR) ||
-			    (c == BACKSPACE) ||
-			    (c == FORMFEED) ||
-			    (c == TAB_CHAR)) {
-			    item += BACKSLASH + c;
-			    escaping = false;
-			} else {
-			    if (c == UNICODE_CHAR) {
-				// must four hexadecimal digits
-				hexNumber = true;
-				hexDigits = 0;
-			    } else {
-				item += c;
-			    }
-			}
-		    } else {
-			item += c;
+                break;
+            case CLOSE_BRACE:
+                if (state != IN_STRING) {
+                    state = states.top();
+                    states.pop();
+                    if (state == IN_OBJECT) {
+                        Object * oo = ostck.top();
+                        ostck.pop();
+                        key = kstck.top();
+                        kstck.pop();
+                        oo->append(key, *o);
+                        o = oo;
+                    } else if (state == IN_ARRAY) {
+                        a->append(*o);
+                    } else {
+                        item += c;
+                    }
+                } else {
+                    item += c;
+                }
+                break;
+            case OPEN_BRACKET:
+                if (state != IN_STRING) {
+                    if (hasKey) {
+                        kstck.push(key);
+                        hasKey = false;
+                    }
+                    states.push(state);
+                    if (state == IN_ARRAY) { astck.push(a); }
+                    a = new Array;
+                    state = IN_ARRAY;
+                } else {
+                    item += c;
+                }
+                break;
+            case CLOSE_BRACKET:
+                if (state != IN_STRING) {
+                    state = states.top();
+                    states.pop();
+                    if (state == IN_OBJECT) {
+                        key = kstck.top();
+                        kstck.pop();
+                        o->append(key, *a);
+                    } else if (state == IN_ARRAY) {
+                        Array * aa = astck.top();
+                        astck.pop();
+                        aa->append(*a);
+                        a = aa;
+                    } else {
+                        item += c;
+                    }
+                } else {
+                    item += c;
+                }
+                break;
+            case QUOTES:
+                if (state == IN_STRING) {
+                    if (escaping) {
+                        // Escaped quotes
+                        item += c;
+                    } else {
+                        // Closing quotes
+                        state = states.top();
+                        states.pop();
+                        if (state == IN_ARRAY) {
+                            a->append(item);
+                        } else if (state == IN_OBJECT) {
+                            if (hasKey) {
+                                //std::cerr << "Appending (\"" << key << "\": \"" << item << "\"\n";
+                                o->append(key, item);
+                                hasKey = false;
+                            } else {
+                                key = item;
+                                hasKey = true;
+                            }
+                        } else {
+                            parseResult = false;                    
+                        }
+                    }
+                } else {
+                    // Starting quotes
+                    states.push(state);
+                    state = IN_STRING;
+                    item.clear();
+                }
+                break;
+            case COLON:
+                if (state == IN_STRING) {
+                    item += c;
+                } else if (state == IN_ARRAY) {
+                    parseResult = false;
+                }
+                break;
+            case COMMA:
+                if (state == IN_STRING) {
+                    item += c;
+                }
+                break;
+            default:            
+                if (state == IN_STRING) {
+                    if (escaping) {
+                        if ((c == BACKSLASH) ||
+                            (c == SLASH) ||
+                            (c == EOL_CHAR) ||
+                            (c == CR_CHAR) ||
+                            (c == BACKSPACE) ||
+                            (c == FORMFEED) ||
+                            (c == TAB_CHAR)) {
+                            item += BACKSLASH + c;
+                            escaping = false;
+                        } else {
+                            if (c == UNICODE_CHAR) {
+                                // must four hexadecimal digits
+                                hexNumber = true;
+                                hexDigits = 0;
+                            } else {
+                                item += c;
+                            }
+                        }
+                    } else {
+                        item += c;
+                    }
+                } else {
+		    if ((c == COMMENT_HASH) ||
+			(((c == COMMENT_SLASH) || (c == COMMENT_DASH)) &&
+			 (c == s.at(k+1)))) {
+			// Comment (//, or -- or #)
+			size_t kk = s.find(NEWLINE, k);
+			k += (kk - k + 1); // Ignore until new line
+			break;
 		    }
-		} else {
-		    if ((c == SPACE) ||
-			(c == TABULATOR) ||
-			(c == NEWLINE)) { break; }
-                
-		    if (((DIGIT_ZERO <= c) && (c <= DIGIT_NINE)) ||
-			(c == SIGN_MINUS) || (c == SIGN_PLUS) ||
-			(c == SEP_DOT)) {
-			// Must read number
-			size_t kk = s.find_first_not_of("+-0123456789.eE", k);
-			// std::cerr << "Reading: '" << s.substr(k, kk - k) << "'\n";
-			Value v;
-			if (s.find(SEP_DOT, k) >= kk) {
-			    // integer
-			    v.assign(std::stoi(s.substr(k, kk - k)));
-			} else {
-			    // floating point (double)
-			    v.assign(std::stod(s.substr(k, kk - k)));
-			}
-			k += (kk - k - 1);
-			if (state == IN_ARRAY) {
-			    a->append(v);
-			} else {
-			    if (hasKey) {
-				o->append(key, v);
-				hasKey = false;
-				key = "";
-			    } else {
-				parseResult = false;
-			    }
 
-			}
-		    } else {
-			parseResult = false;
-		    }
-		}
-		break;
+		    if ((c == SPACE) ||
+                        (c == TABULATOR) ||
+                        (c == NEWLINE)) { break; }
+                
+                    if (((DIGIT_ZERO <= c) && (c <= DIGIT_NINE)) ||
+                        (c == SIGN_MINUS) || (c == SIGN_PLUS) ||
+                        (c == SEP_DOT)) {
+                        // Must read number
+                        size_t kk = s.find_first_not_of("+-0123456789.eE", k);
+                        // std::cerr << "Reading: '" << s.substr(k, kk - k) << "'\n";
+                        Value v;
+                        if (s.find(SEP_DOT, k) >= kk) {
+                            // integer
+                            v.assign(std::stoi(s.substr(k, kk - k)));
+                        } else {
+                            // floating point (double)
+                            v.assign(std::stod(s.substr(k, kk - k)));
+                        }
+                        k += (kk - k - 1);
+                        if (state == IN_ARRAY) {
+                            a->append(v);
+                        } else {
+                            if (hasKey) {
+                                o->append(key, v);
+                                hasKey = false;
+                                key = "";
+                            } else {
+                                parseResult = false;
+                            }
+
+                        }
+                    } else {
+                        parseResult = false;
+                    }
+                }
+                break;
+            }
+
+            if (!parseResult) {
+		std::cerr << "B R E A K !!\n"; break;
 	    }
 
-	    if (!parseResult) { std::cerr << "B R E A K !!\n"; break; }
+            ++k;
+        } while (k < sLen);
 
-	    ++k;
-	} while (k < sLen);
-
-	return parseResult;
+        return parseResult;
     }
 
     std::ostream & operator<<(std::ostream & os, const Object & o)
     {
-	if (json::formattedOutput) {
-	    os << "{\n";
-	    ++json::indent;
-	    std::string oldIndentStr = json::indentStr;
-	    json::indentStr += json::indentStep;
-	    int n = o.keys.size();
-	    int i = 0;
-	    for (auto const & key : o.keys) {
-		auto it = o.obj.find(key);
-		os << json::indentStr
-		   << "\"" << key << "\": " << it->second 
-		   <<  ((i < n - 1) ? ",\n" : "\n");
-		++i;
-	    }
-	    json::indentStr = oldIndentStr;
-	    os << json::indentStr << "}";
-	    --json::indent;
-	} else {
-	    os << "{";
-	    int n = o.keys.size();
-	    int i = 0;
-	    for (auto const & key : o.keys) {
-		auto it = o.obj.find(key);
-		os << "\"" << key << "\": " << it->second 
-		   <<  ((i < n - 1) ? ", " : "");
-		++i;
-	    }
-	    os << "}";
-	}
-	return os;
+        if (json::formattedOutput) {
+            os << "{\n";
+            ++json::indent;
+            std::string oldIndentStr = json::indentStr;
+            json::indentStr += json::indentStep;
+            int n = o.keys.size();
+            int i = 0;
+            for (auto const & key : o.keys) {
+                auto it = o.obj.find(key);
+                os << json::indentStr
+                   << "\"" << key << "\": " << it->second 
+                   <<  ((i < n - 1) ? ",\n" : "\n");
+                ++i;
+            }
+            json::indentStr = oldIndentStr;
+            os << json::indentStr << "}";
+            --json::indent;
+        } else {
+            os << "{";
+            int n = o.keys.size();
+            int i = 0;
+            for (auto const & key : o.keys) {
+                auto it = o.obj.find(key);
+                os << "\"" << key << "\": " << it->second 
+                   <<  ((i < n - 1) ? ", " : "");
+                ++i;
+            }
+            os << "}";
+        }
+        return os;
     }
 
     std::ostream & operator<<(std::ostream & os, const Array & a)
     {
-	if (json::formattedOutput) {
-	    os << "[\n";
-	    ++json::indent;
-	    std::string oldIndentStr = json::indentStr;
-	    json::indentStr += json::indentStep;
-	    int n = a.arr.size();
-	    for (int i = 0; i < n; ++i) {
-		os << json::indentStr
-		   << a.arr.at(i) << ((i < n - 1) ? ",\n" : "\n");
-	    }
-	    json::indentStr = oldIndentStr;
-	    os << json::indentStr << "]";
-	    --json::indent;
-	} else {
-	    os << "[";
-	    int n = a.arr.size();
-	    for (int i = 0; i < n; ++i) {
-		os << a.arr.at(i) << ((i < n - 1) ? ", " : "");
-	    }
-	    os << "]";
-	}
-	return os;
+        if (json::formattedOutput) {
+            os << "[\n";
+            ++json::indent;
+            std::string oldIndentStr = json::indentStr;
+            json::indentStr += json::indentStep;
+            int n = a.arr.size();
+            for (int i = 0; i < n; ++i) {
+                os << json::indentStr
+                   << a.arr.at(i) << ((i < n - 1) ? ",\n" : "\n");
+            }
+            json::indentStr = oldIndentStr;
+            os << json::indentStr << "]";
+            --json::indent;
+        } else {
+            os << "[";
+            int n = a.arr.size();
+            for (int i = 0; i < n; ++i) {
+                os << a.arr.at(i) << ((i < n - 1) ? ", " : "");
+            }
+            os << "]";
+        }
+        return os;
     }
 
     std::ostream & operator<<(std::ostream & os, const Value & v)
     {
-	if (json::formattedOutput) {
-	    switch (v.type) {
-	    case JSON_BOOL:   os << v.bvalue ? "true" : "false";  break;
-	    case JSON_INT:    os << v.ivalue;  break;
-	    case JSON_FLOAT:  os << v.xvalue;  break;
-	    case JSON_STRING: os << "\"" << v.svalue << "\"";  break;
-	    case JSON_ARRAY:  os << v.avalue;  break;
-	    case JSON_OBJECT: os << v.ovalue;  break;
-	    default: break;
-	    }
-	} else {
-	    switch (v.type) {
-	    case JSON_BOOL:   os << v.bvalue ? "true" : "false";  break;
-	    case JSON_INT:    os << v.ivalue;  break;
-	    case JSON_FLOAT:  os << v.xvalue;  break;
-	    case JSON_STRING: os << "\"" << v.svalue << "\"";  break;
-	    case JSON_ARRAY:  os << v.avalue;  break;
-	    case JSON_OBJECT: os << v.ovalue;  break;
-	    default: break;
-	    }
-	}
-	return os;
+        if (json::formattedOutput) {
+            switch (v.type) {
+            case JSON_BOOL:   os << v.bvalue ? "true" : "false";  break;
+            case JSON_INT:    os << v.ivalue;  break;
+            case JSON_FLOAT:  os << v.xvalue;  break;
+            case JSON_STRING: os << "\"" << v.svalue << "\"";  break;
+            case JSON_ARRAY:  os << v.avalue;  break;
+            case JSON_OBJECT: os << v.ovalue;  break;
+            default: break;
+            }
+        } else {
+            switch (v.type) {
+            case JSON_BOOL:   os << v.bvalue ? "true" : "false";  break;
+            case JSON_INT:    os << v.ivalue;  break;
+            case JSON_FLOAT:  os << v.xvalue;  break;
+            case JSON_STRING: os << "\"" << v.svalue << "\"";  break;
+            case JSON_ARRAY:  os << v.avalue;  break;
+            case JSON_OBJECT: os << v.ovalue;  break;
+            default: break;
+            }
+        }
+        return os;
     }
 
     void enableFormattedOutput(std::string tab)
     {
-	json::formattedOutput = true;
-	json::indentStep = tab;
+        json::formattedOutput = true;
+        json::indentStep = tab;
     }
     
     void disableFormattedOutput()
     {
-	json::formattedOutput = false;
+        json::formattedOutput = false;
     }
 
 }
