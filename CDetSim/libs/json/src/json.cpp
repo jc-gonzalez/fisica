@@ -549,7 +549,6 @@ namespace json {
                         (c == SEP_DOT)) {
                         // Must read number
                         size_t kk = s.find_first_not_of("+-0123456789.eE", k);
-                        // std::cerr << "Reading: '" << s.substr(k, kk - k) << "'\n";
                         Value v;
                         if (s.find(SEP_DOT, k) >= kk) {
                             // integer

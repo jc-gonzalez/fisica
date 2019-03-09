@@ -18,28 +18,27 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with iniparser.  If not, see <http://www.gnu.org/licenses/>
 #=============================================================================
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8)
 
-PROJECT(INIPARSER)
+project(IniParser)
 
-SET(PROJECT_NAME INIPARSER)
+set(PROJECT_NAME IniParser)
 
-SET(INIPARSER_MAJOR 0)
-SET(INIPARSER_MINOR 1)
-SET(INIPARSER_PATCH 0)
+set(IniParser_MAJOR 0)
+set(IniParser_MINOR 1)
+set(IniParser_PATCH 0)
 
-SET(INIPARSER_VERSION ${INIPARSER_MAJOR}.${INIPARSER_MINOR}.${INIPARSER_PATCH})
+set(IniParser_VERSION ${IniParser_MAJOR}.${IniParser_MINOR}.${IniParser_PATCH})
+message(STATUS "Building iniparser version ${IniParser_VERSION}")
 
-MESSAGE(STATUS "Building iniparser version ${INIPARSER_VERSION}")
+add_subdirectory(src)
+add_subdirectory(examples/iniex1)
 
-ADD_SUBDIRECTORY(src)
-ADD_SUBDIRECTORY(examples/iniex1)
+set(CPACK_PACKAGE_VERSION_MAJOR ${IniParser_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR ${IniParser_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH ${IniParser_PATCH})
+set(CPACK_GENERATOR "TGZ")
+set(CPACK_PACKAGING_INSTALL_PREFIX "")
 
-SET(CPACK_PACKAGE_VERSION_MAJOR ${INIPARSER_MAJOR})
-SET(CPACK_PACKAGE_VERSION_MINOR ${INIPARSER_MINOR})
-SET(CPACK_PACKAGE_VERSION_PATCH ${INIPARSER_PATCH})
-SET(CPACK_GENERATOR "TGZ")
-SET(CPACK_PACKAGING_INSTALL_PREFIX "")
-
-INCLUDE(CPack)
+include(CPack)
 

@@ -18,29 +18,24 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with iniparser.  If not, see <http://www.gnu.org/licenses/>
 #=============================================================================
-cmake_minimum_required(VERSION 2.8)
 
-include (../common.cmake)
+set (jsonLib_hdr
+  json.h)
 
-project (json)
+set (jsonLib_src
+  json.cpp)
 
-set(PROJECT_NAME json)
+add_library (json SHARED ${jsonLib_src})
+set_target_properties (json PROPERTIES
+  LINKER_LANGUAGE CXX
+  SOVERSION ${json_VERSION}
+  VERSION ${json_VERSION})
 
-set(json_MAJOR 0)
-set(json_MINOR 1)
-set(json_PATCH 0)
+install (TARGETS json
+  RUNTIME DESTINATION bin
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib)
 
-set(json_VERSION ${json_MAJOR}.${json_MINOR}.${json_PATCH})
-message(STATUS "Building json library version ${IniParser_VERSION}")
+install (FILES ${jsonLib_hdr}
+  DESTINATION include)
 
-add_subdirectory(src)
-add_subdirectory(examples/jsontest)
-
-set(CPACK_PACKAGE_VERSION_MAJOR ${IniParser_MAJOR})
-set(CPACK_PACKAGE_VERSION_MINOR ${IniParser_MINOR})
-set(CPACK_PACKAGE_VERSION_PATCH ${IniParser_PATCH})
-set(CPACK_GENERATOR "TGZ")
-set(CPACK_PACKAGING_INSTALL_PREFIX "")
-
-include(CPack)
-       

@@ -1,13 +1,11 @@
 #======================================================================
 # CMakeLists.txt
-# QPF - Prototype of QLA Processing Framework
 # General Project File
 #======================================================================
-# Author: J C Gonzalez - 2015-2018
-# Copyright (C) 2015-2018 Euclid SOC Team at ESAC
+# Copyright (C) 2019 by J C Gonzalez
 #======================================================================
 cmake_minimum_required(VERSION 2.8)
-#cmake_policy (SET CMP0015 OLD)
+cmake_policy (SET CMP0015 NEW)
 
 include (common.cmake)
 
@@ -17,10 +15,11 @@ project (libs)
 
 add_subdirectory (filehdl)
 add_subdirectory (infix)
-add_subdirectory (log)
-add_subdirectory (str)
+add_subdirectory (iniparser)
 add_subdirectory (json)
-add_subdirectory (tools)
+add_subdirectory (log)
 add_subdirectory (mathtools)
+add_subdirectory (str)
+add_subdirectory (tools)
 #add_subdirectory (uuid)
 #add_subdirectory (vos)

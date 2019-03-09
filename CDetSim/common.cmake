@@ -1,10 +1,14 @@
 #======================================================================
-# CMakeLists.txt
-# QPF - Prototype of QLA Processing Framework
-# General Project File
+# common.cmake
+# Common settings for entire project
 #======================================================================
-# Author: J C Gonzalez - 2015-2018
-# Copyright (C) 2015-2018 Euclid SOC Team at ESAC
+# Copyright (C) 2019 by J C Gonzalez
 #======================================================================
-include (libs/common.cmake)
+cmake_minimum_required(VERSION 2.8)
+cmake_policy (SET CMP0015 NEW)
 
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
+set (LIBS_DIR "${CMAKE_SOURCE_DIR}/libs")
+
+include (${LIBS_DIR}/libs.cmake)

@@ -25,7 +25,7 @@ set (libfilehdl_src
 
 add_library(filehdl SHARED ${libfilehdl_src})
 target_include_directories (filehdl PUBLIC .
-  ${JSON_ROOT_DIR}
+  ${JSON_ROOT_DIR}/src
   ${INFIX_ROOT_DIR}
   ${TOOLS_ROOT_DIR}
   ${STR_ROOT_DIR}
