@@ -17,7 +17,8 @@ SET (ranlib_inthdr
   )
 
 ADD_LIBRARY (ranlib SHARED ${ranlib_src} )
-include_directories (.)
+INCLUDE_DIRECTORIES (.)
+TARGET_LINK_LIBRARIES (ranlib m)
 
 SET_TARGET_PROPERTIES (ranlib PROPERTIES 
   LINKER_LANGUAGE C

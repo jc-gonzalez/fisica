@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
 static long K1 = 1;
 static long i,is1,is2,itmp,iwhich,mxint,nperm,nrep,ntot,perm[500],ntry;
 static float av,avtr,var,vartr,xmin,xmax,array[1000],param[3],pevt;
-static char pr_type[4],phrase[100];
+static char pr_type[5],phrase[100];
 static long iarray[1000];
 
     puts(" Tests most generators of specific distributions.");

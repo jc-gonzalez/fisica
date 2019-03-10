@@ -3,6 +3,8 @@
 #ifndef RANLIB_H
 #define RANLIB_H
 
+#include <math.h>
+
 void advnst(long k);
 float genbet(float aa,float bb);
 float genchi(float df);
