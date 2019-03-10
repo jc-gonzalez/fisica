@@ -40,10 +40,13 @@
 
 #include "Reflector.h"
 
+#include "mathtools.h"
+#include "json.h"
+
 Reflector::Reflector()
 {
 }
-
+/*
 Reflector::Reflector(std::string name) : reflectorFileName(name)
 {
 }
@@ -75,10 +78,10 @@ void Reflector::dumpHeader()
         readHeader();
 
         for (int k = 1; k < numOfKeys; k++)  {
-            reflector_read_record(fptr, k, card, &status); /* read keyword */
+            reflector_read_record(fptr, k, card, &status); // read keyword 
             printf("%s\n", card);
         }
-        printf("END\n\n");  /* terminate listing with END */
+        printf("END\n\n");  // terminate listing with END 
     }
 }
 
@@ -165,5 +168,5 @@ void Reflector::getImage(unsigned short * img)
 
     delete [] naxes;
 }
-
+*/
 //}

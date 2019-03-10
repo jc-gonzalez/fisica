@@ -65,7 +65,7 @@
 //======================================================================
 class Reflector {
 public:
-
+    Reflector();
 
 private:
     //@: matrices to change to the system where the optical axis is OZ
@@ -199,7 +199,7 @@ private:
     //!@{
 
     //@: flag to change the verbosity
-    int verbose = VERBOSE_DEFAULT;
+    int verbose;
 
     /*!@"
 
@@ -212,10 +212,10 @@ private:
     //!@{
 
     //@: random pointing for the CT?
-    int Random_Pointing = FALSE;
+    int Random_Pointing;
 
     //@: random pointing for the CT?
-    int Random_Pointing_Isotropic = TRUE;
+    int Random_Pointing_Isotropic;
 
     //@: number of times a shower is going to be processed
     int nRepeat_Random;

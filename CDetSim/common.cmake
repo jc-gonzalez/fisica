@@ -9,6 +9,3 @@ cmake_policy (SET CMP0015 NEW)
 
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set (LIBS_DIR "${CMAKE_SOURCE_DIR}/libs")
-
-include (${LIBS_DIR}/libs.cmake)
