@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/jcgonzalez/JC1/fisica.git/libs2/infix/src/infix.cpp
+infix.h
+/home/jcgonzalez/JC1/fisica.git/libs2/infix/src/infix.h
+cmath
+-
+
+/home/jcgonzalez/JC1/fisica.git/libs2/infix/src/infix.h
+iostream
+-
+sstream
+-
+stack
+-
+vector
+-
+map
+-
+string
+-
+

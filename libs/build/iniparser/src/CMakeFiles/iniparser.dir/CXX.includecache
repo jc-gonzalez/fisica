@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/jcgonzalez/JC1/fisica.git/libs2/iniparser/src/iniparser.cpp
+iniparser.h
+/home/jcgonzalez/JC1/fisica.git/libs2/iniparser/src/iniparser.h
+iostream
+-
+fstream
+-
+sstream
+-
+
+/home/jcgonzalez/JC1/fisica.git/libs2/iniparser/src/iniparser.h
+map
+-
+vector
+-
+string
+-
+

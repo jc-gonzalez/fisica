@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../mathtools/src/mathtools.h
+cmath
+-
+cstdlib
+-
+
+/home/jcgonzalez/JC1/fisica.git/libs2/mathtools/examples/ex1_mathtools/main.cpp
+mathtools.h
+/home/jcgonzalez/JC1/fisica.git/libs2/mathtools/examples/ex1_mathtools/mathtools.h
+iostream
+-
+
