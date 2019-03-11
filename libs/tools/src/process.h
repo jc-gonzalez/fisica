@@ -32,9 +32,14 @@
 #include <system_error>
 #include <vector>
 
-#ifndef PROCXX_HAS_PIPE2
-#define PROCXX_HAS_PIPE2 1
+#if defined(__APPLE__) && defined(__MACH__)
+#else
+#    ifndef PROCXX_HAS_PIPE2
+#        define PROCXX_HAS_PIPE2 1
+#    endif
 #endif
+
+
 
 namespace procxx
 {

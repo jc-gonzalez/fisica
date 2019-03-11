@@ -28,7 +28,7 @@
 SET (tools_src
   alert.cpp
 dbg.cpp
-dwatcher.cpp
+#dwatcher.cpp
 filetools.cpp
 launcher.cpp
 #rwc.cpp
@@ -40,7 +40,7 @@ tools.cpp
 SET (tools_hdr
   alert.h
 dbg.h
-dwatcher.h
+#dwatcher.h
 filetools.h
 launcher.h
 metadatareader.h

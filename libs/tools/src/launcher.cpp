@@ -65,6 +65,7 @@ bool Launcher::exec()
     for (auto & a : args) { appCmd->add_argument(a); }
     
     appCmd->exec();
+    return true;
 }
 
 //------------------------------------------------------------

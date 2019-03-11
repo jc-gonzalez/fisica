@@ -47,7 +47,14 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <sys/sendfile.h>
+
+#if defined(__APPLE__) && defined(__MACH__)
+#    include <sys/types.h>
+#    include <sys/socket.h>
+#    include <sys/uio.h>
+#else
+#    include <sys/sendfile.h>
+#endif
 
 #include <iostream>
 #include <fstream>
@@ -107,8 +114,12 @@ int copyfile(std::string & sFrom, std::string & sTo)
     fstat(source, &stat_source);
 
     TRC("Local copying: " + sFrom + " => " + sTo);
+#if defined(__APPLE__) && defined(__MACH__)
+    //TODO: int re = sendfile(int fd, int s, off_t offset, off_t *len, struct sf_hdtr *hdtr, int flags);
+#else
     sendfile(dest, source, 0, stat_source.st_size);
-
+#endif
+    
     close(source);
     close(dest);
 

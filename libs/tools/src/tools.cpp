@@ -66,6 +66,12 @@
 
 #include <ftw.h>
 
+#if defined(__APPLE__) && defined(__MACH__)
+#  define REALTIME_CLOCK  CLOCK_REALTIME
+#else
+#  define REALTIME_CLOCK  CLOCK_REALTIME_COARSE
+#endif
+
 //namespace LibComm {
 
 static std::string specificSessionTag = std::string();
@@ -146,7 +152,7 @@ std::string preciseTimeTag()
     char buffer[80];
     char ns[11];
 
-    if (clock_gettime(CLOCK_REALTIME_COARSE, &timesp) != 0) {
+    if (clock_gettime(REALTIME_CLOCK, &timesp) != 0) {
         perror("clock_gettime");
         exit(1);
     }
@@ -194,8 +200,8 @@ void waitUntilNextSecond()
 //----------------------------------------------------------------------
 int mkTmpFileName(char * tpl, std::string & sfName, bool closeFd)
 {
-    const int PATH_MAX = 200;
-    char fname[PATH_MAX];
+    const int PATH_MAXSIZE = 512;
+    char fname[PATH_MAXSIZE];
     int fd;
 
     strcpy(fname, tpl);
