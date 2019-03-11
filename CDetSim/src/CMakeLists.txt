@@ -39,8 +39,13 @@ SET (cdetsim_inthdr
 
 ADD_EXECUTABLE (cdetsim ${cdetsim_src} )
 
-TARGET_LINK_LIBRARIES (cdetsim
-  mathtools json)
+SET (LIBS_DIR /Users/jcgonzalez/opt)
+
+INCLUDE_DIRECTORIES (. ${LIBS_DIR}/include)
+LINK_DIRECTORIES (${LIBS_DIR}/include)
+
+TARGET_INCLUDE_DIRECTORIES (cdetsim PUBLIC .)
+TARGET_LINK_LIBRARIES (cdetsim mathtools json)
 
 SET_TARGET_PROPERTIES (cdetsim PROPERTIES 
   LINKER_LANGUAGE CXX
