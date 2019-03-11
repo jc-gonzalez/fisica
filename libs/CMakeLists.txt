@@ -23,3 +23,6 @@ add_subdirectory (str)
 add_subdirectory (tools)
 #add_subdirectory (uuid)
 #add_subdirectory (vos)
+
+add_subdirectory (ranlib)
+
