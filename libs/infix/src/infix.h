@@ -200,10 +200,6 @@ private:
     void processToken(const Token<NumericType> &lastToken);
 };
 
-// Explicit instantiation for integers
-template struct Symbols<int>;
-template class Evaluator<int>;
-
 }
 
 #endif

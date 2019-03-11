@@ -71,6 +71,14 @@ char const * InfixEvErrorMsgs[] = { TLIST_OF_ERRORS };
 const char * TokenName [] = { TOKENS };
 #undef T
 
+// Initialization of Symbols<int>::symbolMap
+template<> map<string, int> Symbols<int>::symbolMap = map<string, int>();
+
+// Explicit instantiation for integers
+template struct Symbols<int>;
+template class Evaluator<int>;
+
+
 //----------------------------------------------------------------------
 // Function: split
 // Splits a string into tokens separated by a delimites, and stores
@@ -428,8 +436,5 @@ void Evaluator<NumericType>::binaryOp(TokenType topOp)
     }
     opStack.pop();
 }
-
-// Initialization of Symbols<int>::symbolMap
-template<> map<string, int> Symbols<int>::symbolMap = map<string, int>();
 
 }
