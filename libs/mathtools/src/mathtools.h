@@ -70,23 +70,32 @@ namespace MathTools {
 
 #define RandomNumber drand48()
 
-    double sqr(double x);
-    float sqr(float x);
-    int sqr(int x);
-    
-    double d2r(double x);
-    float d2r(float x);
-    
-    double r2d(double x);
-    float r2d(float x);
-    
-    void makeOmega(float (& Omega)[3][3] , float theta, float phi);
-    void makeOmegaI(float (& OmegaI)[3][3], float theta, float phi);
-    void applyMxV(float M[3][3], float *V, float *Vp);
-    void rnormal(double *r, int n);
-    float dist_r_P(float a, float b, float c,
-                   float u, float v, float w,
-                   float x, float y, float z);
+    template<typename T>
+    T sqr(T x);
+
+    template<typename T>
+    T d2r(T x);
+
+    template<typename T>
+    T r2d(T x);
+
+    template<typename T>
+    void makeOmega(T (& Omega)[3][3] , T theta, T phi);
+
+    template<typename T>
+    void makeOmegaI(T (& OmegaI)[3][3], T theta, T phi);
+
+    template<typename T>
+    void applyMxV(T M[3][3], T *V, T *Vp);
+
+    template<typename T>
+    void rnormal(T *r, int n);
+
+    template<typename T>
+    T dist_r_P(T a, T b, T c,
+               T u, T v, T w,
+               T x, T y, T z);
+
 
 }
 

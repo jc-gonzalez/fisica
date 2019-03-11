@@ -11,15 +11,15 @@ int main(int argc, char * argv[])
     float Omega[3][3];
     float OmegaI[3][3];
 
-    makeOmega(Omega, d2r(45.), 0.);
-    makeOmega(OmegaI, d2r(-45.), 0.);
+    makeOmega<float>(Omega, d2r<float>(45.), 0.);
+    makeOmega<float>(OmegaI, d2r<float>(-45.), 0.);
 
     float u[3] {1., 4., 8.};
     float v[3];
     float w[3];
 
-    applyMxV(Omega, u, v);
-    applyMxV(OmegaI, v, w);
+    applyMxV<float>(Omega, u, v);
+    applyMxV<float>(OmegaI, v, w);
 
     std::cout << VEC(u)  << "  :  " << VEC(v) << "  :  " << VEC(w) << '\n';
 

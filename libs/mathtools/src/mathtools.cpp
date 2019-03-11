@@ -40,8 +40,8 @@
 
 #include "mathtools.h"
 
-//= Below you can find a sort of, incomplete for sure, documentation 
-//= concerning this program. Please, do not hesiate to contact the 
+//= Below you can find a sort of, incomplete for sure, documentation
+//= concerning this program. Please, do not hesiate to contact the
 //= author in case of problems.
 
 //=---------------------------------------------------------------------
@@ -193,8 +193,8 @@
 
   @F
   \begin{eqnarray}
-  \cos\theta_p &=& \cos\theta \cos\theta_s 
-  + \sin\theta \sin\theta_s \cos\phi_s 
+  \cos\theta_p &=& \cos\theta \cos\theta_s
+  + \sin\theta \sin\theta_s \cos\phi_s
   \\
   \sin\phi_p &=& \frac{\sin\theta_s}{\sin\theta_p} \sin\phi_s
   \end{eqnarray}
@@ -208,52 +208,52 @@
   \stepcounter{table}
   \begin{table}
   \begin{tabular}[hbt]{cl}
-  $\mathbf{x}=(x,y,z)$ & 
+  $\mathbf{x}=(x,y,z)$ &
   Position of the Cherenkov photon on the ground\\
   & in the global system OXYZ.\\
 
-  $\mathbf{r}=(u,v,w)$ & 
+  $\mathbf{r}=(u,v,w)$ &
   Vector of the Cherenkov photon's trayectory\\
   & in the global system OXYZ.\\
 
-  $\mathbf{x_{CT}}=(x_{CT},y_{CT},z_{CT})$ & 
+  $\mathbf{x_{CT}}=(x_{CT},y_{CT},z_{CT})$ &
   Position of the Cherenkov photon on the ground\\
   & in the system OXYZ$_{CT}$ of the CT.\\
 
-  $\mathbf{r_{CT}}=(u_{CT},v_{CT},w_{CT})$ & 
+  $\mathbf{r_{CT}}=(u_{CT},v_{CT},w_{CT})$ &
   Vector of the Cherenkov photon's trayectory\\
   & in the system OXYZ$_{CT}$ of the CT.\\
 
-  $\mathbf{x_{m}}=(x_{m},y_{m},z_{m})$ & 
+  $\mathbf{x_{m}}=(x_{m},y_{m},z_{m})$ &
   Position of the Cherenkov photon on the ground\\
   & in the system OXYZ$_{m}$ of the mirror.\\
 
-  $\mathbf{r_{m}}=(u_{m},v_{m},w_{m})$ & 
+  $\mathbf{r_{m}}=(u_{m},v_{m},w_{m})$ &
   Vector of the Cherenkov photon's trayectory\\
   & in the system OXYZ$_{m}$ of the mirror.\\
 
-  $\mathbf{x_{cut}}=(x_{cut},y_{cut},z_{cut})$ & 
+  $\mathbf{x_{cut}}=(x_{cut},y_{cut},z_{cut})$ &
   Cut of the trayectory of the photon with the mirror,\\
   & in the system OXYZ$_{m}$ of the mirror.\\
 
-  $\mathbf{r_\perp}=(u_\perp,v_\perp,w_\perp)$ & 
+  $\mathbf{r_\perp}=(u_\perp,v_\perp,w_\perp)$ &
   Vector perpendicular to the mirror in the point $\mathbf{x_{cut}}$\\
   & in the system OXYZ$_{m}$ of the mirror.\\
 
-  $\mathbf{r_r}=(u_r,v_r,w_r)$ & 
+  $\mathbf{r_r}=(u_r,v_r,w_r)$ &
   Vector of the reflected photon, \\
   & in the system OXYZ$_{m}$ of the mirror.\\
 
-  $\mathbf{r_r^{CT}}=(u_r^{CT},v_r^{CT},w_r^{CT})$ & 
+  $\mathbf{r_r^{CT}}=(u_r^{CT},v_r^{CT},w_r^{CT})$ &
   Vector of the reflected photon, \\
   & in the system OXYZ$_{CT}$ of the CT.\\
 
-  $\mathbf{x_{cam}}=(x_{cam},y_{cam},z_{cam})$ & 
+  $\mathbf{x_{cam}}=(x_{cam},y_{cam},z_{cam})$ &
   Position of the photon in the camera plane,\\
   & in the system OXYZ$_{CT}$ of the CT.\\
 
   \end{tabular}
-  \caption{Different vectors and points used in the reflector 
+  \caption{Different vectors and points used in the reflector
   program.}
   \end{table}
   @F
@@ -273,7 +273,7 @@
   \begin{equation}
   \begin{split}
   \Omega(\theta,\phi)      &= R_y(-\theta) R_z(-\phi) \\
-  \Omega^{-1}(\theta,\phi) &= R_z(\phi) R_y(\theta) 
+  \Omega^{-1}(\theta,\phi) &= R_z(\phi) R_y(\theta)
   \end{split}
   \end{equation}
   @F
@@ -283,28 +283,28 @@
 
   @F
   \begin{eqnarray}
-  R_x(\alpha) = 
-  \begin{bmatrix}    
+  R_x(\alpha) =
+  \begin{bmatrix}
   1 & 0 & 0 \\
   0 & \cos\alpha & -\sin\alpha \\
   0 & \sin\alpha &  \cos\alpha \\
-  \end{bmatrix}                                
+  \end{bmatrix}
   \label{eq:rotx}
   \\
-  R_y(\alpha) = 
-  \begin{bmatrix}    
+  R_y(\alpha) =
+  \begin{bmatrix}
   \cos\alpha & 0 & \sin\alpha \\
   0 & 1 & 0 \\
   -\sin\alpha & 0 & \cos\alpha \\
-  \end{bmatrix}                                
+  \end{bmatrix}
   \label{eq:roty}
   \\
-  R_z(\alpha) = 
-  \begin{bmatrix}    
+  R_z(\alpha) =
+  \begin{bmatrix}
   \cos\alpha & -\sin\alpha & 0\\
   \sin\alpha &  \cos\alpha & 0\\
   0 & 0 & 1 \\
-  \end{bmatrix}                                
+  \end{bmatrix}
   \label{eq:rotz}
   \end{eqnarray}
   @F
@@ -314,19 +314,19 @@
 
   @F
   \begin{eqnarray}
-  \Omega(\theta,\phi) = 
-  \begin{bmatrix}                                
+  \Omega(\theta,\phi) =
+  \begin{bmatrix}
   \cos\phi \cos\theta&\sin\phi \cos\theta&-\sin\theta \\
   -\sin\phi       &     \cos\phi      &     0      \\
-  \cos\phi \sin\theta&\sin\phi \sin\theta& \cos\theta \\      
-  \end{bmatrix}                                
+  \cos\phi \sin\theta&\sin\phi \sin\theta& \cos\theta \\
+  \end{bmatrix}
   \\
-  \Omega^{-1}(\theta,\phi) = 
-  \begin{bmatrix}                                
+  \Omega^{-1}(\theta,\phi) =
+  \begin{bmatrix}
   \cos\phi \cos\theta&-\sin\phi&\cos\phi \sin\theta\\
-  \sin\phi \cos\theta& \cos\phi&\sin\phi \sin\theta\\  
-  -\sin\theta     &    0    &     \cos\theta    \\       
-  \end{bmatrix}                                
+  \sin\phi \cos\theta& \cos\phi&\sin\phi \sin\theta\\
+  -\sin\theta     &    0    &     \cos\theta    \\
+  \end{bmatrix}
   \end{eqnarray}
   @F
   
@@ -400,7 +400,7 @@
   where no reflection can be done at all. The radii of these
   regions vary, but they can be @$r \simeq 2 \mathrm{\,cm}@$.
 
-  @- B@Imperfections@: 
+  @- B@Imperfections@:
   The surface of each mirror is locally not-perfect. We need
   measurements to include this effect.
 
@@ -409,9 +409,9 @@
   ``teorical'' point in the center of the camera. (@$\sigma
   \simeq 2.5 \mathrm{\,mm}@$).
 
-  @- B@Blurring@: 
+  @- B@Blurring@:
   Pure effect of optics: each mirror is ``seen'' by the camera
-  with a different angle. 
+  with a different angle.
 
   @enditemize
 
@@ -457,7 +457,7 @@
 
 /*!@"
 
-  In this section we show the (commented) code of the program 
+  In this section we show the (commented) code of the program
   for the simulation of the reflector, in the current version.
   
   @"*/
@@ -468,10 +468,10 @@
 //!@{
 //=================================================================
 //
-// NOTE: Most of the equations used in this program can be found 
+// NOTE: Most of the equations used in this program can be found
 //       in Bronstein, Semendjajew, Musiol and Muehlig, "Taschenbuch
 //       der Mathematik", Verlag Harri Deutsch, Thun und Frankfurt
-//       am Main, 1997. Some others were "deduced". 
+//       am Main, 1997. Some others were "deduced".
 //
 //
 // Matrices for rotation of coordinate systems
@@ -483,109 +483,108 @@
 //  X` = Omega(theta,phi) X
 //  X  = Omega-1(theta,phi) X`
 //
-// Omega(theta,phi) = 
+// Omega(theta,phi) =
 //        /                                                   \
-//       | cos(phi)cos(theta)  sin(phi)cos(theta)  -sin(theta) |     
+//       | cos(phi)cos(theta)  sin(phi)cos(theta)  -sin(theta) |
 //       |    -sin(phi)            cos(phi)             0      |
-//       | cos(phi)sin(theta)  sin(phi)sin(theta)   cos(theta) |        
+//       | cos(phi)sin(theta)  sin(phi)sin(theta)   cos(theta) |
 //        \                                                   /
 //
-// OmegaI(theta,phi) = 
+// OmegaI(theta,phi) =
 //        /                                                   \
-//       | cos(phi)cos(theta)   -sin(phi)   cos(phi)sin(theta) |     
+//       | cos(phi)cos(theta)   -sin(phi)   cos(phi)sin(theta) |
 //       | sin(phi)cos(theta)    cos(phi)   sin(phi)sin(theta) |
-//       |    -sin(theta)           0           cos(theta)     |        
+//       |    -sin(theta)           0           cos(theta)     |
 //        \                                                   /
 //
 //=================================================================
 
 namespace MathTools {
 
-double sqr(double x) { return x * x; }
-float sqr(float x) { return x * x; }
-int sqr(int x) { return x * x; }
+template<typename T>
+T sqr(T x) { return x * x; }
 
-double d2r(double x) { return x * M_PI / 180.; }
-float d2r(float x) { return x * M_PI / 180.; }
+template<typename T>
+T d2r(T x) { return x * M_PI / 180.; }
 
-double r2d(double x) { return x * 180. / M_PI; }
-float r2d(float x) { return x * 180. / M_PI; }
+template<typename T>
+T r2d(T x) { return x * 180. / M_PI; }
 
 //!---------------------------------------------------------------------
-// @name makeOmega                                        
-//                                                    
+// @name makeOmega
+//
 // @desc function to calculate the matrix Omega(theta,phi)
 //
-// @var    theta   Angle theta of the transformation 
-// @var    phi     Angle phi of the transformation 
+// @var    theta   Angle theta of the transformation
+// @var    phi     Angle phi of the transformation
 //
 // @date Sat Jun 27 05:58:56 MET DST 1998
 //----------------------------------------------------------------------
-void
-makeOmega (float (& Omega)[3][3], float theta, float phi)
+template<typename T>
+void makeOmega(T (& Omega)[3][3] , T theta, T phi)
 {
-  static float ct, st, cp, sp;
+    static T ct, st, cp, sp;
   
-  // shortcuts for cosine and sine of theta and phi
-  ct = cos(theta);
-  st = sin(theta);
-  cp = cos(phi);
-  sp = sin(phi);
-  
-  // save values in the array (see top of file)
-  Omega[0][0] =  cp*ct;
-  Omega[0][1] =  sp*ct; 
-  Omega[0][2] = -st; 
-     
-  Omega[1][0] = -sp;
-  Omega[1][1] =  cp;
-  Omega[1][2] =  0;      
-
-  Omega[2][0] =  cp*st;
-  Omega[2][1] =  sp*st; 
-  Omega[2][2] =  ct;         
+    // shortcuts for cosine and sine of theta and phi
+    ct = cos(theta);
+    st = sin(theta);
+    cp = cos(phi);
+    sp = sin(phi);
+    
+    // save values in the array (see top of file)
+    Omega[0][0] =  cp * ct;
+    Omega[0][1] =  sp * ct; 
+    Omega[0][2] = -st; 
+    
+    Omega[1][0] = -sp;
+    Omega[1][1] =  cp;
+    Omega[1][2] =  0;      
+    
+    Omega[2][0] =  cp * st;
+    Omega[2][1] =  sp * st; 
+    Omega[2][2] =  ct;         
 }
 
 
 //!---------------------------------------------------------------------
-// @name makeOmegaI                                         
-//                                                      
+// @name makeOmegaI
+//
 // @desc function to calculate the matrix Omega-1(theta,phi)
 //
-// @var    theta   Angle theta of the transformation 
-// @var    phi     Angle phi of the transformation 
+// @var    theta   Angle theta of the transformation
+// @var    phi     Angle phi of the transformation
 //
 // @date Sat Jun 27 05:58:56 MET DST 1998
 //----------------------------------------------------------------------
-void
-makeOmegaI(float (& OmegaI)[3][3], float theta, float phi)
+template<typename T>
+void makeOmegaI(T (& OmegaI)[3][3], T theta, T phi)
 {
-  static float ct, st, cp, sp;
+    static T ct, st, cp, sp;
   
-  // shortcuts for cosine and sine of theta and phi
-  ct = cos(theta);
-  st = sin(theta);
-  cp = cos(phi);
-  sp = sin(phi);
-  
-  // save values in the array (see top of file)
-  OmegaI[0][0] =  cp*ct;
-  OmegaI[0][1] = -sp;
-  OmegaI[0][2] =  cp*st;     
-
-  OmegaI[1][0] =  sp*ct;
-  OmegaI[1][1] =  cp; 
-  OmegaI[1][2] =  sp*st;
-
-  OmegaI[2][0] = -st;   
-  OmegaI[2][1] =  0; 
-  OmegaI[2][2] =  ct;            
+    // shortcuts for cosine and sine of theta and phi
+    ct = cos(theta);
+    st = sin(theta);
+    cp = cos(phi);
+    sp = sin(phi);
+    
+    // save values in the array (see top of file)
+    OmegaI[0][0] =  cp * ct;
+    OmegaI[0][1] = -sp;
+    OmegaI[0][2] =  cp * st;     
+    
+    OmegaI[1][0] =  sp * ct;
+    OmegaI[1][1] =  cp; 
+    OmegaI[1][2] =  sp * st;
+    
+    OmegaI[2][0] = -st;   
+    OmegaI[2][1] =  0; 
+    OmegaI[2][2] =  ct;            
 }
 
 
 //!---------------------------------------------------------------------
-// @name applyMxv                                              
-//                                                         
+// @name applyMxv
+//
 // @desc returns the vector v' such that v' = M x v
 //
 // @var    M       matrix of the transformation
@@ -594,26 +593,20 @@ makeOmegaI(float (& OmegaI)[3][3], float theta, float phi)
 //
 // @date Sat Jun 27 05:58:56 MET DST 1998
 //----------------------------------------------------------------------
-void
-applyMxV(float M[3][3], float *V, float *Vp)
+template<typename T>
+void applyMxV(T M[3][3], T *V, T *Vp)
 {
-  Vp[0] = (M[0][0] * V[0] +
-           M[0][1] * V[1] +
-           M[0][2] * V[2]);
-  Vp[1] = (M[1][0] * V[0] +
-           M[1][1] * V[1] +
-           M[1][2] * V[2]);
-  Vp[2] = (M[2][0] * V[0] +
-           M[2][1] * V[1] +
-           M[2][2] * V[2]);
+    Vp[0] = ((M[0][0] * V[0]) +  (M[0][1] * V[1]) +  (M[0][2] * V[2]));
+    Vp[1] = ((M[1][0] * V[0]) +  (M[1][1] * V[1]) +  (M[1][2] * V[2]));
+    Vp[2] = ((M[2][0] * V[0]) +  (M[2][1] * V[1]) +  (M[2][2] * V[2]));
 }
 
 
 //!---------------------------------------------------------------------
-// @name dist_r_P                          
-//                                     
+// @name dist_r_P
+//
 // @desc distance straight line r - point P
-// 
+//
 // @var a   coord. X of a fixed point of the straight line
 // @var b   coord. Y of a fixed point of the straight line
 // @var c   coord. Z of a fixed point of the straight line
@@ -628,24 +621,22 @@ applyMxV(float M[3][3], float *V, float *Vp)
 //
 // @date Sat Jun 27 05:58:56 MET DST 1998
 //----------------------------------------------------------------------
-float 
-dist_r_P(float a, float b, float c, 
-         float l, float m, float n,
-         float x, float y, float z)
+template<typename T>
+T dist_r_P(T a, T b, T c,
+           T l, T m, T n,
+           T x, T y, T z)
 {
-  return (
-          sqrt((sqr((a-x)*m-(b-y)*l) +
-                sqr((b-y)*n-(c-z)*m) +
-                sqr((c-z)*l-(a-x)*n))/
-               (sqr(l)+sqr(m)+sqr(n))
-               )
-          );
+    return ( sqrt((sqr<T>(((a - x) * m) - ((b - y) * l)) +
+                   sqr<T>(((b - y) * n) - ((c - z) * m)) +
+                   sqr<T>(((c - z) * l) - ((a - x) * n))) /
+                  (sqr<T>(l) + sqr<T>(m) + sqr<T>(n)))
+            );
 }
 
 
 //!---------------------------------------------------------------------
-// @name rnormal                                   
-//                                             
+// @name rnormal
+//
 // @desc returns n(=2k) normaly distributed numbers
 //
 // @var *r   pointer to a vector where we write the numbers
@@ -653,29 +644,23 @@ dist_r_P(float a, float b, float c,
 //
 // @date Sat Jun 27 05:58:56 MET DST 1998
 //----------------------------------------------------------------------
-void
-rnormal(double *r, int n)
+template<typename T>
+void rnormal(T *r, int n)
 {
-
-  double z1, z2;
-  int i;
-
-  for (i=0; i<n; i+=2) {
-
-    z1 = RandomNumber;
-    z2 = RandomNumber;
-  
-    r[i]   = sqrt(-2.0*log(z1)) * cos(2.0*M_PI*z2);
-    r[i+1] = sqrt(-2.0*log(z1)) * sin(2.0*M_PI*z2);
-        
-  }
-
+    T z1, z2;
+    
+    for (int i = 0; i < n; i+=2) {
+        z1 = RandomNumber;
+        z2 = RandomNumber;   
+        r[i]   = sqrt(-2.0 * log(z1)) * cos(2.0 * M_PI * z2);
+        r[i+1] = sqrt(-2.0 * log(z1)) * sin(2.0 * M_PI * z2);        
+    }
 }
 
 
 //!---------------------------------------------------------------------
-// @name Curv2Lin                             
-//                                             
+// @name Curv2Lin
+//
 // @desc Curvilinear to Linear (Euclidean) distance
 //
 // @var s      Curvilinear distance over the parabolic shape
@@ -684,7 +669,7 @@ rnormal(double *r, int n)
 //
 // @date Wed Jul  8 15:25:39 MET DST 1998
 //----------------------------------------------------------------------
-float 
+float
 Curv2Lin(float s)
 {
   float x;
@@ -699,8 +684,8 @@ Curv2Lin(float s)
 
 
 //!---------------------------------------------------------------------
-// @name Lin2Curv                        
-//                                             
+// @name Lin2Curv
+//
 // @desc Linear (Euclidean) to Curvilinear distance
 //
 // @var x      Radial distance from the axis of the paraboloid
@@ -709,12 +694,49 @@ Curv2Lin(float s)
 //
 // @date Wed Jul  8 15:25:39 MET DST 1998
 //----------------------------------------------------------------------
-float 
+float
 Lin2Curv(float x)
 {
   x /= 100.;
   return ((x + (float) 0.000144175317185 * x * x * x)*100.);
 }
+
+
+    // Explicit instantiations
+
+    template float sqr<float>(float x);
+    template float d2r<float>(float x);
+    template float r2d<float>(float x);
+
+    template void makeOmega<float>(float (& Omega)[3][3], float theta, float phi);
+    template void makeOmegaI<float>(float (& OmegaI)[3][3], float theta, float phi);
+    template void applyMxV<float>(float M[3][3], float *V, float *Vp);
+
+    template float dist_r_P<float>(float a, float b, float c,
+                                   float l, float m, float n,
+                                   float x, float y, float z);
+
+    template void rnormal<float>(float *r, int n);
+
+    //-------------------------
+
+    template double sqr<double>(double x);
+    template double d2r<double>(double x);
+    template double r2d<double>(double x);
+
+    template void makeOmega<double>(double (& Omega)[3][3] , double theta, double phi);
+    template void makeOmegaI<double>(double (& OmegaI)[3][3], double theta, double phi);
+    template void applyMxV<double>(double M[3][3], double *V, double *Vp);
+
+    template double dist_r_P<double>(double a, double b, double c,
+                                     double l, double m, double n,
+                                     double x, double y, double z);
+
+    template void rnormal<double>(double *r, int n);
+
+    //---------------------
+
+    template int sqr<int>(int x);
 
 } // namespace MathTools
 
