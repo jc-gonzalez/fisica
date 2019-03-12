@@ -27,11 +27,17 @@
 
 SET (cdetsim_src
   Reflector.cpp
+  InputDataSource.cpp
+  OutputDataHandler.cpp
+  Simulator.cpp
   main.cpp
   )
 
 SET (cdetsim_hdr
   Reflector.h  
+  InputDataSource.h
+  OutputDataHandler.h
+  Simulator.h
   )
 
 SET (cdetsim_inthdr

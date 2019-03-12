@@ -16,7 +16,7 @@
  * Topic: General Information
  *
  * Purpose:
- *   Implement ServiceMng class
+ *   Implement Reflector class
  *
  * Created by:
  *   J C Gonzalez
@@ -46,6 +46,11 @@
 Reflector::Reflector()
 {
 }
+
+Reflector::~Reflector()
+{
+}
+
 /*
 Reflector::Reflector(std::string name) : reflectorFileName(name)
 {

@@ -1,0 +1,10 @@
+#+STARTUP: content
+#+STARTUP: hidestars
+#+STARTUP: logdone
+#+STARTUP: indent
+#+TAGS: URGENT(u) IMPORTANT(i) ON-GOING(o) PREPARING(g) EXTRA(e) READING(r) PROJECT(p)
+#+SEQ_TODO: TODO(t) STARTED(s) WAITING(w) FEEDBACK(f) VERIFY(v) | DONE(d) CANCELLED(c) DEFERRED(r)
+#+LANGUAGE:     en
+#+KEYWORDS:
+#+TEXT:
+#+OPTIONS: H:2 num:t toc:t \n:nil @:t ::t |:t ^:{} _:{} f:t TeX:t ...

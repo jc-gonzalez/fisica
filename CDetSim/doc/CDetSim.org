@@ -1,0 +1,25 @@
+#+TITLE:        CDetSim
+#+AUTHOR:       Jose C. Gonzalez
+#+EMAIL:        jcg@jcgonzalez.org
+#+DATE:         Time-stamp: <2019-03-11 17:34:42 jcgonzalez>
+
+* CDetSim
+
+** Overview and algorithm
+
+- 
+
+* config :noexport:
+#+STARTUP: content hidestars indent logdone
+##+TAGS: URGENT(u) IMPORTANT(i) ON-GOING(o) PREPARING(g) EXTRA(e) READING(r) PROJECT(p)
+##+SEQ_TODO: TODO(t) STARTED(s) WAITING(w) FEEDBACK(k) VERIFY(v) FAILED(f) 10%(1) 20%(2) 30%(3) 40%(4) 50%(5) 60%(6) 70%(7) 80%(8) 90%(9) | DONE(d) PASSED(p) CANCELLED(c) DEFERRED(r)
+#+TAGS: DOMAIN(d) STORY(s) TASK(t)
+#+SEQ_TODO: IDEA(i) TODO(t) STARTED(s) TESTING(t) WAITING(w) | DONE(d) CANCELLED(c) DEFERRED(r)
+#+COLUMNS: %79ITEM %3PRIORITY %9TODO
+#+LANGUAGE:     en
+#+KEYWORDS:
+#+TEXT:
+#+OPTIONS: H:2 num:t toc:t \n:nil @:t ::t |:t ^:{} _:{} f:t TeX:t ...
+
+*
+

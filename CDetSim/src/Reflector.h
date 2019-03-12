@@ -66,6 +66,7 @@
 class Reflector {
 public:
     Reflector();
+    ~Reflector();
 
 private:
     //@: matrices to change to the system where the optical axis is OZ
