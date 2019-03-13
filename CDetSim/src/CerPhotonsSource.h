@@ -60,6 +60,7 @@
 //   none
 //------------------------------------------------------------
 #include "InputDataSource.h"
+#include "CPhoton.h"
 
 //======================================================================
 // Class: CerPhotonsSource
@@ -70,7 +71,7 @@ public:
     virtual ~CerPhotonsSource();
 
     virtual bool openFile(int iFile);
-    bool getNextCPhoton();  
+    bool getNextCPhoton(CPhoton & cph);  
 };
 
 

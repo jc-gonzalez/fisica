@@ -206,11 +206,13 @@ void Simulator::run()
     reflector.setMirrorsFile(reflectorFile);
 
     // Define input data source
-    CerPhotonsSource cph;
-    cph.appendFiles(inputFiles);
+    CerPhotonsSource cphFiles;
+    cphFiles.appendFiles(inputFiles);
 
     // Start loop
-    while (cph.getNextCPhoton()) {
+    CPhoton cph;
+    while (cphFiles.getNextCPhoton(cph)) {
+	std::cout << cph.wl << ' ' << cph.x << ' ' << cph.y << '\n';
     }
 }
 

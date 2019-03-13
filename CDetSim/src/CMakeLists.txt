@@ -30,6 +30,7 @@ SET (cdetsim_src
   InputDataSource.cpp
   OutputDataHandler.cpp
   CerPhotonsSource.cpp
+  CPhoton.cpp
   Simulator.cpp
   main.cpp
   )
@@ -39,6 +40,7 @@ SET (cdetsim_hdr
   InputDataSource.h
   OutputDataHandler.h
   CerPhotonsSource.h
+  CPhoton.h
   Simulator.h
   physconst.h
   )

@@ -56,10 +56,15 @@ CerPhotonsSource::~CerPhotonsSource() {}
 //----------------------------------------------------------------------
 bool CerPhotonsSource::openFile(int iFile)
 {
+    static const int EvtHeaderLength = 273; // 4-byte words
+    
     ifs.open(inputFiles.at(iFile));
-
     if (! ifs.good()) { return false; }
 
+    // Read header
+    float buffer[EvtHeaderLength];
+    ifs.read((char*)(buffer), EvtHeaderLength * sizeof(float));
+    
     return true;
 }
 	
@@ -67,8 +72,11 @@ bool CerPhotonsSource::openFile(int iFile)
 // Method: getNextCPhoton
 // Returns Cherenkov photons until the input source is exhausted
 //----------------------------------------------------------------------
-bool CerPhotonsSource::getNextCPhoton()
+bool CerPhotonsSource::getNextCPhoton(CPhoton & cph)
 {
+    while (!cph.read(ifs)) {
+	if (!openNextFile()) { return false; }
+    }
     return true;
 }
 
