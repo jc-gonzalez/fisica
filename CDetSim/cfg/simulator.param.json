@@ -9,12 +9,12 @@
         // "range_events": [1, 2946],
         // "skip": [1, 2946],
         "max_events": 2, // this is the maximum number of events to process
-        "energy_cut": [800., 1000.], // allowed energy range
-        "ct_file": "./magic.def.json", 
+        "energy_cut": [800., 1000.],
+        "reflector_file": "./magic.def.json", 
         "output_file": "./reflection.out.json",
         "atm_model": "ATM_CORSIKA", // can also be ATM_NOATMOSPHERE
         "data_paths": [
-            "../run/1/in/"
+            "/tmp/"
         ]
     }
 }

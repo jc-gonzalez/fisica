@@ -129,13 +129,15 @@ namespace json {
         std::pair<std::string, Value> operator[](int i);
         Value & operator[](std::string s);
 
+        bool exists(std::string s);
+
         friend std::ostream & operator<<(std::ostream & os, const Object & o);
 
         typedef std::map<std::string, Value>::iterator iterator;
 
         iterator begin();
         iterator end();
-        
+
     private:
         std::map<std::string, Value> obj;
         std::vector<std::string> keys;
@@ -239,7 +241,7 @@ namespace json {
         Value & operator[](std::string s);
 
         friend std::ostream & operator<<(std::ostream & os, const Value & v);
-    
+
     public:
         ValueType type;
 

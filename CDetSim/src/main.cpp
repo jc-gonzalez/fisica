@@ -3,17 +3,14 @@
 
 #include "mathtools.h"
 
+#include "Simulator.h"
+
 using namespace MathTools;
 
 int main(int argc, char * argv[]) 
 {
-    double m = M_PI;
-    double m2 = sqr<double>(m);
-
-    std::cout << m << " squared is " << m2 << '\n';
+    Simulator & sim = Simulator::getInstance();
+    
+    sim.readConfiguration("simulator.param.json");
     return 0;
 }
-
-
-
-

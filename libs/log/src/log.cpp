@@ -229,7 +229,7 @@ std::string Log::getTimeTag()
     gettimeofday(&tv, NULL);
 
     char dateTimeArray[15+1];
-    sprintf(dateTimeArray, "%02d:%02d:%02d.%06ld",
+    sprintf(dateTimeArray, "%02d:%02d:%02d.%06d",
             locTime.tm_hour, locTime.tm_min, locTime.tm_sec, tv.tv_usec);
 
     return std::string(dateTimeArray);

@@ -65,11 +65,18 @@
 //======================================================================
 class InputDataSource {
 public:
-    InputDataSource();
-    ~InputDataSource();
+    // Singleton getter
+    static InputDataSource& getInstance();
+
+    // Methods to block
+    InputDataSource(const InputDataSource& arg) = delete; // Copy constructor
+    InputDataSource(const InputDataSource&& arg) = delete;  // Move constructor
+    InputDataSource& operator=(const InputDataSource& arg) = delete; // Assignment operator
+    InputDataSource& operator=(const InputDataSource&& arg) = delete; // Move operator
 
 private:
-
+    InputDataSource();
+    virtual ~InputDataSource();
 };
 
 

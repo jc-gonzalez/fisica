@@ -105,6 +105,7 @@ namespace json {
         case JSON_STRING: append(key, v.asString());  break;
         case JSON_ARRAY:  append(key, v.asArray());   break;
         case JSON_OBJECT: append(key, v.asObject());  break;
+        case JSON_UNKNOWN: 
         defaut: break;
         }
     }           
@@ -148,6 +149,7 @@ namespace json {
         case JSON_STRING: append(v.asString());  break;
         case JSON_ARRAY:  append(v.asArray());   break;
         case JSON_OBJECT: append(v.asObject());  break;
+        case JSON_UNKNOWN: 
         defaut: break;
         }
     }           
@@ -244,7 +246,8 @@ namespace json {
         case JSON_STRING: return (svalue == "true"); break;
         case JSON_ARRAY:  return avalue[0].asBool(); break;
         case JSON_OBJECT: return false; break;
-        defaut: break;
+        case JSON_UNKNOWN: 
+        defaut: return false; break;
         }
     }
     int Value::asInt()
@@ -256,7 +259,8 @@ namespace json {
         case JSON_STRING: return stoi(svalue); break;
         case JSON_ARRAY:  return avalue[0].asInt(); break;
         case JSON_OBJECT: return 0; break;
-        defaut: break;
+        case JSON_UNKNOWN: 
+        defaut: return 0; break;
         }
     }
     double Value::asFloat()
@@ -268,7 +272,8 @@ namespace json {
         case JSON_STRING: return stod(svalue); break;
         case JSON_ARRAY:  return avalue[0].asFloat(); break;
         case JSON_OBJECT: return 0.0; break;
-        defaut: break;
+        case JSON_UNKNOWN: 
+        defaut: return 0.; break;
         }
     }
     std::string Value::asString()
@@ -280,7 +285,8 @@ namespace json {
         case JSON_STRING: return svalue; break;
         case JSON_ARRAY:  return avalue[0].asString(); break;
         case JSON_OBJECT: return std::string(""); break;
-        defaut: break;
+        case JSON_UNKNOWN: 
+        defaut: return std::string(""); break;
         }
     }
     Array Value::asArray()
@@ -303,7 +309,9 @@ namespace json {
         case JSON_OBJECT: {
             std::vector<Object> vo {ovalue};
             return Array(vo); } break;
-        defaut: break;
+        case JSON_UNKNOWN: 
+        defaut:
+            return Array(); break;
         }
     }
     Object Value::asObject()
@@ -315,7 +323,8 @@ namespace json {
         case JSON_STRING: return Object("value", svalue); break;
         case JSON_ARRAY:  return Object("value", avalue); break;
         case JSON_OBJECT: return ovalue; break;
-        defaut: break;
+        case JSON_UNKNOWN: 
+        defaut: return Object(); break;
         }
     }
         
@@ -339,6 +348,11 @@ namespace json {
     Object::iterator Object::begin() { return obj.begin(); }
     
     Object::iterator Object::end() { return obj.end(); }
+
+    bool Object::exists(std::string s)
+    {
+        return (obj.find(s) != obj.end());
+    }
 
     //======================================================================
     
@@ -651,7 +665,7 @@ namespace json {
     {
         if (json::formattedOutput) {
             switch (v.type) {
-            case JSON_BOOL:   os << v.bvalue ? "true" : "false";  break;
+            case JSON_BOOL:   os << (v.bvalue ? "true" : "false");  break;
             case JSON_INT:    os << v.ivalue;  break;
             case JSON_FLOAT:  os << v.xvalue;  break;
             case JSON_STRING: os << "\"" << v.svalue << "\"";  break;
@@ -661,7 +675,7 @@ namespace json {
             }
         } else {
             switch (v.type) {
-            case JSON_BOOL:   os << v.bvalue ? "true" : "false";  break;
+            case JSON_BOOL:   os << (v.bvalue ? "true" : "false");  break;
             case JSON_INT:    os << v.ivalue;  break;
             case JSON_FLOAT:  os << v.xvalue;  break;
             case JSON_STRING: os << "\"" << v.svalue << "\"";  break;

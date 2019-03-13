@@ -65,11 +65,18 @@
 //======================================================================
 class OutputDataHandler {
 public:
-    OutputDataHandler();
-    ~OutputDataHandler();
+    // Singleton getter
+    static OutputDataHandler& getInstance();
+
+    // Methods to block
+    OutputDataHandler(const OutputDataHandler& arg) = delete; // Copy constructor
+    OutputDataHandler(const OutputDataHandler&& arg) = delete;  // Move constructor
+    OutputDataHandler& operator=(const OutputDataHandler& arg) = delete; // Assignment operator
+    OutputDataHandler& operator=(const OutputDataHandler&& arg) = delete; // Move operator
 
 private:
-
+    OutputDataHandler();
+    virtual ~OutputDataHandler();
 };
 
 

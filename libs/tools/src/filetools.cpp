@@ -75,7 +75,8 @@ std::string generateTmpFile()
 {
     // Prepare temporary file
     char buff[L_tmpnam];
-    tmpnam(buff);
+    //tmpnam(buff);
+    mkstemp(buff);
     return std::string(buff);
 }
     

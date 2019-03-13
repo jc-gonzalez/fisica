@@ -54,6 +54,7 @@
 // Topic: External packages
 //   none
 //------------------------------------------------------------
+#include "json.h"
 
 //------------------------------------------------------------
 // Topic: Project headers
@@ -65,11 +66,46 @@
 //======================================================================
 class Simulator {
 public:
-    Simulator();
-    ~Simulator();
+    // Singleton getter
+    static Simulator& getInstance();
+
+    // Methods to block
+    Simulator(const Simulator& arg) = delete; // Copy constructor
+    Simulator(const Simulator&& arg) = delete;  // Move constructor
+    Simulator& operator=(const Simulator& arg) = delete; // Assignment operator
+    Simulator& operator=(const Simulator&& arg) = delete; // Move operator
 
 private:
+    Simulator();
+    virtual ~Simulator();
 
+public:
+    void readConfiguration(std::string fileName);
+    void run();
+
+private:
+    json::Object cfgSim;
+
+    int verbLevel;
+    int maxEvtNum;
+    double fixedTargetTheta, fixedTargetPhi;
+    double minEvtId, maxEvtId;
+    double minSkipEvtNum, maxSkipEvtNum;
+    double minEnergy, maxEnergy;
+
+    bool definedFixedTarget;
+    bool definedEventRange;
+    bool definedSkipRange;
+    bool definedMaxEvents;
+    bool definedEnergyCut;
+
+    std::string reflectorFile;
+    std::string outputFile;
+    std::string atmModel;
+
+    std::vector<std::string> inputFiles;
+
+    static const int VERB_DBG, VERB_INFO, VERB_MINIMAL, VERB_QUIET;
 };
 
 
