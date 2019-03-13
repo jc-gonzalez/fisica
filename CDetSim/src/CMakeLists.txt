@@ -29,6 +29,7 @@ SET (cdetsim_src
   Reflector.cpp
   InputDataSource.cpp
   OutputDataHandler.cpp
+  CerPhotonsSource.cpp
   Simulator.cpp
   main.cpp
   )
@@ -37,7 +38,9 @@ SET (cdetsim_hdr
   Reflector.h  
   InputDataSource.h
   OutputDataHandler.h
+  CerPhotonsSource.h
   Simulator.h
+  physconst.h
   )
 
 SET (cdetsim_inthdr

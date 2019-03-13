@@ -49,6 +49,9 @@
 // Topic: System headers
 //   none
 //------------------------------------------------------------
+#include <string>
+#include <vector>
+#include <fstream>
 
 //------------------------------------------------------------
 // Topic: External packages
@@ -65,18 +68,20 @@
 //======================================================================
 class InputDataSource {
 public:
-    // Singleton getter
-    static InputDataSource& getInstance();
-
-    // Methods to block
-    InputDataSource(const InputDataSource& arg) = delete; // Copy constructor
-    InputDataSource(const InputDataSource&& arg) = delete;  // Move constructor
-    InputDataSource& operator=(const InputDataSource& arg) = delete; // Assignment operator
-    InputDataSource& operator=(const InputDataSource&& arg) = delete; // Move operator
-
-private:
     InputDataSource();
     virtual ~InputDataSource();
+
+    void appendFiles(std::vector<std::string> files);
+    bool openNextFile();
+    
+    virtual bool openFile(int);
+    
+protected:
+
+    bool isFileOpen;
+    std::ifstream ifs;
+    int iFile;
+    std::vector<std::string> inputFiles;
 };
 
 

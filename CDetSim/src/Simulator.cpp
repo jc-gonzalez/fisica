@@ -44,6 +44,9 @@
 #include <cassert>
 #include <dirent.h>
 
+#include "Reflector.h"
+#include "CerPhotonsSource.h"
+
 //----------------------------------------------------------------------
 // Constructor: Simulator
 //----------------------------------------------------------------------
@@ -68,58 +71,56 @@ Simulator::~Simulator() {}
 //----------------------------------------------------------------------
 void Simulator::readConfiguration(std::string fileName)
 {
-
     // Read filename
     json::Parser cfgReader;
     assert(cfgReader.parseFile(fileName, cfgSim));
 
     // Pass config items to data members
-    json::Object && cfgData = cfgSim["data"].asObject();
+    json::Object && cfg = cfgSim["data"].asObject();
 
-    if (cfgData.exists("verbose_level")) {
-        verbLevel = cfgSim["verbose_level"].asInt();
+    if (cfg.exists("verbose_level")) {
+        verbLevel = cfg["verbose_level"].asInt();
     }
 
-    if (cfgData.exists("fixed_target")) {
-        fixedTargetTheta = cfgSim["fixed_target"][0].asFloat();
-        fixedTargetPhi   = cfgSim["fixed_target"][1].asFloat();
+    if (cfg.exists("fixed_target")) {
+        fixedTargetTheta = cfg["fixed_target"][0].asFloat();
+        fixedTargetPhi   = cfg["fixed_target"][1].asFloat();
         definedFixedTarget = true;
     }
 
-    if (cfgData.exists("range_events")) {
-        minEvtId = cfgSim["range_events"][0].asInt();
-        maxEvtId = cfgSim["range_events"][1].asInt();
+    if (cfg.exists("range_events")) {
+        minEvtId = cfg["range_events"][0].asInt();
+        maxEvtId = cfg["range_events"][1].asInt();
         definedEventRange = true;
     }
 
-    if (cfgData.exists("skip")) {
-        minSkipEvtNum = cfgSim["skip"][0].asInt();
-        maxSkipEvtNum = cfgSim["skip"][1].asInt();
+    if (cfg.exists("skip")) {
+        minSkipEvtNum = cfg["skip"][0].asInt();
+        maxSkipEvtNum = cfg["skip"][1].asInt();
         definedSkipRange = true;
     }
 
-    if (cfgData.exists("max_events")) {
-        maxEvtNum = cfgSim["max_events"].asInt();
+    if (cfg.exists("max_events")) {
+        maxEvtNum = cfg["max_events"].asInt();
         definedMaxEvents = true;
     }
 
-    if (cfgData.exists("energy_cut")) {
-        minEnergy = cfgSim["energy_cut"][0].asFloat();
-        maxEnergy = cfgSim["energy_cut"][1].asFloat();
+    if (cfg.exists("energy_cut")) {
+        minEnergy = cfg["energy_cut"][0].asFloat();
+        maxEnergy = cfg["energy_cut"][1].asFloat();
         definedEnergyCut = true;
     }
 
-    std::cerr << cfgData["reflector_file"].asString() << '\n';
-    std::cerr << cfgData["output_file"].asString() << '\n';
-    std::cerr << cfgData["atm_model"].asString() << '\n';
+    std::cerr << cfg["reflector_file"].asString() << '\n'
+	      << cfg["output_file"].asString() << '\n'
+	      << cfg["atm_model"].asString() << '\n';
 
-    /*
-    reflectorFile = cfgData["reflector_file"].asString();
-    outputFile = cfgData["output_file"].asString();
-    atmModel = cfgData["atm_model"].asString();
+    reflectorFile = cfg["reflector_file"].asString();
+    outputFile = cfg["output_file"].asString();
+    atmModel = cfg["atm_model"].asString();
 
     // Get data files (cer*) for all input paths
-    for (auto s : cfgData["data_paths"].asArray()) {
+    for (auto s : cfg["data_paths"].asArray()) {
         DIR *dir;
         struct dirent *ent;
         if ((dir = opendir(s.asString().c_str())) != NULL) {
@@ -130,7 +131,9 @@ void Simulator::readConfiguration(std::string fileName)
                 if (((name[0] == 'c') || (name[0] == 'C')) &&
                     ((name[1] == 'e') || (name[1] == 'E')) &&
                     ((name[2] == 'r') || (name[3] == 'R'))) {
-                    inputFiles.push_back(std::string(name));
+                    inputFiles.push_back(s.asString() + "/" +
+					 std::string(name));
+		    std::cerr << s.asString() << "/" << name << '\n';
                 }
             }
             closedir(dir);
@@ -139,7 +142,57 @@ void Simulator::readConfiguration(std::string fileName)
             perror("opendir");
         }
     }
-    */
+}
+
+//----------------------------------------------------------------------
+// Method: showConfiguration
+// Display the configuration file
+//----------------------------------------------------------------------
+void Simulator::showConfiguration()
+{
+    std::cout << "==== Simulation Configuration Parameters ===="
+	      << "=============================================\n";
+    std::cout << "Verbosity Level ...: " << verbLevel << '\n';
+    std::cout << "Fixed Target ......: ";
+    if (definedFixedTarget) {
+	std::cout << "(\u03b8, \u03d5) = (" << fixedTargetTheta << ", " << fixedTargetPhi << ")\n";
+    } else {
+	std::cout << "OFF\n";
+    }
+    std::cout << "Event range .......: ";
+    if (definedEventRange) {
+	std::cout << "from " << minEvtId << " to " << maxEvtId << '\n';
+    } else {
+	std::cout << "OFF\n";
+    }
+    std::cout << "Skip Event range ..: ";
+    if (definedSkipRange) {
+	std::cout << "from " << minSkipEvtNum << " to " << maxSkipEvtNum << '\n';
+    } else {
+	std::cout << "OFF\n";
+    }
+    std::cout << "Max. Events .......: ";
+    if (definedMaxEvents) {
+	std::cout << "anlize up to " << maxEvtNum << " events\n";
+    } else {
+	std::cout << "OFF\n";
+    }
+    std::cout << "Energy range ......: ";
+    if (definedEnergyCut) {
+	std::cout << "[" << minEnergy << ", " << maxEnergy << "]\n";
+    } else {
+	std::cout << "OFF\n";
+    }
+    std::cerr << "Reflector file ....: " << reflectorFile << '\n'
+	      << "Output file .......: " << outputFile << '\n'
+	      << "Atmospheric model .: " << atmModel << '\n';
+
+    std::cerr << "Input files .......: " << inputFiles.at(0) << '\n';
+    for (int i = 1; i < inputFiles.size(); ++i) {
+	std::cerr << "                     " << inputFiles.at(i) << '\n';
+    }
+    std::cout << "============================================="
+	      << "=============================================\n";
 }
 
 //----------------------------------------------------------------------
@@ -148,7 +201,17 @@ void Simulator::readConfiguration(std::string fileName)
 //----------------------------------------------------------------------
 void Simulator::run()
 {
+    // Define reflector
+    Reflector reflector;
+    reflector.setMirrorsFile(reflectorFile);
 
+    // Define input data source
+    CerPhotonsSource cph;
+    cph.appendFiles(inputFiles);
+
+    // Start loop
+    while (cph.getNextCPhoton()) {
+    }
 }
 
 //----------------------------------------------------------------------

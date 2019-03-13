@@ -14,7 +14,7 @@
         "output_file": "./reflection.out.json",
         "atm_model": "ATM_CORSIKA", // can also be ATM_NOATMOSPHERE
         "data_paths": [
-            "/tmp/"
+            "/home/jcgonzalez/JC1/fisica.git/detector/run/4/in"
         ]
     }
 }

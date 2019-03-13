@@ -54,12 +54,12 @@
 // Topic: External packages
 //   none
 //------------------------------------------------------------
-#include "json.h"
 
 //------------------------------------------------------------
 // Topic: Project headers
 //   none
 //------------------------------------------------------------
+#include "Reflector.h"
 
 //======================================================================
 // Class: Simulator
@@ -81,6 +81,8 @@ private:
 
 public:
     void readConfiguration(std::string fileName);
+    void showConfiguration();
+
     void run();
 
 private:

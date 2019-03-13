@@ -59,6 +59,11 @@
 // Topic: Project headers
 //   none
 //------------------------------------------------------------
+#include "physconst.h"
+#include "json.h"
+
+// Type: Mirrors definition
+typedef json::Object MirrorSet;
 
 //======================================================================
 // Class: Reflector
@@ -68,69 +73,59 @@ public:
     Reflector();
     ~Reflector();
 
+public:
+    void setMirrorsFile(std::string fileName);
+    
 private:
-    //@: matrices to change to the system where the optical axis is OZ
-    float OmegaCT[3][3];
+    // Matrices to change to the system where the optical axis is OZ
+    double OmegaCT[3][3];
 
-    //@: matrices to change to the system where the optical axis is OZ (inverse)
-    float OmegaICT[3][3];
+    // Matrices to change to the system where the optical axis is OZ (inverse)
+    double OmegaICT[3][3];
 
-    //@: matrices to change the system of coordinates
-    float Omega[3][3];
+    // Matrices to change the system of coordinates
+    double Omega[3][3];
 
-    //@: matrices to change the system of coordinates (inverse)
-    float OmegaI[3][3];
+    // Matrices to change the system of coordinates (inverse)
+    double OmegaI[3][3];
 
-    //@: Focal distances [cm]
-    float *ct_Focal;
+    // Focal distances [cm]
+    std::vector<double> ct_Focal;
 
-    //@: Mean Focal distances [cm]
-    float ct_Focal_mean;
+    // Mean Focal distances [cm]
+    double ct_Focal_mean;
 
-    //@: STDev. Focal distances [cm]
-    float ct_Focal_std;
+    // STDev. Focal distances [cm]
+    double ct_Focal_std;
 
-    //@: Mean Point Spread function [cm]
-    float ct_PSpread_mean;
+    // Mean Point Spread function [cm]
+    double ct_PSpread_mean;
 
-    //@: STDev. Point Spread function [cm]
-    float ct_PSpread_std;
+    // STDev. Point Spread function [cm]
+    double ct_PSpread_std;
 
-    //@: STDev. Adjustmente deviation [cm]
-    float ct_Adjustment_std;
+    // STDev. Adjustmente deviation [cm]
+    double ct_Adjustment_std;
 
-    //@: Radius of the Black Spot in mirror [cm]
-    float ct_BlackSpot_rad;
+    // Radius of the Black Spot in mirror [cm]
+    double ct_BlackSpot_rad;
 
-    //@: Radius of one mirror [cm]
-    float ct_RMirror;
+    // Radius of one mirror [cm]
+    double ct_RMirror;
 
-    //@: Camera width [cm]
-    float ct_CameraWidth;
+    // Camera width [cm]
+    double ct_CameraWidth;
 
-    //@: Pixel width [cm]
-    float ct_PixelWidth;
+    // Pixel width [cm]
+    double ct_PixelWidth;
 
-    //@: Number of mirrors
+    // Number of mirrors
     int ct_NMirrors = 0;
 
-    //@: Number of pixels
+    // Number of pixels
     int ct_NPixels;
 
-    /*!@"
-
-      The following double-pointer is a 2-dimensional table with
-      information about each mirror in the dish. The routine
-      |read_ct_file()| will read this information from the file with the
-      name given by the user in the E@parameters file@, in the command
-      |ct_file|.  The information stored in this file (and in this table)
-      depends on the type of telescope we are using.
-
-      @"*/
-
-    //!@{
-
-    /*
+    /* Mirrors information
      *  TYPE=1  (MAGIC)
      *      i  f   sx   sy   x   y   z   thetan  phin
      *
@@ -148,89 +143,26 @@ private:
      *      zn : zn coordinate of the normal vector in the center (normalized)
      */
 
-    //@: Pointer to a table with the following info.:
-    float **ct_data;
+    // Pointer to a table with the following info.:
+    double **ct_data;
 
+    // The mirror table has data obtained from this object
+    MirrorSet mirrors;
+    
+    // Table with datapoints (wavelength,reflec.)
+    double **reflectivity;
 
-    /*!@"
-
-      Next, we have two tables with data got from two files,
-      |reflectivity.dat| and |axisdev.dat|, which contain information
-      about the reflectivity of the mirrors, as a function of the
-      wavelength @$\lambda@$, and about the (simulated) deviation of the
-      mirrors' axes, with respect to the mathematical exact axes.
-
-      @"*/
-
-    //!@{
-
-    // table of reflectivity for each mirror
-
-    //@: table with datapoints (wavelength,reflec.)
-    float **Reflectivity;
-
-    //@: number of datapoints
+    // Number of datapoints
     int    nReflectivity;
 
-    //@: table with deviations of the mirrors' normals
-    float **AxisDeviation;
+    // Table with deviations of the mirrors' normals
+    double **axisDeviation;
 
-    //!@}
+    // Table of normal random numbers
+    double normalRandomNumbers[500];
 
-    /*!@"
-
-      We still define a table into where normal random numbers will be
-      stored by the routine |rnormal(double *r, int n)|.
-
-      @"*/
-
-    //!@{
-
-    //@: table of normal random numbers
-    double NormalRandomNumbers[500];
-
-    //!@}
-
-    /*!@"
-
-      This is a flag to change the E@verbosity@ of the output
-
-      @"*/
-
-    //!@{
-
-    //@: flag to change the verbosity
+    // Flag to change the verbosity
     int verbose;
-
-    /*!@"
-
-      This option makes the telescope to point to a random position
-      relative to the shower axis, with a maximum angular separation of
-      |RANDOM_POINTING_MAX_SEPARATION| (defined in |reflector.h|.
-
-      @"*/
-
-    //!@{
-
-    //@: random pointing for the CT?
-    int Random_Pointing;
-
-    //@: random pointing for the CT?
-    int Random_Pointing_Isotropic;
-
-    //@: number of times a shower is going to be processed
-    int nRepeat_Random;
-
-    //@: number of times a shower is already processed
-    int nRepeated;
-
-    //@: maximum random pointing distance
-    float Random_Pointing_MaxDist; // [radians]
-
-    //@: minimum random pointing distance
-    float Random_Pointing_MinDist; // [radians]
-
-    //!@}
 
 };
 
