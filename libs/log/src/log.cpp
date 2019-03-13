@@ -229,9 +229,13 @@ std::string Log::getTimeTag()
     gettimeofday(&tv, NULL);
 
     char dateTimeArray[15+1];
+#if defined(__APPLE__) && defined(__MACH__)
     sprintf(dateTimeArray, "%02d:%02d:%02d.%06d",
             locTime.tm_hour, locTime.tm_min, locTime.tm_sec, tv.tv_usec);
-
+#else
+    sprintf(dateTimeArray, "%02d:%02d:%02d.%06ld",
+            locTime.tm_hour, locTime.tm_min, locTime.tm_sec, tv.tv_usec);
+#endif
     return std::string(dateTimeArray);
 }
 
