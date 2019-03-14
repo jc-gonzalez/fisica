@@ -126,6 +126,11 @@ namespace MathTools {
     typedef std::tuple<std::tuple<double, double, double>,
 		       std::tuple<double, double, double>,
 		       std::tuple<double, double, double>> matrix3D;
+
+    vector3D operator+(vector3D a, vector3D b);
+    vector3D operator-(vector3D a, vector3D b);
+    double dot(vector3D a, vector3D b);
+    vector3D cross(vector3D a, vector3D b);
     
     double norm2(vector3D v);
     double norm(vector3D v);

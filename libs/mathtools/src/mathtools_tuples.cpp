@@ -42,6 +42,32 @@
 
 namespace MathTools {
 
+vector3D operator+(vector3D a, vector3D b)
+{
+    return std::make_tuple(std::get<0>(a) + std::get<0>(b),
+			   std::get<1>(a) + std::get<1>(b),
+			   std::get<2>(a) + std::get<2>(b));
+}
+
+vector3D operator-(vector3D a, vector3D b)
+{
+    return std::make_tuple(std::get<0>(a) - std::get<0>(b),
+			   std::get<1>(a) - std::get<1>(b),
+			   std::get<2>(a) - std::get<2>(b));
+}
+
+double dot(vector3D a, vector3D b)
+{
+    return (std::get<0>(a) * std::get<0>(b) +
+	    std::get<1>(a) * std::get<1>(b) +
+	    std::get<2>(a) * std::get<2>(b));
+}
+
+vector3D cross(vector3D a, vector3D b)
+{
+    return std::make_tuple(0., 0., 0.);
+}
+
 double norm2(vector3D v)
 {
     double x, y, z;
