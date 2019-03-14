@@ -169,6 +169,14 @@ void Reflector::setOrientation(double theta, double phi)
 //----------------------------------------------------------------------
 bool Reflector::reflect(CPhoton cph)
 {
+    // Atmospheric transmittance test
+    if (!passedTransmittance(cph)) { return false; }
+
+    // Mirrors reflectivity test
+    if (!passedReflectivity(cph)) { return false; }
+
+    point3D cphGround {cph.x - coreX, cph.y - coreY, 0.};
+    vector3D orient {cph.u, cph.v, cph.w};
 }
 
 //----------------------------------------------------------------------
@@ -209,6 +217,14 @@ bool Reflector::passedReflectivity(CPhoton & cph)
 void Reflector::applyAxisDeviation(CPhoton & cph)
 {
     // return (unifUnit() < 0.9);
+}
+
+//----------------------------------------------------------------------
+// Method: mirrorsReflection
+//----------------------------------------------------------------------
+bool Reflector::mirrorsReflection(point3D photonLoc, vector3D orient, double timeFirstInt)
+{
+    return true;
 }
 
 /*

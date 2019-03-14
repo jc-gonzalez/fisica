@@ -88,6 +88,8 @@ public:
     bool passedTransmittance(CPhoton & cph);
     bool passedReflectivity(CPhoton & cph);
     void applyAxisDeviation(CPhoton & cph);
+    
+    bool mirrorsReflection(point3D photonLoc, vector3D orient, double timeFirstInt);
 
 private:
     // Core location
