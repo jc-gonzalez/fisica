@@ -73,7 +73,7 @@ public:
 
     void appendFiles(std::vector<std::string> files);
     bool openNextFile();
-    
+    int currentFileIndex();
     virtual bool openFile(int);
     
 protected:

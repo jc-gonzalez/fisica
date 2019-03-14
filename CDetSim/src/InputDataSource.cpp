@@ -40,6 +40,8 @@
 
 #include "InputDataSource.h"
 
+#include <iostream>
+
 //----------------------------------------------------------------------
 // Constructor: InputDataSource
 //----------------------------------------------------------------------
@@ -71,10 +73,10 @@ void InputDataSource::appendFiles(std::vector<std::string> files)
 //----------------------------------------------------------------------
 bool InputDataSource::openFile(int iFile)
 {
+    ifs.clear();
     ifs.open(inputFiles.at(iFile));
-
     if (! ifs.good()) { return false; }
-
+    isFileOpen = true;
     return true;
 }
 
@@ -89,7 +91,16 @@ bool InputDataSource::openNextFile()
 
     iFile++;
     if (iFile >= inputFiles.size()) { return false; }
-
+    std::cout << "Trying to open " << iFile << "-th file\n";
     return openFile(iFile);
+}
+
+//----------------------------------------------------------------------
+// Method: currentFileIndex
+// Returns the index in the pool of the file currently being processed
+//----------------------------------------------------------------------
+int InputDataSource::currentFileIndex()
+{
+    return iFile;
 }
 

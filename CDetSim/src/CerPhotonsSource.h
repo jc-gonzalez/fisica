@@ -71,7 +71,15 @@ public:
     virtual ~CerPhotonsSource();
 
     virtual bool openFile(int iFile);
-    bool getNextCPhoton(CPhoton & cph);  
+    bool getNextCPhoton(CPhoton & cph, bool & isNewSet);
+    Point2D getCore();
+    std::tuple<double, double> getOrientation();
+    //void getCore(double & x, double & y);
+    //void getOrientation(double & theta, double & phi);
+
+private:
+    double thetaEvt, phiEvt;
+    double coreEvtX, coreEvtY;
 };
 
 

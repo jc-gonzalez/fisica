@@ -42,6 +42,8 @@
 
 #include <iostream>
 #include <cassert>
+#include <algorithm>
+
 #include <dirent.h>
 
 #include "Reflector.h"
@@ -142,6 +144,7 @@ void Simulator::readConfiguration(std::string fileName)
             perror("opendir");
         }
     }
+    std::sort(inputFiles.begin(), inputFiles.end());
 }
 
 //----------------------------------------------------------------------
@@ -211,7 +214,20 @@ void Simulator::run()
 
     // Start loop
     CPhoton cph;
-    while (cphFiles.getNextCPhoton(cph)) {
+    bool isNewFile;
+
+    Point2D core;
+    double theta, phi;
+    
+    while (cphFiles.getNextCPhoton(cph, isNewFile)) {
+
+	if (isNewFile) {
+	    core = cphFiles.getCore();
+	    std::tie(theta, phi) = cphFiles.getOrientation();
+	    std::cout << "------------ New core at " << core.x
+		      << ", " << core.y << '\n';
+	}
+
 	std::cout << cph.wl << ' ' << cph.x << ' ' << cph.y << '\n';
     }
 }

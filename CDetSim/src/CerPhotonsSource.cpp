@@ -40,6 +40,8 @@
 
 #include "CerPhotonsSource.h"
 
+#include <iostream>
+
 //----------------------------------------------------------------------
 // Constructor: CerPhotonsSource
 //----------------------------------------------------------------------
@@ -57,25 +59,58 @@ CerPhotonsSource::~CerPhotonsSource() {}
 bool CerPhotonsSource::openFile(int iFile)
 {
     static const int EvtHeaderLength = 273; // 4-byte words
-    
-    ifs.open(inputFiles.at(iFile));
+
+    ifs.clear();
+    std::cout << "    . . . opening " << iFile << "-th file "
+	      << inputFiles.at(iFile) << '\n';
+    ifs.open(inputFiles.at(iFile),
+	     std::ifstream::in | std::ifstream::binary);
     if (! ifs.good()) { return false; }
+    isFileOpen = true;
 
     // Read header
     float buffer[EvtHeaderLength];
     ifs.read((char*)(buffer), EvtHeaderLength * sizeof(float));
-    
+
+    thetaEvt = double(buffer[10]);
+    phiEvt   = double(buffer[11]);
+
+    // We are dealing with 1 single core
+    int nCore = 0;
+    coreEvtX = double(buffer[98 + nCore]);
+    coreEvtY = double(buffer[118 + nCore]);
+
     return true;
+}
+	
+//----------------------------------------------------------------------
+// Method: getCore
+// Returns Cherenkov photons until the input source is exhausted
+//----------------------------------------------------------------------
+Point2D CerPhotonsSource::getCore()
+{
+    return Point2D { coreEvtX, coreEvtY };
+}
+	
+//----------------------------------------------------------------------
+// Method: getOrientation
+// Returns Cherenkov photons until the input source is exhausted
+//----------------------------------------------------------------------
+std::tuple<double, double> CerPhotonsSource::getOrientation()
+{
+    return std::tuple<double, double>(thetaEvt, phiEvt);
 }
 	
 //----------------------------------------------------------------------
 // Method: getNextCPhoton
 // Returns Cherenkov photons until the input source is exhausted
 //----------------------------------------------------------------------
-bool CerPhotonsSource::getNextCPhoton(CPhoton & cph)
+bool CerPhotonsSource::getNextCPhoton(CPhoton & cph, bool & isNewSet)
 {
+    isNewSet = false;
     while (!cph.read(ifs)) {
 	if (!openNextFile()) { return false; }
+	isNewSet = true;
     }
     return true;
 }
