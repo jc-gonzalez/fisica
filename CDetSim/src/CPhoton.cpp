@@ -42,6 +42,9 @@
 
 #include <cmath>
 
+#include "mathtools.h"
+using namespace MathTools;
+
 //----------------------------------------------------------------------
 // Constructor: CPhoton
 //----------------------------------------------------------------------
@@ -61,15 +64,16 @@ bool CPhoton::read(std::ifstream & ifs)
     float buffer[7];
     ifs.read((char *)(buffer), 7 * sizeof( float ) );   // 
     if (ifs.gcount() > 0) {
-	w = buffer[0];
+	wcode = buffer[0];
 	x = buffer[1];
 	y = buffer[2];
 	u = buffer[3];
 	v = buffer[4];
 	h = buffer[5];
 	t = buffer[6];
-	if (w < 1.) { return false; }
+	if (wcode < 1.) { return false; }
 	wl = getWavelength();
+	w = sqrt(1.0 - sqr<double>(u) - sqr<double>(v));
 	return true;
     } else {
 	return false;
@@ -82,6 +86,8 @@ bool CPhoton::read(std::ifstream & ifs)
 //----------------------------------------------------------------------
 double CPhoton::getWavelength()
 { 
-    return ( (w > 1.0) ? w - 1000.*((int)floor(w/1000.)) : 0.0 ); 
+    return ( (wcode > 1.0) ?
+	     (wcode - (1000.0 * ((int)floor(wcode / 1000.)))) :
+	     0.0 ); 
 }
 

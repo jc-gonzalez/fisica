@@ -79,6 +79,8 @@ private:
     Simulator();
     virtual ~Simulator();
 
+    std::string subEnvVars(std::string s);
+    
 public:
     void readConfiguration(std::string fileName);
     void showConfiguration();

@@ -64,14 +64,27 @@
 
 #define CT_NDATA  12
 
+thread_local UnifRnd unifUnit(0., 1.);
+
+#define RandomNumber unifUnit()
+
+//----------------------------------------------------------------------
+// Constructor: Reflector
+//----------------------------------------------------------------------
 Reflector::Reflector()
 {
 }
 
+//----------------------------------------------------------------------
+// Destructor: ~Reflector
+//----------------------------------------------------------------------
 Reflector::~Reflector()
 {
 }
 
+//----------------------------------------------------------------------
+// Method: setMirrorsFile
+//----------------------------------------------------------------------
 void Reflector::setMirrorsFile(std::string fileName)
 {
     // Read filename
@@ -130,6 +143,72 @@ void Reflector::setMirrorsFile(std::string fileName)
 	axisDeviation[i][1] = content["data"]["axis_deviation"][1].asFloat();
     }
 
+}
+
+//----------------------------------------------------------------------
+// Method: setMirrorsFile
+//----------------------------------------------------------------------
+void Reflector::setCore(Point2D core)
+{
+    coreX = core.x, coreY = core.y;
+    coreD = norm(coreX, coreY, 0.0);
+}
+
+//----------------------------------------------------------------------
+// Method: setOrientation
+//----------------------------------------------------------------------
+void Reflector::setOrientation(double theta, double phi)
+{
+    thetaCT = theta, phiCT = phi;
+    omega  = makeOmega( d2r(theta), d2r(phi) );
+    omegaI = makeOmegaI( d2r(theta), d2r(phi) );    
+}
+
+//----------------------------------------------------------------------
+// Method: reflect
+//----------------------------------------------------------------------
+bool Reflector::reflect(CPhoton cph)
+{
+}
+
+//----------------------------------------------------------------------
+// Method: lagrange
+//----------------------------------------------------------------------
+double Reflector::lagrange(double ** t, double x)
+{
+    int n = 0;
+    while (t[n + 1][0] < x) { ++n; }
+    
+    return ((t[n][1] * ((x - t[n+1][0]) * (x - t[n+2][0])) / 
+             ((t[n][0] - t[n+1][0]) * (t[n][0] - t[n+2][0])))  +  
+            (t[n+1][1] * ((x - t[n][0]) * (x - t[n+2][0])) /   
+             ((t[n+1][0] - t[n][0]) * (t[n+1][0] - t[n+2][0])))  +  
+            (t[n+2][1] * ((x - t[n][0]) * (x - t[n+1][0])) /  
+             ((t[n+2][0] - t[n][0]) * (t[n+2][0] - t[n+1][0]))));
+}
+
+//----------------------------------------------------------------------
+// Method: passedTransmittance
+//----------------------------------------------------------------------
+bool Reflector::passedTransmittance(CPhoton & cph)
+{
+    return (unifUnit() < 0.9);  // atm(cph.wl, cph.h, acos(cph.w))
+}
+
+//----------------------------------------------------------------------
+// Method: passedReflectivity
+//----------------------------------------------------------------------
+bool Reflector::passedReflectivity(CPhoton & cph)
+{
+    return (unifUnit() < lagrange(reflectivity, cph.wl));
+}
+
+//----------------------------------------------------------------------
+// Method: applyAxisDeviation
+//----------------------------------------------------------------------
+void Reflector::applyAxisDeviation(CPhoton & cph)
+{
+    // return (unifUnit() < 0.9);
 }
 
 /*

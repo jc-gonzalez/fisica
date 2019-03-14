@@ -43,6 +43,11 @@
 
 #include <cmath>
 #include <cstdlib>
+#include <tuple>
+
+#include <random>
+#include <chrono>
+#include <thread>
 
 //============================================================
 // Group: External Dependencies
@@ -52,6 +57,7 @@
 // Topic: System headers
 //   none
 //------------------------------------------------------------
+#include <iostream>
 
 //------------------------------------------------------------
 // Topic: External packages
@@ -68,8 +74,19 @@
 //======================================================================
 namespace MathTools {
 
-#define RandomNumber drand48()
+    //#define RandomNumber drand48()
 
+    class UnifRnd {
+    public:
+	std::random_device                     rd;
+	std::mt19937                           mt;
+	std::uniform_real_distribution<double> unif;
+
+	UnifRnd(double a, double b) : rd{}, mt{rd()},  unif{a, b} {}
+
+	double operator()() { return unif(mt); }
+    };
+    
     template<typename T>
     T sqr(T x);
 
@@ -79,6 +96,12 @@ namespace MathTools {
     template<typename T>
     T r2d(T x);
 
+    template<typename T>
+    T norm2(T x, T y, T z);
+    
+    template<typename T>
+    T norm(T x, T y, T z);
+    
     template<typename T>
     void makeOmega(T (& Omega)[3][3] , T theta, T phi);
 
@@ -96,6 +119,21 @@ namespace MathTools {
                T u, T v, T w,
                T x, T y, T z);
 
+
+    typedef std::tuple<double, double, double>  point3D;
+    typedef std::tuple<double, double, double>  vector3D;
+    
+    typedef std::tuple<std::tuple<double, double, double>,
+		       std::tuple<double, double, double>,
+		       std::tuple<double, double, double>> matrix3D;
+    
+    double norm2(vector3D v);
+    double norm(vector3D v);
+    matrix3D makeOmega(double theta, double phi);
+    matrix3D makeOmegaI(double theta, double phi);
+    vector3D applyMxV(matrix3D M, vector3D & V);
+
+    std::ostream & operator<<(std::ostream & os, vector3D & v);
 
 }
 

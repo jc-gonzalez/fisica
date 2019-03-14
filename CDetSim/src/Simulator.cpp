@@ -46,8 +46,11 @@
 
 #include <dirent.h>
 
+#include "str.h"
+
 #include "Reflector.h"
 #include "CerPhotonsSource.h"
+
 
 //----------------------------------------------------------------------
 // Constructor: Simulator
@@ -117,15 +120,16 @@ void Simulator::readConfiguration(std::string fileName)
 	      << cfg["output_file"].asString() << '\n'
 	      << cfg["atm_model"].asString() << '\n';
 
-    reflectorFile = cfg["reflector_file"].asString();
-    outputFile = cfg["output_file"].asString();
-    atmModel = cfg["atm_model"].asString();
+    reflectorFile = subEnvVars(cfg["reflector_file"].asString());
+    outputFile    = subEnvVars(cfg["output_file"].asString());
+    atmModel      = subEnvVars(cfg["atm_model"].asString());
 
     // Get data files (cer*) for all input paths
     for (auto s : cfg["data_paths"].asArray()) {
+	std::string ss = subEnvVars(s.asString());
         DIR *dir;
         struct dirent *ent;
-        if ((dir = opendir(s.asString().c_str())) != NULL) {
+        if ((dir = opendir(ss.c_str())) != NULL) {
             // Get all files in the directory
             while ((ent = readdir(dir)) != NULL) {
                 // Check that it means the criteria
@@ -133,9 +137,8 @@ void Simulator::readConfiguration(std::string fileName)
                 if (((name[0] == 'c') || (name[0] == 'C')) &&
                     ((name[1] == 'e') || (name[1] == 'E')) &&
                     ((name[2] == 'r') || (name[3] == 'R'))) {
-                    inputFiles.push_back(s.asString() + "/" +
-					 std::string(name));
-		    std::cerr << s.asString() << "/" << name << '\n';
+                    inputFiles.push_back(ss + "/" + std::string(name));
+		    std::cerr << ss << "/" << name << '\n';
                 }
             }
             closedir(dir);
@@ -144,6 +147,7 @@ void Simulator::readConfiguration(std::string fileName)
             perror("opendir");
         }
     }
+    
     std::sort(inputFiles.begin(), inputFiles.end());
 }
 
@@ -199,6 +203,17 @@ void Simulator::showConfiguration()
 }
 
 //----------------------------------------------------------------------
+// Method: subEnvVars
+// Substitute environmental variables in the config. strings
+//----------------------------------------------------------------------
+std::string Simulator::subEnvVars(std::string s)
+{
+    char * home = getenv("HOME");
+    
+    return str::replaceAll(s, "$HOME", home);
+}
+
+//----------------------------------------------------------------------
 // Method: run
 // Execute the simulation
 //----------------------------------------------------------------------
@@ -207,7 +222,10 @@ void Simulator::run()
     // Define reflector
     Reflector reflector;
     reflector.setMirrorsFile(reflectorFile);
-
+    if (definedFixedTarget) {
+	reflector.setOrientation(fixedTargetTheta, fixedTargetPhi);
+    }
+	
     // Define input data source
     CerPhotonsSource cphFiles;
     cphFiles.appendFiles(inputFiles);
@@ -226,6 +244,11 @@ void Simulator::run()
 	    std::tie(theta, phi) = cphFiles.getOrientation();
 	    std::cout << "------------ New core at " << core.x
 		      << ", " << core.y << '\n';
+	    
+	    reflector.setCore(core);
+	    if (!definedFixedTarget) {
+		reflector.setOrientation(theta, phi);
+	    }
 	}
 
 	std::cout << cph.wl << ' ' << cph.x << ' ' << cph.y << '\n';

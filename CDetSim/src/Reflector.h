@@ -54,13 +54,17 @@
 // Topic: External packages
 //   none
 //------------------------------------------------------------
+#include "json.h"
+#include "mathtools.h"
+
+using namespace MathTools;
 
 //------------------------------------------------------------
 // Topic: Project headers
 //   none
 //------------------------------------------------------------
 #include "physconst.h"
-#include "json.h"
+#include "CPhoton.h"
 
 // Type: Mirrors definition
 typedef json::Object MirrorSet;
@@ -75,8 +79,23 @@ public:
 
 public:
     void setMirrorsFile(std::string fileName);
-    
+    void setCore(Point2D core);
+    void setOrientation(double theta, double phi);
+
+    bool reflect(CPhoton cph);
+
+    double lagrange(double ** t, double x);
+    bool passedTransmittance(CPhoton & cph);
+    bool passedReflectivity(CPhoton & cph);
+    void applyAxisDeviation(CPhoton & cph);
+
 private:
+    // Core location
+    double coreX, coreY, coreD;
+
+    // Orientation of CT
+    double thetaCT, phiCT;
+
     // Matrices to change to the system where the optical axis is OZ
     double OmegaCT[3][3];
 
@@ -164,6 +183,17 @@ private:
     // Flag to change the verbosity
     int verbose;
 
+    // Matrix to change to the system where the optical axis is OZ
+    matrix3D omegaCT;
+
+    // Matrix to change to the system where the optical axis is OZ (inverse)
+    matrix3D omegaICT;
+
+    // Matrix to change the system of coordinates
+    matrix3D omega;
+
+    // Matrix to change the system of coordinates (inverse)
+    matrix3D omegaI;
 };
 
 

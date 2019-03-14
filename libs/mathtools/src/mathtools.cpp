@@ -501,6 +501,10 @@
 
 namespace MathTools {
 
+thread_local UnifRnd unifUnit(0., 1.);
+
+#define RandomNumber unifUnit()
+
 template<typename T>
 T sqr(T x) { return x * x; }
 
@@ -509,6 +513,12 @@ T d2r(T x) { return x * M_PI / 180.; }
 
 template<typename T>
 T r2d(T x) { return x * 180. / M_PI; }
+
+template<typename T>
+T norm2(T x, T y, T z) { return sqr<T>(x) + sqr<T>(y) + sqr<T>(z); }
+
+template<typename T>
+T norm(T x, T y, T z) { return sqrt(norm2<T>(x, y, z)); }
 
 //!---------------------------------------------------------------------
 // @name makeOmega
@@ -707,6 +717,8 @@ Lin2Curv(float x)
     template float sqr<float>(float x);
     template float d2r<float>(float x);
     template float r2d<float>(float x);
+    template float norm2<float>(float x, float y, float z);
+    template float norm<float>(float x, float y, float z);
 
     template void makeOmega<float>(float (& Omega)[3][3], float theta, float phi);
     template void makeOmegaI<float>(float (& OmegaI)[3][3], float theta, float phi);
@@ -723,6 +735,8 @@ Lin2Curv(float x)
     template double sqr<double>(double x);
     template double d2r<double>(double x);
     template double r2d<double>(double x);
+    template double norm2<double>(double x, double y, double z);
+    template double norm<double>(double x, double y, double z);
 
     template void makeOmega<double>(double (& Omega)[3][3] , double theta, double phi);
     template void makeOmegaI<double>(double (& OmegaI)[3][3], double theta, double phi);

@@ -27,6 +27,7 @@
 
 SET (mathtools_src
   mathtools.cpp
+  mathtools_tuples.cpp
   )
 
 SET (mathtools_hdr

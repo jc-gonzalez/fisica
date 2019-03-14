@@ -72,6 +72,10 @@ struct Point3D {
     double x, y, z;
 };
 
+typedef std::tuple<double, double, double> point3D;
+
+typedef std::tuple<double, double, double> vector3D;
+
 //======================================================================
 // Class: CPhoton
 //======================================================================
@@ -85,7 +89,7 @@ public:
     double getWavelength();
 
 public:
-    double w, wl, x, y, u, v, h, t;
+    double wcode, wl, x, y, z, u, v, w, h, t;
 };
 
 
