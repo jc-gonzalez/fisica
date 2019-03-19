@@ -91,9 +91,6 @@ using namespace MathTools;
 // Type: Mirrors definition
 typedef json::Object MirrorSet;
 
-double curv2lin(double s);
-double lin2curv(double x);
-
 //======================================================================
 // Class: Reflector
 //======================================================================

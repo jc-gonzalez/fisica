@@ -49,7 +49,7 @@
 #include "str.h"
 #include "mathtools.h"
 
-#include "MAGICReflector.h"
+#include "ExperimentalReflector.h"
 #include "CerPhotonsSource.h"
 
 
@@ -232,7 +232,7 @@ std::string Simulator::subEnvVars(std::string s)
 void Simulator::run()
 {
     // Define reflector
-    Reflector * reflector = new MAGICReflector;
+    Reflector * reflector = new ExperimentalReflector;
     reflector->setMirrorsFile(reflectorFile);
     if (definedFixedTarget) {
 	reflector->setOrientation(fixedTargetTheta, fixedTargetPhi);

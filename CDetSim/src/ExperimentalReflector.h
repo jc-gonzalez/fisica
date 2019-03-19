@@ -2,7 +2,7 @@
  * File:    reflector.h
  *          This file is part of the Cherenkov Detector Simulation library
  *
- * Domain:  cherdetsim.reflector
+ * Domain:  cherdetsim.experimentalreflector
  *
  * Last update:  2.0
  *
@@ -38,8 +38,8 @@
  *
  ******************************************************************************/
 
-#ifndef MAGICREFLECTOR_H
-#define MAGICREFLECTOR_H
+#ifndef EXPREFLECTOR_H
+#define EXPREFLECTOR_H
 
 //============================================================
 // Group: External Dependencies
@@ -65,12 +65,12 @@
 typedef json::Object MirrorSet;
 
 //======================================================================
-// Class: MAGICReflector
+// Class: ExperimentalReflector
 //======================================================================
-class MAGICReflector : public Reflector {
+class ExperimentalReflector : public Reflector {
 public:
-    MAGICReflector();
-    ~MAGICReflector();
+    ExperimentalReflector();
+    ~ExperimentalReflector();
 
 public:
     virtual bool reflect(CPhoton cph, point3D & xDish, point3D & xCam);
@@ -90,4 +90,4 @@ private:
 };
 
 
-#endif  /* MAGICREFLECTOR_H */
+#endif  /* EXPREFLECTOR_H */

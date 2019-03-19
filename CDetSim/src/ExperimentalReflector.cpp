@@ -1,8 +1,8 @@
 /******************************************************************************
- * File:    MAGICReflector.cpp
+ * File:    ExperimentalReflector.cpp
  *          This file is part of the Cherenkov Detector Simulation library
  *
- * Domain:  cherdetsim.magicreflector
+ * Domain:  cherdetsim.experimentalreflector
  *
  * Version: 0.3
  *
@@ -16,7 +16,7 @@
  * Topic: General Information
  *
  * Purpose:
- *   Implement MAGICReflector class
+ *   Implement ExperimentalReflector class
  *
  * Created by:
  *   J C Gonzalez
@@ -38,29 +38,29 @@
  *
  ******************************************************************************/
 
-#include "MAGICReflector.h"
+#include "ExperimentalReflector.h"
 
-thread_local UnifRnd magicreflector_unifUnit(0., 1.);
-#define RandomNumber magicreflector_unifUnit()
+thread_local UnifRnd expreflector_unifUnit(0., 1.);
+#define RandomNumber expreflector_unifUnit()
 
 //----------------------------------------------------------------------
-// Constructor: MAGICReflector
+// Constructor: ExperimentalReflector
 //----------------------------------------------------------------------
-MAGICReflector::MAGICReflector() 
+ExperimentalReflector::ExperimentalReflector() 
 {
 }
 
 //----------------------------------------------------------------------
-// Destructor: ~MAGICReflector
+// Destructor: ~ExperimentalReflector
 //----------------------------------------------------------------------
-MAGICReflector::~MAGICReflector()
+ExperimentalReflector::~ExperimentalReflector()
 {
 }
 
 //----------------------------------------------------------------------
 // Method: reflect
 //----------------------------------------------------------------------
-bool MAGICReflector::reflect(CPhoton cph, point3D & xDish, point3D & xCam)
+bool ExperimentalReflector::reflect(CPhoton cph, point3D & xDish, point3D & xCam)
 {
     // Atmospheric transmittance test
     if (!passedTransmittance(cph)) { return false; }
@@ -78,7 +78,7 @@ bool MAGICReflector::reflect(CPhoton cph, point3D & xDish, point3D & xCam)
 //----------------------------------------------------------------------
 // Method: mirrorsReflection
 //----------------------------------------------------------------------
-bool MAGICReflector::mirrorsReflection(point3D x, vector3D r, double timeFirstInt,
+bool ExperimentalReflector::mirrorsReflection(point3D x, vector3D r, double timeFirstInt,
                                        point3D & xd, point3D & xr)
 {
     static double normalRnd[2];
@@ -205,7 +205,7 @@ bool MAGICReflector::mirrorsReflection(point3D x, vector3D r, double timeFirstIn
 //----------------------------------------------------------------------
 // Method: intersectionWithDish
 //----------------------------------------------------------------------
-bool MAGICReflector::intersectionWithDish(point3D vx, point3D vxCT, vector3D vrCT,
+bool ExperimentalReflector::intersectionWithDish(point3D vx, point3D vxCT, vector3D vrCT,
                                           point3D & xDish)
 {
     static const double Epsilon = 1.0e-12; //100. * DBL_EPSILON;
@@ -288,7 +288,7 @@ bool MAGICReflector::intersectionWithDish(point3D vx, point3D vxCT, vector3D vrC
 // Method: findClosestMirror
 // Find the mirror element whose center is closest to the photon loc.
 //----------------------------------------------------------------------
-int MAGICReflector::findClosestMirror(point3D & xDish, double & distMirr)
+int ExperimentalReflector::findClosestMirror(point3D & xDish, double & distMirr)
 {
     double distMirr_ = 1000000.;
     int i_mirror = 0;
@@ -312,7 +312,7 @@ int MAGICReflector::findClosestMirror(point3D & xDish, double & distMirr)
 // Compute the point of intersection of the trajectory of the photon
 // with the mirror element
 //----------------------------------------------------------------------
-point3D MAGICReflector::getIntersectionWithMirror(int i, point3D vxm, vector3D vrm)
+point3D ExperimentalReflector::getIntersectionWithMirror(int i, point3D vxm, vector3D vrm)
 {
     // Calculate the intersection of the trayectory of the photon 
     // with the mirror
@@ -393,7 +393,7 @@ point3D MAGICReflector::getIntersectionWithMirror(int i, point3D vxm, vector3D v
                     z};
 }
 
-double MAGICReflector::curv2lin(double s)
+double ExperimentalReflector::curv2lin(double s)
 {
     double x = s;
     for (int i = 0; i < 4; i++) {
@@ -402,7 +402,7 @@ double MAGICReflector::curv2lin(double s)
     return (x * 100.);
 }
 
-double MAGICReflector::lin2curv(double x)
+double ExperimentalReflector::lin2curv(double x)
 {
   x *= 0.01;
   return ((x + 0.000144175317185 * x * x * x) * 100.);
