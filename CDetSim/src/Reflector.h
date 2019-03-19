@@ -49,6 +49,7 @@
 // Topic: System headers
 //   none
 //------------------------------------------------------------
+#include <cfloat>
 
 //------------------------------------------------------------
 // Topic: External packages
@@ -66,8 +67,32 @@ using namespace MathTools;
 #include "physconst.h"
 #include "CPhoton.h"
 
+#define CT_I       0
+
+#define CT_S       1
+#define CT_RHO     2
+#define CT_THETA   3
+
+#define CT_FOCAL   1
+#define CT_SX      2
+#define CT_SY      3
+
+#define CT_X       4
+#define CT_Y       5
+#define CT_Z       6
+#define CT_THETAN  7
+#define CT_PHIN    8
+#define CT_XC      9
+#define CT_YC     10
+#define CT_ZC     11
+
+#define CT_NDATA  12
+
 // Type: Mirrors definition
 typedef json::Object MirrorSet;
+
+double curv2lin(double s);
+double lin2curv(double x);
 
 //======================================================================
 // Class: Reflector
@@ -78,24 +103,28 @@ public:
     ~Reflector();
 
 public:
-    void setMirrorsFile(std::string fileName);
-    void setCore(point3D core);
-    void setOrientation(double theta, double phi);
+    virtual void setMirrorsFile(std::string fileName);
+    virtual void setCore(point3D core);
+    virtual void setOrientation(double theta, double phi);
 
-    bool reflect(CPhoton cph, point3D & xDish, point3D & xCam);
+    virtual bool reflect(CPhoton cph, point3D & xDish, point3D & xCam);
 
-private:
-    double lagrange(double ** t, double x);
-    bool passedTransmittance(CPhoton & cph);
-    bool passedReflectivity(CPhoton & cph);
-    void applyAxisDeviation(CPhoton & cph);
+protected:
+    virtual double lagrange(double ** t, double x);
     
-    bool mirrorsReflection(point3D x, vector3D r, double timeFirstInt, point3D & xd, point3D & xr);
-    bool intersectionWithDish(point3D vx, point3D vxCT, vector3D vrCT, point3D & xDish);
-    int findClosestMirror(point3D & xDish, double & distMirr);
-    point3D getIntersectionWithMirror(int i, point3D vxm, vector3D vrm);
+    virtual bool passedTransmittance(CPhoton & cph);
+    virtual bool passedReflectivity(CPhoton & cph);
+    virtual void applyAxisDeviation(CPhoton & cph);
+
+protected:
+    virtual bool mirrorsReflection(point3D x, vector3D r, double timeFirstInt,
+                                   point3D & xd, point3D & xr) {}
+    virtual bool intersectionWithDish(point3D vx, point3D vxCT, vector3D vrCT,
+                                      point3D & xDish) {}
+    virtual int findClosestMirror(point3D & xDish, double & distMirr) {}
+    virtual point3D getIntersectionWithMirror(int i, point3D vxm, vector3D vrm) {}
     
-private:
+protected:
     // Core location
     double coreX, coreY, coreD;
 

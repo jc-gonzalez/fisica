@@ -49,7 +49,7 @@
 #include "str.h"
 #include "mathtools.h"
 
-#include "Reflector.h"
+#include "MAGICReflector.h"
 #include "CerPhotonsSource.h"
 
 
@@ -232,10 +232,10 @@ std::string Simulator::subEnvVars(std::string s)
 void Simulator::run()
 {
     // Define reflector
-    Reflector reflector;
-    reflector.setMirrorsFile(reflectorFile);
+    Reflector * reflector = new MAGICReflector;
+    reflector->setMirrorsFile(reflectorFile);
     if (definedFixedTarget) {
-	reflector.setOrientation(fixedTargetTheta, fixedTargetPhi);
+	reflector->setOrientation(fixedTargetTheta, fixedTargetPhi);
     }
 	
     // Define input data source
@@ -276,14 +276,14 @@ void Simulator::run()
                       << ", primary energy is "
                       << primaryEnergy << " GeV\n";
 	    
-	    reflector.setCore(coreOffset);
+	    reflector->setCore(coreOffset);
 	    if (!definedFixedTarget) {
-		reflector.setOrientation(theta, phi);
+		reflector->setOrientation(theta, phi);
 	    }
 	}
 
 	point3D xd, xc;
-	if (reflector.reflect(cph, xd, xc)) {
+	if (reflector->reflect(cph, xd, xc)) {
 	    std::cout << i << ' '
                       << cph.wl << ' ' << cph.x << ' ' << cph.y << ' '
 		      << cph.u << ' ' << cph.v << ' ' << cph.w << ' '

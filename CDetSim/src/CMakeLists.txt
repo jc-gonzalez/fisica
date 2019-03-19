@@ -27,6 +27,7 @@
 
 SET (cdetsim_src
   Reflector.cpp
+  MAGICReflector.cpp
   InputDataSource.cpp
   OutputDataHandler.cpp
   CerPhotonsSource.cpp
@@ -37,6 +38,7 @@ SET (cdetsim_src
 
 SET (cdetsim_hdr
   Reflector.h  
+  MAGICReflector.h
   InputDataSource.h
   OutputDataHandler.h
   CerPhotonsSource.h
