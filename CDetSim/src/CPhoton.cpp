@@ -40,6 +40,7 @@
 
 #include "CPhoton.h"
 
+#include <iostream>
 #include <cmath>
 
 #include "mathtools.h"
@@ -74,6 +75,13 @@ bool CPhoton::read(std::ifstream & ifs)
 	if (wcode < 1.) { return false; }
 	wl = getWavelength();
 	w = sqrt(1.0 - sqr<double>(u) - sqr<double>(v));
+	/*std::cout << "% "
+		  << wcode << ' '
+		  << wl << ' '
+		  << x << ' '
+		  << y << ' '
+		  << u << ' '
+		  << v << '\n';*/
 	return true;
     } else {
 	return false;

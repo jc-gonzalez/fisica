@@ -72,15 +72,15 @@ public:
 
     virtual bool openFile(int iFile);
     bool getNextCPhoton(CPhoton & cph, bool & isNewSet);
-    Point2D getCore();
+    void endProcessingCurrentFile();
+    point3D getCore();
     std::tuple<double, double> getOrientation();
-    //void getCore(double & x, double & y);
-    //void getOrientation(double & theta, double & phi);
-
+    double getPrimaryEnergy();
+    
 private:
     double thetaEvt, phiEvt;
     double coreEvtX, coreEvtY;
+    double primaryEnergy;
 };
-
 
 #endif  /* CERPHOTONSSOURCE_H */

@@ -667,51 +667,6 @@ void rnormal(T *r, int n)
     }
 }
 
-
-//!---------------------------------------------------------------------
-// @name Curv2Lin
-//
-// @desc Curvilinear to Linear (Euclidean) distance
-//
-// @var s      Curvilinear distance over the parabolic shape
-//
-// @return     Radial distance from the axis of the paraboloid
-//
-// @date Wed Jul  8 15:25:39 MET DST 1998
-//----------------------------------------------------------------------
-float
-Curv2Lin(float s)
-{
-  float x;
-  short i;
-
-  x = s;
-  for (i = 0; i < 4; i++)
-    x = (s / 100.) / (1. + (float) 0.000144175317185 * x * x);
-
-  return (x*100.);
-}
-
-
-//!---------------------------------------------------------------------
-// @name Lin2Curv
-//
-// @desc Linear (Euclidean) to Curvilinear distance
-//
-// @var x      Radial distance from the axis of the paraboloid
-//
-// @return     Curvilinear distance over the parabolic shape
-//
-// @date Wed Jul  8 15:25:39 MET DST 1998
-//----------------------------------------------------------------------
-float
-Lin2Curv(float x)
-{
-  x /= 100.;
-  return ((x + (float) 0.000144175317185 * x * x * x)*100.);
-}
-
-
     // Explicit instantiations
 
     template float sqr<float>(float x);

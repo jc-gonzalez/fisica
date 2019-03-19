@@ -47,6 +47,7 @@
 #include <dirent.h>
 
 #include "str.h"
+#include "mathtools.h"
 
 #include "Reflector.h"
 #include "CerPhotonsSource.h"
@@ -61,7 +62,9 @@ Simulator::Simulator() :
     definedEventRange(false),
     definedSkipRange(false),
     definedMaxEvents(false),
-    definedEnergyCut(false)
+    definedEnergyCut(false),
+    definedCoreOffset(false),
+    coreOffset({0., .0, 0.})
 {
 }
 
@@ -91,6 +94,14 @@ void Simulator::readConfiguration(std::string fileName)
         fixedTargetTheta = cfg["fixed_target"][0].asFloat();
         fixedTargetPhi   = cfg["fixed_target"][1].asFloat();
         definedFixedTarget = true;
+    }
+
+    coreOffset = point3D {0., 0., 0.};
+    if (cfg.exists("core_offset")) {
+        coreOffset = point3D {cfg["core_offset"][0].asFloat(),
+                              cfg["core_offset"][1].asFloat(),
+                              0.0};
+        definedCoreOffset = true;
     }
 
     if (cfg.exists("range_events")) {
@@ -184,6 +195,7 @@ void Simulator::showConfiguration()
     } else {
 	std::cout << "OFF\n";
     }
+    std::cout << "Core offset .......: " << coreOffset << '\n';
     std::cout << "Energy range ......: ";
     if (definedEnergyCut) {
 	std::cout << "[" << minEnergy << ", " << maxEnergy << "]\n";
@@ -233,25 +245,51 @@ void Simulator::run()
     // Start loop
     CPhoton cph;
     bool isNewFile;
-
-    Point2D core;
+    
+    point3D core;
     double theta, phi;
+    int i;
     
     while (cphFiles.getNextCPhoton(cph, isNewFile)) {
 
 	if (isNewFile) {
-	    core = cphFiles.getCore();
+            i = cphFiles.currentFileIndex() + 1;
+
+            // Check is this file is to be skipped
+	    if (definedMaxEvents && (i > maxEvtNum)) { break; }
+
+            if (definedEventRange && ((i < minEvtId) || (maxEvtId < i))) {
+                cphFiles.endProcessingCurrentFile();
+                continue;
+            }
+
+            if (definedSkipRange && ((minSkipEvtNum <= i) && (i <= maxSkipEvtNum))) {
+                cphFiles.endProcessingCurrentFile();
+                continue;
+            }
+
+            std::cout << i << ' ' << minEvtId << "-" << maxEvtId << ':';
+	    core = cphFiles.getCore() + coreOffset;
+            primaryEnergy = cphFiles.getPrimaryEnergy();
 	    std::tie(theta, phi) = cphFiles.getOrientation();
-	    std::cout << "------------ New core at " << core.x
-		      << ", " << core.y << '\n';
+	    std::cout << "% ------------ New core at " << core
+                      << ", primary energy is "
+                      << primaryEnergy << " GeV\n";
 	    
-	    reflector.setCore(core);
+	    reflector.setCore(coreOffset);
 	    if (!definedFixedTarget) {
 		reflector.setOrientation(theta, phi);
 	    }
 	}
 
-	std::cout << cph.wl << ' ' << cph.x << ' ' << cph.y << '\n';
+	point3D xd, xc;
+	if (reflector.reflect(cph, xd, xc)) {
+	    std::cout << i << ' '
+                      << cph.wl << ' ' << cph.x << ' ' << cph.y << ' '
+		      << cph.u << ' ' << cph.v << ' ' << cph.w << ' '
+		      << cph.h << ' ' << cph.t << ' '
+		      << xd << ' ' << xc << '\n';
+	}
     }
 }
 

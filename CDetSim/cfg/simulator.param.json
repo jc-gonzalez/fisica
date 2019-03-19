@@ -5,10 +5,11 @@
     },
     "data": {
         "verbose_level": 4,
-        // "fixed_target": [0., 0.],
-        // "range_events": [1, 2946],
-        // "skip": [1, 2946],
-        "max_events": 2, // this is the maximum number of events to process
+        //"fixed_target": [0., 0.],
+        "core_offset": [10000., 0.],
+        "range_events": [1, 5],
+        // "skip": [2, 4],
+        // "max_events": 1, // this is the maximum number of events to process
         "energy_cut": [800., 1000.],
         "reflector_file": "$HOME/JC1/fisica.git/CDetSim/cfg/magic.def.json", 
         "output_file": "$HOME/JC1/fisica.git/CDetSim/cfg/reflection.out.json",

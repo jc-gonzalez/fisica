@@ -56,6 +56,20 @@ vector3D operator-(vector3D a, vector3D b)
 			   std::get<2>(a) - std::get<2>(b));
 }
 
+vector3D operator*(vector3D a, double x)
+{
+    return std::make_tuple(std::get<0>(a) * x,
+			   std::get<1>(a) * x,
+			   std::get<2>(a) * x);
+}
+
+vector3D operator/(vector3D a, double x)
+{
+    return std::make_tuple(std::get<0>(a) / x,
+			   std::get<1>(a) / x,
+			   std::get<2>(a) / x);
+}
+
 double dot(vector3D a, vector3D b)
 {
     return (std::get<0>(a) * std::get<0>(b) +
@@ -82,7 +96,11 @@ double norm(vector3D v)
     return norm<double>(x, y, z);
 }
 
-
+void normalize(vector3D & v)
+{
+    v = v / norm(v);
+}
+    
 //!---------------------------------------------------------------------
 // @name makeOmega
 //
@@ -107,8 +125,8 @@ matrix3D makeOmega(double theta, double phi)
     return std::tuple<std::tuple<double, double, double>,
 		      std::tuple<double, double, double>,
 		      std::tuple<double, double, double>>
-	(std::tuple<double, double, double>(cp * ct, sp * ct, st), 
-	 std::tuple<double, double, double>(sp,      cp,      0),
+	(std::tuple<double, double, double>(cp * ct, sp * ct, -st), 
+	 std::tuple<double, double, double>(-sp,     cp,      0.),
 	 std::tuple<double, double, double>(cp * st, sp * st, ct));
 }
 
@@ -131,6 +149,7 @@ matrix3D makeOmegaI(double theta, double phi)
     st = sin(theta);
     cp = cos(phi);
     sp = sin(phi);
+
     
     // save values in the array (see top of file)
     return std::tuple<std::tuple<double, double, double>,
@@ -163,7 +182,7 @@ vector3D applyMxV(matrix3D M, vector3D & V)
     std::tie(M20, M21, M22) = M2;
     std::tie(V0, V1, V2) = V;
 
-    return std::tuple<double, double, double>
+    return vector3D
 	(((M00 * V0) +  (M01 * V1) +  (M02 * V2)),
 	 ((M10 * V0) +  (M11 * V1) +  (M12 * V2)),
 	 ((M20 * V0) +  (M21 * V1) +  (M22 * V2)));

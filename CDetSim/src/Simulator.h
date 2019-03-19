@@ -97,12 +97,17 @@ private:
     double minSkipEvtNum, maxSkipEvtNum;
     double minEnergy, maxEnergy;
 
+    double primaryEnergy;
+    
+    point3D coreOffset;
+    
     bool definedFixedTarget;
     bool definedEventRange;
     bool definedSkipRange;
     bool definedMaxEvents;
     bool definedEnergyCut;
-
+    bool definedCoreOffset;
+    
     std::string reflectorFile;
     std::string outputFile;
     std::string atmModel;

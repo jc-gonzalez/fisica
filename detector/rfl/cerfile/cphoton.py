@@ -357,6 +357,7 @@ def get_intersection_with_dish(vx, vxCT, vrCT):
     xDish = vxCT[0] + (zDish - vxCT[2]) * vrCT[0] / vrCT[2]
     yDish = vxCT[1] + (zDish - vxCT[2]) * vrCT[1] / vrCT[2]
 
+    print('@ {} {} {} {} {}'.format(vx[0], vx[1], xDish, yDish, zDish))
     return array((xDish, yDish, zDish))
 
 def get_intersection_with_mirror(i, vxm, vrm):
@@ -617,6 +618,8 @@ def processCerFile(k, fb, newcorex=None, newcorey=None):
     jCy = []
     jCz = []
     jt = []
+
+    print('% ', coreX, coreY)
     
     while wl > 0.5:
         cphotonData = fb.read(cphotonSize * wordSize)
@@ -624,8 +627,7 @@ def processCerFile(k, fb, newcorex=None, newcorey=None):
         i = i + 1
         wl, x, y, u, v, t, h = unpack('{}f'.format(cphotonSize), cphotonData)
         w = sqrt(1.0 - u ** 2 - v ** 2)
-
-        #print(k,x,y)
+        
         #continue
         
         if wl < 1.:
@@ -634,10 +636,10 @@ def processCerFile(k, fb, newcorex=None, newcorey=None):
         wl = wl - 101000.
 
         #-- Transmittance check
-        if not passed_transmittance(wl, h, w): continue
+        #if not passed_transmittance(wl, h, w): continue
 
         #-- Reflectivity check
-        if not passed_reflectivity(wl): continue
+        #if not passed_reflectivity(wl): continue
 
         #-- Reflection in the mirrors
         photonloc = (x - coreX, y - coreY, 0.0)
@@ -701,16 +703,16 @@ def main():
     """
 
     files = [
-        '/home/jcgonzalez/JC1/fisica.git/detector/run/4/in/cer000001',
-        '/home/jcgonzalez/JC1/fisica.git/detector/run/4/in/cer000002',
-        '/home/jcgonzalez/JC1/fisica.git/detector/run/4/in/cer000003',
-        '/home/jcgonzalez/JC1/fisica.git/detector/run/4/in/cer000004',
-        '/home/jcgonzalez/JC1/fisica.git/detector/run/4/in/cer000005',
-        '/home/jcgonzalez/JC1/fisica.git/detector/run/4/in/cer000006',
-        '/home/jcgonzalez/JC1/fisica.git/detector/run/4/in/cer000007',
-        '/home/jcgonzalez/JC1/fisica.git/detector/run/4/in/cer000008',
-        '/home/jcgonzalez/JC1/fisica.git/detector/run/4/in/cer000009',
-        '/home/jcgonzalez/JC1/fisica.git/detector/run/4/in/cer000010'
+        '/home/jcgonzalez/JC1/fisica.git/detector/run/4/in/cer000001'
+#        '/home/jcgonzalez/JC1/fisica.git/detector/run/4/in/cer000002',
+#        '/home/jcgonzalez/JC1/fisica.git/detector/run/4/in/cer000003',
+#        '/home/jcgonzalez/JC1/fisica.git/detector/run/4/in/cer000004',
+#        '/home/jcgonzalez/JC1/fisica.git/detector/run/4/in/cer000005',
+#        '/home/jcgonzalez/JC1/fisica.git/detector/run/4/in/cer000006',
+#        '/home/jcgonzalez/JC1/fisica.git/detector/run/4/in/cer000007',
+#        '/home/jcgonzalez/JC1/fisica.git/detector/run/4/in/cer000008',
+#        '/home/jcgonzalez/JC1/fisica.git/detector/run/4/in/cer000009',
+#        '/home/jcgonzalez/JC1/fisica.git/detector/run/4/in/cer000010'
     ]
 
     processSetOfCerFiles(files)

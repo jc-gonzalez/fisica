@@ -60,7 +60,6 @@
 // Topic: Project headers
 //   none
 //------------------------------------------------------------
-#include "InputDataSource.h"
 
 #include <tuple>
 
@@ -79,7 +78,7 @@ typedef std::tuple<double, double, double> vector3D;
 //======================================================================
 // Class: CPhoton
 //======================================================================
-class CPhoton : public InputDataSource {
+class CPhoton {
 public:
     CPhoton();
     virtual ~CPhoton();

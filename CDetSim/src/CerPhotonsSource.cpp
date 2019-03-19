@@ -59,6 +59,7 @@ CerPhotonsSource::~CerPhotonsSource() {}
 bool CerPhotonsSource::openFile(int iFile)
 {
     static const int EvtHeaderLength = 273; // 4-byte words
+    static const int WordSize = sizeof(float);
 
     ifs.clear();
     std::cout << "    . . . opening " << iFile << "-th file "
@@ -69,17 +70,20 @@ bool CerPhotonsSource::openFile(int iFile)
     isFileOpen = true;
 
     // Read header
-    float buffer[EvtHeaderLength];
-    ifs.read((char*)(buffer), EvtHeaderLength * sizeof(float));
+    char buffer[EvtHeaderLength * WordSize];
+    ifs.read(buffer, EvtHeaderLength * WordSize);
 
-    thetaEvt = double(buffer[10]);
-    phiEvt   = double(buffer[11]);
+    thetaEvt = double(*(float*)(buffer + 10 * WordSize));
+    phiEvt   = double(*(float*)(buffer + 11 * WordSize));
 
     // We are dealing with 1 single core
     int nCore = 0;
-    coreEvtX = double(buffer[98 + nCore]);
-    coreEvtY = double(buffer[118 + nCore]);
+    coreEvtX = double(*(float*)(buffer + (98 + nCore) * WordSize));
+    coreEvtY = double(*(float*)(buffer + (118 + nCore) * WordSize));
 
+    // Get primary energy
+    primaryEnergy = double(*(float*)(buffer + 3 * WordSize));;
+    
     return true;
 }
 	
@@ -87,9 +91,18 @@ bool CerPhotonsSource::openFile(int iFile)
 // Method: getCore
 // Returns Cherenkov photons until the input source is exhausted
 //----------------------------------------------------------------------
-Point2D CerPhotonsSource::getCore()
+point3D CerPhotonsSource::getCore()
 {
-    return Point2D { coreEvtX, coreEvtY };
+    return point3D { coreEvtX, coreEvtY, 0.0 };
+}
+	
+//----------------------------------------------------------------------
+// Method: getPrimaryEnergy
+// Returns primary energy
+//----------------------------------------------------------------------
+double CerPhotonsSource::getPrimaryEnergy()
+{
+    return primaryEnergy;
 }
 	
 //----------------------------------------------------------------------
@@ -113,5 +126,14 @@ bool CerPhotonsSource::getNextCPhoton(CPhoton & cph, bool & isNewSet)
 	isNewSet = true;
     }
     return true;
+}
+
+//----------------------------------------------------------------------
+// Method: endProcessingCurrentFile
+// Go to end of the current file
+//----------------------------------------------------------------------
+void CerPhotonsSource::endProcessingCurrentFile()
+{
+    ifs.seekg(0, std::ios::end);
 }
 

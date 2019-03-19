@@ -79,18 +79,22 @@ public:
 
 public:
     void setMirrorsFile(std::string fileName);
-    void setCore(Point2D core);
+    void setCore(point3D core);
     void setOrientation(double theta, double phi);
 
-    bool reflect(CPhoton cph);
+    bool reflect(CPhoton cph, point3D & xDish, point3D & xCam);
 
+private:
     double lagrange(double ** t, double x);
     bool passedTransmittance(CPhoton & cph);
     bool passedReflectivity(CPhoton & cph);
     void applyAxisDeviation(CPhoton & cph);
     
-    bool mirrorsReflection(point3D photonLoc, vector3D orient, double timeFirstInt);
-
+    bool mirrorsReflection(point3D x, vector3D r, double timeFirstInt, point3D & xd, point3D & xr);
+    bool intersectionWithDish(point3D vx, point3D vxCT, vector3D vrCT, point3D & xDish);
+    int findClosestMirror(point3D & xDish, double & distMirr);
+    point3D getIntersectionWithMirror(int i, point3D vxm, vector3D vrm);
+    
 private:
     // Core location
     double coreX, coreY, coreD;
@@ -112,6 +116,9 @@ private:
 
     // Focal distances [cm]
     std::vector<double> ct_Focal;
+
+    // Diameter [cm]
+    double ct_Diameter, ct_Radius;;
 
     // Mean Focal distances [cm]
     double ct_Focal_mean;
@@ -136,7 +143,8 @@ private:
 
     // Camera width [cm]
     double ct_CameraWidth;
-
+    double ct_CameraEdges2;
+    
     // Pixel width [cm]
     double ct_PixelWidth;
 
@@ -190,12 +198,6 @@ private:
 
     // Matrix to change to the system where the optical axis is OZ (inverse)
     matrix3D omegaICT;
-
-    // Matrix to change the system of coordinates
-    matrix3D omega;
-
-    // Matrix to change the system of coordinates (inverse)
-    matrix3D omegaI;
 };
 
 

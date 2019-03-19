@@ -120,8 +120,8 @@ namespace MathTools {
                T x, T y, T z);
 
 
-    typedef std::tuple<double, double, double>  point3D;
     typedef std::tuple<double, double, double>  vector3D;
+    using point3D = vector3D;
     
     typedef std::tuple<std::tuple<double, double, double>,
 		       std::tuple<double, double, double>,
@@ -129,11 +129,14 @@ namespace MathTools {
 
     vector3D operator+(vector3D a, vector3D b);
     vector3D operator-(vector3D a, vector3D b);
+    vector3D operator*(vector3D a, double x);
+    vector3D operator/(vector3D a, double x);
     double dot(vector3D a, vector3D b);
     vector3D cross(vector3D a, vector3D b);
     
     double norm2(vector3D v);
     double norm(vector3D v);
+    void normalize(vector3D & v);
     matrix3D makeOmega(double theta, double phi);
     matrix3D makeOmegaI(double theta, double phi);
     vector3D applyMxV(matrix3D M, vector3D & V);
