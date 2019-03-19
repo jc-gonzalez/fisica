@@ -1,4 +1,5 @@
 #include "mathtools.h"
+#include "quaternions.h"
 
 #include <iostream>
 
@@ -22,6 +23,49 @@ int main(int argc, char * argv[])
     applyMxV<float>(OmegaI, v, w);
 
     std::cout << VEC(u)  << "  :  " << VEC(v) << "  :  " << VEC(w) << '\n';
+
+    Quaternion<double> q0(1, 2, 3, 4);
+    Quaternion<double> q1(2, 3, 4, 5);
+    Quaternion<double> q2(3, 4, 5, 6);
+    double r = 7;
+
+    std::cout << "q0:      " << q0 << std::endl;
+    std::cout << "q1:      " << q1 << std::endl;
+    std::cout << "q2:      " << q2 << std::endl;
+    std::cout << "r:       " << r << std::endl;
+    std::cout << std::endl;
+    std::cout << "-q0:     " << -q0 << std::endl;
+    std::cout << "~q0:     " << ~q0 << std::endl;
+    std::cout << std::endl;
+    std::cout << "r * q0:  " << r*q0 << std::endl;
+    std::cout << "r + q0:  " << r+q0 << std::endl;
+    std::cout << "q0 / r:  " << q0/r << std::endl;
+    std::cout << "q0 - r:  " << q0-r << std::endl;
+    std::cout << std::endl;
+    std::cout << "q0 + q1: " << q0+q1 << std::endl;
+    std::cout << "q0 - q1: " << q0-q1 << std::endl;
+    std::cout << "q0 * q1: " << q0*q1 << std::endl;
+    std::cout << "q0 / q1: " << q0/q1 << std::endl;
+    std::cout << std::endl;
+    std::cout << "q0 * ~q0:     " << q0*~q0 << std::endl;
+    std::cout << "q0 + q1*q2:   " << q0+q1*q2 << std::endl;
+    std::cout << "(q0 + q1)*q2: " << (q0+q1)*q2 << std::endl;
+    std::cout << "q0*q1*q2:     " << q0*q1*q2 << std::endl;
+    std::cout << "(q0*q1)*q2:   " << (q0*q1)*q2 << std::endl;
+    std::cout << "q0*(q1*q2):   " << q0*(q1*q2) << std::endl;
+    std::cout << std::endl;
+    std::cout << "||q0||:  " << sqrt(q0.normSquared()) << std::endl;
+    std::cout << std::endl;
+    std::cout << "q0*q1 - q1*q0: " << (q0*q1 - q1*q0) << std::endl;
+
+    Quaternion<double> ww(1., 1., 1.);
+    std::cout << std::endl << ww << " reflected is ";
+    ww.reflect(Quaternion<double>(0., 0., 0., -1.));
+    std::cout << ww << std::endl;
+
+    // Other base types
+    Quaternion<int> q5(2), q6(3);
+    std::cout << std::endl << q5*q6 << std::endl;
 
     return 0;
 }

@@ -32,6 +32,7 @@ SET (mathtools_src
 
 SET (mathtools_hdr
   mathtools.h
+  quaternions.h
   )
 
 SET (mathtools_inthdr
