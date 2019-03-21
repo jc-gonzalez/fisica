@@ -32,7 +32,11 @@ SET (mathtools_src
 
 SET (mathtools_hdr
   mathtools.h
+  angles.h
+  comparisons.h
+  matrix.h
   quaternions.h
+  vectors.h
   )
 
 SET (mathtools_inthdr
@@ -52,4 +56,3 @@ INSTALL (TARGETS mathtools
 
 INSTALL (FILES ${mathtools_hdr}
   DESTINATION include)
-
