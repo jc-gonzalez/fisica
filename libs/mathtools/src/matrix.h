@@ -1,8 +1,8 @@
 /******************************************************************************
- * File:    vectors.h
+ * File:    matrix.h
  *          This file is part of the Cherenkov Detector Simulation library
  *
- * Domain:  cherdetsim.vectors
+ * Domain:  cherdetsim.matrix
  *
  * Last update:  2.0
  *
