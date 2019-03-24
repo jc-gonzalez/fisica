@@ -156,6 +156,11 @@ public:
     }
 
     // Creates a matrix from this quaternion
+    vector3d getVector() const {
+        return vector3d(x, y, z);
+    }
+
+    // Creates a matrix from this quaternion
     matrix4 getMatrix() const {
         matrix4 m;
         getMatrix(m);

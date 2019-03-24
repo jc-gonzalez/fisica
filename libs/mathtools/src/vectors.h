@@ -368,9 +368,16 @@ public:
         array[2] = Z;
     }
 
+    // Allows cout << v
+    friend ostream& operator<<(ostream &io, const vector3d &v) {
+        io << '(' << v.X << ", " << v.Y << ", " << v.Z << ')';
+        return io;
+    }
 
     double X, Y, Z;
 };
+
+using point3d = vector3d;
 
 }
 

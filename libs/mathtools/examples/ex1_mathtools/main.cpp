@@ -1,11 +1,10 @@
 #include "mathtools.h"
 #include "quaternions.h"
-
-#include <iostream>
+#include "surfaces.h"
 
 using namespace MathTools;
 
-#define VEC(x)  "(" << x[0] << ", " << x[1] << ", " << x[2] << ")"
+#define VEC(x) '(' << x[0] << ", " << x[1] << ", " << x[2] << ')'
 
 int main(int argc, char * argv[])
 {
@@ -62,6 +61,45 @@ int main(int argc, char * argv[])
     std::cout << std::endl << ww << " reflected is ";
     ww.reflect(quaternion(0., 0., 0., -1.));
     std::cout << ww << std::endl;
+
+    sphere s(point3d(0., 0., 8.), 10.);
+    line l; l.fromTwoPoints(point3d(100., 100., 1000.),
+                            point3d(-5., -5., 0.));
+    cylinder c(1.);
+
+    std::vector<point3d> p;
+    bool isThereIntersection = intersectionSphereLine(s, l, p);
+
+    if (isThereIntersection) {
+        std::cout << "\nPoints of intersection between "
+                  << s << " and " << l << ":\n";
+        for (auto & pt: p) { std::cout << pt << '\n'; }
+
+        // Lower intersection point is first
+        // Try to get the reflection of the vector at that point
+        vector3d v_in = p.at(0) - l.o;
+        quaternion q_in(v_in, 0.);
+        vector3d v_axis = s.c - p.at(0);
+        v_axis.normalize();
+        quaternion reflec_axis(v_axis, 0.);
+        q_in.reflect(reflec_axis);
+        vector3d v_out = q_in.getVector();
+        std::cout << "Incident vector..: " << v_in << '\n';
+        std::cout << "Reflection vector: " << v_out << '\n';
+
+        std::vector<point3d> pp;
+        line ll; ll.fromPointVector(p.at(0), v_out);
+        bool isThereIntersection2 = intersectionCylinderLine(c, ll, pp);
+        if (isThereIntersection2) {
+            std::cout << "\nPoints of intersection between "
+                      << c << " and " << ll << ":\n";
+            for (auto & pt: pp) { std::cout << pt << '\n'; }
+        } else {
+            std::cout << "No intersection with vertical cylinder!\n";
+        }
+    } else {
+        std::cout << "No intersection!\n";
+    }
 
     return 0;
 }
