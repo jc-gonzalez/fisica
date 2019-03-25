@@ -63,11 +63,933 @@
 #include "comparisons.h"
 #include "angles.h"
 #include "vectors.h"
+/*
+using MathTools::vector3d;
+using MathTools::iszero;
+using MathTools::equals;
+using MathTools::clamp;
+using MathTools::r2d;
 
+using MathTools::Epsilon;
+using MathTools::Degrees2Radians;
+*/
 //======================================================================
 // Namespace: MathTools
 //======================================================================
 namespace MathTools {
+
+//======================================================================
+// Class: matrix3
+//======================================================================
+class matrix3 {
+
+public:
+
+    enum eConstructor { EM3CONST_NOTHING = 0,
+                        EM3CONST_COPY,
+                        EM3CONST_IDENTITY,
+                        EM3CONST_TRANSPOSED,
+                        EM3CONST_INVERSE,
+                        EM3CONST_INVERSE_TRANSPOSED };
+
+    matrix3(eConstructor constructor = EM3CONST_IDENTITY );
+    matrix3(const matrix3& other, eConstructor constructor = EM3CONST_COPY);
+
+    double & operator()(const int row, const int col) { return M[ row * 3 + col ]; }
+    const double & operator()(const int row, const int col) const { return M[row * 3 + col]; }
+
+    double & operator[](unsigned int index) { return M[index]; }
+    const double & operator[](unsigned int index) const { return M[index]; }
+
+    matrix3& operator=(const matrix3 &other);
+    matrix3& operator=(const double & scalar);
+
+    const double * pointer() const { return M; }
+    double * pointer() { return M; }
+
+    bool operator==(const matrix3 &other) const;
+    bool operator!=(const matrix3 &other) const;
+
+    matrix3 operator+(const matrix3& other) const;
+    matrix3& operator+=(const matrix3& other);
+
+    matrix3 operator-(const matrix3& other) const;
+    matrix3& operator-=(const matrix3& other);
+
+    matrix3& setbyproduct(const matrix3& other_a,const matrix3& other_b );
+    matrix3& setbyproduct_nocheck(const matrix3& other_a,const matrix3& other_b );
+
+    matrix3 operator*(const matrix3& other) const;
+    matrix3& operator*=(const matrix3& other);
+    matrix3 operator*(const double & scalar) const;
+    matrix3& operator*=(const double & scalar);
+
+    vector3d operator*(const vector3d& other) const;
+
+    matrix3& makeIdentity();
+    bool isIdentity() const;
+    bool isOrthogonal() const;
+
+    matrix3& setTranslation(const vector3d& translation );
+    vector3d getTranslation() const;
+    matrix3& setInverseTranslation(const vector3d& translation );
+
+    matrix3& setRotationThetaPhi(double theta, double phi);
+    matrix3& setInverseRotationThetaPhi(double theta, double phi);
+
+    matrix3& setRotationRadians(const vector3d& rotation );
+    matrix3& setRotationDegrees(const vector3d& rotation );
+    vector3d getRotationDegrees() const;
+
+    matrix3& setInverseRotationRadians(const vector3d& rotation );
+    matrix3& setInverseRotationDegrees(const vector3d& rotation );
+    matrix3& setRotationAxisRadians(const double & angle, const vector3d& axis);
+
+    matrix3& setScale(const vector3d& scale );
+    matrix3& setScale(const double scale ) { return setScale(vector3d(scale,scale,scale)); }
+    vector3d getScale() const;
+
+    void inverseTranslateVect(vector3d& vect ) const;
+    void inverseRotateVect(vector3d& vect ) const;
+    void rotateVect(vector3d& vect ) const;
+    void rotateVect(vector3d& out, const vector3d& in) const;
+    void rotateVect(double *out,const vector3d &in) const;
+
+    void transformVect(vector3d& vect) const;
+    void transformVect(vector3d& out, const vector3d& in ) const;
+    void transformVect(double *out,const vector3d &in) const;
+    void transformVec3(double *out, const double * in) const;
+
+    void translateVect(vector3d& vect ) const;
+    /*
+    void transformPlane(plane3d &plane) const;
+    void transformPlane(const plane3d &in, plane3d &out) const;
+    void transformBox(aabbox3d& box) const;
+    void transformBoxEx(aabbox3d& box) const;
+    */
+    void multiplyWith1x3Matrix(double * matrix) const;
+
+    bool makeInverse();
+
+    bool getInversePrimitive (matrix3& out ) const;
+    bool getInverse(matrix3& out) const;
+
+    matrix3 interpolate(const matrix3& b, double time) const;
+
+    matrix3 getTransposed() const;
+    void getTransposed(matrix3& dest ) const;
+
+    matrix3& buildRotateFromTo(const vector3d& from, const vector3d& to);
+
+    matrix3& setM(const double * data);
+
+    void setDefinitelyIdentityMatrix(bool isDefinitelyIdentityMatrix);
+    bool getDefinitelyIdentityMatrix() const;
+
+    bool isEqualTo(const matrix3& other, const double tolerance = Epsilon) const;
+
+private:
+    double M[9];
+};
+
+// Default constructor
+matrix3::matrix3(eConstructor constructor )
+{
+    switch (constructor) {
+    case EM3CONST_NOTHING:
+    case EM3CONST_COPY:
+        break;
+    case EM3CONST_IDENTITY:
+    case EM3CONST_INVERSE:
+    default:
+        makeIdentity();
+        break;
+    }
+}
+
+// Copy constructor
+matrix3::matrix3(const matrix3& other, eConstructor constructor)
+{
+    switch (constructor) {
+    case EM3CONST_IDENTITY:
+        makeIdentity();
+        break;
+    case EM3CONST_NOTHING:
+        break;
+    case EM3CONST_COPY:
+        *this = other;
+        break;
+    case EM3CONST_TRANSPOSED:
+        other.getTransposed(*this);
+        break;
+    case EM3CONST_INVERSE:
+        if (!other.getInverse(*this))
+            memset(M, 0, 9*sizeof(double));
+        break;
+    case EM3CONST_INVERSE_TRANSPOSED:
+        if (!other.getInverse(*this))
+            memset(M, 0, 9*sizeof(double));
+        else
+            *this=getTransposed();
+        break;
+    }
+}
+
+matrix3 matrix3::operator+(const matrix3& other) const
+{
+    matrix3 temp (EM3CONST_NOTHING );
+
+    temp[0] = M[0]+other[0];
+    temp[1] = M[1]+other[1];
+    temp[2] = M[2]+other[2];
+    temp[3] = M[3]+other[3];
+    temp[4] = M[4]+other[4];
+    temp[5] = M[5]+other[5];
+    temp[6] = M[6]+other[6];
+    temp[7] = M[7]+other[7];
+    temp[8] = M[8]+other[8];
+
+    return temp;
+}
+
+matrix3& matrix3::operator+=(const matrix3& other)
+{
+    M[0]+=other[0];
+    M[1]+=other[1];
+    M[2]+=other[2];
+    M[3]+=other[3];
+    M[4]+=other[4];
+    M[5]+=other[5];
+    M[6]+=other[6];
+    M[7]+=other[7];
+    M[8]+=other[8];
+
+    return *this;
+}
+
+matrix3 matrix3::operator-(const matrix3& other) const
+{
+    matrix3 temp (EM3CONST_NOTHING );
+
+    temp[0] = M[0]-other[0];
+    temp[1] = M[1]-other[1];
+    temp[2] = M[2]-other[2];
+    temp[3] = M[3]-other[3];
+    temp[4] = M[4]-other[4];
+    temp[5] = M[5]-other[5];
+    temp[6] = M[6]-other[6];
+    temp[7] = M[7]-other[7];
+    temp[8] = M[8]-other[8];
+
+    return temp;
+}
+
+matrix3& matrix3::operator-=(const matrix3& other)
+{
+    M[0]-=other[0];
+    M[1]-=other[1];
+    M[2]-=other[2];
+    M[3]-=other[3];
+    M[4]-=other[4];
+    M[5]-=other[5];
+    M[6]-=other[6];
+    M[7]-=other[7];
+    M[8]-=other[8];
+
+    return *this;
+}
+
+matrix3 matrix3::operator*(const double & scalar) const
+{
+    matrix3 temp (EM3CONST_NOTHING );
+
+    temp[0] = M[0]*scalar;
+    temp[1] = M[1]*scalar;
+    temp[2] = M[2]*scalar;
+    temp[3] = M[3]*scalar;
+    temp[4] = M[4]*scalar;
+    temp[5] = M[5]*scalar;
+    temp[6] = M[6]*scalar;
+    temp[7] = M[7]*scalar;
+    temp[8] = M[8]*scalar;
+
+    return temp;
+}
+
+matrix3& matrix3::operator*=(const double & scalar)
+{
+    M[0]*=scalar;
+    M[1]*=scalar;
+    M[2]*=scalar;
+    M[3]*=scalar;
+    M[4]*=scalar;
+    M[5]*=scalar;
+    M[6]*=scalar;
+    M[7]*=scalar;
+    M[8]*=scalar;
+
+    return *this;
+}
+
+matrix3& matrix3::operator*=(const matrix3& other)
+{
+    matrix3 temp (*this );
+    return setbyproduct_nocheck(temp, other );
+}
+
+// set this matrix to the product of two other matrices
+// goal is to reduce stack use and copy
+matrix3& matrix3::setbyproduct_nocheck(const matrix3& other_a,const matrix3& other_b )
+{
+    const double *m1 = other_a.M;
+    const double *m2 = other_b.M;
+
+    M[0] = m1[0]*m2[0] + m1[3]*m2[1] + m1[6]*m2[2];
+    M[1] = m1[1]*m2[0] + m1[4]*m2[1] + m1[7]*m2[2];
+    M[2] = m1[2]*m2[0] + m1[5]*m2[1] + m1[8]*m2[2];
+
+    M[3] = m1[0]*m2[3] + m1[2]*m2[4] + m1[6]*m2[5];
+    M[4] = m1[1]*m2[3] + m1[3]*m2[4] + m1[7]*m2[5];
+    M[5] = m1[2]*m2[3] + m1[4]*m2[4] + m1[8]*m2[5];
+
+    M[6] = m1[0]*m2[6] + m1[3]*m2[7] + m1[6]*m2[8];
+    M[7] = m1[1]*m2[6] + m1[4]*m2[7] + m1[7]*m2[8];
+    M[8] = m1[2]*m2[6] + m1[5]*m2[7] + m1[8]*m2[8];
+
+    return *this;
+}
+
+// set this matrix to the product of two other matrices
+// goal is to reduce stack use and copy
+matrix3& matrix3::setbyproduct(const matrix3& other_a, const matrix3& other_b )
+{
+    return setbyproduct_nocheck(other_a,other_b);
+}
+
+matrix3 matrix3::operator*(const matrix3& m2) const
+{
+    matrix3 m3 (EM3CONST_NOTHING );
+
+    const double *m1 = M;
+
+    m3[0] = m1[0]*m2[0] + m1[3]*m2[1] + m1[6]*m2[2];
+    m3[1] = m1[1]*m2[0] + m1[4]*m2[1] + m1[7]*m2[2];
+    m3[2] = m1[2]*m2[0] + m1[5]*m2[1] + m1[8]*m2[2];
+
+    m3[3] = m1[0]*m2[3] + m1[2]*m2[4] + m1[6]*m2[5];
+    m3[4] = m1[1]*m2[3] + m1[3]*m2[4] + m1[7]*m2[5];
+    m3[5] = m1[2]*m2[3] + m1[4]*m2[4] + m1[8]*m2[5];
+
+    m3[6] = m1[0]*m2[6] + m1[3]*m2[7] + m1[6]*m2[8];
+    m3[7] = m1[1]*m2[6] + m1[4]*m2[7] + m1[7]*m2[8];
+    m3[8] = m1[2]*m2[6] + m1[5]*m2[7] + m1[8]*m2[8];
+    return m3;
+}
+
+vector3d matrix3::operator*(const vector3d& other) const
+{
+    vector3d out;
+    transformVect(out, other);
+    return out;
+}
+
+matrix3& matrix3::setScale(const vector3d& scale )
+{
+    M[0] = scale.X;
+    M[4] = scale.Y;
+    M[8] = scale.Z;
+    return *this;
+}
+
+vector3d matrix3::getScale() const
+{
+    // See http://www.robertblum.com/articles/2005/02/14/decomposing-matrices
+
+    // Deal with the 0 rotation case first
+    // Prior to Irrlicht 1.6, we always returned this value.
+    if(iszero(M[1]) && iszero(M[2]) &&
+       iszero(M[3]) && iszero(M[5]) &&
+       iszero(M[6]) && iszero(M[7]))
+        return vector3d(M[0], M[4], M[8]);
+
+    // We have to do the full calculation.
+    return vector3d(sqrtf(M[0] * M[0] + M[1] * M[1] + M[2] * M[2]),
+                    sqrtf(M[3] * M[3] + M[4] * M[4] + M[5] * M[5]),
+                    sqrtf(M[6] * M[6] + M[7] * M[7] + M[8] * M[8]));
+}
+
+matrix3& matrix3::setRotationDegrees(const vector3d& rotation )
+{
+    return setRotationRadians(rotation * Degrees2Radians);
+}
+
+matrix3& matrix3::setInverseRotationDegrees(const vector3d& rotation )
+{
+    return setInverseRotationRadians(rotation * Degrees2Radians);
+}
+
+matrix3& matrix3::setRotationRadians(const vector3d& rotation )
+{
+    const double cr = cos(rotation.X);
+    const double sr = sin(rotation.X);
+    const double cp = cos(rotation.Y);
+    const double sp = sin(rotation.Y);
+    const double cy = cos(rotation.Z);
+    const double sy = sin(rotation.Z);
+
+    M[0] = (double)(cp*cy );
+    M[1] = (double)(cp*sy );
+    M[2] = (double)(-sp );
+
+    const double srsp = sr*sp;
+    const double crsp = cr*sp;
+
+    M[3] = (double)(srsp*cy-cr*sy );
+    M[4] = (double)(srsp*sy+cr*cy );
+    M[5] = (double)(sr*cp );
+
+    M[6] = (double)(crsp*cy+sr*sy );
+    M[7] = (double)(crsp*sy-sr*cy );
+    M[8] = (double)(cr*cp );
+    return *this;
+}
+
+matrix3& matrix3::setRotationThetaPhi(double theta, double phi)
+{
+    static double ct, st, cp, sp;
+
+    // shortcuts for cosine and sine of theta and phi
+    ct = cos(theta);
+    st = sin(theta);
+    cp = cos(phi);
+    sp = sin(phi);
+
+    // save values in the array (see top of file)
+    M[0] =  cp * ct;
+    M[1] =  sp * ct;
+    M[2] = -st;
+
+    M[3] = -sp;
+    M[4] =  cp;
+    M[5] =  0;
+
+    M[6] =  cp * st;
+    M[7] =  sp * st;
+    M[8] =  ct;
+
+    return *this;
+}
+
+matrix3& matrix3::setInverseRotationThetaPhi(double theta, double phi)
+{
+    static double ct, st, cp, sp;
+
+    // shortcuts for cosine and sine of theta and phi
+    ct = cos(theta);
+    st = sin(theta);
+    cp = cos(phi);
+    sp = sin(phi);
+
+    // save values in the array (see top of file)
+    M[0] =  cp * ct;
+    M[1] = -sp;
+    M[2] =  cp * st;
+
+    M[3] =  sp * ct;
+    M[4] =  cp;
+    M[5] =  sp * st;
+
+    M[6] = -st;
+    M[7] =  0;
+    M[8] =  ct;
+
+    return *this;
+}
+
+vector3d matrix3::getRotationDegrees() const
+{
+    const matrix3 &mat = *this;
+    vector3d scale = getScale();
+    // we need to check for negative scale on to axes, which would bring up wrong results
+    if (scale.Y<0 && scale.Z<0) {
+        scale.Y =-scale.Y;
+        scale.Z =-scale.Z;
+    } else if (scale.X<0 && scale.Z<0) {
+        scale.X =-scale.X;
+        scale.Z =-scale.Z;
+    } else if (scale.X<0 && scale.Y<0) {
+        scale.X =-scale.X;
+        scale.Y =-scale.Y;
+    }
+    const vector3d invScale((1./scale.X),(1./scale.Y),(1./scale.Z));
+
+    double Y = -asin(clamp(mat[2]*invScale.X, -1.0, 1.0));
+    const double C = cos(Y);
+    Y = r2d(Y);
+
+    double rotx, roty, X, Z;
+
+    if (!iszero(C)) {
+        const double invC = 1./C;
+        rotx = mat[8] * invC * invScale.Z;
+        roty = mat[5] * invC * invScale.Y;
+        X = r2d(atan2(roty, rotx));
+        rotx = mat[0] * invC * invScale.X;
+        roty = mat[1] * invC * invScale.X;
+        Z = r2d(atan2(roty, rotx));
+    } else {
+        X = 0.0;
+        rotx = mat[4] * invScale.Y;
+        roty = -mat[3] * invScale.Y;
+        Z = r2d(atan2(roty, rotx));
+    }
+
+    // fix values that get below zero
+    if (X < 0.0) X += 360.0;
+    if (Y < 0.0) Y += 360.0;
+    if (Z < 0.0) Z += 360.0;
+
+    return vector3d((double)X,(double)Y,(double)Z);
+}
+
+matrix3& matrix3::setInverseRotationRadians(const vector3d& rotation )
+{
+    double cr = cos(rotation.X );
+    double sr = sin(rotation.X );
+    double cp = cos(rotation.Y );
+    double sp = sin(rotation.Y );
+    double cy = cos(rotation.Z );
+    double sy = sin(rotation.Z );
+
+    M[0] = (double)(cp*cy );
+    M[3] = (double)(cp*sy );
+    M[6] = (double)(-sp );
+
+    double srsp = sr*sp;
+    double crsp = cr*sp;
+
+    M[1] = (double)(srsp*cy-cr*sy );
+    M[4] = (double)(srsp*sy+cr*cy );
+    M[7] = (double)(sr*cp );
+
+    M[2] = (double)(crsp*cy+sr*sy );
+    M[5] = (double)(crsp*sy-sr*cy );
+    M[8] = (double)(cr*cp );
+    return *this;
+}
+
+matrix3& matrix3::setRotationAxisRadians(const double & angle, const vector3d& axis )
+{
+    const double c = cos(angle);
+    const double s = sin(angle);
+    const double t = 1.0 - c;
+
+    const double tx  = t * axis.X;
+    const double ty  = t * axis.Y;
+    const double tz  = t * axis.Z;
+
+    const double sx  = s * axis.X;
+    const double sy  = s * axis.Y;
+    const double sz  = s * axis.Z;
+
+    M[0] = (double)(tx * axis.X + c);
+    M[1] = (double)(tx * axis.Y + sz);
+    M[2] = (double)(tx * axis.Z - sy);
+
+    M[3] = (double)(ty * axis.X - sz);
+    M[4] = (double)(ty * axis.Y + c);
+    M[5] = (double)(ty * axis.Z + sx);
+
+    M[6] = (double)(tz * axis.X + sy);
+    M[7] = (double)(tz * axis.Y - sx);
+    M[8] = (double)(tz * axis.Z + c);
+
+    return *this;
+}
+
+matrix3& matrix3::makeIdentity()
+{
+    memset(M, 0, 9*sizeof(double));
+    M[0] = M[4] = M[8] = (double)1;
+    return *this;
+}
+
+/*
+  check identity with epsilon
+  solve floating range problems..
+*/
+bool matrix3::isIdentity() const
+{
+    if (!equals(M[0], (double)1) ||
+        !equals(M[1], (double)0) ||
+        !equals(M[2], (double)0))
+        return false;
+
+    if (!equals(M[3], (double)0) ||
+        !equals(M[4], (double)1) ||
+        !equals(M[5], (double)0))
+        return false;
+
+    if (!equals(M[6], (double)0) ||
+        !equals(M[7], (double)0) ||
+        !equals(M[8], (double)1))
+        return false;
+
+    return true;
+}
+
+/* Check orthogonality of matrix. */
+bool matrix3::isOrthogonal() const
+{
+    double dp = M[0] * M[3] + M[1] * M[4] + M[2] * M[5];
+    if (!iszero(dp)) return false;
+    dp = M[0] * M[6] + M[1] * M[7] + M[2] * M[8];
+    if (!iszero(dp)) return false;
+    dp = M[3] * M[6] + M[4] * M[7] + M[5] * M[8];
+    return (iszero(dp));
+}
+
+void matrix3::rotateVect(vector3d& vect ) const
+{
+    vector3d tmp = vect;
+    vect.X = tmp.X*M[0] + tmp.Y*M[3] + tmp.Z*M[6];
+    vect.Y = tmp.X*M[1] + tmp.Y*M[4] + tmp.Z*M[7];
+    vect.Z = tmp.X*M[2] + tmp.Y*M[5] + tmp.Z*M[8];
+}
+
+void matrix3::rotateVect(vector3d& out, const vector3d& in) const
+{
+    out.X = in.X*M[0] + in.Y*M[3] + in.Z*M[6];
+    out.Y = in.X*M[1] + in.Y*M[4] + in.Z*M[7];
+    out.Z = in.X*M[2] + in.Y*M[5] + in.Z*M[8];
+}
+
+void matrix3::rotateVect(double *out, const vector3d& in) const
+{
+    out[0] = in.X*M[0] + in.Y*M[3] + in.Z*M[6];
+    out[1] = in.X*M[1] + in.Y*M[4] + in.Z*M[7];
+    out[2] = in.X*M[2] + in.Y*M[5] + in.Z*M[8];
+}
+
+void matrix3::inverseRotateVect(vector3d& vect ) const
+{
+    vector3d tmp = vect;
+    vect.X = tmp.X*M[0] + tmp.Y*M[1] + tmp.Z*M[2];
+    vect.Y = tmp.X*M[3] + tmp.Y*M[4] + tmp.Z*M[5];
+    vect.Z = tmp.X*M[6] + tmp.Y*M[7] + tmp.Z*M[8];
+}
+
+void matrix3::transformVect(vector3d& vect) const
+{
+    double vector[3];
+
+    vector[0] = vect.X*M[0] + vect.Y*M[3] + vect.Z*M[6];
+    vector[1] = vect.X*M[1] + vect.Y*M[4] + vect.Z*M[6];
+    vector[2] = vect.X*M[2] + vect.Y*M[5] + vect.Z*M[8];
+
+    vect.X = vector[0];
+    vect.Y = vector[1];
+    vect.Z = vector[2];
+}
+
+void matrix3::transformVect(vector3d& out, const vector3d& in) const
+{
+    out.X = in.X*M[0] + in.Y*M[3] + in.Z*M[6];
+    out.Y = in.X*M[1] + in.Y*M[4] + in.Z*M[7];
+    out.Z = in.X*M[2] + in.Y*M[5] + in.Z*M[8];
+}
+
+void matrix3::transformVect(double *out, const vector3d &in) const
+{
+    out[0] = in.X*M[0] + in.Y*M[3] + in.Z*M[6];
+    out[1] = in.X*M[1] + in.Y*M[4] + in.Z*M[7];
+    out[2] = in.X*M[2] + in.Y*M[5] + in.Z*M[8];
+}
+
+void matrix3::transformVec3(double *out, const double * in) const
+{
+    out[0] = in[0]*M[0] + in[1]*M[3] + in[2]*M[6];
+    out[1] = in[0]*M[1] + in[1]*M[4] + in[2]*M[7];
+    out[2] = in[0]*M[2] + in[1]*M[5] + in[2]*M[8];
+}
+/*
+void matrix3::transformPlane(plane3d &plane) const
+{
+    vector3d member;
+    // Transform the plane member point, i.e. rotate, translate and scale it.
+    transformVect(member, plane.getMemberPoint());
+
+    // Transform the normal by the transposed inverse of the matrix
+    matrix3 transposedInverse(*this, EM3CONST_INVERSE_TRANSPOSED);
+    vector3d normal = plane.Normal;
+    transposedInverse.transformVect(normal);
+
+    plane.setPlane(member, normal);
+}
+
+void matrix3::transformPlane(const plane3d &in, plane3d &out) const
+{
+    out = in;
+    transformPlane(out );
+}
+
+void matrix3::transformBox(aabbox3d& box) const
+{
+    transformVect(box.MinEdge);
+    transformVect(box.MaxEdge);
+    box.repair();
+}
+
+void matrix3::transformBoxEx(aabbox3d& box) const
+{
+    const double Amin[3] = {box.MinEdge.X, box.MinEdge.Y, box.MinEdge.Z};
+    const double Amax[3] = {box.MaxEdge.X, box.MaxEdge.Y, box.MaxEdge.Z};
+
+    double Bmin[3];
+    double Bmax[3];
+
+    Bmin[0] = Bmax[0] = M[12];
+    Bmin[1] = Bmax[1] = M[13];
+    Bmin[2] = Bmax[2] = M[14];
+
+    const matrix3 &m = *this;
+
+    for (unsigned int i = 0; i < 3; ++i) {
+        for (unsigned int j = 0; j < 3; ++j) {
+            const double a = m(j,i) * Amin[j];
+            const double b = m(j,i) * Amax[j];
+
+            if (a < b) {
+                Bmin[i] += a;
+                Bmax[i] += b;
+            } else {
+                Bmin[i] += b;
+                Bmax[i] += a;
+            }
+        }
+    }
+
+    box.MinEdge.X = Bmin[0];
+    box.MinEdge.Y = Bmin[1];
+    box.MinEdge.Z = Bmin[2];
+
+    box.MaxEdge.X = Bmax[0];
+    box.MaxEdge.Y = Bmax[1];
+    box.MaxEdge.Z = Bmax[2];
+}
+*/
+void matrix3::multiplyWith1x3Matrix(double * matrix) const
+{
+    /*
+      0  1  2  3
+      4  5  6  7
+      8  9  10 11
+      12 13 14 15
+    */
+
+    double mat[3];
+    mat[0] = matrix[0];
+    mat[1] = matrix[1];
+    mat[2] = matrix[2];
+
+    matrix[0] = M[0]*mat[0] + M[3]*mat[1] + M[6]*mat[2];
+    matrix[1] = M[1]*mat[0] + M[4]*mat[1] + M[7]*mat[2];
+    matrix[2] = M[2]*mat[0] + M[5]*mat[1] + M[8]*mat[2];
+}
+
+void matrix3::inverseTranslateVect(vector3d& vect ) const
+{
+    vect.X = vect.X-M[6];
+    vect.Y = vect.Y-M[7];
+    vect.Z = vect.Z-M[8];
+}
+
+void matrix3::translateVect(vector3d& vect ) const
+{
+    vect.X = vect.X+M[6];
+    vect.Y = vect.Y+M[7];
+    vect.Z = vect.Z+M[8];
+}
+
+bool matrix3::getInverse(matrix3& out) const
+{
+
+    const matrix3 &m = *this;
+
+    double d = ((m(0, 0) * m(1, 1) - m(0, 1) * m(1, 0)) * m(2, 2) -
+                (m(0, 0) * m(1, 2) - m(0, 2) * m(1, 0)) * m(2, 1) +
+                (m(0, 1) * m(1, 2) - m(0, 2) * m(1, 1)) * m(2, 0));
+
+    if (iszero(d, Epsilon)) return false;
+
+    d = 1./d;
+
+    out(0, 0) = d * (m(1, 1) * m(2, 2) - m(1, 2) * m(2, 1));
+    out(0, 1) = d * (m(1, 2) * m(2, 0) - m(1, 0) * m(2, 2));
+    out(0, 2) = d * (m(1, 0) * m(2, 1) - m(1, 1) * m(2, 0));
+    out(1, 0) = d * (m(0, 2) * m(2, 1) - m(0, 1) * m(2, 2));
+    out(1, 1) = d * (m(0, 2) * m(2, 0) - m(0, 2) * m(2, 2));
+    out(1, 2) = d * (m(0, 1) * m(2, 0) - m(0, 0) * m(2, 1));
+    out(2, 0) = d * (m(0, 1) * m(1, 2) - m(0, 2) * m(1, 1));
+    out(2, 1) = d * (m(0, 2) * m(1, 0) - m(0, 0) * m(1, 2));
+    out(2, 2) = d * (m(0, 0) * m(1, 1) - m(0, 1) * m(1, 0));
+
+    return true;
+}
+
+bool matrix3::makeInverse()
+{
+    matrix3 temp (EM3CONST_NOTHING );
+
+    if (getInverse(temp)) {
+        *this = temp;
+        return true;
+    }
+
+    return false;
+}
+
+matrix3& matrix3::operator=(const matrix3 &other)
+{
+    if (this==&other) return *this;
+    memcpy(M, other.M, 9*sizeof(double));
+    return *this;
+}
+
+matrix3& matrix3::operator=(const double & scalar)
+{
+    for (int i = 0; i < 9; ++i) {
+        M[i]=scalar;
+    }
+
+    return *this;
+}
+
+bool matrix3::operator==(const matrix3 &other) const
+{
+    for (int i = 0; i < 9; ++i) {
+        if (M[i] != other.M[i]) return false;
+    }
+    return true;
+}
+
+bool matrix3::operator!=(const matrix3 &other) const
+{
+    return !(*this == other);
+}
+
+
+// creates a new matrix as interpolated matrix from this and the passed one.
+matrix3 matrix3::interpolate(const matrix3& b, double time) const
+{
+    matrix3 mat (EM3CONST_NOTHING );
+
+    for (unsigned int i=0; i < 9; i += 3) {
+        mat.M[i+0] = (double)(M[i+0] + (b.M[i+0] - M[i+0]) * time);
+        mat.M[i+1] = (double)(M[i+1] + (b.M[i+1] - M[i+1]) * time);
+        mat.M[i+2] = (double)(M[i+2] + (b.M[i+2] - M[i+2]) * time);
+    }
+    return mat;
+}
+
+// returns transposed matrix
+matrix3 matrix3::getTransposed() const
+{
+    matrix3 t (EM3CONST_NOTHING );
+    getTransposed (t );
+    return t;
+}
+
+// returns transposed matrix
+void matrix3::getTransposed(matrix3& o ) const
+{
+    o[0] = M[0];
+    o[1] = M[3];
+    o[2] = M[6];
+
+    o[3] = M[1];
+    o[4] = M[4];
+    o[5] = M[7];
+
+    o[6] = M[2];
+    o[7] = M[5];
+    o[8] = M[8];
+}
+
+matrix3& matrix3::buildRotateFromTo(const vector3d& from, const vector3d& to)
+{
+    // unit vectors
+    vector3d f(from);
+    vector3d t(to);
+    f.normalize();
+    t.normalize();
+
+    // axis multiplication by sin
+    vector3d vs(t.cross(f));
+
+    // axis of rotation
+    vector3d v(vs);
+    v.normalize();
+
+    // cosinus angle
+    double ca = f.dot(t);
+
+    vector3d vt(v * (1 - ca));
+
+    M[0] = vt.X * v.X + ca;
+    M[4] = vt.Y * v.Y + ca;
+    M[8] = vt.Z * v.Z + ca;
+
+    vt.X *= v.Y;
+    vt.Z *= v.X;
+    vt.Y *= v.Z;
+
+    M[1] = vt.X - vs.Z;
+    M[2] = vt.Z + vs.Y;
+
+    M[3] = vt.X + vs.Z;
+    M[5] = vt.Y - vs.X;
+
+    M[6] = vt.Z - vs.Y;
+    M[7] = vt.Y + vs.X;
+
+    return *this;
+}
+
+
+// sets all matrix data members at once
+matrix3& matrix3::setM(const double * data)
+{
+    memcpy(M,data, 9*sizeof(double));
+
+    return *this;
+}
+
+// sets if the matrix is definitely identity matrix
+void matrix3::setDefinitelyIdentityMatrix(bool isDefinitelyIdentityMatrix)
+{
+}
+
+// gets if the matrix is definitely identity matrix
+bool matrix3::getDefinitelyIdentityMatrix() const
+{
+    return false;
+}
+
+bool matrix3::isEqualTo(const matrix3& other, const double tolerance) const
+{
+    for (int i = 0; i < 9; ++i)
+        if (!equals(M[i],other.M[i], tolerance))
+            return false;
+
+    return true;
+}
+
+// Multiply by scalar.
+matrix3 operator*(const double scalar, const matrix3& mat)
+{
+    return mat*scalar;
+}
 
 //======================================================================
 // Class: matrix4
@@ -1599,7 +2521,8 @@ matrix4 operator*(const double scalar, const matrix4& mat)
     return mat*scalar;
 }
 
-extern const matrix4 IdentityMatrix;
+extern const matrix3 IdentityMatrix3;
+extern const matrix4 IdentityMatrix4;
 
 }
 

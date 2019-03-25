@@ -2,7 +2,7 @@
  * File:    ExperimentalReflector.cpp
  *          This file is part of the Cherenkov Detector Simulation library
  *
- * Domain:  cherdetsim.experimentalreflector
+ * Domain:  cherdetsim.magicreflector
  *
  * Version: 0.3
  *
@@ -40,6 +40,9 @@
 
 #include "ExperimentalReflector.h"
 
+#include "quaternions.h"
+#include "surfaces.h"
+
 thread_local UnifRnd expreflector_unifUnit(0., 1.);
 #define RandomNumber expreflector_unifUnit()
 
@@ -55,6 +58,75 @@ ExperimentalReflector::ExperimentalReflector()
 //----------------------------------------------------------------------
 ExperimentalReflector::~ExperimentalReflector()
 {
+}
+
+//----------------------------------------------------------------------
+// Method: setMirrorsFile
+//----------------------------------------------------------------------
+void ExperimentalReflector::setMirrorsFile(std::string fileName)
+{
+    // Read filename
+    json::Parser cfgReader;
+    json::Object content;
+    assert(cfgReader.parseFile(fileName, content));
+    mirrors = content["data"].asObject();
+
+    // Pass config items to data members
+    // Focal distances [cm]
+    std::vector<float> ct_Focal;
+
+    ct_Diameter = mirrors["diameter"]["value"].asFloat();
+    ct_Radius = ct_Diameter * 0.5;
+
+    ct_Center_height = mirrors["center_height"]["value"].asFloat();
+    ct_Lower_section = mirrors["lower_section"]["value"].asFloat();
+    ct_Upper_section = mirrors["upper_section"]["value"].asFloat();
+
+    ct_PSpread_mean = mirrors["point_spread_avg"]["value"].asFloat();
+    ct_PSpread_std = mirrors["point_spread_std"]["value"].asFloat();
+
+    ct_Adjustment_std = mirrors["adjustment_dev"]["value"].asFloat();
+    ct_BlackSpot_rad = mirrors["black_spot"]["value"].asFloat();
+
+    ct_NMirrors = mirrors["n_mirrors"]["value"].asInt();
+    ct_RMirror = mirrors["r_mirror"]["value"].asFloat();
+
+    ct_CameraRadius = mirrors["camera_radius"]["value"].asFloat();
+    ct_CameraRaised = mirrors["camera_raised"]["value"].asFloat();
+    ct_CameraSize = mirrors["camera_size"]["value"].asFloat();
+    
+    ct_PixelWidth = mirrors["pixel_width"]["value"].asFloat();
+    ct_NPixels = mirrors["n_pixels"]["value"].asInt();
+
+    ct_data = new double * [ct_NMirrors];
+    for (int i = 0; i < ct_NMirrors; ++i) {
+        ct_data[i] = new double [CT_NDATA];
+        for (int j = 0; j < CT_NDATA; ++j) {
+            ct_data[i][j] = mirrors["mirrors"]["value"][i][j].asFloat();
+        }
+    }
+
+    // Reflectivity table
+    std::string reflecFileName = mirrors["reflectivity"]["value"].asString();
+    assert(cfgReader.parseFile(reflecFileName, content));
+    nReflectivity = content["data"]["num_points"].asInt();
+    reflectivity = new double * [nReflectivity];
+    for (int i = 0; i < nReflectivity; ++i) {
+        reflectivity[i] = new double [2];
+        reflectivity[i][0] = content["data"]["reflectivity"][i][0].asFloat();
+        reflectivity[i][1] = content["data"]["reflectivity"][i][1].asFloat();
+    }
+    
+    // Table with deviations of the mirrors' normals
+    std::string axisDevFileName = mirrors["axis_deviation"]["value"].asString();
+    assert(cfgReader.parseFile(axisDevFileName, content));
+    axisDeviation = new double * [ct_NMirrors];
+    for (int i = 0; i < ct_NMirrors; ++i) {
+        axisDeviation[i] = new double [2];
+        axisDeviation[i][0] = content["data"]["axis_deviation"][i][0].asFloat();
+        axisDeviation[i][1] = content["data"]["axis_deviation"][i][1].asFloat();
+    }
+
 }
 
 //----------------------------------------------------------------------
@@ -81,6 +153,7 @@ bool ExperimentalReflector::reflect(CPhoton cph, point3D & xDish, point3D & xCam
 bool ExperimentalReflector::mirrorsReflection(point3D x, vector3D r, double timeFirstInt,
                                        point3D & xd, point3D & xr)
 {
+    
     static double normalRnd[2];
     
     // Pre-compute matrix to move to the main dish ref.system
@@ -211,7 +284,7 @@ bool ExperimentalReflector::intersectionWithDish(point3D vx, point3D vxCT, vecto
     static const double Epsilon = 1.0e-12; //100. * DBL_EPSILON;
     
     /*
-      Before moving to the system of the mirror, for MAGIC, 
+      Before moving to the system of the mirror, for Experimental, 
       first we look whether the photon hits a mirror or not
       
       calculate the intersection of the trayectory of the photon 

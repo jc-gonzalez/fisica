@@ -58,6 +58,73 @@ MAGICReflector::~MAGICReflector()
 }
 
 //----------------------------------------------------------------------
+// Method: setMirrorsFile
+//----------------------------------------------------------------------
+void MAGICReflector::setMirrorsFile(std::string fileName)
+{
+    // Read filename
+    json::Parser cfgReader;
+    json::Object content;
+    assert(cfgReader.parseFile(fileName, content));
+    mirrors = content["data"].asObject();
+
+    // Pass config items to data members
+    // Focal distances [cm]
+    std::vector<float> ct_Focal;
+
+    ct_Diameter = mirrors["diameter"]["value"].asFloat();
+    ct_Radius = ct_Diameter * 0.5;
+    
+    ct_Focal_mean = mirrors["focal_distance"]["value"].asFloat();
+    ct_Focal_std = mirrors["focal_std"]["value"].asFloat();
+
+    ct_PSpread_mean = mirrors["point_spread_avg"]["value"].asFloat();
+    ct_PSpread_std = mirrors["point_spread_std"]["value"].asFloat();
+
+    ct_Adjustment_std = mirrors["adjustment_dev"]["value"].asFloat();
+    ct_BlackSpot_rad = mirrors["black_spot"]["value"].asFloat();
+
+    ct_NMirrors = mirrors["n_mirrors"]["value"].asInt();
+    ct_RMirror = mirrors["r_mirror"]["value"].asFloat();
+
+    ct_CameraWidth = mirrors["camera_width"]["value"].asFloat();
+    ct_PixelWidth = mirrors["pixel_width"]["value"].asFloat();
+    ct_CameraEdges2 = sqr<double>(ct_CameraWidth * 0.5);
+    
+    ct_NPixels = mirrors["n_pixels"]["value"].asInt();
+
+    ct_data = new double * [ct_NMirrors];
+    for (int i = 0; i < ct_NMirrors; ++i) {
+        ct_data[i] = new double [CT_NDATA];
+        for (int j = 0; j < CT_NDATA; ++j) {
+            ct_data[i][j] = mirrors["mirrors"]["value"][i][j].asFloat();
+        }
+    }
+
+    // Reflectivity table
+    std::string reflecFileName = mirrors["reflectivity"]["value"].asString();
+    assert(cfgReader.parseFile(reflecFileName, content));
+    nReflectivity = content["data"]["num_points"].asInt();
+    reflectivity = new double * [nReflectivity];
+    for (int i = 0; i < nReflectivity; ++i) {
+        reflectivity[i] = new double [2];
+        reflectivity[i][0] = content["data"]["reflectivity"][i][0].asFloat();
+        reflectivity[i][1] = content["data"]["reflectivity"][i][1].asFloat();
+    }
+    
+    // Table with deviations of the mirrors' normals
+    std::string axisDevFileName = mirrors["axis_deviation"]["value"].asString();
+    assert(cfgReader.parseFile(axisDevFileName, content));
+    axisDeviation = new double * [ct_NMirrors];
+    for (int i = 0; i < ct_NMirrors; ++i) {
+        axisDeviation[i] = new double [2];
+        axisDeviation[i][0] = content["data"]["axis_deviation"][i][0].asFloat();
+        axisDeviation[i][1] = content["data"]["axis_deviation"][i][1].asFloat();
+    }
+
+}
+
+//----------------------------------------------------------------------
 // Method: reflect
 //----------------------------------------------------------------------
 bool MAGICReflector::reflect(CPhoton cph, point3D & xDish, point3D & xCam)

@@ -49,6 +49,7 @@
 #include "str.h"
 #include "mathtools.h"
 
+#include "MAGICReflector.h"
 #include "ExperimentalReflector.h"
 #include "CerPhotonsSource.h"
 
@@ -127,14 +128,17 @@ void Simulator::readConfiguration(std::string fileName)
         definedEnergyCut = true;
     }
 
-    std::cerr << cfg["reflector_file"].asString() << '\n'
-	      << cfg["output_file"].asString() << '\n'
-	      << cfg["atm_model"].asString() << '\n';
+    reflectorType = cfg["reflector_type"].asString();
 
-    reflectorFile = subEnvVars(cfg["reflector_file"].asString());
-    outputFile    = subEnvVars(cfg["output_file"].asString());
-    atmModel      = subEnvVars(cfg["atm_model"].asString());
-
+    try {
+        reflectorFile = subEnvVars(cfg["reflector_file"].asString());
+        outputFile    = subEnvVars(cfg["output_file"].asString());
+        atmModel      = subEnvVars(cfg["atm_model"].asString());
+    } catch (...) {
+        std::cerr << "Reflector, output or atm. files not specified. Exiting.\n";
+        exit(1);        
+    }
+    
     // Get data files (cer*) for all input paths
     for (auto s : cfg["data_paths"].asArray()) {
 	std::string ss = subEnvVars(s.asString());
@@ -158,7 +162,10 @@ void Simulator::readConfiguration(std::string fileName)
             perror("opendir");
         }
     }
-    
+    if (inputFiles.size() < 1) {
+        std::cerr << "No input files were provided. Exiting.\n";
+        exit(1);
+    }
     std::sort(inputFiles.begin(), inputFiles.end());
 }
 
@@ -232,8 +239,20 @@ std::string Simulator::subEnvVars(std::string s)
 void Simulator::run()
 {
     // Define reflector
-    Reflector * reflector = new ExperimentalReflector;
+    Reflector * reflector = nullptr;
+    
+    if (reflectorType == "magic") {
+        reflector = new MAGICReflector;
+    } else if (reflectorType == "experimental") {
+        reflector = new MAGICReflector;
+    } else {
+        std::cerr << "Bad reflector type '" << reflectorType
+                  << "'. Exiting.\n";
+        exit(1);
+    }
+    
     reflector->setMirrorsFile(reflectorFile);
+    
     if (definedFixedTarget) {
 	reflector->setOrientation(fixedTargetTheta, fixedTargetPhi);
     }

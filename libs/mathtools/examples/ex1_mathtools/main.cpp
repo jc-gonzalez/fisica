@@ -101,6 +101,19 @@ int main(int argc, char * argv[])
         std::cout << "No intersection!\n";
     }
 
+    std::cout << "\n----------------------------------------\n";
+
+    matrix3 m;
+    m.setRotationThetaPhi(d2r(45.), d2r(0.));
+    vector3d vr {1., 0., 1.};
+    vector3d vs = m * vr;
+
+    std::cout << vr << "  =>  " << vs << '\n';
+
+    m.setInverseRotationThetaPhi(d2r(45.), d2r(0.));
+    vr = m * vs;
+    std::cout << vs << "  =>  " << vr << '\n';
+
     return 0;
 }
 

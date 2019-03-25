@@ -108,6 +108,7 @@ private:
     bool definedEnergyCut;
     bool definedCoreOffset;
     
+    std::string reflectorType;
     std::string reflectorFile;
     std::string outputFile;
     std::string atmModel;

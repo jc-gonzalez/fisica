@@ -36,6 +36,7 @@ SET (mathtools_hdr
   comparisons.h
   matrix.h
   quaternions.h
+  surfaces.h
   vectors.h
   )
 
