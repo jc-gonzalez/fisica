@@ -244,7 +244,7 @@ void Simulator::run()
     if (reflectorType == "magic") {
         reflector = new MAGICReflector;
     } else if (reflectorType == "experimental") {
-        reflector = new MAGICReflector;
+        reflector = new ExperimentalReflector;
     } else {
         std::cerr << "Bad reflector type '" << reflectorType
                   << "'. Exiting.\n";

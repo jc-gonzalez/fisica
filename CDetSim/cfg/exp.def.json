@@ -7,15 +7,15 @@
 	},
 	"center_height": {
 	    "desc": "height of center of sphere [cm]",
-	    "value": 500.0
+	    "value": 1000.0 
 	},
 	"lower_section": {
 	    "desc": "height of lower section [cm]",
-	    "value": 500.0
+	    "value": 950.0
 	},
 	"upper_section": {
 	    "desc": "height of upper section [cm]",
-	    "value": 300.0
+	    "value": 500.0
 	},
 	"point_spread_avg": {
 	    "desc": "point spread function avg [cm]",
@@ -39,11 +39,11 @@
 	},
 	"camera_raised": {
 	    "desc": "camera distance from base of reflector [cm]",
-	    "value": 200.0
+	    "value": 50.0
 	},
 	"camera_size": {
 	    "desc": "height of the camera element (height of cylinder) [cm]",
-	    "value": 400.0
+	    "value": 800.0
 	},
 	"n_pixels": {
 	    "desc": "number of pixels in the camera, PIXELS = 3 x N x (N+1) + 1  (N=number of rings)",

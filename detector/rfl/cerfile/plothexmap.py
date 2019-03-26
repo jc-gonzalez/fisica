@@ -13,6 +13,6 @@ with open("data.dat", "r") as fr:
         y.append(float(items[1]))
 
 plt.figure(figsize=(14,14))
-plt.hexbin(x, y, gridsize=100, vmin=10, vmax=3000, cmap='Blues')
+plt.hexbin(x, y, gridsize=100, cmap='Blues')
 cb = plt.colorbar(label='counts on bin')
 plt.show()

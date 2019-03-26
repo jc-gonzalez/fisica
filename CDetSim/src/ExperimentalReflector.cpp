@@ -170,12 +170,23 @@ bool ExperimentalReflector::mirrorsReflection(point3d x, vector3d r, double time
     bool isThereIntersection = intersectionSphereLine(mainDish, cphTrajectory, pts);
     if (! isThereIntersection) { return false; }
 
+    //std::cout << xCT << ' ' << rCT;
     for (int i = pts.size() - 1; i >= 0; --i) {
+        // std::cout << ' ' << pts.at(i);
+        // Remove the point if not reflected in the internal surface
+        // (the side closer to the point in the ground)
+        if ((std::signbit(pts.at(i).X) != std::signbit(xCT.X)) ||
+            (std::signbit(pts.at(i).Y) != std::signbit(xCT.Y))) {
+            pts.erase(pts.begin() + i);
+            continue;
+        }
+        // Remove the point if not in the actual detector surface 
         if ((pts.at(i).Z < (ct_Center_height - ct_Lower_section)) ||
             (pts.at(i).Z > (ct_Center_height + ct_Upper_section))) {
             pts.erase(pts.begin() + i);
         }
     }
+    // std::cout << '\n';
 
     if (pts.size() < 1) { return false; }
 
@@ -197,6 +208,8 @@ bool ExperimentalReflector::mirrorsReflection(point3d x, vector3d r, double time
     if (!isThereIntersection2) { return false; } 
 
     point3d & xcam = pts2.at(0);
+    if ((xcam.Z < ct_CameraRaised) ||
+        (xcam.Z > ct_CameraRaised + ct_CameraSize)) { return false; }
 
     // Timing
     // t = adjust_time(t=timefirstint)
