@@ -54,6 +54,7 @@
 // Topic: External packages
 //   none
 //------------------------------------------------------------
+#include "surfaces.h"
 
 //------------------------------------------------------------
 // Topic: Project headers
@@ -80,8 +81,7 @@ public:
 protected:
     virtual bool mirrorsReflection(point3d x, vector3d r, double timeFirstInt,
                                    point3d & xd, point3d & xr);
-    virtual bool intersectionWithDish(point3d vx, point3d vxCT, vector3d vrCT,
-                                      point3d & xDish);
+
     virtual int findClosestMirror(point3d & xDish, double & distMirr);
     virtual point3d getIntersectionWithMirror(int i, point3d vxm, vector3d vrm);    
 
@@ -134,6 +134,11 @@ private:
     // Number of pixels
     int ct_NPixels;
 
+    // Main mirror, spherical
+    sphere mainDish;
+
+    // Camera system (cylinder)
+    cylinder camera;
 };
 
 

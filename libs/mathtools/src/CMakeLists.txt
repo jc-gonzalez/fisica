@@ -31,6 +31,8 @@ SET (mathtools_src
   mathtools.cpp
   mathtools_tuples.cpp
   matrix.cpp
+  quaternions.cpp
+  surfaces.cpp
   vectors.cpp
   )
 
