@@ -44,6 +44,7 @@
 #include <cmath>
 
 #include "mathtools.h"
+#include "vectors.h"
 using namespace MathTools;
 
 //----------------------------------------------------------------------

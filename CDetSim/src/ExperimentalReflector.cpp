@@ -132,7 +132,7 @@ void ExperimentalReflector::setMirrorsFile(std::string fileName)
 //----------------------------------------------------------------------
 // Method: reflect
 //----------------------------------------------------------------------
-bool ExperimentalReflector::reflect(CPhoton cph, point3D & xDish, point3D & xCam)
+bool ExperimentalReflector::reflect(CPhoton cph, point3d & xDish, point3d & xCam)
 {
     // Atmospheric transmittance test
     if (!passedTransmittance(cph)) { return false; }
@@ -141,8 +141,8 @@ bool ExperimentalReflector::reflect(CPhoton cph, point3D & xDish, point3D & xCam
     if (!passedReflectivity(cph)) { return false; }
     
     // Reflection in mirrors
-    point3D cphGround {cph.x - coreX, cph.y - coreY, 0.};
-    vector3D orient {cph.u, cph.v, cph.w};
+    point3d cphGround {cph.x - coreX, cph.y - coreY, 0.};
+    vector3d orient {cph.u, cph.v, cph.w};
 
     return mirrorsReflection(cphGround, orient, cph.t, xDish, xCam);
 }
@@ -150,23 +150,22 @@ bool ExperimentalReflector::reflect(CPhoton cph, point3D & xDish, point3D & xCam
 //----------------------------------------------------------------------
 // Method: mirrorsReflection
 //----------------------------------------------------------------------
-bool ExperimentalReflector::mirrorsReflection(point3D x, vector3D r, double timeFirstInt,
-                                       point3D & xd, point3D & xr)
+bool ExperimentalReflector::mirrorsReflection(point3d x, vector3d r, double timeFirstInt,
+                                       point3d & xd, point3d & xr)
 {
     
     static double normalRnd[2];
     
     // Pre-compute matrix to move to the main dish ref.system
-    point3D  xCT = applyMxV(omegaCT, x);
-    vector3D rCT = applyMxV(omegaCT, r);
+    point3d  xCT = omegaCT * x;
+    vector3d rCT = omegaCT * r;
 
     // Look for the intersection with the main dish (virtual reflection point)
-    point3D xDish;
+    point3d xDish;
     if (!intersectionWithDish(x, xCT, rCT, xDish)) { return false; }
 
     // Look if reflection would have been completly outside the main dish
-    double rx, ry, rz;
-    std::tie(rx, ry, rz) = xDish;
+    double rx = xDish[0], ry = xDish[1], rz = xDish[2];
     double sx = lin2curv(rx);
     double sy = lin2curv(ry);
     if ((fabs(sx) > ct_Radius) || (fabs(sy) > ct_Radius)) { return false; }
@@ -182,33 +181,36 @@ bool ExperimentalReflector::mirrorsReflection(point3D x, vector3D r, double time
     double thetaMirr = ct_data[i_mirror][CT_THETAN];
     double phiMirr   = ct_data[i_mirror][CT_PHIN];
     
-    matrix3D omegaMirr  = makeOmega(-d2r(thetaMirr), d2r(phiMirr));
-    matrix3D omegaMirrI = makeOmega(-d2r(thetaMirr), d2r(phiMirr));
+    matrix3 omegaMirr; 
+    matrix3 omegaMirrI; 
+
+    omegaMirr.setRotationThetaPhi(-d2r(thetaMirr), d2r(phiMirr));
+    omegaMirrI.setInverseRotationThetaPhi(-d2r(thetaMirr), d2r(phiMirr));
 
     // First translation...
-    point3D xMirror {ct_data[i_mirror][CT_X],
+    point3d xMirror {ct_data[i_mirror][CT_X],
                      ct_data[i_mirror][CT_Y],
                      ct_data[i_mirror][CT_Z]};
-    point3D xmm = xCT - xMirror;
+    point3d xmm = xCT - xMirror;
     // ... then rotation
-    point3D  xm = applyMxV(omegaMirr, xmm);
-    vector3D rm = applyMxV(omegaMirr, rCT);
+    point3d  xm = omegaMirr * xmm;
+    vector3d rm = omegaMirr * rCT;
 
-    normalize(rm);
+    rm.normalize();
 
     // Compute intersection of the trajectory of the photon with the mirror
-    point3D xCut = getIntersectionWithMirror(i_mirror, xm, rm);
+    point3d xCut = getIntersectionWithMirror(i_mirror, xm, rm);
 
     // Black Spot: If the photon hits the blsack spot, it's lost
-    if (sqrt(sqr<double>(std::get<0>(xCut)) +
-             sqr<double>(std::get<1>(xCut))) < ct_BlackSpot_rad ) { return false; }
+    if (sqrt(sqr<double>(xCut[0]) +
+             sqr<double>(xCut[1])) < ct_BlackSpot_rad ) { return false; }
 
     // Continue with the reflection
 
     // Calculate normal vector in this point
-    point3D rnor = point3D {0., 0., 4. * ct_data[i_mirror][CT_FOCAL]} - xCut * 2.0;
-    //rnor = point3D {0., 0., 4. * ct_data[i_mirror][CT_FOCAL]} - rnor;
-    normalize(rnor);
+    point3d rnor = point3d {0., 0., 4. * ct_data[i_mirror][CT_FOCAL]} - xCut * 2.0;
+    //rnor = point3d {0., 0., 4. * ct_data[i_mirror][CT_FOCAL]} - rnor;
+    rnor.normalize();
 
     // Now, both "normal" vector and original trayectory are normalized.
     // Just project the original vector in the normal, and take it as
@@ -216,58 +218,58 @@ bool ExperimentalReflector::mirrorsReflection(point3D x, vector3D r, double time
     // From this, we can calculate the "reflected" vector
     // calpha = cos(angle(rnor,rm))
     
-    double calpha = fabs(dot(rnor, rm));
-    point3D rrefl = (rnor * 2. * calpha) - rm;
-    normalize(rrefl);
+    double calpha = fabs(rnor.dot(rm));
+    point3d rrefl = (rnor * 2. * calpha) - rm;
+    rrefl.normalize();
 
     // Let's go back to the coordinate system of the CT
 
     // First crotation...
-    point3D xCutCT  = applyMxV(omegaMirrI, xCut);
-    point3D rReflCT = applyMxV(omegaMirrI, rrefl);
+    point3d xCutCT  = omegaMirrI * xCut;
+    point3d rReflCT = omegaMirrI * rrefl;
     // ...then translation
-    point3D xReflCT = xCutCT + xMirror;
+    point3d xReflCT = xCutCT + xMirror;
     //normalize(rReflCT);
 
     // Calculate intersection of this trayectory and the camera plane
     // in the system of the CT, this plane is z = ct_Focal
     //std::cout << "============>" << xCut << ' ' << xcutCT << "   -   " << rrefl << ' ' << rreflCT << '\n';
-    double s = (ct_Focal_mean - std::get<2>(xReflCT)) / std::get<2>(rReflCT);
-    point3D xcam = xCutCT + rReflCT * s;
+    double s = (ct_Focal_mean - xReflCT[2]) / rReflCT[2];
+    point3d xcam = xCutCT + rReflCT * s;
 
     // Axis deviation: we introduce it here just as a first order
     // correction, modifying the position of the reflected point
-    xcam = xcam + point3D {axisDeviation[i_mirror][0],
+    xcam = xcam + point3d {axisDeviation[i_mirror][0],
                            axisDeviation[i_mirror][1],
                            0.};
 
     // Smearing: We apply the point spread function for the mirrors
     rnormal<double>(normalRnd, 2);
-    xcam = xcam + point3D {normalRnd[0] * ct_PSpread_mean,
+    xcam = xcam + point3d {normalRnd[0] * ct_PSpread_mean,
                            normalRnd[1] * ct_PSpread_mean,
                            0.};
 
     // Check if the photon is out of the camera
-    if ((sqr<double>(std::get<0>(xcam)) +
-         sqr<double>(std::get<1>(xcam))) > ct_CameraEdges2) { return false; } 
+    if ((sqr<double>(xcam[0]) +
+         sqr<double>(xcam[1])) > ct_CameraEdges2) { return false; } 
 
     // Angle of incidence
     // Calculate angle of incidence between tray. and camera plane the
     // camera plane is
     // 0 y + 0 y + z - ct_Focal = 0 => (A,B,C,D) = (0,0,1,-ct_Focal)
     // from Table 3.20 "Tasch. der Math."
-    double psi = asin(std::get<2>(rReflCT));
+    double psi = asin(rReflCT[2]);
     
     // Timing
     // t = adjust_time(t=timefirstint)
     // substract light-path from the mirror till the ground, 'cos 
     // the photon actually hit the mirror!!
 
-    double factor = (std::get<2>(xm) > 0.) ? -1.0 : +1.0;
-    double t = timeFirstInt + factor * norm(xm - xCut) / Phys::Speed_of_Light_air_cmns;
+    double factor = (xm[2] > 0.) ? -1.0 : +1.0;
+    double t = timeFirstInt + factor * (xm - xCut).norm() / Phys::Speed_of_Light_air_cmns;
                  
     // and then add path from the mirror till the camera
-    t = t + norm(xReflCT - xcam) / Phys::Speed_of_Light_air_cmns;
+    t = t + (xReflCT - xcam).norm() / Phys::Speed_of_Light_air_cmns;
 
     xd = xDish;
     xr = xcam;
@@ -278,8 +280,8 @@ bool ExperimentalReflector::mirrorsReflection(point3D x, vector3D r, double time
 //----------------------------------------------------------------------
 // Method: intersectionWithDish
 //----------------------------------------------------------------------
-bool ExperimentalReflector::intersectionWithDish(point3D vx, point3D vxCT, vector3D vrCT,
-                                          point3D & xDish)
+bool ExperimentalReflector::intersectionWithDish(point3d vx, point3d vxCT, vector3d vrCT,
+                                          point3d & xDish)
 {
     static const double Epsilon = 1.0e-12; //100. * DBL_EPSILON;
     
@@ -319,7 +321,7 @@ bool ExperimentalReflector::intersectionWithDish(point3D vx, point3D vxCT, vecto
                   2       2    2
                2 v  z0, -u  - v }
     */
-
+    /*
     double vx0, vx1, vx2;
     double vxCT0, vxCT1, vxCT2;
     double vrCT0, vrCT1, vrCT2;
@@ -327,14 +329,14 @@ bool ExperimentalReflector::intersectionWithDish(point3D vx, point3D vxCT, vecto
     std::tie(vx0, vx1, vx2) = vx;
     std::tie(vxCT0, vxCT1, vxCT2) = vxCT;
     std::tie(vrCT0, vrCT1, vrCT2) = vrCT;
-
-    double a = - sqr<double>(vrCT0) - sqr<double>(vrCT1);
-    double b = (4. * ct_Focal_mean * sqr<double>(vrCT2) 
-		- 2. * vrCT0 * vrCT2 * vxCT0 - 2. * vrCT1 * vrCT2 * vxCT1 
-		+ 2. * sqr<double>(vrCT0) * vxCT2 + 2. * sqr<double>(vrCT1) * vxCT2);
-    double c = (2. * vrCT0 * vrCT2 * vx0 * vx2 + 2. * vrCT1 * vrCT2 * vx1 * vx2 
-		- sqr<double>(vrCT2) * sqr<double>(vx0) - sqr<double>(vrCT2) * sqr<double>(vx1)
-		- sqr<double>(vrCT0) * sqr<double>(vx2) - sqr<double>(vrCT1) * sqr<double>(vx2));
+    */
+    double a = - sqr(vrCT[0]) - sqr(vrCT[1]);
+    double b = (4. * ct_Focal_mean * sqr(vrCT[2]) 
+		- 2. * vrCT[0] * vrCT[2] * vxCT[0] - 2. * vrCT[1] * vrCT[2] * vxCT[1] 
+		+ 2. * sqr(vrCT[0]) * vxCT[2] + 2. * sqr(vrCT[1]) * vxCT[2]);
+    double c = (2. * vrCT[0] * vrCT[2] * vx[0] * vx[2] + 2. * vrCT[1] * vrCT[2] * vx[1] * vx[2] 
+		- sqr(vrCT[2]) * sqr(vx[0]) - sqr(vrCT[2]) * sqr(vx[1])
+		- sqr(vrCT[0]) * sqr(vx[2]) - sqr(vrCT[1]) * sqr(vx[2]));
 
     double zDish;
 
@@ -351,8 +353,8 @@ bool ExperimentalReflector::intersectionWithDish(point3D vx, point3D vxCT, vecto
         zDish = (t1 < t2) ? t1 : t2;
     }
     
-    xDish = point3D { vxCT0 + (zDish - vxCT2) * vrCT0 / vrCT2,
-                      vxCT1 + (zDish - vxCT2) * vrCT1 / vrCT2,
+    xDish = point3d { vxCT[0] + (zDish - vxCT[2]) * vrCT[0] / vrCT[2],
+                      vxCT[1] + (zDish - vxCT[2]) * vrCT[1] / vrCT[2],
                       zDish };
     return true;
 }
@@ -361,14 +363,14 @@ bool ExperimentalReflector::intersectionWithDish(point3D vx, point3D vxCT, vecto
 // Method: findClosestMirror
 // Find the mirror element whose center is closest to the photon loc.
 //----------------------------------------------------------------------
-int ExperimentalReflector::findClosestMirror(point3D & xDish, double & distMirr)
+int ExperimentalReflector::findClosestMirror(point3d & xDish, double & distMirr)
 {
     double distMirr_ = 1000000.;
     int i_mirror = 0;
     for (int i = 0; i < ct_NMirrors; ++i) {
-        point3D rmirr {ct_data[i][CT_X], ct_data[i][CT_Y], ct_data[i][CT_Z]};
-        point3D pmirr = rmirr - xDish;
-        distMirr = norm(pmirr);
+        point3d rmirr {ct_data[i][CT_X], ct_data[i][CT_Y], ct_data[i][CT_Z]};
+        point3d pmirr = rmirr - xDish;
+        distMirr = pmirr.norm();
         if (distMirr < distMirr_) {
             distMirr_ = distMirr;
             i_mirror = i;
@@ -385,7 +387,7 @@ int ExperimentalReflector::findClosestMirror(point3D & xDish, double & distMirr)
 // Compute the point of intersection of the trajectory of the photon
 // with the mirror element
 //----------------------------------------------------------------------
-point3D ExperimentalReflector::getIntersectionWithMirror(int i, point3D vxm, vector3D vrm)
+point3d ExperimentalReflector::getIntersectionWithMirror(int i, point3d vxm, vector3d vrm)
 {
     // Calculate the intersection of the trayectory of the photon 
     // with the mirror
@@ -439,20 +441,20 @@ point3D ExperimentalReflector::getIntersectionWithMirror(int i, point3D vxm, vec
     
     // the z coordinate is calculated, using the coefficients
     // shown above
-
+    /*
     double xm0, xm1, xm2;
     double rm0, rm1, rm2;
     std::tie(xm0, xm1, xm2) = vxm;
     std::tie(rm0, rm1, rm2) = vrm;
-    
-    double a = norm2(vrm);
-    double b = -2. * (2. * ct_data[i][CT_FOCAL] * sqr<double>(rm2) 
-                      - rm0 * rm2 * xm0 
-                      + sqr<double>(rm0) * xm2 
-                      + rm1 * (-(rm2 * xm1) + rm1 * xm2));
-    double c = (sqr<double>(rm2) * (sqr<double>(xm0) + sqr<double>(xm1)) 
-                - 2. * rm2 * (rm0 * xm0 + rm1 * xm1) * xm2 + 
-                (sqr<double>(rm0) + sqr<double>(rm1)) * sqr<double>(xm2));
+    */
+    double a = vrm.norm2();
+    double b = -2. * (2. * ct_data[i][CT_FOCAL] * sqr(vrm[2]) 
+                      - vrm[0] * vrm[2] * vxm[0] 
+                      + sqr(vrm[0]) * vxm[2] 
+                      + vrm[1] * (-(vrm[2] * vxm[1]) + vrm[1] * vxm[2]));
+    double c = (sqr(vrm[2]) * (sqr(vxm[0]) + sqr(vxm[1])) 
+                - 2. * vrm[2] * (vrm[0] * vxm[0] + vrm[1] * vxm[1]) * vxm[2] + 
+                (sqr(vrm[0]) + sqr(vrm[1])) * sqr(vxm[2]));
     double d = sqrt(b * b - 4. * a * c );
 
     // two possible values for z
@@ -461,8 +463,8 @@ point3D ExperimentalReflector::getIntersectionWithMirror(int i, point3D vxm, vec
     double z = (t1 < t2) ? t1 : t2;
     
     // z must be the minimum of t1 and t2
-    return point3D {xm0 + (rm0 / rm2) * (z - xm2),
-                    xm1 + (rm1 / rm2) * (z - xm2),
+    return point3d {vxm[0] + (vrm[0] / vrm[2]) * (z - vxm[2]),
+                    vxm[1] + (vrm[1] / vrm[2]) * (z - vxm[2]),
                     z};
 }
 

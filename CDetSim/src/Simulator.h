@@ -99,7 +99,7 @@ private:
 
     double primaryEnergy;
     
-    point3D coreOffset;
+    point3d coreOffset;
     
     bool definedFixedTarget;
     bool definedEventRange;

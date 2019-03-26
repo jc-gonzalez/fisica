@@ -91,9 +91,9 @@ bool CerPhotonsSource::openFile(int iFile)
 // Method: getCore
 // Returns Cherenkov photons until the input source is exhausted
 //----------------------------------------------------------------------
-point3D CerPhotonsSource::getCore()
+point3d CerPhotonsSource::getCore()
 {
-    return point3D { coreEvtX, coreEvtY, 0.0 };
+    return point3d { coreEvtX, coreEvtY, 0.0 };
 }
 	
 //----------------------------------------------------------------------

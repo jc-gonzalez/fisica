@@ -1,16 +1,16 @@
 /******************************************************************************
- * File:    cerphotonssource.h
+ * File:    angles.cpp
  *          This file is part of the Cherenkov Detector Simulation library
  *
- * Domain:  cherdetsim.cerphotonssource
+ * Domain:  cherdetsim.angles
  *
  * Last update:  2.0
  *
- * Date:    2018/11/13
+ * Date:    2019/03/13
  *
  * Author:  J C Gonzalez
  *
- * Copyright (C) 2015-2018 by J C Gonzalez
+ * Copyright (C) 2019 by J C Gonzalez
  *_____________________________________________________________________________
  *
  * Topic: General Information
@@ -38,9 +38,6 @@
  *
  ******************************************************************************/
 
-#ifndef CERPHOTONSSOURCE_H
-#define CERPHOTONSSOURCE_H
-
 //============================================================
 // Group: External Dependencies
 //============================================================
@@ -49,40 +46,29 @@
 // Topic: System headers
 //   none
 //------------------------------------------------------------
+#include <cmath>
 
 //------------------------------------------------------------
 // Topic: External packages
 //   none
 //------------------------------------------------------------
-#include "vectors.h"
-using namespace MathTools;
 
 //------------------------------------------------------------
 // Topic: Project headers
-//   none
+//   nones
 //------------------------------------------------------------
-#include "InputDataSource.h"
-#include "CPhoton.h"
+#include "angles.h"
 
 //======================================================================
-// Class: CerPhotonsSource
+// Namespace: MathTools
 //======================================================================
-class CerPhotonsSource : public InputDataSource {
-public:
-    CerPhotonsSource();
-    virtual ~CerPhotonsSource();
+namespace MathTools {
 
-    virtual bool openFile(int iFile);
-    bool getNextCPhoton(CPhoton & cph, bool & isNewSet);
-    void endProcessingCurrentFile();
-    point3d getCore();
-    std::tuple<double, double> getOrientation();
-    double getPrimaryEnergy();
-    
-private:
-    double thetaEvt, phiEvt;
-    double coreEvtX, coreEvtY;
-    double primaryEnergy;
-};
+const double Radians2Degrees = M_PI / 180.;
+const double Degrees2Radians = 180. / M_PI;
 
-#endif  /* CERPHOTONSSOURCE_H */
+double d2r(double x) { return x * Radians2Degrees; }
+double r2d(double x) { return x * Degrees2Radians; }
+
+}
+

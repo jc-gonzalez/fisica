@@ -1,9 +1,6 @@
 #include <iostream>
 #include <cmath>
 
-#include "mathtools.h"
-using namespace MathTools;
-
 #include "Simulator.h"
 
 int main(int argc, char * argv[]) 

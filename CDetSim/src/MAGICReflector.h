@@ -75,33 +75,21 @@ public:
 public:
     virtual void setMirrorsFile(std::string fileName);
 
-    virtual bool reflect(CPhoton cph, point3D & xDish, point3D & xCam);
+    virtual bool reflect(CPhoton cph, point3d & xDish, point3d & xCam);
 
 protected:
-    virtual bool mirrorsReflection(point3D x, vector3D r, double timeFirstInt,
-                                   point3D & xd, point3D & xr);
-    virtual bool intersectionWithDish(point3D vx, point3D vxCT, vector3D vrCT,
-                                      point3D & xDish);
-    virtual int findClosestMirror(point3D & xDish, double & distMirr);
-    virtual point3D getIntersectionWithMirror(int i, point3D vxm, vector3D vrm);    
+    virtual bool mirrorsReflection(point3d x, vector3d r, double timeFirstInt,
+                                   point3d & xd, point3d & xr);
+    virtual bool intersectionWithDish(point3d vx, point3d vxCT, vector3d vrCT,
+                                      point3d & xDish);
+    virtual int findClosestMirror(point3d & xDish, double & distMirr);
+    virtual point3d getIntersectionWithMirror(int i, point3d vxm, vector3d vrm);    
 
 private:
     double curv2lin(double s);
     double lin2curv(double x);
 
 private:
-        // Matrices to change to the system where the optical axis is OZ
-    double OmegaCT[3][3];
-
-    // Matrices to change to the system where the optical axis is OZ (inverse)
-    double OmegaICT[3][3];
-
-    // Matrices to change the system of coordinates
-    double Omega[3][3];
-
-    // Matrices to change the system of coordinates (inverse)
-    double OmegaI[3][3];
-
     // Focal distances [cm]
     std::vector<double> ct_Focal;
 

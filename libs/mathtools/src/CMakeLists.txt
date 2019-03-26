@@ -26,8 +26,12 @@
 #=============================================================================
 
 SET (mathtools_src
+  angles.cpp
+  comparisons.cpp
   mathtools.cpp
   mathtools_tuples.cpp
+  matrix.cpp
+  vectors.cpp
   )
 
 SET (mathtools_hdr

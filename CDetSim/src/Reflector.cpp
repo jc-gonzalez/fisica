@@ -61,10 +61,10 @@ Reflector::~Reflector()
 //----------------------------------------------------------------------
 // Method: setMirrorsFile
 //----------------------------------------------------------------------
-void Reflector::setCore(point3D core)
+void Reflector::setCore(point3d core)
 {
-    std::tie(coreX, coreY, std::ignore) = core;
-    coreD = norm(core);
+    coreX = core.X, coreY = core.Y;
+    coreD = core.norm();
 }
 
 //----------------------------------------------------------------------
@@ -74,14 +74,14 @@ void Reflector::setOrientation(double theta, double phi)
 {
     thetaCT = theta, phiCT = phi;
     
-    omegaCT  = makeOmega(d2r(theta), d2r(phi));
-    omegaICT = makeOmegaI(d2r(theta), d2r(phi));    
+    omegaCT.setRotationThetaPhi(d2r(theta), d2r(phi));
+    omegaICT.setInverseRotationThetaPhi(d2r(theta), d2r(phi));    
 }
 
 //----------------------------------------------------------------------
 // Method: reflect
 //----------------------------------------------------------------------
-bool Reflector::reflect(CPhoton cph, point3D & xDish, point3D & xCam)
+bool Reflector::reflect(CPhoton cph, point3d & xDish, point3d & xCam)
 {
     // Atmospheric transmittance test
     if (!passedTransmittance(cph)) { return false; }
@@ -90,8 +90,8 @@ bool Reflector::reflect(CPhoton cph, point3D & xDish, point3D & xCam)
     if (!passedReflectivity(cph)) { return false; }
     
     // Reflection in mirrors
-    point3D cphGround {cph.x - coreX, cph.y - coreY, 0.};
-    vector3D orient {cph.u, cph.v, cph.w};
+    point3d cphGround {cph.x - coreX, cph.y - coreY, 0.};
+    vector3d orient {cph.u, cph.v, cph.w};
 
     return mirrorsReflection(cphGround, orient, cph.t, xDish, xCam);
 }

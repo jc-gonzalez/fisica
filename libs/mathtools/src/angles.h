@@ -49,7 +49,6 @@
 // Topic: System headers
 //   none
 //------------------------------------------------------------
-#include <cmath>
 
 //------------------------------------------------------------
 // Topic: External packages
@@ -66,11 +65,11 @@
 //======================================================================
 namespace MathTools {
 
-const double Radians2Degrees = M_PI / 180.;
-const double Degrees2Radians = 180. / M_PI;
+    extern const double Radians2Degrees;
+    extern const double Degrees2Radians;
 
-double d2r(double x) { return x * Radians2Degrees; }
-double r2d(double x) { return x * Degrees2Radians; }
+    double d2r(double x);
+    double r2d(double x);
 
 }
 

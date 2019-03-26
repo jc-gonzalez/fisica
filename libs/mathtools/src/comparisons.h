@@ -49,11 +49,6 @@
 // Topic: System headers
 //   none
 //------------------------------------------------------------
-#include <iostream>
-using namespace std;
-
-#include <cmath>
-
 
 //------------------------------------------------------------
 // Topic: External packages
@@ -70,74 +65,35 @@ using namespace std;
 //======================================================================
 namespace MathTools {
 
-//----------------------------------------------------------------------
-// Functions for comparison with tolerances
-//----------------------------------------------------------------------
+    //----------------------------------------------------------------------
+    // Functions for comparison with tolerances
+    //----------------------------------------------------------------------
 
-const double Epsilon = 1.0e-6;
-const double StdEpsilon = std::numeric_limits<double>::epsilon();
+    extern const double Epsilon;
+    extern const double StdEpsilon;
 
-// Implements relative method - do not use for comparing with zero
-// Use this most of the time, tolerance needs to be meaningful in your context
-bool isApproximatelyEqual(double a, double b, double tolerance = StdEpsilon)
-{
-    double diff = std::fabs(a - b);
-    if (diff <= tolerance) { return true; }
-    if (diff < std::fmax(std::fabs(a), std::fabs(b)) * tolerance) { return true; }
-    return false;
-}
+    // Implements relative method - do not use for comparing with zero
+    // Use this most of the time, tolerance needs to be meaningful in your context
+    bool isApproximatelyEqual(double a, double b, double tolerance = StdEpsilon);
 
-// Supply tolerance that is meaningful in your context
-// For example, default tolerance may not work if you are comparing double with float
-bool isApproximatelyZero(double a, double tolerance = StdEpsilon)
-{
-    return (std::fabs(a) <= tolerance);
-}
+    // Supply tolerance that is meaningful in your context
+    // For example, default tolerance may not work if you are comparing double with float
+    bool isApproximatelyZero(double a, double tolerance = StdEpsilon);
 
-// Use this when you want to be on safe side
-// For example, don't start rover unless signal is above 1
-bool isDefinitelyLessThan(double a, double b, double tolerance = StdEpsilon)
-{
-    double diff = a - b;
-    if (diff < tolerance) { return true; }
-    if (diff < std::fmax(std::fabs(a), std::fabs(b)) * tolerance) { return true; }
-    return false;
-}
+    // Use this when you want to be on safe side
+    // For example, don't start rover unless signal is above 1
+    bool isDefinitelyLessThan(double a, double b, double tolerance = StdEpsilon);
+    bool isDefinitelyGreaterThan(double a, double b, double tolerance = StdEpsilon);
 
-bool isDefinitelyGreaterThan(double a, double b, double tolerance = StdEpsilon)
-{
-    double diff = a - b;
-    if (diff > tolerance) { return true; }
-    if (diff > std::fmax(std::fabs(a), std::fabs(b)) * tolerance) { return true; }
-    return false;
-}
+    // implements ULP (Units-in-the-Last-Place) method
+    // Use this when you are only concerned about floating point precision issue
+    // For example, if you want to see if a is 1.0 by checking if its within
+    // 10 closest representable floating point numbers around 1.0.
+    bool isWithinPrecisionInterval(double a, double b, unsigned int interval_size = 1);
 
-// implements ULP (Units-in-the-Last-Place) method
-// Use this when you are only concerned about floating point precision issue
-// For example, if you want to see if a is 1.0 by checking if its within
-// 10 closest representable floating point numbers around 1.0.
-bool isWithinPrecisionInterval(double a, double b, unsigned int interval_size = 1)
-{
-    double min_a = a - (a - std::nextafter(a, std::numeric_limits<double>::lowest())) * interval_size;
-    double max_a = a + (std::nextafter(a, std::numeric_limits<double>::max()) - a) * interval_size;
-    return min_a <= b && max_a >= b;
-}
-
-bool equals(double a, double b, const double tolerance = Epsilon)
-{
-    return isApproximatelyEqual(a, b, tolerance);
-}
-
-bool iszero(double a, const double tolerance = Epsilon)
-{
-    return isApproximatelyZero(a, tolerance);
-}
-
-bool clamp(double x, double a, double b, const double tolerance = Epsilon)
-{
-    return ((isDefinitelyLessThan(x, a, tolerance)) ? a :
-            (isDefinitelyGreaterThan(x, b, tolerance)) ? b : x);
-}
+    bool equals(double a, double b, const double tolerance = Epsilon);
+    bool iszero(double a, const double tolerance = Epsilon);
+    bool clamp(double x, double a, double b, const double tolerance = Epsilon);
 
 }
 

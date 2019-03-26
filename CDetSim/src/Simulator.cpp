@@ -97,9 +97,9 @@ void Simulator::readConfiguration(std::string fileName)
         definedFixedTarget = true;
     }
 
-    coreOffset = point3D {0., 0., 0.};
+    coreOffset = point3d {0., 0., 0.};
     if (cfg.exists("core_offset")) {
-        coreOffset = point3D {cfg["core_offset"][0].asFloat(),
+        coreOffset = point3d {cfg["core_offset"][0].asFloat(),
                               cfg["core_offset"][1].asFloat(),
                               0.0};
         definedCoreOffset = true;
@@ -265,7 +265,7 @@ void Simulator::run()
     CPhoton cph;
     bool isNewFile;
     
-    point3D core;
+    point3d core;
     double theta, phi;
     int i;
     
@@ -301,7 +301,7 @@ void Simulator::run()
 	    }
 	}
 
-	point3D xd, xc;
+	point3d xd, xc;
 	if (reflector->reflect(cph, xd, xc)) {
 	    std::cout << i << ' '
                       << cph.wl << ' ' << cph.x << ' ' << cph.y << ' '
