@@ -69,6 +69,8 @@
 namespace MathTools {
 
 class sphere;
+class cylinder;
+class paraboloid;
 
 //======================================================================
 // Class: line
@@ -86,6 +88,8 @@ public:
                          vector3d v = vector3d(1., 1., 1.));
 
     friend bool intersectionSphereLine(sphere & s, line & l, std::vector<point3d> & p);
+    friend bool intersectionCylinderLine(cylinder & c, line & l, std::vector<point3d> & p);
+    friend bool intersectionParaboloidLine(paraboloid & c, line & l, std::vector<point3d> & p);
 
     friend std::ostream& operator<<(std::ostream &io, const line &l);
 };
@@ -121,13 +125,31 @@ public:
     void set(point3d o, double radius);
 
     friend bool intersectionSphereLine(sphere & s, line & l, std::vector<point3d> & p);
-    friend bool intersectionCylinderLine(cylinder & c, line & l, std::vector<point3d> & p);
 
     friend std::ostream& operator<<(std::ostream &io, const sphere &s);
 };
 
+//======================================================================
+// Class: paraboloid
+//======================================================================
+class paraboloid {
+public:
+    point3d o;
+    double f;
+
+    paraboloid();
+    paraboloid(point3d p, double foc);
+
+    void set(point3d p, double foc);
+
+    friend bool intersectionParaboloidLine(paraboloid & p, line & l, std::vector<point3d> & pts);
+
+    friend std::ostream& operator<<(std::ostream &io, const paraboloid &p);
+};
+
 bool intersectionSphereLine(sphere & s, line & l, std::vector<point3d> & p);
 bool intersectionCylinderLine(cylinder & cl, line & l, std::vector<point3d> & p);
+bool intersectionParaboloidLine(paraboloid & c, line & l, std::vector<point3d> & p);
 
 }
 

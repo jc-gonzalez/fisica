@@ -128,7 +128,7 @@ void ExperimentalReflector::setMirrorsFile(std::string fileName)
     }
 
     // Setting up the different elements
-    mainDish.set(point3d(coreX, coreY, ct_Center_height), ct_Radius);
+    mainDish.set(point3d(coreX, coreY, ct_Center_height), ct_Diameter);
     camera.set(ct_CameraRadius);
 }
 
@@ -167,7 +167,7 @@ bool ExperimentalReflector::mirrorsReflection(point3d x, vector3d r, double time
 
     // Look for the intersection with the main dish (virtual reflection point)
     std::vector<point3d> pts;
-    bool isThereIntersection = intersectionSphereLine(mainDish, cphTrajectory, pts);
+    bool isThereIntersection = intersectionParaboloidLine(mainDish, cphTrajectory, pts);
     if (! isThereIntersection) { return false; }
 
     //std::cout << xCT << ' ' << rCT;
@@ -194,7 +194,7 @@ bool ExperimentalReflector::mirrorsReflection(point3d x, vector3d r, double time
 
     vector3d v_in = xDish - cphTrajectory.o;
     quaternion q_in(v_in, 0.);
-    vector3d v_axis = mainDish.c - xDish;
+    vector3d v_axis = mainDish.o - xDish;
     v_axis.normalize();
     quaternion reflec_axis(v_axis, 0.);
     q_in.reflect(reflec_axis);

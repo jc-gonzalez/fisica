@@ -116,6 +116,19 @@ std::ostream& operator<<(std::ostream &io, const sphere &s) {
 }
 
 //======================================================================
+// Class: paraboloid
+//======================================================================
+paraboloid::paraboloid() {}
+paraboloid::paraboloid(point3d p, double foc) : o(p), f(foc) {}
+
+void paraboloid::set(point3d p, double foc) { o = p; f = foc; }
+
+std::ostream& operator<<(std::ostream &io, const paraboloid &p) {
+    io << "Paraboloid[" << p.o << "; " << p.f << ']';
+    return io;
+}
+
+//======================================================================
 // Topic: Friend functions
 //======================================================================
 
@@ -192,6 +205,34 @@ bool intersectionCylinderLine(cylinder & cl, line & l, std::vector<point3d> & p)
     //if (p2.Z < p1.Z) { std::swap(p1, p2); }
     p.push_back(p1);
     p.push_back(p2);
+    return true;
+}
+
+bool intersectionParaboloidLine(paraboloid & p, line & l, std::vector<point3d> & pts)
+{
+    double a = sqr(l.l.X) + sqr(l.l.Y);
+    double b = 2. * (l.o.X * l.l.X + l.o.Y * l.l.Y - p.f * l.l.Z);
+    double c = sqr(l.o.X) + sqr(l.o.Y) - 2 * p.f * l.o.Z;
+    
+    double delta2 = b * b - 4. * a * c;
+    if (delta2 < 0.) { return false; }
+    double delta = sqrt(delta2);
+    if (iszero(delta)) {
+        // Only one point (tangent)
+        pts.clear();
+        double d = -b / (2. * a);
+        pts.push_back(l.o + (l.l * d));
+        return true;
+    }
+    // Two points
+    pts.clear();
+    double d1 = (-b + delta) / (2. * a);
+    double d2 = (-b - delta) / (2. * a);
+    point3d p1 = l.o + (l.l * d1);
+    point3d p2 = l.o + (l.l * d2);
+    //if (p2.Z < p1.Z) { std::swap(p1, p2); }
+    pts.push_back(p1);
+    pts.push_back(p2);
     return true;
 }
 

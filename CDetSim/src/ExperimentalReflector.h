@@ -135,7 +135,7 @@ private:
     int ct_NPixels;
 
     // Main mirror, spherical
-    sphere mainDish;
+    paraboloid mainDish;
 
     // Camera system (cylinder)
     cylinder camera;
