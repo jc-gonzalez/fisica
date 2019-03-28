@@ -129,6 +129,19 @@ std::ostream& operator<<(std::ostream &io, const paraboloid &p) {
 }
 
 //======================================================================
+// Class: cone
+//======================================================================
+cone::cone() {}
+cone::cone(double hei, double tanth) : h(hei), tanTheta(tanth) {}
+
+void cone::set(double hei, double tanth) { h = hei; tanTheta = tanth; }
+
+std::ostream& operator<<(std::ostream &io, const cone &c) {
+    io << "Cone[" << c.h << "; " << atan(c.tanTheta) * 180. / M_PI  << ']';
+    return io;
+}
+
+//======================================================================
 // Topic: Friend functions
 //======================================================================
 
@@ -211,8 +224,8 @@ bool intersectionCylinderLine(cylinder & cl, line & l, std::vector<point3d> & p)
 bool intersectionParaboloidLine(paraboloid & p, line & l, std::vector<point3d> & pts)
 {
     double a = sqr(l.l.X) + sqr(l.l.Y);
-    double b = 2. * (l.o.X * l.l.X + l.o.Y * l.l.Y - p.f * l.l.Z);
-    double c = sqr(l.o.X) + sqr(l.o.Y) - 2 * p.f * l.o.Z;
+    double b = 2. * (l.o.X * l.l.X + l.o.Y * l.l.Y - 2. * p.f * l.l.Z);
+    double c = sqr(l.o.X) + sqr(l.o.Y) - 4. * p.f * l.o.Z;
     
     double delta2 = b * b - 4. * a * c;
     if (delta2 < 0.) { return false; }
@@ -234,6 +247,37 @@ bool intersectionParaboloidLine(paraboloid & p, line & l, std::vector<point3d> &
     pts.push_back(p1);
     pts.push_back(p2);
     return true;
+}
+
+bool intersectionConeLine(cone & cn, line & l, std::vector<point3d> & pts)
+{
+    double a = sqr(l.l.X) + sqr(l.l.Y) - sqr(l.l.Z * cn.tanTheta);
+    double b = 2. * (l.o.X * l.l.X + l.o.Y * l.l.Y -
+                     (l.o.Z - cn.h) * l.l.Z * sqr(cn.tanTheta));
+    double c = sqr(l.o.X) + sqr(l.o.Y) - sqr(l.o.Z - cn.h) * sqr(cn.tanTheta);
+    
+    double delta2 = b * b - 4. * a * c;
+    if (delta2 < 0.) { return false; }
+    double delta = sqrt(delta2);
+    if (iszero(delta)) {
+        // Only one point (tangent)
+        pts.clear();
+        double d = -b / (2. * a);
+        point3d p = l.o + (l.l * d);
+        if (p.Z < cn.h) { return false; }
+        pts.push_back(p);
+        return true;
+    }
+    // Two points
+    pts.clear();
+    double d1 = (-b + delta) / (2. * a);
+    double d2 = (-b - delta) / (2. * a);
+    point3d p1 = l.o + (l.l * d1);
+    if (p1.Z > cn.h) { pts.push_back(p1); }
+    point3d p2 = l.o + (l.l * d2);
+    if (p2.Z > cn.h) { pts.push_back(p2); }
+    //if (p2.Z < p1.Z) { std::swap(p1, p2); }
+    return pts.size() > 0;;
 }
 
 }

@@ -29,6 +29,9 @@ SET (cdetsim_src
   Reflector.cpp
   MAGICReflector.cpp
   ExperimentalReflector.cpp
+  ExpPlaneReflector.cpp
+  ExpCylinderReflector.cpp
+  ExpConeReflector.cpp
   InputDataSource.cpp
   OutputDataHandler.cpp
   CerPhotonsSource.cpp
@@ -41,6 +44,9 @@ SET (cdetsim_hdr
   Reflector.h  
   MAGICReflector.h
   ExperimentalReflector.h
+  ExpPlaneReflector.h
+  ExpCylinderReflector.h
+  ExpConeReflector.h
   InputDataSource.h
   OutputDataHandler.h
   CerPhotonsSource.h

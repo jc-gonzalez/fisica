@@ -1,5 +1,5 @@
 /******************************************************************************
- * File:    ExperimentalReflector.cpp
+ * File:    ExpPlaneReflector.cpp
  *          This file is part of the Cherenkov Detector Simulation library
  *
  * Domain:  cherdetsim.magicreflector
@@ -16,7 +16,7 @@
  * Topic: General Information
  *
  * Purpose:
- *   Implement ExperimentalReflector class
+ *   Implement ExpPlaneReflector class
  *
  * Created by:
  *   J C Gonzalez
@@ -38,32 +38,32 @@
  *
  ******************************************************************************/
 
-#include "ExperimentalReflector.h"
+#include "ExpPlaneReflector.h"
 
 #include "quaternions.h"
 #include "surfaces.h"
 
-thread_local UnifRnd expreflector_unifUnit(0., 1.);
-#define RandomNumber expreflector_unifUnit()
+thread_local UnifRnd expPlaneReflector_unifUnit(0., 1.);
+#define RandomNumber expPlaneReflector_unifUnit()
 
 //----------------------------------------------------------------------
-// Constructor: ExperimentalReflector
+// Constructor: ExpPlaneReflector
 //----------------------------------------------------------------------
-ExperimentalReflector::ExperimentalReflector()
+ExpPlaneReflector::ExpPlaneReflector()
 {
 }
 
 //----------------------------------------------------------------------
-// Destructor: ~ExperimentalReflector
+// Destructor: ~ExpPlaneReflector
 //----------------------------------------------------------------------
-ExperimentalReflector::~ExperimentalReflector()
+ExpPlaneReflector::~ExpPlaneReflector()
 {
 }
 
 //----------------------------------------------------------------------
 // Method: setMirrorsFile
 //----------------------------------------------------------------------
-void ExperimentalReflector::setMirrorsFile(std::string fileName)
+void ExpPlaneReflector::setMirrorsFile(std::string fileName)
 {
     // Read filename
     json::Parser cfgReader;
@@ -129,13 +129,13 @@ void ExperimentalReflector::setMirrorsFile(std::string fileName)
 
     // Setting up the different elements
     mainDish.set(point3d(coreX, coreY, ct_Center_height), ct_Diameter);
-    camera.set(ct_CameraRadius);
+    //camera.set(ct_CameraRadius);
 }
 
 //----------------------------------------------------------------------
 // Method: reflect
 //----------------------------------------------------------------------
-bool ExperimentalReflector::reflect(CPhoton cph, point3d & xDish, point3d & xCam)
+bool ExpPlaneReflector::reflect(CPhoton cph, point3d & xDish, point3d & xCam)
 {
     // Atmospheric transmittance test
     if (!passedTransmittance(cph)) { return false; }
@@ -153,7 +153,7 @@ bool ExperimentalReflector::reflect(CPhoton cph, point3d & xDish, point3d & xCam
 //----------------------------------------------------------------------
 // Method: mirrorsReflection
 //----------------------------------------------------------------------
-bool ExperimentalReflector::mirrorsReflection(point3d x, vector3d r, double timeFirstInt,
+bool ExpPlaneReflector::mirrorsReflection(point3d x, vector3d r, double timeFirstInt,
                                        point3d & xd, point3d & xr)
 {
     static double normalRnd[2];
@@ -204,7 +204,7 @@ bool ExperimentalReflector::mirrorsReflection(point3d x, vector3d r, double time
     quaternion reflec_axis(v_axis, 0.);
     q_in.reflect(reflec_axis);
     vector3d v_out = q_in.getVector();
-    
+    /*
     // Reflect trayectory
     std::vector<point3d> pts2;
     line cphReflectedTrajectory;
@@ -222,10 +222,10 @@ bool ExperimentalReflector::mirrorsReflection(point3d x, vector3d r, double time
     point3d & xcam = pts2.at(0);
     if ((xcam.Z < ct_CameraRaised) ||
         (xcam.Z > ct_CameraRaised + ct_CameraSize)) { return false; }
-    /*
+    */
     double lambda = (mainDish.f - xDish.Z) / v_out.Z;
     point3d xcam {xDish.X + lambda * v_out.X, xDish.Y + lambda * v_out.Y, mainDish.f};
-    */
+    
     // Timing
     // t = adjust_time(t=timefirstint)
     // substract light-path from the mirror till the ground, 'cos
@@ -249,7 +249,7 @@ bool ExperimentalReflector::mirrorsReflection(point3d x, vector3d r, double time
 // Method: findClosestMirror
 // Find the mirror element whose center is closest to the photon loc.
 //----------------------------------------------------------------------
-int ExperimentalReflector::findClosestMirror(point3d & xDish, double & distMirr)
+int ExpPlaneReflector::findClosestMirror(point3d & xDish, double & distMirr)
 {
     double distMirr_ = 1000000.;
     int i_mirror = 0;
@@ -273,7 +273,7 @@ int ExperimentalReflector::findClosestMirror(point3d & xDish, double & distMirr)
 // Compute the point of intersection of the trajectory of the photon
 // with the mirror element
 //----------------------------------------------------------------------
-point3d ExperimentalReflector::getIntersectionWithMirror(int i, point3d vxm, vector3d vrm)
+point3d ExpPlaneReflector::getIntersectionWithMirror(int i, point3d vxm, vector3d vrm)
 {
     // Calculate the intersection of the trayectory of the photon
     // with the mirror
@@ -354,7 +354,7 @@ point3d ExperimentalReflector::getIntersectionWithMirror(int i, point3d vxm, vec
                     z};
 }
 
-double ExperimentalReflector::curv2lin(double s)
+double ExpPlaneReflector::curv2lin(double s)
 {
     double x = s;
     for (int i = 0; i < 4; i++) {
@@ -363,7 +363,7 @@ double ExperimentalReflector::curv2lin(double s)
     return (x * 100.);
 }
 
-double ExperimentalReflector::lin2curv(double x)
+double ExpPlaneReflector::lin2curv(double x)
 {
   x *= 0.01;
   return ((x + 0.000144175317185 * x * x * x) * 100.);

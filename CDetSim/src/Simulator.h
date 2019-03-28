@@ -79,6 +79,7 @@ private:
     Simulator();
     virtual ~Simulator();
 
+    Reflector * buildReflector(std::string rflType);
     std::string subEnvVars(std::string s);
     
 public:

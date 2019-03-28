@@ -1,5 +1,5 @@
 /******************************************************************************
- * File:    ExperimentalReflector.cpp
+ * File:    ExpCylinderReflector.cpp
  *          This file is part of the Cherenkov Detector Simulation library
  *
  * Domain:  cherdetsim.magicreflector
@@ -16,7 +16,7 @@
  * Topic: General Information
  *
  * Purpose:
- *   Implement ExperimentalReflector class
+ *   Implement ExpCylinderReflector class
  *
  * Created by:
  *   J C Gonzalez
@@ -38,32 +38,32 @@
  *
  ******************************************************************************/
 
-#include "ExperimentalReflector.h"
+#include "ExpCylinderReflector.h"
 
 #include "quaternions.h"
 #include "surfaces.h"
 
-thread_local UnifRnd expreflector_unifUnit(0., 1.);
-#define RandomNumber expreflector_unifUnit()
+thread_local UnifRnd expCylReflector_unifUnit(0., 1.);
+#define RandomNumber expCylReflector_unifUnit()
 
 //----------------------------------------------------------------------
-// Constructor: ExperimentalReflector
+// Constructor: ExpCylinderReflector
 //----------------------------------------------------------------------
-ExperimentalReflector::ExperimentalReflector()
+ExpCylinderReflector::ExpCylinderReflector()
 {
 }
 
 //----------------------------------------------------------------------
-// Destructor: ~ExperimentalReflector
+// Destructor: ~ExpCylinderReflector
 //----------------------------------------------------------------------
-ExperimentalReflector::~ExperimentalReflector()
+ExpCylinderReflector::~ExpCylinderReflector()
 {
 }
 
 //----------------------------------------------------------------------
 // Method: setMirrorsFile
 //----------------------------------------------------------------------
-void ExperimentalReflector::setMirrorsFile(std::string fileName)
+void ExpCylinderReflector::setMirrorsFile(std::string fileName)
 {
     // Read filename
     json::Parser cfgReader;
@@ -135,7 +135,7 @@ void ExperimentalReflector::setMirrorsFile(std::string fileName)
 //----------------------------------------------------------------------
 // Method: reflect
 //----------------------------------------------------------------------
-bool ExperimentalReflector::reflect(CPhoton cph, point3d & xDish, point3d & xCam)
+bool ExpCylinderReflector::reflect(CPhoton cph, point3d & xDish, point3d & xCam)
 {
     // Atmospheric transmittance test
     if (!passedTransmittance(cph)) { return false; }
@@ -153,7 +153,7 @@ bool ExperimentalReflector::reflect(CPhoton cph, point3d & xDish, point3d & xCam
 //----------------------------------------------------------------------
 // Method: mirrorsReflection
 //----------------------------------------------------------------------
-bool ExperimentalReflector::mirrorsReflection(point3d x, vector3d r, double timeFirstInt,
+bool ExpCylinderReflector::mirrorsReflection(point3d x, vector3d r, double timeFirstInt,
                                        point3d & xd, point3d & xr)
 {
     static double normalRnd[2];
@@ -249,7 +249,7 @@ bool ExperimentalReflector::mirrorsReflection(point3d x, vector3d r, double time
 // Method: findClosestMirror
 // Find the mirror element whose center is closest to the photon loc.
 //----------------------------------------------------------------------
-int ExperimentalReflector::findClosestMirror(point3d & xDish, double & distMirr)
+int ExpCylinderReflector::findClosestMirror(point3d & xDish, double & distMirr)
 {
     double distMirr_ = 1000000.;
     int i_mirror = 0;
@@ -273,7 +273,7 @@ int ExperimentalReflector::findClosestMirror(point3d & xDish, double & distMirr)
 // Compute the point of intersection of the trajectory of the photon
 // with the mirror element
 //----------------------------------------------------------------------
-point3d ExperimentalReflector::getIntersectionWithMirror(int i, point3d vxm, vector3d vrm)
+point3d ExpCylinderReflector::getIntersectionWithMirror(int i, point3d vxm, vector3d vrm)
 {
     // Calculate the intersection of the trayectory of the photon
     // with the mirror
@@ -354,7 +354,7 @@ point3d ExperimentalReflector::getIntersectionWithMirror(int i, point3d vxm, vec
                     z};
 }
 
-double ExperimentalReflector::curv2lin(double s)
+double ExpCylinderReflector::curv2lin(double s)
 {
     double x = s;
     for (int i = 0; i < 4; i++) {
@@ -363,7 +363,7 @@ double ExperimentalReflector::curv2lin(double s)
     return (x * 100.);
 }
 
-double ExperimentalReflector::lin2curv(double x)
+double ExpCylinderReflector::lin2curv(double x)
 {
   x *= 0.01;
   return ((x + 0.000144175317185 * x * x * x) * 100.);

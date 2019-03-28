@@ -35,15 +35,15 @@
 	},
 	"camera_radius": {
 	    "desc": "camera radius (radius of cylinder) [cm]",
-	    "value": 60.0
+	    "value": 1000.0
 	},
 	"camera_raised": {
 	    "desc": "camera distance from base of reflector [cm]",
-	    "value": 1200.0
+	    "value": 1500.0
 	},
 	"camera_size": {
 	    "desc": "height of the camera element (height of cylinder) [cm]",
-	    "value": 800.0
+	    "value": 500.0
 	},
 	"n_pixels": {
 	    "desc": "number of pixels in the camera, PIXELS = 3 x N x (N+1) + 1  (N=number of rings)",

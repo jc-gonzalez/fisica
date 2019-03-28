@@ -147,9 +147,27 @@ public:
     friend std::ostream& operator<<(std::ostream &io, const paraboloid &p);
 };
 
+//======================================================================
+// Class: cone
+//======================================================================
+class cone {
+public:
+    double tanTheta, h;
+
+    cone();
+    cone(double hei, double tanth);
+
+    void set(double hei, double tanth);
+
+    friend bool intersectionConeLine(cone & p, line & l, std::vector<point3d> & pts);
+
+    friend std::ostream& operator<<(std::ostream &io, const cone &p);
+};
+
 bool intersectionSphereLine(sphere & s, line & l, std::vector<point3d> & p);
 bool intersectionCylinderLine(cylinder & cl, line & l, std::vector<point3d> & p);
 bool intersectionParaboloidLine(paraboloid & c, line & l, std::vector<point3d> & p);
+bool intersectionConeLine(cone & p, line & l, std::vector<point3d> & pts);
 
 }
 

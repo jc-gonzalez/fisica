@@ -51,6 +51,9 @@
 
 #include "MAGICReflector.h"
 #include "ExperimentalReflector.h"
+#include "ExpPlaneReflector.h"
+#include "ExpCylinderReflector.h"
+#include "ExpConeReflector.h"
 #include "CerPhotonsSource.h"
 
 
@@ -233,24 +236,36 @@ std::string Simulator::subEnvVars(std::string s)
 }
 
 //----------------------------------------------------------------------
+// Method: buildReflector
+// Construct the reflector according to the specified type
+//----------------------------------------------------------------------
+Reflector * Simulator::buildReflector(std::string rflType)
+{
+    if (rflType == "magic") {
+        return new MAGICReflector;
+    } else if (rflType == "experimental") {
+        return new ExperimentalReflector;
+    } else if (rflType == "expcone") {
+        return new ExpConeReflector;
+    } else if (rflType == "expcyl") {
+        return new ExpCylinderReflector;
+    } else if (rflType == "expplane") {
+        return new ExpPlaneReflector;
+    } else {
+        std::cerr << "Bad reflector type '" << rflType
+                  << "'. Exiting.\n";
+        exit(1);
+    }
+}
+
+//----------------------------------------------------------------------
 // Method: run
 // Execute the simulation
 //----------------------------------------------------------------------
 void Simulator::run()
 {
     // Define reflector
-    Reflector * reflector = nullptr;
-    
-    if (reflectorType == "magic") {
-        reflector = new MAGICReflector;
-    } else if (reflectorType == "experimental") {
-        reflector = new ExperimentalReflector;
-    } else {
-        std::cerr << "Bad reflector type '" << reflectorType
-                  << "'. Exiting.\n";
-        exit(1);
-    }
-    
+    Reflector * reflector = buildReflector(reflectorType);    
     reflector->setMirrorsFile(reflectorFile);
     
     if (definedFixedTarget) {

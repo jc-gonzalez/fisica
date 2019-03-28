@@ -1,5 +1,5 @@
 /******************************************************************************
- * File:    ExperimentalReflector.cpp
+ * File:    ExpConeReflector.cpp
  *          This file is part of the Cherenkov Detector Simulation library
  *
  * Domain:  cherdetsim.magicreflector
@@ -16,7 +16,7 @@
  * Topic: General Information
  *
  * Purpose:
- *   Implement ExperimentalReflector class
+ *   Implement ExpConeReflector class
  *
  * Created by:
  *   J C Gonzalez
@@ -38,32 +38,32 @@
  *
  ******************************************************************************/
 
-#include "ExperimentalReflector.h"
+#include "ExpConeReflector.h"
 
 #include "quaternions.h"
 #include "surfaces.h"
 
-thread_local UnifRnd expreflector_unifUnit(0., 1.);
-#define RandomNumber expreflector_unifUnit()
+thread_local UnifRnd expConeReflector_unifUnit(0., 1.);
+#define RandomNumber expConeReflector_unifUnit()
 
 //----------------------------------------------------------------------
-// Constructor: ExperimentalReflector
+// Constructor: ExpConeReflector
 //----------------------------------------------------------------------
-ExperimentalReflector::ExperimentalReflector()
+ExpConeReflector::ExpConeReflector()
 {
 }
 
 //----------------------------------------------------------------------
-// Destructor: ~ExperimentalReflector
+// Destructor: ~ExpConeReflector
 //----------------------------------------------------------------------
-ExperimentalReflector::~ExperimentalReflector()
+ExpConeReflector::~ExpConeReflector()
 {
 }
 
 //----------------------------------------------------------------------
 // Method: setMirrorsFile
 //----------------------------------------------------------------------
-void ExperimentalReflector::setMirrorsFile(std::string fileName)
+void ExpConeReflector::setMirrorsFile(std::string fileName)
 {
     // Read filename
     json::Parser cfgReader;
@@ -129,13 +129,13 @@ void ExperimentalReflector::setMirrorsFile(std::string fileName)
 
     // Setting up the different elements
     mainDish.set(point3d(coreX, coreY, ct_Center_height), ct_Diameter);
-    camera.set(ct_CameraRadius);
+    camera.set(ct_CameraRaised, ct_CameraSize / ct_CameraRadius);
 }
 
 //----------------------------------------------------------------------
 // Method: reflect
 //----------------------------------------------------------------------
-bool ExperimentalReflector::reflect(CPhoton cph, point3d & xDish, point3d & xCam)
+bool ExpConeReflector::reflect(CPhoton cph, point3d & xDish, point3d & xCam)
 {
     // Atmospheric transmittance test
     if (!passedTransmittance(cph)) { return false; }
@@ -153,7 +153,7 @@ bool ExperimentalReflector::reflect(CPhoton cph, point3d & xDish, point3d & xCam
 //----------------------------------------------------------------------
 // Method: mirrorsReflection
 //----------------------------------------------------------------------
-bool ExperimentalReflector::mirrorsReflection(point3d x, vector3d r, double timeFirstInt,
+bool ExpConeReflector::mirrorsReflection(point3d x, vector3d r, double timeFirstInt,
                                        point3d & xd, point3d & xr)
 {
     static double normalRnd[2];
@@ -209,7 +209,8 @@ bool ExperimentalReflector::mirrorsReflection(point3d x, vector3d r, double time
     std::vector<point3d> pts2;
     line cphReflectedTrajectory;
     cphReflectedTrajectory.fromPointVector(xDish, v_out);
-    bool isThereIntersection2 = intersectionCylinderLine(camera, cphReflectedTrajectory, pts2);
+    bool isThereIntersection2 = intersectionConeLine(camera, cphReflectedTrajectory, pts2);
+    //for (auto & p: pts2) { std::cout << p << ' '; } std::cout << '\n';
     if (!isThereIntersection2) { return false; } 
 
     if (pts2.size() > 1) {
@@ -218,10 +219,18 @@ bool ExperimentalReflector::mirrorsReflection(point3d x, vector3d r, double time
         double d2 = pts2.at(1).distanceFrom(v_in);
         pts2.erase(pts2.begin() + ((d2 > d1) ? 1 : 0));
     }
-    
+
+    // Compute angle between trajectory and surface, if above threshold remove
     point3d & xcam = pts2.at(0);
-    if ((xcam.Z < ct_CameraRaised) ||
-        (xcam.Z > ct_CameraRaised + ct_CameraSize)) { return false; }
+
+    vector3d v_normal(2. * xcam.X, 2. * xcam.Y, -2. * xcam.Z * sqr(camera.tanTheta));
+    v_normal.normalize();
+    v_out.normalize();
+    double prd = r2d(acos(v_normal.dot(v_out)));
+    if (prd > 45.) { return false; }
+    
+    //if ((xcam.Z < ct_CameraRaised) ||
+    //    (xcam.Z > ct_CameraRaised + ct_CameraSize)) { return false; }
     /*
     double lambda = (mainDish.f - xDish.Z) / v_out.Z;
     point3d xcam {xDish.X + lambda * v_out.X, xDish.Y + lambda * v_out.Y, mainDish.f};
@@ -249,7 +258,7 @@ bool ExperimentalReflector::mirrorsReflection(point3d x, vector3d r, double time
 // Method: findClosestMirror
 // Find the mirror element whose center is closest to the photon loc.
 //----------------------------------------------------------------------
-int ExperimentalReflector::findClosestMirror(point3d & xDish, double & distMirr)
+int ExpConeReflector::findClosestMirror(point3d & xDish, double & distMirr)
 {
     double distMirr_ = 1000000.;
     int i_mirror = 0;
@@ -273,7 +282,7 @@ int ExperimentalReflector::findClosestMirror(point3d & xDish, double & distMirr)
 // Compute the point of intersection of the trajectory of the photon
 // with the mirror element
 //----------------------------------------------------------------------
-point3d ExperimentalReflector::getIntersectionWithMirror(int i, point3d vxm, vector3d vrm)
+point3d ExpConeReflector::getIntersectionWithMirror(int i, point3d vxm, vector3d vrm)
 {
     // Calculate the intersection of the trayectory of the photon
     // with the mirror
@@ -354,7 +363,7 @@ point3d ExperimentalReflector::getIntersectionWithMirror(int i, point3d vxm, vec
                     z};
 }
 
-double ExperimentalReflector::curv2lin(double s)
+double ExpConeReflector::curv2lin(double s)
 {
     double x = s;
     for (int i = 0; i < 4; i++) {
@@ -363,7 +372,7 @@ double ExperimentalReflector::curv2lin(double s)
     return (x * 100.);
 }
 
-double ExperimentalReflector::lin2curv(double x)
+double ExpConeReflector::lin2curv(double x)
 {
   x *= 0.01;
   return ((x + 0.000144175317185 * x * x * x) * 100.);
