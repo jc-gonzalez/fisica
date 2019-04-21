@@ -81,14 +81,19 @@ private:
 
     Reflector * buildReflector(std::string rflType);
     std::string subEnvVars(std::string s);
-    
+
+    bool usage(int code);
+    bool processCmdLineOpts(int argc, char * argv[]);
+
 public:
     void readConfiguration(std::string fileName);
     void showConfiguration();
 
-    void run();
+    void run(int argc = 0, char * argv[] = nullptr);
 
 private:
+    std::string configFile;
+    
     json::Object cfgSim;
 
     int verbLevel;
@@ -116,6 +121,8 @@ private:
 
     std::vector<std::string> inputFiles;
 
+    std::string exeName;
+    
     static const int VERB_DBG, VERB_INFO, VERB_MINIMAL, VERB_QUIET;
 };
 

@@ -164,6 +164,26 @@ int main(int argc, char * argv[])
     vr = m * vs;
     std::cout << vs << "  =>  " << vr << '\n';
 
+    std::cout << "-----------------------------------------\n";
+
+    line ll; ll.fromTwoPoints(point3d(100., 100., 1000.),
+                            point3d(-5., -5., 0.));
+    paraboloid p1(point3d(0.,0.,0.), 17.);
+    std::vector<point3d> ptsl1p1;
+    if (intersectionParaboloidLine(p1, ll, ptsl1p1)) {
+        std::cout << p1 << '\n';
+        std::cout << ll << "\n\n";
+        for (auto & z: ptsl1p1) { std::cout << z << '\n'; }
+    }
+    
+    paraboloid p2(point3d(0.,0.,-2.), 17.);
+    std::vector<point3d> ptsl1p2;
+    if (intersectionParaboloidLine(p2, ll, ptsl1p2)) {
+        std::cout << p2 << '\n';
+        std::cout << ll << "\n\n";
+        for (auto & z: ptsl1p2) { std::cout << z << '\n'; }
+    }
+    
     return 0;
 }
 

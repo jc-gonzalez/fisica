@@ -225,7 +225,7 @@ bool intersectionParaboloidLine(paraboloid & p, line & l, std::vector<point3d> &
 {
     double a = sqr(l.l.X) + sqr(l.l.Y);
     double b = 2. * (l.o.X * l.l.X + l.o.Y * l.l.Y - 2. * p.f * l.l.Z);
-    double c = sqr(l.o.X) + sqr(l.o.Y) - 4. * p.f * l.o.Z;
+    double c = sqr(l.o.X) + sqr(l.o.Y) - 4. * p.f * (l.o.Z - p.o.Z);
     
     double delta2 = b * b - 4. * a * c;
     if (delta2 < 0.) { return false; }

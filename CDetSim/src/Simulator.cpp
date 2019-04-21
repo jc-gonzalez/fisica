@@ -45,12 +45,14 @@
 #include <algorithm>
 
 #include <dirent.h>
+#include <unistd.h>
 
 #include "str.h"
 #include "mathtools.h"
 
 #include "MAGICReflector.h"
 #include "ExperimentalReflector.h"
+#include "ExtendedReflector.h"
 #include "ExpPlaneReflector.h"
 #include "ExpCylinderReflector.h"
 #include "ExpConeReflector.h"
@@ -76,6 +78,54 @@ Simulator::Simulator() :
 // Destructor: Simulator
 //----------------------------------------------------------------------
 Simulator::~Simulator() {}
+
+//----------------------------------------------------------------------
+// Method: usage
+// Shows usage information
+//----------------------------------------------------------------------
+bool Simulator::usage(int code)
+{
+    std::cout << "Usage: " << exeName << "  -c configFile\n\n";
+    exit(code);
+}
+
+//----------------------------------------------------------------------
+// Method: processCmdLineOpts
+// Processes command line options to configure execution
+//----------------------------------------------------------------------
+bool Simulator::processCmdLineOpts(int argc, char * argv[])
+{
+    bool retVal = true;
+    int exitCode = EXIT_FAILURE;
+
+    exeName = std::string(argv[0]);
+
+    if (argc < 2) { usage(EXIT_FAILURE); }
+      
+    int opt;
+    while ((opt = getopt(argc, argv, "hc:x:y:")) != -1) {
+        switch (opt) {
+        case 'c':
+            configFile = std::string(optarg);
+            // Read and show confuration
+            readConfiguration(configFile);
+            break;
+        case 'x':
+            coreOffset.X = std::stod(optarg);
+            break;
+        case 'y':
+            coreOffset.Y = std::stod(optarg);
+            break;
+        case 'h':
+            exitCode = EXIT_SUCCESS;
+        default: /* '?' */
+            usage(exitCode);
+        }
+    }
+
+    showConfiguration();
+    return retVal;
+}
 
 //----------------------------------------------------------------------
 // Method: readConfiguration
@@ -245,6 +295,8 @@ Reflector * Simulator::buildReflector(std::string rflType)
         return new MAGICReflector;
     } else if (rflType == "experimental") {
         return new ExperimentalReflector;
+    } else if (rflType == "extended") {
+        return new ExtendedReflector;
     } else if (rflType == "expcone") {
         return new ExpConeReflector;
     } else if (rflType == "expcyl") {
@@ -262,8 +314,13 @@ Reflector * Simulator::buildReflector(std::string rflType)
 // Method: run
 // Execute the simulation
 //----------------------------------------------------------------------
-void Simulator::run()
+void Simulator::run(int argc, char * argv[])
 {
+    // Read configuration
+    if (argc > 0) {
+        if (!processCmdLineOpts(argc, argv)) { return; }
+    }
+
     // Define reflector
     Reflector * reflector = buildReflector(reflectorType);    
     reflector->setMirrorsFile(reflectorFile);
@@ -283,12 +340,20 @@ void Simulator::run()
     point3d core;
     double theta, phi;
     int i;
+    std::ofstream os;
     
     while (cphFiles.getNextCPhoton(cph, isNewFile)) {
 
 	if (isNewFile) {
             i = cphFiles.currentFileIndex() + 1;
 
+            {
+                if (os.good()) {os.close();}
+                char name[50];
+                sprintf(name, "shwr-%d.dat", i);
+                os.open(name);
+            }
+            
             // Check is this file is to be skipped
 	    if (definedMaxEvents && (i > maxEvtNum)) { break; }
 
@@ -302,7 +367,7 @@ void Simulator::run()
                 continue;
             }
 
-            std::cout << i << ' ' << minEvtId << "-" << maxEvtId << ':';
+            std::cout << "Event " << i << ' ' << minEvtId << "-" << maxEvtId << ':';
 	    core = cphFiles.getCore() + coreOffset;
             primaryEnergy = cphFiles.getPrimaryEnergy();
 	    std::tie(theta, phi) = cphFiles.getOrientation();
@@ -318,6 +383,7 @@ void Simulator::run()
 
 	point3d xd, xc;
 	if (reflector->reflect(cph, xd, xc)) {
+            os << i << ' ' << cph.x << ' ' << cph.y << '\n';    
 	    std::cout << i << ' '
                       << cph.wl << ' ' << cph.x << ' ' << cph.y << ' '
 		      << cph.u << ' ' << cph.v << ' ' << cph.w << ' '
@@ -325,6 +391,7 @@ void Simulator::run()
 		      << xd << ' ' << xc << '\n';
 	}
     }
+    os.close();
 }
 
 //----------------------------------------------------------------------
@@ -341,3 +408,5 @@ const int Simulator::VERB_DBG = 3;
 const int Simulator::VERB_INFO = 2;
 const int Simulator::VERB_MINIMAL = 1;
 const int Simulator::VERB_QUIET = 0;
+
+
