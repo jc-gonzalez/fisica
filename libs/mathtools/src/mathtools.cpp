@@ -509,6 +509,12 @@ template<typename T>
 T sqr(T x) { return x * x; }
 
 template<typename T>
+T cube(T x) { return x * x * x; }
+
+template<typename T>
+T sgn(T x) { return (x > 0) ? +1 : ((x < 0) ? -1 : 0); }
+
+template<typename T>
 T d2r(T x) { return x * M_PI / 180.; }
 
 template<typename T>
@@ -667,45 +673,51 @@ void rnormal(T *r, int n)
     }
 }
 
-    // Explicit instantiations
+// Explicit instantiations
 
-    template float sqr<float>(float x);
-    template float d2r<float>(float x);
-    template float r2d<float>(float x);
-    template float norm2<float>(float x, float y, float z);
-    template float norm<float>(float x, float y, float z);
+template float sqr<float>(float x);
+template float cube<float>(float x);
+template float sgn<float>(float x);
+template float d2r<float>(float x);
+template float r2d<float>(float x);
+template float norm2<float>(float x, float y, float z);
+template float norm<float>(float x, float y, float z);
 
-    template void makeOmega<float>(float (& Omega)[3][3], float theta, float phi);
-    template void makeOmegaI<float>(float (& OmegaI)[3][3], float theta, float phi);
-    template void applyMxV<float>(float M[3][3], float *V, float *Vp);
+template void makeOmega<float>(float (& Omega)[3][3], float theta, float phi);
+template void makeOmegaI<float>(float (& OmegaI)[3][3], float theta, float phi);
+template void applyMxV<float>(float M[3][3], float *V, float *Vp);
 
-    template float dist_r_P<float>(float a, float b, float c,
-                                   float l, float m, float n,
-                                   float x, float y, float z);
+template float dist_r_P<float>(float a, float b, float c,
+                               float l, float m, float n,
+                               float x, float y, float z);
 
-    template void rnormal<float>(float *r, int n);
+template void rnormal<float>(float *r, int n);
 
-    //-------------------------
+//-------------------------
 
-    template double sqr<double>(double x);
-    template double d2r<double>(double x);
-    template double r2d<double>(double x);
-    template double norm2<double>(double x, double y, double z);
-    template double norm<double>(double x, double y, double z);
+template double sqr<double>(double x);
+template double cube<double>(double x);
+template double sgn<double>(double x);
+template double d2r<double>(double x);
+template double r2d<double>(double x);
+template double norm2<double>(double x, double y, double z);
+template double norm<double>(double x, double y, double z);
 
-    template void makeOmega<double>(double (& Omega)[3][3] , double theta, double phi);
-    template void makeOmegaI<double>(double (& OmegaI)[3][3], double theta, double phi);
-    template void applyMxV<double>(double M[3][3], double *V, double *Vp);
+template void makeOmega<double>(double (& Omega)[3][3] , double theta, double phi);
+template void makeOmegaI<double>(double (& OmegaI)[3][3], double theta, double phi);
+template void applyMxV<double>(double M[3][3], double *V, double *Vp);
 
-    template double dist_r_P<double>(double a, double b, double c,
-                                     double l, double m, double n,
-                                     double x, double y, double z);
+template double dist_r_P<double>(double a, double b, double c,
+                                 double l, double m, double n,
+                                 double x, double y, double z);
 
-    template void rnormal<double>(double *r, int n);
+template void rnormal<double>(double *r, int n);
 
-    //---------------------
+//---------------------
 
-    template int sqr<int>(int x);
+template int sqr<int>(int x);
+template int cube<int>(int x);
+template int sgn<int>(int x);
 
 } // namespace MathTools
 

@@ -68,6 +68,13 @@ namespace MathTools {
     extern const double Radians2Degrees;
     extern const double Degrees2Radians;
 
+    extern const double Deg360;    // 2 Pi
+    extern const double Deg180;    //   Pi
+    extern const double Deg120;    // 2 Pi / 3
+    extern const double Deg90;     //   Pi / 2
+    extern const double Deg60;     //   Pi / 3
+    extern const double Deg30;     //   Pi / 6
+
     double d2r(double x);
     double r2d(double x);
 

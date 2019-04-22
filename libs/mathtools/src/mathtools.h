@@ -91,6 +91,12 @@ namespace MathTools {
     T sqr(T x);
 
     template<typename T>
+    T cube(T x);
+
+    template<typename T>
+    T sgn(T x);
+
+    template<typename T>
     T d2r(T x);
 
     template<typename T>

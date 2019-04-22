@@ -36,6 +36,8 @@ SET (cdetsim_src
   OutputDataHandler.cpp
   CerPhotonsSource.cpp
   CPhoton.cpp
+  Moments.cpp
+  PixelsSet.cpp
   Simulator.cpp
   main.cpp
   )
@@ -51,6 +53,8 @@ SET (cdetsim_hdr
   OutputDataHandler.h
   CerPhotonsSource.h
   CPhoton.h
+  Moments.h
+  PixelsSet.h
   Simulator.h
   physconst.h
   )

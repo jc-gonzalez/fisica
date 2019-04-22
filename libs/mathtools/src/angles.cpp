@@ -67,6 +67,13 @@ namespace MathTools {
 const double Radians2Degrees = M_PI / 180.;
 const double Degrees2Radians = 180. / M_PI;
 
+const double Deg360 = (2.*M_PI);       // 2 Pi
+const double Deg180 = (M_PI);          //   Pi
+const double Deg120 = (2.*M_PI/3.);    // 2 Pi / 3
+const double Deg90  = (M_PI/2.);       //   Pi / 2
+const double Deg60  = (M_PI/3.);       //   Pi / 3
+const double Deg30  = (M_PI/6.);       //   Pi / 6
+
 double d2r(double x) { return x * Radians2Degrees; }
 double r2d(double x) { return x * Degrees2Radians; }
 

@@ -28,6 +28,7 @@
 SET (mathtools_src
   angles.cpp
   comparisons.cpp
+  histogram.cpp
   mathtools.cpp
   mathtools_tuples.cpp
   matrix.cpp
@@ -37,9 +38,10 @@ SET (mathtools_src
   )
 
 SET (mathtools_hdr
-  mathtools.h
   angles.h
   comparisons.h
+  histogram.h
+  mathtools.h
   matrix.h
   quaternions.h
   surfaces.h
