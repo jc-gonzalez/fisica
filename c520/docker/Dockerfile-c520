@@ -1,0 +1,51 @@
+#==============================================================================
+# DESCRIPTION:    Dockerfile for CORSIKA 5.20 image
+# AUTHOR:         J. C. Gonzalez <jcg@jcgonzalez.org>
+# VERSION:        0.1
+# COMMENTS:
+# USAGE:
+#   # Build image
+#   docker build -t c520:0.1 -f <thisfile> .
+#
+#   # Run interactive
+#   docker run -i -t --priviledged=true \
+#       -v {c520-folder-with-in-file}:/c520.io \
+#       -v {c520-folder-for-results}/:/c520.data \
+#       c520:0.1 
+#==============================================================================
+
+# Base Docker image
+FROM debian
+MAINTAINER J C Gonzalez <jcg@jcgonzalez.org>
+
+LABEL org.jcg.cdetsim.c520.content="CORSIKA 5.20 Docker image" \
+      org.jcg.cdetsim.c520.version="0.1" \
+      org.jcg.cdetsim.c520.release-date="2019-04-24"
+
+COPY c520-src.tgz /
+RUN tar xvzf c520-src.tgz && rm /c520-src.tgz &&\
+    apt-get update && \
+    apt-get install -y gfortran make && \
+    rm -rf /var/lib/apt/lists/* 
+
+WORKDIR /c520
+RUN make -j4 -k all SYSTEM=GENERIC && rm *.o && ls -s
+
+ENV PATH=.:${PATH}
+
+ENTRYPOINT ["c520.sh"]
+CMD ["/c520.io/in"]
+
+#RUN apt-get update && \
+#    apt-get install -y python2.7 \
+#                       python-scipy \
+#                       python-astropy \
+#                       python-zmq \
+#                       python-matplotlib \
+#                       python-tk \
+#                    --no-install-recommends && \
+#    apt-get install -y sextractor \
+#                    --no-install-recommends && \
+#    ln -sf /usr/bin/sextractor /usr/bin/sex && \
+#    rm -rf /var/lib/apt/lists/*
+    
