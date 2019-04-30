@@ -56,8 +56,10 @@
 #include "ExpPlaneReflector.h"
 #include "ExpCylinderReflector.h"
 #include "ExpConeReflector.h"
+
 #include "CerPhotonsSource.h"
 
+#include "CameraHexPix.h"
 
 //----------------------------------------------------------------------
 // Constructor: Simulator
@@ -316,6 +318,12 @@ Reflector * Simulator::buildReflector(std::string rflType)
 //----------------------------------------------------------------------
 void Simulator::run(int argc, char * argv[])
 {
+    CameraHexPix cam(2.2, 100.0);
+    cam.setPixelsFileName("mypixels.json");
+    cam.read_pixels();
+
+    return;
+    
     // Read configuration
     if (argc > 0) {
         if (!processCmdLineOpts(argc, argv)) { return; }

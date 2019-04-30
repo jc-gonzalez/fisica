@@ -158,17 +158,17 @@ void Moments::calculate(int n, double *image, double **pix,
 
     //---- old routine ----------------------------------------
     //   for (i=0; i<10; ++i)
-    //	 m.maxs[i] = 0.0;
+    //	     m.maxs[i] = 0.0;
     //
     //   for (i=0; i<npix; ++i) {
-    //	 if ( q[i] > m.maxs[0] ) {
-    //	   for (k=9; k>0; --k)
-    //	     m.maxs[k] = m.maxs[k-1];
-    //	   for (k=9; k>0; --k)
-    //	     m.nmaxs[k] = m.nmaxs[k-1];
-    //	   m.maxs[0] = q[i];
-    //	   m.nmaxs[0] = i;
-    //	 }
+    //	     if ( q[i] > m.maxs[0] ) {
+    //	         for (k=9; k>0; --k)
+    //	             m.maxs[k] = m.maxs[k-1];
+    //	         for (k=9; k>0; --k)
+    //	             m.nmaxs[k] = m.nmaxs[k-1];
+    //	         m.maxs[0] = q[i];
+    //	         m.nmaxs[0] = i;
+    //	     }
     //   }
     //
     //   // calculates weighted position of the maximum (6 pixels)

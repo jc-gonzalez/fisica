@@ -1,4 +1,4 @@
-RUNNR   1                              number of run
+RUNNR   2                              number of run
 EVTNR   1                              number of first shower event
 NSHOW   500                             number of showers to generate
 PRMPAR  1                              particle type of prim. particle

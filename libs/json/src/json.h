@@ -272,9 +272,14 @@ namespace json {
 
     };
 
-    void enableFormattedOutput(std::string tab = std::string("    "));
+    void enableFormattedOutput(std::string tab = std::string("    "),
+                               int maxlvl = 999);
     void disableFormattedOutput();
 
+    enum FloatFormat { SCI, FIX, DEFAULT };
+    
+    void setFloatFormat(FloatFormat fmt = DEFAULT, int prec = -1);
+    
 #define T(a,b)  TOKEN_ ## a
     // Enum: Tokens
     enum Tokens { TLISTOF_TOKENS };
@@ -293,10 +298,14 @@ namespace json {
     // - indent: Int, indent level, starting at 0
     // - indentStr: String used for indentation at each level
     // - indentStr: String repeated "indent" times at each level
-    extern bool formattedOutput;
+    extern bool        formattedOutput;
     extern int         indent;
+    extern int         formattedMaxLevel;
     extern std::string indentStr;
     extern std::string indentStep;      
+
+    extern FloatFormat floatFmt;
+    extern int floatPrecision;
 
 }
 

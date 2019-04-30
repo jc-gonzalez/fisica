@@ -40,6 +40,9 @@
 
 #include "mathtools.h"
 
+#include <cerrno>
+#include <cstdio>
+
 //= Below you can find a sort of, incomplete for sure, documentation
 //= concerning this program. Please, do not hesiate to contact the
 //= author in case of problems.
@@ -673,6 +676,41 @@ void rnormal(T *r, int n)
     }
 }
 
+
+template<typename T>
+bool reserve(T * ptr, const size_t n) {
+    T * mptr = (T*)calloc(n, sizeof(T));
+    if (mptr == NULL) { perror("reserve"); return false; }
+    ptr = mptr;
+    return true;
+}
+
+template<typename T>
+bool reserve(T ** ptr, const size_t n, const size_t m) {
+    T * mptr = (T*)calloc(n * m, sizeof(T));
+    if (mptr == NULL) { perror("reserve"); return false; }
+    T ** mmptr = (T**)calloc(n, sizeof(T*));
+    if (mmptr == NULL) { perror("reserve"); return false; }
+    ptr = mmptr;
+    for (int i = 0; i < n; ++i) {
+        ptr[i] = mptr + (i * m);
+    }
+    return true;
+}
+
+template<typename T>
+void release(T * ptr) {
+    free(ptr);
+    ptr = 0;
+}
+
+template<typename T>
+void reserve(T ** ptr, const size_t n) {
+    free(ptr[0]);
+    free(ptr);
+    ptr = 0;
+}
+
 // Explicit instantiations
 
 template float sqr<float>(float x);
@@ -718,6 +756,18 @@ template void rnormal<double>(double *r, int n);
 template int sqr<int>(int x);
 template int cube<int>(int x);
 template int sgn<int>(int x);
+
+//---------------------
+
+template bool reserve<int>(int * ptr, const size_t n);
+template bool reserve<int>(int ** ptr, const size_t n, const size_t m);
+template void release<int>(int * ptr);
+template void reserve<int>(int ** ptr, const size_t n);
+
+template bool reserve<double>(double * ptr, const size_t n);
+template bool reserve<double>(double ** ptr, const size_t n, const size_t m);
+template void release<double>(double * ptr);
+template void reserve<double>(double ** ptr, const size_t n);
 
 } // namespace MathTools
 

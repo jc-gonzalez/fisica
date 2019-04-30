@@ -82,11 +82,22 @@ namespace MathTools {
 	std::mt19937                           mt;
 	std::uniform_real_distribution<double> unif;
 
-	UnifRnd(double a, double b) : rd{}, mt{rd()},  unif{a, b} {}
+	UnifRnd(double a, double b) : rd{}, mt{rd()}, unif{a, b} {}
 
 	double operator()() { return unif(mt); }
     };
-    
+
+    class NormalRnd {
+    public:
+	std::random_device                     rd;
+	std::mt19937                           mt;
+	std::normal_distribution<double>       gauss;
+
+	NormalRnd(double a, double b) : rd{}, mt{rd()}, gauss{a, b} {}
+
+	double operator()() { return gauss(mt); }
+    };
+
     template<typename T>
     T sqr(T x);
 
@@ -149,6 +160,21 @@ namespace MathTools {
 
     std::ostream & operator<<(std::ostream & os, vector3D & v);
 
+    //----------------------------------------------
+    // Pointer routines
+    //----------------------------------------------
+    template<typename T>
+    bool reserve(T * ptr, const size_t n);
+        
+    template<typename T>
+    bool reserve(T ** ptr, const size_t n, const size_t m);
+
+    template<typename T>
+    void release(T * ptr);
+    
+    template<typename T>
+    void reserve(T ** ptr, const size_t n);
+    
 }
 
 

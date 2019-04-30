@@ -35,6 +35,7 @@ SET (cdetsim_src
   ExpConeReflector.cpp
   InputDataSource.cpp
   OutputDataHandler.cpp
+  CameraHexPix.cpp
   CerPhotonsSource.cpp
   CPhoton.cpp
   Moments.cpp
@@ -53,6 +54,8 @@ SET (cdetsim_hdr
   ExpConeReflector.h
   InputDataSource.h
   OutputDataHandler.h
+  Camera.h
+  CameraHexPix.h
   CerPhotonsSource.h
   CPhoton.h
   Moments.h

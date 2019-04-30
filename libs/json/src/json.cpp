@@ -35,6 +35,37 @@
 
 #include "json.h"
 
+#include <iomanip>
+#include <type_traits>
+
+template<class Fun>
+inline bool DoLog(Fun f, std::string message, const char *expression,
+                  const char *filename, int line) {
+    static_assert(std::is_same<bool, decltype(f())>::value,
+                  "Predicate must return a bool.");
+    if (!(f())) {
+        std::cerr << filename << '@' << line << ": '"
+                  << expression << "' is false.";
+        if (!message.empty()) { std::cerr << ' ' << message; }
+        std::cerr << std::endl;
+        return false;
+    }
+    return true;
+}
+
+#if defined(_DEBUG) || defined(DEBUG)
+#    define HALT true
+
+#    define WITH_MESSAGE_(expr, x) [&](){return (expr);}, x, #expr
+#    define WITHOUT_MESSAGE_(expr) [&](){return (expr);}, std::string{}, #expr
+#    define PICK_ASSERTION_ARGS_(_1, _2, WHICH_, ...) WHICH_
+#    define CREATE_ASSERTION_ARGS_(...) PICK_ASSERTION_ARGS_(__VA_ARGS__, WITH_MESSAGE_, WITHOUT_MESSAGE_)(__VA_ARGS__)
+#    define NT_ASSERT(...) if (!DoLog(CREATE_ASSERTION_ARGS_(__VA_ARGS__), __FILE__, __LINE__)) __debugbreak()
+#else
+#    define HALT false
+#    define NT_ASSERT(...)
+#endif
+
 namespace json {
 
 #define T(a,b)  a = b
@@ -46,10 +77,13 @@ namespace json {
 #undef T
 
     bool formattedOutput = false;
-    
+    int formattedMaxLevel = 999;    
     int         indent = 0;
     std::string indentStr("");
     std::string indentStep("    ");
+
+    FloatFormat floatFmt = DEFAULT;
+    int floatPrecision = -1;
 
     //======================================================================
     
@@ -202,7 +236,7 @@ namespace json {
     
     void Array::ensureTypeIs(ValueType t)
     {
-        assert((type == t) || (type == JSON_UNKNOWN));
+        NT_ASSERT((type == t) || (type == JSON_UNKNOWN));
         type = t;
     }
 
@@ -498,7 +532,8 @@ namespace json {
                                 hasKey = true;
                             }
                         } else {
-                            parseResult = false;                    
+                            parseResult = false; 		std::cerr << "char is '" << c << "'\n";
+                    
                         }
                     }
                 } else {
@@ -512,7 +547,8 @@ namespace json {
                 if (state == IN_STRING) {
                     item += c;
                 } else if (state == IN_ARRAY) {
-                    parseResult = false;
+                    parseResult = false; 		std::cerr << "char is '" << c << "'\n";
+
                 }
                 break;
             case COMMA:
@@ -580,19 +616,21 @@ namespace json {
                                 hasKey = false;
                                 key = "";
                             } else {
-                                parseResult = false;
+                                parseResult = false; 		std::cerr << "char is '" << c << "'\n";
+
                             }
 
                         }
                     } else {
-                        parseResult = false;
+                        parseResult = false; 		std::cerr << "char is '" << c << "'\n";
+
                     }
                 }
                 break;
             }
 
             if (!parseResult) {
-		std::cerr << "B R E A K !!\n"; break;
+		std::cerr << k << " - B R E A K !!\n"; break;
 	    }
 
             ++k;
@@ -603,7 +641,7 @@ namespace json {
 
     std::ostream & operator<<(std::ostream & os, const Object & o)
     {
-        if (json::formattedOutput) {
+        if (json::formattedOutput && (json::indent < json::formattedMaxLevel)) {
             os << "{\n";
             ++json::indent;
             std::string oldIndentStr = json::indentStr;
@@ -637,7 +675,7 @@ namespace json {
 
     std::ostream & operator<<(std::ostream & os, const Array & a)
     {
-        if (json::formattedOutput) {
+        if (json::formattedOutput && (json::indent < json::formattedMaxLevel)) {
             os << "[\n";
             ++json::indent;
             std::string oldIndentStr = json::indentStr;
@@ -663,11 +701,15 @@ namespace json {
 
     std::ostream & operator<<(std::ostream & os, const Value & v)
     {
-        if (json::formattedOutput) {
+        if (json::formattedOutput && (json::indent < json::formattedMaxLevel)) {
             switch (v.type) {
             case JSON_BOOL:   os << (v.bvalue ? "true" : "false");  break;
             case JSON_INT:    os << v.ivalue;  break;
-            case JSON_FLOAT:  os << v.xvalue;  break;
+            case JSON_FLOAT:
+                if (floatPrecision > 0) { os << std::setprecision(floatPrecision); }
+                os << ((floatFmt == SCI) ? std::scientific :
+                       (floatFmt == FIX) ? std::fixed : std::defaultfloat)
+                   << v.xvalue;  break;
             case JSON_STRING: os << "\"" << v.svalue << "\"";  break;
             case JSON_ARRAY:  os << v.avalue;  break;
             case JSON_OBJECT: os << v.ovalue;  break;
@@ -687,12 +729,19 @@ namespace json {
         return os;
     }
 
-    void enableFormattedOutput(std::string tab)
+    void setFloatFormat(FloatFormat fmt, int prec)
     {
-        json::formattedOutput = true;
-        json::indentStep = tab;
+        json::floatFmt = fmt;
+        json::floatPrecision = prec;
     }
-    
+
+    void enableFormattedOutput(std::string tab, int maxlvl)
+    {
+        json::formattedOutput   = true;
+        json::indentStep        = tab;
+        json::formattedMaxLevel = maxlvl;
+    }
+
     void disableFormattedOutput()
     {
         json::formattedOutput = false;
