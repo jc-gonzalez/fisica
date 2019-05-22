@@ -1,6 +1,0 @@
-#!/bin/sh
-
-./tx -i -f && \
-cd figs && \
-dvips ../scratch/tesis-eng.dvi -o ../tesis.ps 
-

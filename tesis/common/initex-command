@@ -1,4 +1,0 @@
-#!/bin/sh
-cp texis.tex pdftexis.tex && \
-initex '&latex texis.tex \dump' && \
-pdfinitex '&pdflatex pdftexis.tex \dump'
