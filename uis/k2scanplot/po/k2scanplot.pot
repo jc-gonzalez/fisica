@@ -1,0 +1,156 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2001-04-21 15:17+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: ENCODING\n"
+
+#: k2scanplot.cpp:82
+msgid "New &Window"
+msgstr ""
+
+#: k2scanplot.cpp:97
+msgid "Opens a new application window"
+msgstr ""
+
+#: k2scanplot.cpp:98
+msgid "Creates a new document"
+msgstr ""
+
+#: k2scanplot.cpp:99
+msgid "Opens an existing document"
+msgstr ""
+
+#: k2scanplot.cpp:100
+msgid "Opens a recently used file"
+msgstr ""
+
+#: k2scanplot.cpp:101
+msgid "Saves the actual document"
+msgstr ""
+
+#: k2scanplot.cpp:102
+msgid "Saves the actual document as..."
+msgstr ""
+
+#: k2scanplot.cpp:103
+msgid "Closes the actual document"
+msgstr ""
+
+#: k2scanplot.cpp:104
+msgid "Prints out the actual document"
+msgstr ""
+
+#: k2scanplot.cpp:105
+msgid "Quits the application"
+msgstr ""
+
+#: k2scanplot.cpp:106
+msgid "Cuts the selected section and puts it to the clipboard"
+msgstr ""
+
+#: k2scanplot.cpp:107
+msgid "Copies the selected section to the clipboard"
+msgstr ""
+
+#: k2scanplot.cpp:108
+msgid "Pastes the clipboard contents to actual position"
+msgstr ""
+
+#: k2scanplot.cpp:109
+msgid "Enables/disables the toolbar"
+msgstr ""
+
+#: k2scanplot.cpp:110
+msgid "Enables/disables the statusbar"
+msgstr ""
+
+#: k2scanplot.cpp:123 k2scanplot.cpp:151 k2scanplot.cpp:272 k2scanplot.cpp:290
+#: k2scanplot.cpp:313 k2scanplot.cpp:330 k2scanplot.cpp:339 k2scanplot.cpp:355
+#: k2scanplot.cpp:364 k2scanplot.cpp:377 k2scanplot.cpp:397 k2scanplot.cpp:404
+#: k2scanplot.cpp:411 k2scanplot.cpp:418 k2scanplot.cpp:435 k2scanplot.cpp:452
+msgid "Ready."
+msgstr ""
+
+#: k2scanplot.cpp:147 k2scanplot.cpp:295 k2scanplot.cpp:318
+msgid "Opening file..."
+msgstr ""
+
+#: k2scanplot.cpp:267
+msgid "Opening a new application window..."
+msgstr ""
+
+#: k2scanplot.cpp:277
+msgid "Creating new document..."
+msgstr ""
+
+#: k2scanplot.cpp:305 k2scanplot.cpp:347
+msgid "*|All files"
+msgstr ""
+
+#: k2scanplot.cpp:305
+msgid "Open File..."
+msgstr ""
+
+#: k2scanplot.cpp:335
+msgid "Saving file..."
+msgstr ""
+
+#: k2scanplot.cpp:344
+msgid "Saving file with a new filename..."
+msgstr ""
+
+#: k2scanplot.cpp:360
+msgid "Closing file..."
+msgstr ""
+
+#: k2scanplot.cpp:369
+msgid "Printing..."
+msgstr ""
+
+#: k2scanplot.cpp:382
+msgid "Exiting..."
+msgstr ""
+
+#: k2scanplot.cpp:402
+msgid "Cutting selection..."
+msgstr ""
+
+#: k2scanplot.cpp:409
+msgid "Copying selection to clipboard..."
+msgstr ""
+
+#: k2scanplot.cpp:416
+msgid "Inserting clipboard contents..."
+msgstr ""
+
+#: k2scanplot.cpp:423
+msgid "Toggling toolbar..."
+msgstr ""
+
+#: k2scanplot.cpp:440
+msgid "Toggle the statusbar..."
+msgstr ""
+
+#: k2scanplotdoc.cpp:103
+msgid ""
+"The current file has been modified.\n"
+"Do you want to save it?"
+msgstr ""
+
+#: main.cpp:38 main.cpp:52
+msgid "K2ScanPlot"
+msgstr ""
+
+#: main.cpp:44
+msgid "file to open"
+msgstr ""

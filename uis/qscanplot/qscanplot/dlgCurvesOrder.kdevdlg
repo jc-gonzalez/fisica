@@ -1,0 +1,111 @@
+// KDevelop Dialog Editor File (.kdevdlg)
+// 
+// Created by KDlgEdit Version 0.1alpha (C) 1999 by Pascal Krahmer
+// Get KDevelop including KDlgEdit at "www.beast.de/kdevelop"
+// 
+data Information
+{
+   Filename="/cvs/home/gonzalez/devel/qscanplot/qscanplot/dlgCurvesOrder.kdevdlg"
+   KDevelopVersion="1.1"
+   DlgEditVersion="0.1alpha"
+   LastChanged="Thu Aug 9 21:48:17 2001"
+}
+
+data SessionManagement
+{
+   OpenedRoot_1="Appearance"
+   OpenedRoot_2="C++ Code"
+   OpenedRoot_3="General"
+   OpenedRoot_4="Geometry"
+   OpenedRootCount="4"
+}
+
+item QWidget
+{
+   Name="NoName"
+   VarName="this"
+   X="0"
+   Y="0"
+   Width="400"
+   Height="300"
+   MinWidth="0"
+   MinHeight="0"
+
+   item KRestrictedLine
+   {
+      Name="NoName"
+      VarName="KRestrictedLine_1"
+      X="230"
+      Y="120"
+      Width="100"
+      Height="30"
+      MinWidth="0"
+      MinHeight="0"
+   }
+
+   item QPushButton
+   {
+      Name="NoName"
+      VarName="QPushButton_1"
+      X="260"
+      Y="10"
+      Width="90"
+      Height="30"
+      MinWidth="0"
+      MinHeight="0"
+      Text="Button"
+   }
+
+   item KDatePicker
+   {
+      Name="NoName"
+      VarName="KDatePicker_1"
+      X="10"
+      Y="10"
+      Width="100"
+      Height="30"
+      MinWidth="0"
+      MinHeight="0"
+   }
+
+   item KRestrictedLine
+   {
+      Name="NoName"
+      VarName="KRestrictedLine_2"
+      X="30"
+      Y="130"
+      Width="100"
+      Height="30"
+      MinWidth="0"
+      MinHeight="0"
+   }
+
+   item KProgress
+   {
+      Name="NoName"
+      VarName="KProgress_1"
+      X="160"
+      Y="150"
+      Width="100"
+      Height="30"
+      MinWidth="0"
+      MinHeight="0"
+      Value="0"
+      minValue="0"
+      maxValue="100"
+      BarStyle="Blocked"
+      Orientation="Horizontal"
+   }
+
+   item KLedLamp
+   {
+      Name="NoName"
+      VarName="KLedLamp_1"
+      X="260"
+      Y="60"
+      Width="50"
+      Height="30"
+      MinWidth="0"
+      MinHeight="0"
+   }
+}
