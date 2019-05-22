@@ -1,0 +1,34 @@
+RUNNR   @RUNNR                         run number
+EVTNR   1                              number of first shower event
+NSHOW   @STEP                          number of showers to generate
+PRMPAR  @PRIM                          particle type of prim. particle
+ESLOPE  -2.7                           slope of primary energy spectrum
+ERANGE  @ENERGY  @ENERGY               energy range of primary particle
+THETAP  0.  0.                         range of zenith angle (degree)
+PHIP    0.  0.                         range of azimuth angle (degree)
+SEED    @RND11   0   0                 seed for 1. random number sequence
+SEED    @RND21   0   0                 seed for 2. random number sequence
+SEED    @RND31   0   0                 seed for 2. random number sequence
+OBSLEV  2200.E2                        observation level (in cm)
+RADNKG  200.E2                         outer radius for NKG lat.dens.distr.
+FIXHEI  0. 0
+FIXCHI  0.                             starting altitude (g/cm**2)
+MAGNET  20.0  42.8                     magnetic field centr. Europe
+HADFLG  0  0  0  0  0  2               flags hadr.interact.&fragmentation
+ECUTS   0.3  0.3  0.003  0.003         energy cuts for particles
+MUADDI  T                              additional info for muons
+MUMULT  T                              muon multiple scattering angle
+ELMFLG  T   T                          em. interaction flags (NKG,EGS)
+STEPFC  1.0                            mult. scattering step length fact.
+LONGI   T  10.  T  T                   longit.distr. & step size & fit & out
+ECTMAP  1.E4                           cut on gamma factor for printout
+MAXPRT  @STEP                          max. number of printed events
+DIRECT  /c764.data/                    output directory
+USER    jcgg                           user 
+CWAVLG      290. 600.
+CSCAT   1  0.  0.
+CERSIZ  1.
+CERFIL  1
+TELESCOPE   0. 0. 2200.E2 112.8E2 1
+DEBUG   F  6  F  1000000               debug flag and log.unit for out
+EXIT                                   terminates input
