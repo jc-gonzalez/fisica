@@ -49,6 +49,7 @@
 #include <fstream>
 #include <iostream>
 #include <cmath>
+#include <cassert>
 
 //------------------------------------------------------------
 // Topic: External packages

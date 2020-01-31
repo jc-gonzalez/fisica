@@ -29,9 +29,7 @@ SET (tools_src
   alert.cpp
 dbg.cpp
 #dwatcher.cpp
-filetools.cpp
 launcher.cpp
-#rwc.cpp
 sm.cpp
 timer.cpp
 tools.cpp
@@ -41,12 +39,10 @@ SET (tools_hdr
   alert.h
 dbg.h
 #dwatcher.h
-filetools.h
 launcher.h
 metadatareader.h
 process.h
 propdef.h
-#rwc.h
 scopeexit.h
 sm.h
 timer.h
@@ -57,6 +53,18 @@ SET (tools_inthdr
   )
 
 ADD_LIBRARY (tools SHARED ${tools_src} )
+
+#SET (LIBS_DIR /Users/jcgonzalez/opt)
+
+#INCLUDE_DIRECTORIES (. ${LIBS_DIR}/include)
+#LINK_DIRECTORIES (${LIBS_DIR}/include)
+
+TARGET_INCLUDE_DIRECTORIES (tools PUBLIC . /usr/include/curl)
+TARGET_LINK_LIBRARIES (tools curl)
+
+#SET_TARGET_PROPERTIES (cdetsim PROPERTIES 
+#  LINKER_LANGUAGE CXX
+#  VERSION   ${cdetsim_VERSION})
 
 SET_TARGET_PROPERTIES (tools PROPERTIES 
   LINKER_LANGUAGE CXX

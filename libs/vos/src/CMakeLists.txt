@@ -38,6 +38,11 @@ SET (vos_inthdr
 
 ADD_LIBRARY (vos SHARED ${vos_src} )
 
+INCLUDE_DIRECTORIES (. ../../httpsc/src)
+
+TARGET_INCLUDE_DIRECTORIES (vos PUBLIC . ../../httpsc/src)
+TARGET_LINK_LIBRARIES (vos httpsc)
+
 SET_TARGET_PROPERTIES (vos PROPERTIES 
   LINKER_LANGUAGE CXX
   SOVERSION ${vos_VERSION}

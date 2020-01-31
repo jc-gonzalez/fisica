@@ -13,7 +13,7 @@ project (libs)
 
 #== Define subprojects
 
-add_subdirectory (filehdl)
+add_subdirectory (filetools)
 add_subdirectory (infix)
 add_subdirectory (iniparser)
 add_subdirectory (json)
@@ -22,8 +22,9 @@ add_subdirectory (chimg)
 add_subdirectory (mathtools)
 add_subdirectory (str)
 add_subdirectory (tools)
+add_subdirectory (httpsc)
 #add_subdirectory (uuid)
-#add_subdirectory (vos)
+add_subdirectory (vos)
 
 add_subdirectory (ranlib)
 

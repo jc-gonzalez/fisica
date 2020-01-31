@@ -40,7 +40,7 @@ ADD_LIBRARY (chimg SHARED ${chimg_src} )
 
 SET (LIBS_DIR /Users/jcgonzalez/opt)
 
-INCLUDE_DIRECTORIES (. ${LIBS_DIR}/include)
+INCLUDE_DIRECTORIES (. ${LIBS_DIR}/include ../../mathtools/src)
 LINK_DIRECTORIES (${LIBS_DIR}/include)
 
 TARGET_INCLUDE_DIRECTORIES (chimg PUBLIC .)

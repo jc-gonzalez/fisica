@@ -37,7 +37,7 @@ SET (infix_inthdr
   )
 
 ADD_LIBRARY (infix SHARED ${infix_src} )
-TARGET_INCLUDE_DIRECTORIES (filehdl PUBLIC .
+TARGET_INCLUDE_DIRECTORIES (infix PUBLIC .
   ${JSON_ROOT_DIR}/src
   ${TOOLS_ROOT_DIR}/src)
 
