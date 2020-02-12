@@ -212,11 +212,12 @@ void CameraHexPix::read_pixels(void)
                 qept.wl = jqePixelPt[0].asFloat();
                 qept.qe = jqePixelPt[1].asFloat();
                 qePixelTable.push_back(qept);
-                std::cerr << k << "  - " << q << " : " << qept.wl << ' ' << qept.qe << '\n';
+                //std::cerr << k << "  - " << q << " : " << qept.wl << ' ' << qept.qe << '\n';
             }
             qe.push_back(qePixelTable);
-
+            std::cerr << "Building QE tables: " << k * 100 / npix << "%\r";
         }
+        std::cerr << '\n';
     }
 
     // end

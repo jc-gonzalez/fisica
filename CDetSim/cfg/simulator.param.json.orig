@@ -1,0 +1,24 @@
+{
+    "header": {
+        "file": "reflector input parameters",
+        "version": "0.3"
+    },
+    "data": {
+        "verbose_level": 4,
+        "fixed_target": [0., 0.],
+        "core_offset": [15000., 0.],
+        "range_events": [1, 10],
+        // "skip": [2, 4],
+        // "max_events": 1, // this is the maximum number of events to process
+        "energy_cut": [800., 1000.],
+        "reflector_type": "extended", // magic|expcone|expcyl|expplane
+        "reflector_file": "$HOME/ws/fisica/CDetSim/cfg/extended.def.json",
+        // "reflector_type": "magic", // magic|expcone|expcyl|expplane
+        // "reflector_file": "$HOME/ws/fisica/CDetSim/cfg/magic.def.json",
+        "output_file": "$HOME/ws/fisica/CDetSim/out/reflection.out.json",
+        "atm_model": "ATM_CORSIKA", // can also be ATM_NOATMOSPHERE
+        "data_paths": [
+            "$HOME/ws/fisica/detector/run/4/in"
+        ]
+    }
+}

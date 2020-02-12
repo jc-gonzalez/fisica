@@ -72,7 +72,7 @@ Simulator::Simulator() :
     definedMaxEvents(false),
     definedEnergyCut(false),
     definedCoreOffset(false),
-    coreOffset({0., .0, 0.})
+    coreOffset({0., 0., 0.})
 {
 }
 
@@ -80,54 +80,6 @@ Simulator::Simulator() :
 // Destructor: Simulator
 //----------------------------------------------------------------------
 Simulator::~Simulator() {}
-
-//----------------------------------------------------------------------
-// Method: usage
-// Shows usage information
-//----------------------------------------------------------------------
-bool Simulator::usage(int code)
-{
-    std::cout << "Usage: " << exeName << "  -c configFile\n\n";
-    exit(code);
-}
-
-//----------------------------------------------------------------------
-// Method: processCmdLineOpts
-// Processes command line options to configure execution
-//----------------------------------------------------------------------
-bool Simulator::processCmdLineOpts(int argc, char * argv[])
-{
-    bool retVal = true;
-    int exitCode = EXIT_FAILURE;
-
-    exeName = std::string(argv[0]);
-
-    if (argc < 2) { usage(EXIT_FAILURE); }
-      
-    int opt;
-    while ((opt = getopt(argc, argv, "hc:x:y:")) != -1) {
-        switch (opt) {
-        case 'c':
-            configFile = std::string(optarg);
-            // Read and show confuration
-            readConfiguration(configFile);
-            break;
-        case 'x':
-            coreOffset.X = std::stod(optarg);
-            break;
-        case 'y':
-            coreOffset.Y = std::stod(optarg);
-            break;
-        case 'h':
-            exitCode = EXIT_SUCCESS;
-        default: /* '?' */
-            usage(exitCode);
-        }
-    }
-
-    showConfiguration();
-    return retVal;
-}
 
 //----------------------------------------------------------------------
 // Method: readConfiguration
@@ -316,18 +268,20 @@ Reflector * Simulator::buildReflector(std::string rflType)
 // Method: run
 // Execute the simulation
 //----------------------------------------------------------------------
-void Simulator::run(int argc, char * argv[])
+void Simulator::run(std::string cfgFile, double x, double y)
 {
+    configFile = cfgFile;
+    coreOffset.X = x, coreOffset.Y = y;
+
     CameraHexPix cam(2.2, 100.0);
     cam.setPixelsFileName("mypixels.json");
     cam.read_pixels();
 
-    return;
+    //return;
     
     // Read configuration
-    if (argc > 0) {
-        if (!processCmdLineOpts(argc, argv)) { return; }
-    }
+    readConfiguration(configFile);
+    showConfiguration();
 
     // Define reflector
     Reflector * reflector = buildReflector(reflectorType);    

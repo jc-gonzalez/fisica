@@ -82,14 +82,11 @@ private:
     Reflector * buildReflector(std::string rflType);
     std::string subEnvVars(std::string s);
 
-    bool usage(int code);
-    bool processCmdLineOpts(int argc, char * argv[]);
-
 public:
     void readConfiguration(std::string fileName);
     void showConfiguration();
 
-    void run(int argc = 0, char * argv[] = nullptr);
+    void run(std::string cfgFile, double x = 0., double y = 0.);
 
 private:
     std::string configFile;
